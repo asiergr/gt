@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ra}{\xrightarrow{}}
+
+\title{HW1}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+    \maketitle
+
+    \section*{21-24}
+    \subsection*{1}
+    Use the theorem in Sec. 21 to show that $f'(z)$ does not exist at any point if\\
+    (a) $f'(z) = \overline{z} = x - iy$
+    \begin{proof}
+        We have that $u(x,y) = x$ and $v(x,y) = -y$. Hence we get partial derivatives
+        $u_x = 1$, $v_x = 0$, $u_y = 0$, $v_y = -1$. Since $u_x \neq v_y$ anywhere. Then $f'(z)$ does not
+        exist at any point.
+    \end{proof}
+    (b) $f(z) = z - \overline{z} = x - iy - (x - iy) = -2iy$
+    \begin{proof}
+        We have $u(x,y) = 0$ and $v(x,y) = -2y$. Hence partial derivatives $u_x = 0$ and $v_y = -2$.
+        Since $v_x \neq v_y$, $f'(z)$ does not exist anywhere.
+    \end{proof}
+    (c) $f(z) = 2x = ixy^2$
+    \begin{proof}
+        We have that $u(x,y) = 2x$ and $v(x,y) = xy^2$. With partial derivatives $u_x = 2$, $v_x = y^2$,
+        $u_y = 0$, and $v_y = 2xy$. Since $v_x \neq -u_y$ anywhere except $y = 0$ and $u_x \neq v_y$
+        anywhere except $xy = 1$, then $f'(z)$ does not exist anywhere.
+    \end{proof}
+    (d) $f(z) = e^x e^{-iy} = e^x(\cos y + i\sin(-y)) = e^x(\cos y - i\sin y)$
+    \begin{proof}
+       We have that $u(x,y) = e^x\cos y$ and $v(x,y) = -e^x\sin y$. Hence we have partial derivatives
+       $u_x = e^x\cos y$, $v_x = -e^x\sin y$, $u_y = e^x\sin y$, and $v_y = e^x\cos y$. Since $v_x \neq -u_y$
+       ??? 
+    \end{proof}
+    \subsection*{8}
+    Recall (Sec.6) that if $z=x+iy$,then $x = \frac{z + \overline{x}}{2}$ and 
+    $y = \frac{z - \overline{z}}{2i}$ By formally applying the chain rule in calculus to a function F(x, y) of 
+    two real variables, derive the expression
+    \section*{25-26}
+    \subsection*{2}
+    With the aid of the theorem in Sec. 21, show that each of these functions is nowhere analytic:\\
+    (a) $f(z)=xy+iy$
+    \begin{proof}
+        
+    \end{proof}
+    \subsection*{6}
+    \section*{27}
+    \subsection*{1}
+    \section*{30}
+    \subsection*{1}
+    \subsection*{6}
+    \subsection*{13}
+\end{document}
