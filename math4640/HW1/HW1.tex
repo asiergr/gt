@@ -5,6 +5,7 @@
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{bm}
+\usepackage{mathtools}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -61,9 +62,54 @@
     with three digit decimal (base-10) arithmetic (by hand).  You can assume the machine chops.
 
     \vspace{0.5cm}
-    \textit{Answer:} We will need to find two elimination matrices. The first one $\bm{M}_1 = 
-    \begin{smallmatrix}
-        
-    \end{smallmatrix}
+    \textit{Answer:} Because our machine approximates to three decimal digits, matrix $\bm{A}$
+    is interpreted as $\bm{A} = \begin{psmallmatrix}
+        0 & 1 \\
+        1 & 1 \\
+    \end{psmallmatrix}$
+    This means that one of pivots is 0 for the Gaussian elimination. Since pivotting is not
+    allowed, we cannot proceed.
+
+    \vspace{0.5cm}
+    (b) Repeat with partial pivoting. Comment on your results.
+
+    \vspace{0.5cm}
+    Now we have partial pivoting, so our matrix gets its rows swapped, resulting in
+    the system $$\begin{pmatrix}
+        1 & 1 \\
+        0.0001 & 1 \\
+    \end{pmatrix} \bm{x} = \begin{pmatrix}
+        2 \\ 1 \\
+    \end{pmatrix}$$
+
+    \vspace{1cm}
+    5. Use a computer to determine the condition number of $\bm{A}$ from problem 4 
+    (you can use full precision, e.g. double precision).  Explain how you coded it up 
+    (I don’t want tosee the code itself).
     
+    \vspace{0.5cm}
+    \textit{Answer:} \\
+    (a) The condition number for $\bm{A}$ is $\approx 2.6184$.
+    because this is a $2\times 2$ matrix the inverse $\bm{A}^{-1}$ can be trivially
+    calculated in constant time. Hence, the condition number calculated by
+    $||\bm{A}||*||\bm{A}^{-1}||$. To find these norms, because they are subordinate
+    to the vector norm, we simply generate a constant amount of random vectors and 
+    pick the maximal $\frac{||\bm{A}\bm{x}||}{||\bm{x}||}$. \\
+    (b) (b) (1 point) Do you consider this a good or bad condition number?
+    Explain your reasoning.
+
+    \vspace{0.5cm}
+    I would consider this a good condition number. This is because it is only $\approx 2.5$
+    times larger than the condition number for the identity matrix. Considering that the
+    upper bound for this value is infinity (i.e it is unbounded), this is a pretty good value.
+
+    \vspace{1cm}
+    (c) f the condition number is bad, how could you change \bm{A} to make it better? If the 
+    condition number is good, how could you change $\bm{A}$ to make it worse (not that one 
+    would want to do this)?
+
+    \vspace{0.5cm}
+    \textit{Answer:} To make this value worse we could make $a_{11} = 1$ or make 
+    it very close to $1$. Because we know singular matrices have $\infty$ as their condition
+    number, this would raise it. 
 \end{document}
