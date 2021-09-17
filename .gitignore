@@ -1,3 +1,4 @@
+# LaTeX ignores
 .DS_Store
 *.aux
 *.fdb_latexmk
