@@ -1,23 +1,24 @@
 use ndarray::{ArrayBase, Array1, Array2}; 
 
-fn gaussian_elimination(mut A: Array2<f64>, b: Array1<f64>) -> Vec<f64> {
-    let n = A.shape()[0]; // We assume A is square
-    let mut M: Array2<f64> = ArrayBase::zeros((n,n)); // Multiplier matrix
+fn gaussian_elimination(mut a: Array2<f64>, b: Array1<f64>) -> Vec<f64> {
+    let n = a.shape()[0]; // We assume A is square
+    let mut m: Array2<f64> = ArrayBase::zeros((n,n)); // Multiplier matrix
     
-    for k in 1..n {
-        if A[[k,k]] == 0.0 {
+    for k in 0..n {
+        if a[[k,k]] == 0.0 {
             panic!("Zero pivot encountered!");
         }
-        for i in k+1..n {
-            M[[i,k]] = A[[i,k]] / A[[k,k]];
+        for i in k..n {
+            m[[i,k]] = a[[i,k]] / a[[k,k]];
         }
-        for j in k+1..n {
-            for i in k+1..n {
-                A[[i,j]] = A[[i,j]] - M[[i,j]] * A[[k,j]];
+        for j in k..n {
+            for i in k..n {
+                a[[i,j]] = a[[i,j]] - m[[i,k]] * a[[k,j]];
             }
         }
     }
-    println!{"{}", A};
+    println!{"{}", m};
+    println!{"{}", a};
     vec!(0.0)
 }
 
