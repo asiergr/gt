@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ra}{\xrightarrow{}}
+
+\title{HW1}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+    \maketitle
+    1. (1 point) If $0 < \epsilon <\epsilon_{mach}$ similar in size, explain why computing 
+    $$z = x + \left(\frac{1}{\epsilon}\right)y$$ could be a problem for floating point arithmetic.\vspace{0.5cm}
+    \textit{Answer}: Because $\epsilon < \epsilon_{mach}$ the computer can no longer guarantee
+    the precision of $\epsilon$. When we divide by it, not only do we get a very large number
+    but also a number that is imprecise, because again the precision cannot be guaranteed.
+
+    \vspace{1cm}
+    2. Two alternative series approximations for $e^{-x}$ are
+    $$e^{-x} = 1 - x + \frac{1}{2}x^2 - \frac{1}{6}x^3 + ...$$ and 
+    $$e^{-x} = \frac{1}{1 + x + x^2/2 = x^3/6 + ...}$$
+    Of these two, which approach is more prone to finite-precision floating point rounding errors?
+    Explain.
+    
+    \vspace{0.5cm}
+    \textit{Answer:} The second approach is more prone to finite-precision floating point rounding
+    errors. This is because in the second approach, we are dividing $1$ by a possibly very large
+    number, meaning that the result $\epsilon$ could be such that $\epsilon < \epsilon_mach$. This
+    implies a loss of precision on the value of $e^{-x}$.
+
+    \vspace{1cm}
+    3. Write  a  Gaussian  elimination  code  (no  pivoting)  that  solves  the  linear  system
+    $$\bm{A}=\begin{pmatrix}
+        1 & 1/2 &  1/3 \\
+        1/2 & 1/3 & 1/4 \\
+        1/3 & 1/4 & 1/5 \\
+    \end{pmatrix}
+    \qquad \bm{b} = \begin{pmatrix}
+        7/6 \\ 5/6\\ 13/20
+    \end{pmatrix}$$
+    Include a listing of your code and your answerx.  What is the residual $r$.
+
+    \vspace{0.5cm}
+    
+\end{document}
