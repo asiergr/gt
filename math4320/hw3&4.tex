@@ -54,9 +54,26 @@
     With the aid of the theorem in Sec. 21, show that each of these functions is nowhere analytic:\\
     (a) $f(z)=xy+iy$
     \begin{proof}
-        
+        We have that $u(x,y)=xy$ and $v(x,y)=y$. Hence there are partial derivatives $u_x=y$, $u_y=x$
+        , $v_x=0$, $v_y=1$. Since $u_x \neq v_y$ except $y=1$, and $v_x \neq -u_y$ unless $x=0$. Hence the
+        only point where $f'(z)$ exists is $(0, 1)$, which is not an open set. Hence $f$ is nowhere analytic.
+    \end{proof}
+    (b) $f(z)=2xy+ i(x^2+y^2)$
+    \begin{proof}
+        We have that $u(x,y)=2xy$ and $v(x,y)=x^2+y^2$. We then have partial derivatives $u_x = 2y$,
+        $v_x=2x$, $u_y=2x$, and $v_y=2y$. Now since $v_x \neq -u_y$ anywhere then $f'(z)$ does not exists
+        anywere. Hence $f$ is analytic nowhere.
+    \end{proof}
+    (c) $f(z)=e^y e^{ix}=e^y(\cos x + i\sin x)$
+    \begin{proof}
+        We have that $u(x,y)=e^y\cos x$ and $v(x,y) = e^y\sin x$. Hence we get partial derivatives
+        $u_x=-e^y\sin x$, $v_x=e^y\cos x$, $u_y=e^y \cos x$, $v_y=e^y\sin x$. ???
     \end{proof}
     \subsection*{6}
+    Use results in Sec. 24 to verify that the function $$g(z) = \ln r = i\theta \qquad (r > 0, 0 < \theta < 2\pi)$$
+    is analytic in the indicated domain of definition, with derivative $g'(z) = \frac{1}{z}$
+    Then show that the composite function $G(z) = g(z^2 + 1)$ is analytic in the quadrant $x > 0, y > 0$, with derivative
+    $$G'(z)=\frac{2z}{z^2 + 1}$$ Suggestion: Observe that $Im(z2 + 1) > 0$ when $x > 0$, $y > 0$.
     \section*{27}
     \subsection*{1}
     \section*{30}
