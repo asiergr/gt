@@ -11,6 +11,8 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\ra}{\xrightarrow{}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
 
 \title{HW1}
 \author{Asier Garcia Ruiz }
@@ -18,7 +20,46 @@
 
 \begin{document}
     \maketitle
-
+    \section*{15-18}
+    \subsection*{10}
+    Use the theorem in Sec. 17 to show that
+    (a) We can look at $\lim_{z \ra \infty}f(1/z)$
+    \begin{align*}
+        \lim_{z\ra\infty} \frac{4*1/z^2}{(1/z - 1)^2} &= 4 \\
+    \end{align*}
+    Hence $\lim_{z\ra\infty}\frac{4z^2}{(z+1)^2} = 4$. \\
+    (b) \begin{align*}
+        \lim_{z\ra 1} \frac{1}{f(z)} &= \lim_{z\ra 1} \frac{1}{\frac{1}{(z-1)^3}} \\
+            &= \lim_{z\ra 1} (z-1)^3 = 0
+    \end{align*}
+    Hence $\lim_{z\ra 1} \frac{1}{(z-1)^3} = \infty$
+    (c) \begin{align*}
+        \lim_{z\ra\infty} \frac{1}{f(1/z)} &= \frac{1/z + 1}{1/z^2 + 1} = 0
+    \end{align*}
+    Hence $\lim_{z\ra\infty}\frac{z^2 + 1}{z - 1} = \infty$
+    \section*{19-20}
+    \subsection*{3}
+    Using results in Sec. 20, show that \\
+    (a) a polynomial $$P(z) = a_0 + a_1z + a_2z^2 + ... + a_nz^n \qquad (a \neq 0)$$
+    of degree $n \ (n \leq 1)$ is differentiable everywhere with derivative
+    $$P'(z) = a_1 + 2a_2z^2 + ... + a_nz^{n-1}$$
+    \begin{proof}
+        We know that $\frac{d}{dx}(f(x) + g(x)) = f'(x) + g'(x)$. Hence,
+        $$\frac{dP}{dz} = \frac{d}{dz}a_0 + \frac{d}{dz}a_1z + \frac{d}{dz}a_2z^2 + ...
+        + \frac{dP}{dz}a_nz^2$$ Now combining $\frac{d}{dz}c = 0$ for any constant $c$
+        , $\frac{d}{dz} z^n = nz^{n-1}$ and $f'(cz)=cf'(z)$ for some constant $c$ we finally get
+        $$P'(z) = a_1 + 2a_2z^1 + ... + na_nz^{n-1}$$.
+    \end{proof}
+    (b) Looking at $P(z)$ We see that
+    \begin{gather*}
+        P(z) = a_0 + a_1z + a_2z^2 + ... + a_kz^k + ... + a_nz^{n-1} \\
+        P'(z) = a_1 + 2a_2z^1 + ... + ka_kz^{k-1} + ... + na_nz^{n-1} \\
+        P''(z) = 2a_2 + ... + ka(k-1)z^{k-2} + ... + n(n-1)a_nz^{n-2} \\
+        \dots \\
+        P^k(z) = k(k-1)(k-2)*...*1*a_k + n(n-1)...(n-k)a_nz^{n-k} \\ 
+    \end{gather*}
+    Hence we can see that it follows that $P^k(0) = k!a_k$. Hence, we get finally 
+    that $a_k = \frac{P^k(0)}{k!}$ for all $1\leq k \leq n$.
     \section*{21-24}
     \subsection*{1}
     Use the theorem in Sec. 21 to show that $f'(z)$ does not exist at any point if\\
@@ -42,13 +83,26 @@
     (d) $f(z) = e^x e^{-iy} = e^x(\cos y + i\sin(-y)) = e^x(\cos y - i\sin y)$
     \begin{proof}
        We have that $u(x,y) = e^x\cos y$ and $v(x,y) = -e^x\sin y$. Hence we have partial derivatives
-       $u_x = e^x\cos y$, $v_x = -e^x\sin y$, $u_y = e^x\sin y$, and $v_y = e^x\cos y$. Since $v_x \neq -u_y$
-       ??? 
+       $u_x = e^x\cos y$, $v_x = -e^x\sin y$, $u_y = e^x\sin y$, and $v_y = -e^x\cos y$.
+       Now since $u_x \neq v_y$ anywhere, then $f'(z)$ cannot exist at any point. 
     \end{proof}
     \subsection*{8}
     Recall (Sec.6) that if $z=x+iy$,then $x = \frac{z + \overline{x}}{2}$ and 
     $y = \frac{z - \overline{z}}{2i}$ By formally applying the chain rule in calculus to a function F(x, y) of 
     two real variables, derive the expression
+    $$\partiald{F}{\zbar} = \partiald{F}{x}\partiald{x}{\zbar} +
+    \partiald{F}{y}\partiald{y}{\zbar} =
+    \frac{1}{2}\left(\partiald{F}{x}+ i\partiald{F}{y}\right)$$
+    \begin{proof}
+        We can write
+        \begin{align*}
+            \partiald{F}{\zbar} &= \partiald{F}{x}\partiald{x}{\zbar} \\
+                &= \partiald{F}{x}\partiald{}{\zbar}\frac{z + \zbar}{2} +
+                    \partiald{F}{y}\partiald{}{\zbar}(\frac{z - \zbar}{2i}) \\
+                &= \frac{1}{2}\partiald{F}{x} + \frac{-1}{2i}\partiald{F}{y} \\
+                &= \frac{1}{2}\left(\partiald{F}{x}+ i\partiald{F}{y}\right)
+        \end{align*}
+    \end{proof}
     \section*{25-26}
     \subsection*{2}
     With the aid of the theorem in Sec. 21, show that each of these functions is nowhere analytic:\\
@@ -67,17 +121,121 @@
     (c) $f(z)=e^y e^{ix}=e^y(\cos x + i\sin x)$
     \begin{proof}
         We have that $u(x,y)=e^y\cos x$ and $v(x,y) = e^y\sin x$. Hence we get partial derivatives
-        $u_x=-e^y\sin x$, $v_x=e^y\cos x$, $u_y=e^y \cos x$, $v_y=e^y\sin x$. ???
+        $u_x=-e^y\sin x$, $v_x=e^y\cos x$, $u_y=e^y \cos x$, $v_y=e^y\sin x$. Now since
+        $u_x \neq v_y$ except at $x = n\pi$ and $v_x \neq -u_y$ except when
+        $\frac{(2n+1)\pi}{2}$ for $n=0,\pm1,...$. Then the function is not differentiable
+        anywhere, meaning it cannot be analytic anywhere.
     \end{proof}
     \subsection*{6}
     Use results in Sec. 24 to verify that the function $$g(z) = \ln r = i\theta \qquad (r > 0, 0 < \theta < 2\pi)$$
     is analytic in the indicated domain of definition, with derivative $g'(z) = \frac{1}{z}$
     Then show that the composite function $G(z) = g(z^2 + 1)$ is analytic in the quadrant $x > 0, y > 0$, with derivative
-    $$G'(z)=\frac{2z}{z^2 + 1}$$ Suggestion: Observe that $Im(z2 + 1) > 0$ when $x > 0$, $y > 0$.
+    $$G'(z)=\frac{2z}{z^2 + 1}$$ Suggestion: Observe that $\Im(z2 + 1) > 0$ when $x > 0$, $y > 0$.
+
+    \begin{proof}
+        First we will show that $g(z)$ is analytic in the given domain. Let us start by identifying
+        $u(r,\theta) = \ln r$ and $v(r, \theta) = \theta$. Hence, we have partial derivatives
+        $u_r = \frac{1}{r}$, $v_r = 0$, $u_\theta = 0$, $v_\theta = 1)$. Hence we have that
+        $ru_r = 1 = v_\theta$, and $u_\theta = -rv_r$ for all values of $r, \theta$ in the domain.
+        We also see that all the partial derivatives exist in the domain. Hence, $g'(z)$ exists
+        everywhere in the domain, and it is analytic. The derivative $g'(z)$ can be found by writing
+        \begin{align*}
+            g'(z) &= e^{-i\theta}(u_r = iv_r) \\
+                &= e^{-i\theta}(\frac{1}{r} + 0) \\
+                &= \frac{1}{re^{i\theta}} \\
+                &= \frac{1}{z}
+        \end{align*}
+        
+        \vspace{0.25cm}
+        Now we will prove that $G(z)$ is analytic. In fact we can see that $G$ is nothing
+        but a composition of two functions, we also know that if two functions are analytic,
+        then their composition is also analytic. Hence, we only need to prove that
+        $h(z)=z^2 + 1$ is analytic in the domain. \\
+        Hence we have that $h(z)=(x+ iy)^2 = x^2 - y^2 + 1 + i2xy$.
+        Thus we get $u(x,y) = x^2 - y^2 - 1$ and $v(x,y) = 2xy$. Taking partial derivatives
+        $u_x = 2x$, $v_x =2y$, $u_y =-2y$, $v_y =2x$. Hence, we have that $h$ is analytic in 
+        the first quadrant. Now to find $G'$ we will use the chain rule, we write
+        \begin{align*}
+            G'(z) &= g'(h(z))h'(z) \\
+                &= \frac{1}{z^2 + 1}*2z \\
+                &= \frac{2z}{z^2 + 1}
+        \end{align*}
+    \end{proof}
     \section*{27}
     \subsection*{1}
+    Let  the  function $f(z) = u(r,\theta) = iv(r, \theta)$ be  analytic  in  
+    a  domainDthat  does  notinclude the origin. Using the Cauchy–Riemann equations 
+    in polar coordinates (Sec. 24) and assuming continuity of partial derivatives, 
+    show that throughout $D$ function $u(r,\theta)$ satisfies the partial 
+    differential equation $$r^2u_{rr}(r,\theta) = ru_r(r,\theta) + u_{\theta\theta}(r,\theta) = 0,$$
+    which is thepolar form of Laplace’s equation. Show that the same is true of 
+    the function $v(r, \theta)$.
+    \begin{proof}
+        Consider the Cauchy–Riemann equations in polar form, we can take derivatives
+        because $f$ is analytic in $D$. The first one is
+        $ru_r = v_\theta$, we differentiate with respect to $r$ to get
+        $u_r + ru_{rr} = \partiald{v_\theta}{r} = v_{\theta r}$. Now consider the
+        other equation $u_\theta = -rv_r$ and differentiate with respect to $\theta$.
+        We get $u_{\theta\theta} = r\partiald{v_r}{\theta} = -rv_{r\theta}$. We 
+        also know that $v_{r\theta} = v_{\theta r}$. Now, we can write
+        \begin{gather*}
+            -r(u_r + ru_{rr}) = -rv_{\theta r} = -rv_{r\theta} \\
+            -ru_r - r^2u_{rr} = u_{\theta\theta} \\
+            u_{\theta\theta} + r^2u_{rr} + ru_r = 0
+        \end{gather*}
+        Hence the statement has been proven.
+
+        \vspace{0.25cm}
+        Now we will prove a similar statement for $v(r,\theta)$. This time we
+        differentiate $ru_r = v_\theta$ with respect to $\theta$ to get
+        $ru_{r\theta} = v_{\theta\theta}$. Then we differentiate $u_\theta = -rv_r$
+        with respect to $r$ to get $u_{\theta r} = -v_r - rv_{rr}$. Now 
+        again leveraging the fact that $u_{r\theta} = u_{\theta r}$ we can write
+        \begin{gather*}
+            ru_{\theta r} = -rv_r - r^2v_{rr} \\
+            v_{\theta \theta} = -rv_r - r^2v_{rr} \\
+            v_{\theta\theta} +r^2v_{rr} = rv_r
+        \end{gather*}
+        Hence we have proven the equation for both $v$ and $u$.
+    \end{proof}
     \section*{30}
     \subsection*{1}
+    Show that \\
+    (a) \begin{align*}
+        e^{2\pm 3\pi i} &= e^2 e^{3\pi i} \\
+            &= e^2 * -1 + -e^2
+    \end{align*}
+    (b) \begin{align*}
+        \exp(\frac{2+ \pi i}{4}) &= e^{1/2}e^{\frac{\pi i}{4}} \\
+                &= \sqrt{e}(\cos(\pi / 4)) = i\sin(\pi / 4)) \\
+                &= \sqrt{e}\frac{\sqrt{2}}{2} + i\frac{\sqrt{2}}{2} \\
+                &= \sqrt{\frac{e}{2}}(1 + i)
+    \end{align*}
+    (c) \begin{align*}
+        e^{z + i\pi} &= e^{z}e^{i\pi} \\
+            &= -e^z
+    \end{align*} 
     \subsection*{6}
+    Show that $|\exp(z^2)| \leq \exp(|z|^2)$
+    \begin{align*}
+        |\exp(x^2 - y^2 + i2xy)| &= |e^{x^2 - y^2}e^{i2xy}| \\
+            &= |e^{x^2 - y^2}(\cos(2xy) + i\sin(2xy))|
+        \intertext{Now because both $0 \leq \cos \leq 1$ and $0 \leq \sin \leq 1$}
+            \leq& |e^{x^2 - y^2}| \\
+            \leq& e^{x^2 + y^2} = \exp|z|^2
+    \end{align*}
     \subsection*{13}
+    Let the function $f(z)= u(x,y) + iv(x,y)$ be analytic in some domain $D$. State
+    why the functions $$U(x,y) = e^{u(x,y)}\cos v(x,y), \qquad
+    V(x,y) = e^{u(x,y)}\sin v(x,y)$$ are harmonic in $D$.
+    \begin{proof}
+        Let us take $F(z) = U(x,y) = iV(x,y)$. We see that $F$ is nothing but a 
+        composition of $f$ and $g(x,y) = e^x(\cos y + i\sin y)$. Thus 
+        $F(z) = g(f(z))$. Now we only have to prove that $g$ is analytic in $D$.
+        In fact, it is shown in Example 1 of Sec. 23 (page 67) that this function 
+        meets the Cauchy–Riemann equations and $g'$ exists everywhere, hence it is 
+        analytic. Now since $f, g$ are both analytic, then their composition $F$
+        is also analytic in $D$. Now, since $F$ is analytic in $D$, we know that its
+        componenets, namely $U(x,y), V(x,y)$ are harmonic in $D$.
+    \end{proof}
 \end{document}
