@@ -10,9 +10,13 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
-\newcommand{\ra}{\xrightarrow{}}
-\newcommand{\zbar}{\overline{z}}
-\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\ra}{\rightarrow}
+
+% Prob theory specific
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\probspace}{(\Omega, \mathcal{F}, \mathbb{P})}
+\newcommand{\Image}[1]{\text{Im}\, #1}
 
 \title{HW1}
 \author{Asier Garcia Ruiz }
@@ -22,11 +26,121 @@
     \maketitle
     \section*{Exercises}
     \subsection*{2.10}
+    If $E$ is an event of the probability space $\probspace$ show that
+    the indicator function of $E$, defined to be the function $1_E$ on
+    $\Omega$ given by
+    \begin{equation*}
+        1_E =\begin{cases}
+            1 \quad &\text{if} \ \omega \in E \\
+            0 \quad &\text{if} \ \omega \notin E \\
+        \end{cases}
+    \end{equation*}
+    is a discrete randon variable.
+    \begin{proof}
+        We can see that $Im(1_E) = \{0, 1\}$, a countable subset of $\R$. Now we consider
+        $\{\omega \in \Omega : 1_E(\omega) = x\}$ for $x \in \R$, we have to show this set
+        is in $\F$. Now note that
+        $\{\omega \in \Omega : 1_E(\omega) = 0\} = \{\omega \in \Omega: \omega \notin E\}
+        = E^C \subseteq \F$ by the properties of an event space. Similarly
+        $\{\omega \in \Omega : 1_E(\omega) = 1\} = \{\omega \in \Omega : \omega \in E\}
+        = E \subseteq \F$. Hence, $1_E$ is a discrete random variable.
+    \end{proof}
     \subsection*{2.11}
+    Let $\probspace$ be a probability space in which
+    $$\Omega = \{1,2,3,4,5,6\}, \qquad \F = \{\varnothing, \{2,4,6\}, \{1,3,5\}, \Omega\}$$
+    and let $u, V, W$ be functions on $\Omega$ defined by
+    $$U(\omega)= \omega, \qquad V(\omega) = \begin{cases}
+        1 \quad &\text{if $\omega$ is even} \\
+        0 \quad &\text{if $\omega$ is odd} \\
+    \end{cases}, \qquad
+    W(\omega)= \omega ^2$$
+    for $\omega \in \Omega$. Determine which of $U, V, W$ are discrete random variables
+    on the probability space.
+    \begin{proof}
+        We will start with $U$, clearly $\Image{U} = \Omega \subseteq \R$.
+        Now, we can see that $\{\omega \in \Omega: U(\omega) = 1\} = \{1\} \not \subset \F$.
+        Hence $U$ is not a discrete random variable on $\probspace$.
+
+        Now consider $V$. Again, clearly $V(\Omega) = \{0,1\} \subset \R$.
+        Now, consider $\{\omega \in \Omega: V(\omega)=0\} = \{1,3,5\} \subset \F$. We
+        also see that $\{\omega \in \Omega: V(\omega)=1\} = \{2,4,6\} \subset \F$. Hence
+        we have that $V$ is a discrete random variable on $\probspace$.
+
+        Lastly, we consider $W$. Observe that $\Image{W} = \{1,4,9,16,25,36\} \subset \R$
+        and is also countable. Now consider 
+        $\{\omega \in \Omega: W(\omega) = 1\} = \{1\} \not \subset \F$. Hence, $W$ is not
+        a random variable on $\probspace$.
+    \end{proof}
     \subsection*{2.24}
+    If $X$ s a discrete random variable having the geometric distribution with parameter
+    $p$ show that the probability that $X$ is greater than $k$ is $(1-p)^k$.
+    \begin{proof}
+        We know that $X$ is geometric with parameter $p \in (0,1)$. Hence
+        $\P(X=k) = pq^{k-1}$, for $k=0,1,2,...$. Now, we can write
+        \begin{align*}
+            \P(X > k) &= \P(X = k + 1) + \P(X = k + 2) + ... \\
+                &= pq^{k} + pq^{k + 1} + ... \\
+                &= pq^k(1+q^1 + ...) \\
+                &= pq^k \sum_{i = 0}^{\infty}q^i \\
+                &= pq^k \left(\frac{1}{1 - q}\right) \\
+                &= pq^k\frac{1}{p} \\
+                &= q^k = (1-p)^k
+        \end{align*}
+    \end{proof}
     \subsection*{3.8}
+    Two cards are drawn at random from a deck of 52 cards. If $X$ denotes the number
+    of aces drawn and $Y$ denotes the number of kings, display the joint mass
+    functionof $X$ and $Y$ in the tabular form of Table 3.1.
+    \begin{table}[h!]
+        \begin{center}
+            \begin{tabular}{r | c | c | c | c | c}
+                & $x = 0$ & $x = 1$ & $x = 2$  & $x = 3$ & $x = 4$ \\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
     \section*{Problems}
     \subsection*{4}
+    For what values of $c$ and $\alpha$ is the function $p$, defined by
+    $$p(k) = \begin{cases}
+        ck^\alpha & \text{for} \ k = 1,2,..., \\
+        0 & \text{otherwise}
+    \end{cases}$$
+    a mass function?
+    \begin{proof}
+        We know that a mass function is a mapping $\R \ra [0,1]$. Hence, for $p$ to
+        be a probability mass function then $p(k) \in [0,1]$ for $k=1,2,3,...$. 
+        Additionally, we also know that $\sum_k ck^\alpha = 1$. We begin
+        by writing
+        \begin{align*}
+            \sum_{k=1}^\infty ck^\alpha &= 1
+            \intertext{Clearly we need that $\alpha \in (-1,1)$}
+            c\sum_{k=1}^\infty k^\alpha &= 1 \\
+            c\left(\frac{1}{1-\alpha}\right) &= 1 \\
+            c &= 1 - \alpha \\
+            c + \alpha &= 1
+        \end{align*}
+        We can also see that for any given $\sum_k k^\alpha$ we need $0 < c \leq 1$.
+        Hence, we have found the bounds for out equation to be a pmf.
+
+    \end{proof}
     \subsection*{5}
+    \textit{Lack-of-memory property}. If $X$ has the geometric distribution with parameter
+    $p$, show that $$\P(X > m + n | X > m) = \P(X > n)$$ for $m,n=0,1,2,3,...$.
+    We say that $X$ has the 'lack of memory property' since, if we are given
+    $X-m > 0$, then the distribution of $X-m$ is the same as the original distribution
+    of $X$. Show that thegeometric distribution is the only distribution concentrated on the
+    positive integers with thelack-of-memory property.
+    \begin{proof}
+        
+    \end{proof}
     \subsection*{7}
+    \textit{Coupon collecting problem}. There are $c$ different types of coupon,
+    and each coupon obtained is equally likely to be any one of the $c$ types. Find the
+    probability that the first $n$ coupons which you collect do not form a complete set,
+    and deduce an expression for the mean number of coupons you will need to collect
+    before you have a complete set.
+    \begin{proof}
+        
+    \end{proof}
 \end{document}
