@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{parskip}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -23,9 +24,9 @@
     \section*{15-18}
     \subsection*{10}
     Use the theorem in Sec. 17 to show that
-    (a) We can look at $\lim_{z \ra \infty}f(1/z)$
+    (a) We can look at $\lim_{z \ra 0}f(1/z)$
     \begin{align*}
-        \lim_{z\ra\infty} \frac{4*1/z^2}{(1/z - 1)^2} &= 4 \\
+        \lim_{z\ra 0} \frac{4*1/z^2}{(1/z - 1)^2} &= 4 \\
     \end{align*}
     Hence $\lim_{z\ra\infty}\frac{4z^2}{(z+1)^2} = 4$. \\
     (b) \begin{align*}
@@ -41,7 +42,7 @@
     \subsection*{3}
     Using results in Sec. 20, show that \\
     (a) a polynomial $$P(z) = a_0 + a_1z + a_2z^2 + ... + a_nz^n \qquad (a \neq 0)$$
-    of degree $n \ (n \leq 1)$ is differentiable everywhere with derivative
+    of degree $n \ (n \geq 1)$ is differentiable everywhere with derivative
     $$P'(z) = a_1 + 2a_2z^2 + ... + a_nz^{n-1}$$
     \begin{proof}
         We know that $\frac{d}{dx}(f(x) + g(x)) = f'(x) + g'(x)$. Hence,
@@ -164,7 +165,7 @@
     \section*{27}
     \subsection*{1}
     Let  the  function $f(z) = u(r,\theta) = iv(r, \theta)$ be  analytic  in  
-    a  domainDthat  does  notinclude the origin. Using the Cauchy–Riemann equations 
+    a  domain $D$ that  does  notinclude the origin. Using the Cauchy–Riemann equations 
     in polar coordinates (Sec. 24) and assuming continuity of partial derivatives, 
     show that throughout $D$ function $u(r,\theta)$ satisfies the partial 
     differential equation $$r^2u_{rr}(r,\theta) = ru_r(r,\theta) + u_{\theta\theta}(r,\theta) = 0,$$
@@ -203,7 +204,7 @@
     Show that \\
     (a) \begin{align*}
         e^{2\pm 3\pi i} &= e^2 e^{3\pi i} \\
-            &= e^2 * -1 + -e^2
+            &= e^2 * -1 = -e^2
     \end{align*}
     (b) \begin{align*}
         \exp(\frac{2+ \pi i}{4}) &= e^{1/2}e^{\frac{\pi i}{4}} \\
@@ -218,11 +219,11 @@
     \subsection*{6}
     Show that $|\exp(z^2)| \leq \exp(|z|^2)$
     \begin{align*}
-        |\exp(x^2 - y^2 + i2xy)| &= |e^{x^2 - y^2}e^{i2xy}| \\
-            &= |e^{x^2 - y^2}(\cos(2xy) + i\sin(2xy))|
-        \intertext{Now because both $0 \leq \cos \leq 1$ and $0 \leq \sin \leq 1$}
-            \leq& |e^{x^2 - y^2}| \\
-            \leq& e^{x^2 + y^2} = \exp|z|^2
+        |\exp(x^2 - y^2 + i2xy)| &= |e^{x^2 - y^2}|, \text{since modulus only accounts for the real part} \\
+        &= \exp(x^2 - y^2) \\
+        &= \exp(x^2)\exp(-y^2) \\
+        &\leq \exp(x^2)\exp(y^2) \\
+        &= \exp(x^2 + y^2) = \exp(|z|^2)
     \end{align*}
     \subsection*{13}
     Let the function $f(z)= u(x,y) + iv(x,y)$ be analytic in some domain $D$. State

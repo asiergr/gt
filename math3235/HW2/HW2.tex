@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{parskip}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -14,9 +15,10 @@
 \newcommand{\ra}{\rightarrow}
 
 % Prob theory specific
-\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\P}[1]{\mathbb{P}(#1)}
 \newcommand{\probspace}{(\Omega, \mathcal{F}, \mathbb{P})}
 \newcommand{\Image}[1]{\text{Im}\, #1}
+\newcommand{\E}[1]{\mathbb{E}(#1)}
 
 \title{HW1}
 \author{Asier Garcia Ruiz }
@@ -78,7 +80,7 @@
         We know that $X$ is geometric with parameter $p \in (0,1)$. Hence
         $\P(X=k) = pq^{k-1}$, for $k=0,1,2,...$. Now, we can write
         \begin{align*}
-            \P(X > k) &= \P(X = k + 1) + \P(X = k + 2) + ... \\
+            \P{X > k} &= \P{X = k + 1} + \P{X = k + 2} + ... \\
                 &= pq^{k} + pq^{k + 1} + ... \\
                 &= pq^k(1+q^1 + ...) \\
                 &= pq^k \sum_{i = 0}^{\infty}q^i \\
@@ -113,27 +115,55 @@
         Additionally, we also know that $\sum_k ck^\alpha = 1$. We begin
         by writing
         \begin{align*}
-            \sum_{k=1}^\infty ck^\alpha &= 1
-            \intertext{Clearly we need that $\alpha \in (-1,1)$}
-            c\sum_{k=1}^\infty k^\alpha &= 1 \\
-            c\left(\frac{1}{1-\alpha}\right) &= 1 \\
-            c &= 1 - \alpha \\
-            c + \alpha &= 1
+            \sum_{k=1}^\infty ck^\alpha &= 1 \\
+            c = \frac{1}{\sum_{k=1}^\infty k^\alpha} \\
         \end{align*}
-        We can also see that for any given $\sum_k k^\alpha$ we need $0 < c \leq 1$.
-        Hence, we have found the bounds for out equation to be a pmf.
+        Hence, we need $\alpha > 1$ for $c$ to exist. Thus, we have
+        a pmf.
 
     \end{proof}
     \subsection*{5}
     \textit{Lack-of-memory property}. If $X$ has the geometric distribution with parameter
-    $p$, show that $$\P(X > m + n | X > m) = \P(X > n)$$ for $m,n=0,1,2,3,...$.
+    $p$, show that $$\P{X > m + n | X > m} = \P{X > n}$$ for $m,n=0,1,2,3,...$.
     We say that $X$ has the 'lack of memory property' since, if we are given
     $X-m > 0$, then the distribution of $X-m$ is the same as the original distribution
     of $X$. Show that thegeometric distribution is the only distribution concentrated on the
-    positive integers with thelack-of-memory property.
+    positive integers with the lack-of-memory property.
     \begin{proof}
-        
+        We will start by simplifying
+        \begin{align*}
+            \P{X > m + n | X > m} &= \frac{\P{X > m + n \cap X > m}}{\P{X > m}} \\
+                &= \frac{\P{X > m + n}}{\P{X > m}}
+                \intertext{Now using the previous results of Exercie 2.24}
+                &= \frac{(1-p)^{m + n}}{(1-p)^m} \\
+                &= (1-p)^n = \P{X > n}
+        \end{align*}
+        Hence, we are done.
+
+        Now we will show that the geometric distribution is the only concentrated
+        distribution on the positive integers with this property. First we note
+        a few facts. From the property we can see that 
+        $\P{X > m+n \cap X > m} = \P{X >n}\P{X>m}$ and
+        $\P{X>m+n} = \P{X>m}\P{X>n}$. We also observe that for $m,n > 0$,
+        $\P{X > 2} = \P{X > 1}\P{X>1} = \P{X>1}^2$, and
+        $\P{X > 3} = \P{X > 1}\P{X>2} = \P{X>1}\P{X>1}^2$. We see that
+        generally $$\P{X>k} = \P{X>1}^k$$. Thus, a lack of memory implies
+        a geometric distribution.
+
+        Now we can also see that
+        \begin{align*}
+        \P{X > 1} &= 1 - \P{X \leq 1} \\
+            &= 1 - \P{X = 0} - \P{X=1} \\
+            &= 1 - 0 - \P{X = 1} \\
+            &= 1 - \P{X = 1}
+        \end{align*}
+        Hence, $\P{X > k} = (1-\P{X=1})^k$. Letting $p=\P{X=1}$
+        and $q = 1 - p$ we get that the above equality is the same as
+        $\P{X > k} * q^k$. This is equivalent to our first formula
+        for the lack-of-memory property, hence a geometric distribution
+        implies lack-of-memory.
     \end{proof}
+    
     \subsection*{7}
     \textit{Coupon collecting problem}. There are $c$ different types of coupon,
     and each coupon obtained is equally likely to be any one of the $c$ types. Find the
@@ -141,6 +171,36 @@
     and deduce an expression for the mean number of coupons you will need to collect
     before you have a complete set.
     \begin{proof}
-        
+        We let $Y_i$ be the event that the first $n$ coupons collected
+        do not contain coupon $i$. We get $\P{Y_i} = \left(\frac{c-1}{c}\right)^n$
+        Extending this, $\P{Y_i \cap Y_j}=\left(\frac{c-2}{c}\right)$ is
+        the probability that the first $n$ coupons do not contain $i$ and $j$.
+        Generally, $$\P{A_{i_1} \cap A_{i_2} \cap A_{i_n}} = \frac{(c-k)^n}{c^n}$$.
+        Hence, we are looking for the probability
+        \begin{align*}
+            \P{\bigcup_i A_i} &= \binom{c}{1}\frac{(c- 1)^n}{c^n} 
+                                    + \binom{c}{2}\frac{(c-2)^n}{c^n}
+                                    + ... + (-1)^c\binom{c}{c-1}\frac{1}{c^n}
+        \end{align*}
+        Here, each combination $\binom{c}{k}$ counts the number of subsets
+        of size $k$ in the group of $c$ coupons.
+
+        Now we will find the mean number of coupons you need to collect before having
+        a complete set. We will let $X$ be the times we draw before getting a complete
+        set. We also let $X_i$ be the time needed to collect the $i$th coupon after
+        $i-1$ coupons have been collected. Hence we have that
+        $X = X_1 + X_2 + ... + X_n$. We also note that each $X_k$ is geometrically
+        distributed such that $\E{X_k} = \frac{1}{p_k} = \frac{n}{n - k - 1}$.
+        Now taking expectations
+        \begin{align*}
+            \E{X} &= \E{X_1 + X_2 + ... + X_n}
+            \intertext{By linearity of expectation}
+                &= \E{X_1} + \E{X_2} + ... + \E{X_n} \\
+                &= \frac{1}{p_1} + \frac{1}{p_2} + ... + \frac{1}{p_n} \\
+                &= \frac{n}{n} + \frac{n}{n - 1} + ... + \frac{n}{1} \\
+                &= n\left(\frac{1}{1} + \frac{1}{2} + ... + \frac{1}{n}\right) \\
+                &= n H_n \\
+        \end{align*}
+        Where $H_n$ is the $n$th harmonic number.
     \end{proof}
 \end{document}
