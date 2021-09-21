@@ -6,6 +6,7 @@
 \usepackage{amsthm}
 \usepackage{bm}
 \usepackage{mathtools}
+\usepackage{parskip}
 
 \title{HW1}
 \author{Asier Garcia Ruiz }
@@ -14,22 +15,22 @@
 \begin{document}
     \maketitle
     1. (1 point) If $0 < \epsilon <\epsilon_{mach}$ similar in size, explain why computing 
-    $$z = x + \left(\frac{1}{\epsilon}\right)y$$ could be a problem for floating point arithmetic.\vspace{0.5cm}
+    $$z = x + \left(\frac{1}{\epsilon}\right)y$$ could be a problem for floating point arithmetic.
+
     \textit{Answer}: Because $\epsilon < \epsilon_{mach}$ the computer can no longer guarantee
     the precision of $\epsilon$. When we divide by it, not only do we get a very large number
     but also a number that is imprecise, because again the precision cannot be guaranteed.
 
-    \vspace{1cm}
+    \vspace{2mm}
     2. Two alternative series approximations for $e^{-x}$ are
     $$e^{-x} = 1 - x + \frac{1}{2}x^2 - \frac{1}{6}x^3 + ...$$ and 
-    $$e^{-x} = \frac{1}{1 + x + x^2/2 = x^3/6 + ...}$$
+    $$e^{-x} = \frac{1}{1 + x + x^2/2 + x^3/6 + ...}$$
     Of these two, which approach is more prone to finite-precision floating point rounding errors?
     Explain.
     
-    \vspace{0.5cm}
     \textit{Answer:} The second approach is more prone to finite-precision floating point rounding
     errors. This is because in the second approach, we are dividing $1$ by a possibly very large
-    number, meaning that the result $\epsilon$ could be such that $\epsilon < \epsilon_mach$. This
+    number, meaning that the result $\epsilon$ could be such that $\epsilon < \epsilon_{mach}$. This
     implies a loss of precision on the value of $e^{-x}$.
 
     \vspace{1cm}
@@ -61,19 +62,35 @@
         1 & 1 \\
     \end{psmallmatrix}$
     This means that one of pivots is 0 for the Gaussian elimination. Since pivotting is not
-    allowed, we cannot proceed.
+    allowed, we are done with our elimination. Fortunately, $\bm{A}$ can be solved by
+    forward substitution. Hence, we get that $x_1 = 1$ and thus $x_2 + x_1 = 2$ resolves to
+    $x_2 = 1$. Thus, $\vec{x} = [1,1]^T$
 
     \vspace{0.5cm}
     (b) Repeat with partial pivoting. Comment on your results.
 
-    \vspace{0.5cm}
-    Now we have partial pivoting, so our matrix gets its rows swapped, resulting in
-    the system $$\begin{pmatrix}
+    \textit{Answer:} Again, since the machine approximates to three decimal digits,
+    the matrix is stored and operated as
+    $\bm{A} = \begin{psmallmatrix}
+        0 & 1 \\
         1 & 1 \\
-        0.0001 & 1 \\
-    \end{pmatrix} \bm{x} = \begin{pmatrix}
-        2 \\ 1 \\
+    \end{psmallmatrix}$
+    Now, with partial pivoting we swap row 1 and row 2 to get the new system
+    $$\bm{A}=\begin{pmatrix}
+        1 & 1 \\
+        0 & 1 \\
+    \end{pmatrix} \qquad \bm{b} = \begin{pmatrix}
+        2 \\ 1
     \end{pmatrix}$$
+    Since we have an upper triangular matrix, we can solve this by backward substitution.
+    We get that $x_2 = 1$ and thus $x_1 = 1$. Hence, $\vec{x} = [1,1]^T$.
+
+    To comment on these results. The equality of the result for no pivoting and
+    partial pivoting has to do with the fact that the machine chops to 3 decimal digits.
+    This means that the $a_{11} = 0.0001$ entry of $\bm{A}$ is interpreted as $0$
+    every time. The residual $||\vec{r}|| = 0.0001$ which is still accurate.
+    To summarise, the results are the same because of the internal storage
+    limitations (3 digit decimal) of the machine when storing $\bm{A}$.
 
     \vspace{1cm}
     5. Use a computer to determine the condition number of $\bm{A}$ from problem 4 
@@ -88,7 +105,7 @@
     $||\bm{A}||*||\bm{A}^{-1}||$. To find these norms, because they are subordinate
     to the vector norm, we simply generate a constant amount of random vectors and 
     pick the maximal $\frac{||\bm{A}\bm{x}||}{||\bm{x}||}$. \\
-    (b) (b) (1 point) Do you consider this a good or bad condition number?
+    (b) Do you consider this a good or bad condition number?
     Explain your reasoning.
 
     \vspace{0.5cm}
