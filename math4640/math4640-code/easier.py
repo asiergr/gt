@@ -10,12 +10,13 @@ def gaussian_elimination(A: np.array) -> Tuple[np.array, np.array]:
             return None #if pivot is 0 return
         
         for i in range(k + 1, n): # compute multipliers
-            L[i][k] = A[i][k] / A[k][k]
+            A[i][k] = A[i][k] / A[k][k]
 
         for j in range(k + 1, n):
             for i in range(k + 1, n):
-                A[i][j] = A[i][j] - L[i][k]*A[k][j]
+                A[i][j] = A[i][j] - A[i][k]*A[k][j]
     
+    L = A - np.triu(A) + np.eye(n,n)
     return L, np.triu(A)
 
 def cond_num(A: np.array):
