@@ -39,11 +39,14 @@ def main():
                     [1/2, 1/3, 1/4],
                     [1/3, 1/4, 1/5]])
     b = np.array([7/6, 5/6, 13/20])
-    L, U = gaussian_elimination(A)
+    L, U = gaussian_elimination(A.copy())
     print(L @ U)
     y = forward_substitution(L, b)
     x = backward_substitution(U, y)
     print(x)
+    breakpoint()
+    r = b.reshape(3,1) - (A @ x)
+    print(r)
 
 if __name__ == "__main__":
     main()

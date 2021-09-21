@@ -8,6 +8,8 @@
 \usepackage{mathtools}
 \usepackage{parskip}
 
+\usepackage{listings}
+
 \title{HW1}
 \author{Asier Garcia Ruiz }
 \date{September 2021}
@@ -46,7 +48,65 @@
     Include a listing of your code and your answerx.  What is the residual $r$.
 
     \textit{Answer:} The code used is
+    \begin{lstlisting}[language=Python]
 
+    import numpy as np
+
+    def gaussian_elimination(A: np.array) -> Tuple[np.array, np.array]:
+        n = A.shape[0]
+
+        for k in range(0, n - 1): #Loop over cols
+            assert A[k][k]
+            for i in range(k + 1, n): # compute multipliers
+                A[i][k] = A[i][k] / A[k][k]
+            for j in range(k + 1, n):
+                for i in range(k + 1, n):
+                    A[i][j] = A[i][j] - A[i][k]*A[k][j]
+        L = A - np.triu(A) + np.eye(n,n)
+        return L, np.triu(A)
+
+    def forward_substitution(L: np.array, b: np.array) -> np.array:
+        n = L.shape[0]
+        x = np.zeros((n, 1))
+        for j in range(0, n):
+            assert L[j][j]
+            x[j] = b[j] / L[j][j]
+            for i in range(j + 1, n):
+                b[i] = b[i] - L[i][j] * x[j]
+        return x
+
+    def backward_substitution(U: np.array, y: np.array) -> np.array:
+        n = U.shape[0]
+        x = np.zeros((n, 1))
+        for j in range(n - 1, -1, -1):
+            assert U[j][j]
+            x[j] = y[j] / U[j][j]
+            for i in range(0, j):
+                y[i] = y[i] - U[i][j] * x[j]
+        return x
+
+    def main():
+        A = np.array([[1, 1/2, 1/3],
+                        [1/2, 1/3, 1/4],
+                        [1/3, 1/4, 1/5]])
+        b = np.array([7/6, 5/6, 13/20])
+        L, U = gaussian_elimination(A)
+        y = forward_substitution(L, b)
+        x = backward_substitution(U, y)
+    \end{lstlisting}
+
+    For the given system, the result is
+    $$\hat{x} =
+    \begin{pmatrix}
+        -7.77156117*10^{-16} \\ 1 \\ 2
+    \end{pmatrix}$$
+    We can calculate the residual
+    $$||r|| = ||\bm{b} - \bm{A}\hat{x}|| \approx ||[0\ -0.58333333\ -0.63888889]^T||
+    \approx 0.86513397$$
+
+    It is easy to check the true answer is $\vec{x} = [0\ 1\ 2]^T$.
+
+    
     \vspace{0.5cm}
     4. (a) (1 point) Use Gaussian elimination (no pivoting) to solve the linear system $\bm{A}\bm{x}=\bm{b}$
     with $$\bm{A}=\begin{pmatrix}
