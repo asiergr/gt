@@ -16,12 +16,15 @@
 
 \begin{document}
     \maketitle
-    1. (1 point) If $0 < \epsilon <\epsilon_{mach}$ similar in size, explain why computing 
+    1. (1 point) If $0 < \epsilon <\epsilon_{mach}$ and $x$ and $y$ are similar in size, explain why computing 
     $$z = x + \left(\frac{1}{\epsilon}\right)y$$ could be a problem for floating point arithmetic.
 
     \textit{Answer}: Because $\epsilon < \epsilon_{mach}$ the computer can no longer guarantee
     the precision of $\epsilon$. When we divide by it, not only do we get a very large number
     but also a number that is imprecise, because again the precision cannot be guaranteed.
+    Moreover, because $x$ and $y$ are similar in size, then it is guaranteed now that
+    $y >> x$, which basically nullifies the effect of adding $x$ since they are so
+    disparate now.
 
     \vspace{2mm}
     2. Two alternative series approximations for $e^{-x}$ are
@@ -47,7 +50,9 @@
     \end{pmatrix}$$
     Include a listing of your code and your answerx.  What is the residual $r$.
 
-    \textit{Answer:} The code used is
+    \textit{Answer:} Below is a listing of the code used. Please note that
+    numpy, although imported, is only used to make matrix manipulation easier.
+    There are no actual computations using the numpy module.
     \begin{lstlisting}[language=Python]
 
     import numpy as np
@@ -103,10 +108,8 @@
     We can calculate the residual
     $$||r|| = ||\bm{b} - \bm{A}\hat{x}|| \approx ||[0\ -0.58333333\ -0.63888889]^T||
     \approx 0.86513397$$
-
     It is easy to check the true answer is $\vec{x} = [0\ 1\ 2]^T$.
 
-    
     \vspace{0.5cm}
     4. (a) (1 point) Use Gaussian elimination (no pivoting) to solve the linear system $\bm{A}\bm{x}=\bm{b}$
     with $$\bm{A}=\begin{pmatrix}
@@ -117,7 +120,6 @@
     \end{pmatrix}$$
     with three digit decimal (base-10) arithmetic (by hand).  You can assume the machine chops.
 
-    \vspace{0.5cm}
     \textit{Answer:} Because our machine approximates to three decimal digits, matrix $\bm{A}$
     is interpreted as $\bm{A} = \begin{psmallmatrix}
         0 & 1 \\
@@ -128,7 +130,6 @@
     forward substitution. Hence, we get that $x_1 = 1$ and thus $x_2 + x_1 = 2$ resolves to
     $x_2 = 1$. Thus, $\vec{x} = [1,1]^T$
 
-    \vspace{0.5cm}
     (b) Repeat with partial pivoting. Comment on your results.
 
     \textit{Answer:} Again, since the machine approximates to three decimal digits,
