@@ -78,7 +78,7 @@
     $p$ show that the probability that $X$ is greater than $k$ is $(1-p)^k$.
     \begin{proof}
         We know that $X$ is geometric with parameter $p \in (0,1)$. Hence
-        $\P(X=k) = pq^{k-1}$, for $k=0,1,2,...$. Now, we can write
+        $\P{X=k} = pq^{k-1}$, for $k=0,1,2,...$. Now, we can write
         \begin{align*}
             \P{X > k} &= \P{X = k + 1} + \P{X = k + 2} + ... \\
                 &= pq^{k} + pq^{k + 1} + ... \\
@@ -93,11 +93,19 @@
     Two cards are drawn at random from a deck of 52 cards. If $X$ denotes the number
     of aces drawn and $Y$ denotes the number of kings, display the joint mass
     functionof $X$ and $Y$ in the tabular form of Table 3.1.
+
+    First let $N = \binom{52}{2}$.
     \begin{table}[h!]
         \begin{center}
-            \begin{tabular}{r | c | c | c | c | c}
-                & $x = 0$ & $x = 1$ & $x = 2$  & $x = 3$ & $x = 4$ \\
+            \begin{tabular}{r | c | c | c}
+                        & $x = 0$ & $x = 1$ & $x = 2$ \\
                 \hline
+                $y = 0$ & $[\binom{4}{0}\binom{4}{0}\binom{44}{2}]/N$ & $[\binom{4}{1}\binom{4}{0}\binom{44}{1}]/N$ & $[\binom{4}{2}\binom{4}{0}\binom{44}{0}]/N$ \\
+                \hline
+                $y = 1$ & $[\binom{4}{0}\binom{4}{1}\binom{44}{1}]/N$ & $[\binom{4}{1}\binom{4}{1}\binom{44}{0}]/N$ & \\
+                \hline
+                $y = 2$ & $[\binom{4}{0}\binom{4}{2}\binom{44}{0}]/N$ & & \\
+                
             \end{tabular}
         \end{center}
     \end{table}
@@ -147,7 +155,7 @@
         $\P{X>m+n} = \P{X>m}\P{X>n}$. We also observe that for $m,n > 0$,
         $\P{X > 2} = \P{X > 1}\P{X>1} = \P{X>1}^2$, and
         $\P{X > 3} = \P{X > 1}\P{X>2} = \P{X>1}\P{X>1}^2$. We see that
-        generally $$\P{X>k} = \P{X>1}^k$$. Thus, a lack of memory implies
+        generally $$\P{X>k} = \P{X>1}^k.$$ Thus, a lack of memory implies
         a geometric distribution.
 
         Now we can also see that
@@ -173,7 +181,7 @@
     \begin{proof}
         We let $Y_i$ be the event that the first $n$ coupons collected
         do not contain coupon $i$. We get $\P{Y_i} = \left(\frac{c-1}{c}\right)^n$
-        Extending this, $\P{Y_i \cap Y_j}=\left(\frac{c-2}{c}\right)$ is
+        Extending this, $\P{Y_i \cap Y_j}=\left(\frac{c-2}{c}\right)^n$ is
         the probability that the first $n$ coupons do not contain $i$ and $j$.
         Generally, $$\P{A_{i_1} \cap A_{i_2} \cap A_{i_n}} = \frac{(c-k)^n}{c^n}$$.
         Hence, we are looking for the probability
@@ -186,7 +194,8 @@
         of size $k$ in the group of $c$ coupons.
 
         Now we will find the mean number of coupons you need to collect before having
-        a complete set. We will let $X$ be the times we draw before getting a complete
+        a complete set. First, we note that the probability of collecting a new
+        coupon is $$p_k = \frac{n - (k-1)}{n}.$$ We will let $X$ be the times we draw before getting a complete
         set. We also let $X_i$ be the time needed to collect the $i$th coupon after
         $i-1$ coupons have been collected. Hence we have that
         $X = X_1 + X_2 + ... + X_n$. We also note that each $X_k$ is geometrically
