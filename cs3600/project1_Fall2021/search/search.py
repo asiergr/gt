@@ -1,15 +1,15 @@
 # search.py
 # ---------
-# Licensing Information:  You are free to use or extend these projects for 
-# educational purposes provided that (1) you do not distribute or publish 
-# solutions, (2) you retain this notice, and (3) you provide clear 
-# attribution to UC Berkeley, including a link to 
+# Licensing Information:  You are free to use or extend these projects for
+# educational purposes provided that (1) you do not distribute or publish
+# solutions, (2) you retain this notice, and (3) you provide clear
+# attribution to UC Berkeley, including a link to
 # http://inst.eecs.berkeley.edu/~cs188/pacman/pacman.html
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
-# The core projects and autograders were primarily created by John DeNero 
+# The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
-# Student side autograding was added by Brad Miller, Nick Hay, and 
+# Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
@@ -71,9 +71,36 @@ def tinyMazeSearch(problem):
     maze, the sequence of moves will be incorrect, so only use this for tinyMaze
     """
     from game import Directions
+
     s = Directions.SOUTH
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
+
+
+def meta_search(problem, data_structure, push_to_ds_fn):
+    init_state = problem.getStartState()
+    curr_triple = init_state, [], 0
+    push_to_ds_fn(data_structure, curr_triple, curr_triple[2])
+
+    visited = set()
+
+    while not data_structure.isEmpty():
+        # breakpoint()
+        curr_state, curr_path, curr_cost = data_structure.pop()
+        if problem.isGoalState(curr_state):
+            return curr_path
+
+        if curr_state not in visited:
+            visited.add(curr_state)
+
+            for state_triple in problem.getSuccessors(curr_state):
+                state, action, step_cost = state_triple
+                state_path = curr_path.copy()
+                state_path.append(action)
+                state_cost = curr_cost + step_cost
+                push_to_ds_fn(
+                    data_structure, (state, state_path, state_cost), state_cost
+                )
 
 
 def depthFirstSearch(problem):
@@ -90,8 +117,7 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return meta_search(problem, util.Stack(), lambda ds, thing, prio: ds.push(thing))
 
 
 def breadthFirstSearch(problem):
@@ -99,7 +125,7 @@ def breadthFirstSearch(problem):
     Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return meta_search(problem, util.Queue(), lambda ds, thing, prio: ds.push(thing))
 
 
 def uniformCostSearch(problem):
@@ -107,7 +133,9 @@ def uniformCostSearch(problem):
     Search the node of least total cost first.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return meta_search(
+        problem, util.PriorityQueue(), lambda ds, thing, prio: ds.push(thing, prio)
+    )
 
 
 def nullHeuristic(state, problem=None):
@@ -123,7 +151,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     Search the node that has the lowest combined cost and heuristic first.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return meta_search(
+        problem,
+        util.PriorityQueue(),
+        lambda ds, state, prio: ds.push(state, prio + heuristic(state[0], problem)),
+    )
 
 
 # Abbreviations
