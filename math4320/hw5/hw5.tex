@@ -1,0 +1,131 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ra}{\xrightarrow{}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+
+\DeclareMathOperator*{\Log}{Log}
+\DeclareMathOperator*{\Arg}{Arg}
+
+\title{HW5}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+\maketitle
+
+\section*{31-33}
+\subsection*{1}
+Show that
+(a)\begin{align*}
+    \Log(-ei) & = \ln(e) + i\Arg(-ei) \\
+              & = 1 - i\frac{\pi}{2}
+\end{align*}
+(b) \begin{align*}
+    \Log(1 - i) & = \ln(\sqrt{2}) + i\Arg(1 - i)       \\
+                & = \frac{1}{2}\ln(2) - i\frac{\pi}{4}
+\end{align*}
+
+\subsection*{5}
+(a)
+\begin{proof}
+    Let $e^{\frac{\pi}{2} + 2n\pi} = i$, then $i^{1/2} = e^{\frac{\pi/2 + 2n\pi}{2}}$.
+    Thus $i^{1/2} = e^{\frac{\pi}{4} + n\pi}$. Therefore we have that the first two
+    squared roots of $i$ are $e^{i\pi/4}$ and $e^{i5\pi/4}$.
+
+    Now to calculate $\log(e^{i\pi/4})$ we can write
+    \begin{align*}
+        \log(e^{i\pi/4}) & = \ln(1) + i(\frac{1}{4}+2n)\pi                    \\
+                         & = i(\frac{1}{4} + 2n)\pi \qquad (n = 0, \pm 1,...)
+    \end{align*}
+    and we also have that
+    \begin{align*}
+        \log(e^{i5\pi/4}) & = \ln(1) + i(\frac{5}{4}+2n)\pi                       \\
+                          & = i(\frac{1}{4} + 1 + 2n)\pi \qquad (n= 0, \pm 1,...)
+    \end{align*}
+    Hence we can conclude that
+    $$\log(i^{1/2}) = (n + \frac{1}{4})\pi i \qquad (n = 0, \pm 1,...)$$
+\end{proof}
+(b)
+We can write
+\begin{align*}
+    \log(i) & = \log(e^{i\pi /2})                                         \\
+            & = \ln(1) + i(\frac{1}{2} + 2n)\pi \qquad (n = 0, \pm 1,...) \\
+            & = i(\frac{1}{2} + 2n)\pi \qquad (n= 0, \pm 1,...)           \\
+            & = 2i(\frac{1}{4} + n)\pi \qquad (n = 0, \pm 1,...)          \\
+            & = 2 \log(i^{1/2})
+\end{align*}
+Hence, we have finally that $\log(i^{1/2}) = \frac{1}{2}\log(i)$.
+\subsection*{9} % FINSIH, NO CLUE LMAO
+\begin{proof}
+    We can start by writing
+    \begin{align*}
+        \log(e^z) & = \ln(|e^xe^{iy}|) + i\arg(e^xe^{iy}) \\
+                  & = x + iy
+    \end{align*}
+\end{proof}
+\section*{34}
+\subsection*{1}
+\begin{proof}
+    We note that $-\pi < \Theta_i < \pi$ for $i=1,2$ and $r > 0$ throughtout. We write
+    \begin{align*}
+        \Log(z_1z_2) & = \Log(r_1e^{i\Theta_1}r_2e^{i\Theta_2})                \\
+                     & = \Log(r_1r_2e^{i(\Theta_1\Theta_2)})                   \\
+                     & = \ln(r_1r_2) + i\Arg(z_1z_2)                           \\
+        \intertext{Note that $-2\pi < Theta_1 + Theta_2 < 2\pi$. This
+            means that $\Arg(z_1z_2) = \Theta_1 + \Theta_2 + 2N\pi$ where
+            $N = 0, \pm 1$.}
+                     & = \ln(r_1) + \ln(r_2) + i(\Theta_1 + \Theta_2 + 2N\pi)  \\
+                     & = \ln(r_1) + i\Theta_1 + \ln(r_2) + i\Theta_2 + 2N\pi i \\
+                     & = \Log(z_1) + \Log(z_2) + 2N\pi i
+    \end{align*}
+\end{proof}
+\section*{35-36}
+\subsection*{1}
+(a) \begin{align*}
+    (1 + i)^i & = e^{i\log(1+i)}                                                               \\
+              & = \exp(i(\ln(\sqrt{2})+ i(\frac{1}{4} + 2n)\pi)) \qquad (n=0,\pm 1,...)        \\
+              & = \exp(i\frac{\ln(2)}{2} + 2n\pi - \frac{pi}{4}) \qquad (n = 0, \pm 1,...)     \\
+              & = \exp(-\frac{\pi}{2} + 2n\pi)\exp(i\frac{\ln(2)}{2}) \qquad (n= 0, \pm 1,...)
+\end{align*}
+(b) \begin{align*}
+    \frac{1}{i^{2i}} & = i^{-2i}                                                            \\
+                     & = \exp(-2i\log(i))                                                   \\
+                     & = \exp(-2i(\ln(1) + i(\frac{1}{2} + 2n)\pi) \qquad (n= 0, \pm 1,...) \\
+                     & = \exp(2(\frac{1}{2} + 2n)\pi) \qquad (n= 0, \pm 1,...)              \\
+                     & = \exp((4n + 1)\pi) \qquad (n=0,\pm 1,...)
+\end{align*}
+\subsection*{3}
+\begin{align*}
+    (-1 + \sqrt{3}i)^{3/2} & = \exp(\frac{3}{2}\log(-1 + \sqrt{3}i))                                   \\
+                           & = \exp(\frac{3}{2}(\ln(2) + i(\frac{2}{3} +2n)\pi)) \qquad (n=0,\pm1,...) \\
+                           & = \exp(\frac{3}{2}\ln(2) + i(1 + 3n)\pi) \qquad (n=0,\pm 1,...)           \\
+                           & = \exp
+\end{align*}
+\subsection*{8}
+\section*{37-38}
+\subsection*{2}
+\subsection*{4}
+\subsection*{9}
+\section*{39}
+\subsection*{2}
+\subsection*{7}
+\subsection*{17}
+\section*{39}
+\subsection*{2}
+\subsection*{7}
+\subsection*{17}
+\section*{40}
+\subsection*{4}
+\end{document}
