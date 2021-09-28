@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{parskip}
+
+\title{Project 1 Wrapper}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+\maketitle
+\section*{Question 1}
+In the Romania example in class we considered the length of roads to be the edge cost between vertices (cities),
+and the optimality of the route was respective to the shortest distance a car would actually have to travel by following roads.
+How might we account for speed limits? How might we account for traffic conditions if we know that traffic is flowing slower
+than the speed limit?
+
+\textit{Answer:}
+There are two possible ways to account for these issues: by including them within the edge cost or the heuristic function.
+Something constant like the speed limits would probably be better implemented in the edge weight.
+A measure like $\frac{distance}{speed\ limit}$ could easily account for this factor, with
+more complex realtions (e.g exponential, log) being used do weight things differently.
+
+Something like traffic would probably be better accounted for in the heuristic function, since it can fluctuate more
+and it is counterintuitive to have edge weights change. We could increase the heuristic function value for
+roads with more traffic, for example.
+
+\section*{Question 2}
+Cities are designed with a few major roads and a lot of smaller roads.  Sometimes the shortest route between two
+places is through a neighborhood. Suppose there is a neighborhood in between two very popular destinations where a
+lot of children live and could be playing in the streets, and A* has been routing cars through  the  neighborhood.
+As  more  people  use  GPS-based  routing  services, the neighborhood has started seeing an increase in cars cutting
+through dangerously fast.  Suppose we wanted to discourage A* from routing cars through
+the  neighborhood.   What  would  happen  if  we  artificially  adjusted  the  speed limit on roads in the neighborhood
+versus if we artificially increased the heuristic  values  of  intersections  in  the  neighborhood?
+Would  either  guarantee  cars never cut through the neighborhood? Would either keep people who live in
+the neighborhood from generating routes to and from their homes?
+
+\textit{Answer:}
+Artifically increasing the speed limit and increasing the heuristic would have the same effect
+since A* minimises $g(x)+h(x)$. Neither could guarantee 100\% that no cars will go there,
+since maybe traffic is so bad in other roads that the algorithm decides to go through the
+neightbourhood, as an example. However, it would minimise the amount of cars going through.
+
+The algorithm would not keep people from getting to/from their house since it will not stop
+until it finds the destination. It may, however, take them through paths that do not seem
+intuitive at first. For example, the algorithm may take you through roads that have
+higher speed limits or less traffic simply because those are the values used. In reality
+this could result in inefficient or strange paths.
+
+\section*{Question 3}
+There is currently a big societal concern regarding artificial intelligence and automation affecting jobs.
+How do routing systems impact jobs? Is their impact mainly positive or mainly negative?
+
+\textit{Answer:}
+The impact of routing systems on end-user experience is definitely positive. Apps like Google Maps
+allow for much easier and user-friendly navigation through unknown places. In terms of negative
+effects, obviously map makers have been affected by this. Another aspect of routing algorithms
+is self-driving cars, which make jobs like truck/taxi drivers superflous. However, the systems
+are yet not advanced enough to fully substitute these workers, but rather make their life easier.
+Overall, I would say the influence is positive.
+
+\section*{Question 4}
+Reliance on artificial intelligence systems can change human behavior in unanticipated ways.
+Describe one way in which a routing system can have an unde-sirable impact on human behavior.
+
+\textit{Answer:}
+Humans becoming dependant on routing systems causes them to maybe make irrational decisions
+just because the algorithm dictates so. Algorithms can be wrong sometimes, and if one is too
+dependant on the output, it can cause issues like perhaps driving too fast through a
+residential neighborhood where children routinely play in the street.
+
+\end{document}
