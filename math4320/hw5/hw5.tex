@@ -26,7 +26,7 @@
 \maketitle
 
 \section*{31-33}
-\subsection*{1}
+\subsection*{1} % DONE
 Show that
 (a)\begin{align*}
     \Log(-ei) & = \ln(e) + i\Arg(-ei) \\
@@ -37,7 +37,7 @@ Show that
                 & = \frac{1}{2}\ln(2) - i\frac{\pi}{4}
 \end{align*}
 
-\subsection*{5}
+\subsection*{5} % DONE
 (a)
 \begin{proof}
     Let $e^{\frac{\pi}{2} + 2n\pi} = i$, then $i^{1/2} = e^{\frac{\pi/2 + 2n\pi}{2}}$.
@@ -67,23 +67,25 @@ We can write
             & = 2 \log(i^{1/2})
 \end{align*}
 Hence, we have finally that $\log(i^{1/2}) = \frac{1}{2}\log(i)$.
-\subsection*{9} % FINSIH, NO CLUE LMAO
+\subsection*{9} % DONE
 \begin{proof}
     We can start by writing
     \begin{align*}
         \log(e^z) & = \ln(|e^xe^{iy}|) + i\arg(e^xe^{iy}) \\
+                  & = x + i(y + 2\pi)
+        \intertext{However, beacause $y \in \alpha < y < \alpha + 2\pi$.}
                   & = x + iy
     \end{align*}
 \end{proof}
 \section*{34}
-\subsection*{1}
+\subsection*{1} % DONE
 \begin{proof}
-    We note that $-\pi < \Theta_i < \pi$ for $i=1,2$ and $r > 0$ throughtout. We write
+    We note that $-\pi < \Theta_i < \pi$ for $i=1,2$ and $r > 0$ throughout. We write
     \begin{align*}
         \Log(z_1z_2) & = \Log(r_1e^{i\Theta_1}r_2e^{i\Theta_2})                \\
                      & = \Log(r_1r_2e^{i(\Theta_1\Theta_2)})                   \\
                      & = \ln(r_1r_2) + i\Arg(z_1z_2)                           \\
-        \intertext{Note that $-2\pi < Theta_1 + Theta_2 < 2\pi$. This
+        \intertext{Note that $-2\pi < \Theta_1 + \Theta_2 < 2\pi$. This
             means that $\Arg(z_1z_2) = \Theta_1 + \Theta_2 + 2N\pi$ where
             $N = 0, \pm 1$.}
                      & = \ln(r_1) + \ln(r_2) + i(\Theta_1 + \Theta_2 + 2N\pi)  \\
@@ -92,7 +94,7 @@ Hence, we have finally that $\log(i^{1/2}) = \frac{1}{2}\log(i)$.
     \end{align*}
 \end{proof}
 \section*{35-36}
-\subsection*{1}
+\subsection*{1} % DONE
 (a) \begin{align*}
     (1 + i)^i & = e^{i\log(1+i)}                                                               \\
               & = \exp(i(\ln(\sqrt{2})+ i(\frac{1}{4} + 2n)\pi)) \qquad (n=0,\pm 1,...)        \\
@@ -106,26 +108,151 @@ Hence, we have finally that $\log(i^{1/2}) = \frac{1}{2}\log(i)$.
                      & = \exp(2(\frac{1}{2} + 2n)\pi) \qquad (n= 0, \pm 1,...)              \\
                      & = \exp((4n + 1)\pi) \qquad (n=0,\pm 1,...)
 \end{align*}
-\subsection*{3}
+\subsection*{3} %DONE
 \begin{align*}
     (-1 + \sqrt{3}i)^{3/2} & = \exp(\frac{3}{2}\log(-1 + \sqrt{3}i))                                   \\
                            & = \exp(\frac{3}{2}(\ln(2) + i(\frac{2}{3} +2n)\pi)) \qquad (n=0,\pm1,...) \\
                            & = \exp(\frac{3}{2}\ln(2) + i(1 + 3n)\pi) \qquad (n=0,\pm 1,...)           \\
-                           & = \exp
+    \intertext{Clearly, $(1 + 3n)\pi$ only produces real numbers, hence}
+                           & = \exp(\ln(2^{3/2}))                                                      \\
+                           & = 2^{3/2}                                                                 \\
+                           & = \pm 2\sqrt{2}
 \end{align*}
-\subsection*{8}
+\subsection*{8} %DONE
+(a) \begin{proof}
+    \begin{align*}
+        z^{c_1}z^{c_2} & = \exp(c_1\log(z))\exp(c_2\log(z)) \\
+                       & = \exp((c_1+c_2)\log(z))           \\
+                       & = z^{c_1+c_2}
+    \end{align*}
+\end{proof}
+(b) \begin{proof}
+    \begin{align*}
+        z^{c_1}/z^{c_2} & = \exp(c_1\log(z))/\exp(c_2\log(z)) \\
+                        & = \exp((c_1-c_2)\log(z))            \\
+                        & = z^{c1-c2}
+    \end{align*}
+\end{proof}
+(c) \begin{proof}
+    \begin{align*}
+        z^{c^n} = (\exp(c\log(z)))^n \\
+         & = \exp(nc\log(z))         \\
+         & = z^{nc}
+    \end{align*}
+\end{proof}
 \section*{37-38}
-\subsection*{2}
-\subsection*{4}
-\subsection*{9}
+\subsection*{2} %DONE
+\begin{proof}
+    (a)
+    \begin{align*}
+        e^{iz_1}e^{iz_2} & = (\cos z_1 + i\sin z_2)(\cos z_2 + i\sin z_2)                                     \\
+                         & = \cos z_1 \cos z_2 - \sin z_1 \sin z_2 + i(\cos z_1 \sin z_2 + \sin z_1 \cos z_2) \\
+    \end{align*}
+    Now we Show
+    \begin{align*}
+        e^{-iz_1}e^{-iz_2} & = (\cos (-z_1) + i\sin (-z_2))(\cos (-z_2) + i\sin (-z_2))                                                 \\
+                           & = \cos (-z_1) \cos (-z_2) - \sin (-z_1) \sin (-z_2) + i(\cos (-z_1) \sin (-z_2) + \sin (-z_1) \cos (-z_2)) \\
+                           & = \cos z_1 \cos z_2 - \sin z_1 \sin z_2 - i(\cos z_1 \sin z_2 + \sin z_1 \cos z_2)                         \\
+    \end{align*}
+\end{proof}
+(b) \begin{proof}
+    \begin{align*}
+        sin(z_1 + z_2) & = \frac{1}{2i}\left[e^{iz_1}e^{iz_2} - e^{-iz_1}e^{-iz_2} \right]                               \\
+                       & = \frac{1}{2i}[\cos z_1 \cos z_2 - \sin z_1 \sin z_2 + i(\cos z_1 \sin z_2 + \sin z_1 \cos z_2) \\
+                       & \qquad -(\cos z_1 \cos z_2 - \sin z_1 \sin z_2 - i(\cos z_1 \sin z_2 + \sin z_1 \cos z_2)) ]    \\
+                       & = \frac{1}{2i}+2i(\cos z_1 \sin z_2 + \sin z_1 \cos z_2)                                        \\
+                       & = \sin z_1 \cos z_2 + \sin z_2 \cos z_1
+    \end{align*}
+\end{proof}
+\subsection*{4} %DONE
+(a) \begin{proof}
+    \begin{gather*}
+        \cos (z + (-z)) = \cos z \cos(-z) - \sin z \sin(-z) \\
+        \cos 0 = \cos z \cos z + \sin z \sin z \\
+        1 = cos ^2 z + \sin^2 z
+    \end{gather*}
+\end{proof}
+(b) \begin{proof}
+    We know that $\sin z$, $z^2$, $\cos z$ are all analytic in $\C$.
+    Hence $f(z) = \sin^2 z + \cos^2 z -1$ is also analytic in $\C$.
+    We also know that $f(z) \equiv 0$ for all $z \in \C$.
+    Hence, $f(z) = \sin^2 z + \cos^2 z - 1 = 0$ and thus
+    $\sin^2 z + \cos^2 z = 1$.
+\end{proof}
+\subsection*{9} %DONE
+(a)
+\begin{proof}
+    We have that $|\sin z|^2 = \sin^2 x + \sinh^2 y$. We also know that $|\sin x| \leq 1$
+    for $x \in \R$. Hence, $\sinh^2 y \leq |\sin z|^2$. Now since $sinh^2 y - cosh^2 = 1$
+    we have that $\sinh^2 y \leq |\sin z|^2 \leq \cosh^2 y$.
+    Then finally $|\sinh y| \leq |\sin z| \leq \cosh y$.
+\end{proof}
+(b)
+\begin{proof}
+    We have that $|cos z|^2 = \cos^2 x + \sinh^2 y$. Also, $|\cos x| \leq 1$.
+    Hence, $\sinh^2 y \leq |cos z|^2$. Now since $sinh^2 y - cosh^2 = 1$ we
+    have that $\sinh^2 y \leq |\cos z|^2 \leq \cosh^2 y$.
+    Then finally $|\sinh y| \leq |\cos z| \leq \cosh y$.
+\end{proof}
 \section*{39}
-\subsection*{2}
-\subsection*{7}
-\subsection*{17}
-\section*{39}
-\subsection*{2}
-\subsection*{7}
-\subsection*{17}
+\subsection*{2} %DONE
+(a) \begin{proof}
+    \begin{align*}
+        \sinh 2z & = \frac{e^{2z} - e^{-2z}}{2}         \\
+                 & = \frac{e^z-e^{-z}}{2}(e^z + e^{-z}) \\
+                 & = 2\sinh z \cosh z
+    \end{align*}
+\end{proof}
+(b)
+\begin{proof}
+    \begin{align*}
+        \sinh 2z & = -i\sin (i2z)            \\
+                 & = -i(2\sin (iz)\cos(iz))  \\
+                 & = 2*-i*i\sinh z * \cosh z \\
+                 & = 2\sinh z \cosh z
+    \end{align*}
+\end{proof}
+\subsection*{7} %DONE
+(a)
+\begin{proof}
+    \begin{align*}
+        \sinh (z + \pi i) & = \sinh z \cosh(\pi i) + \cosh(z) \sinh (\pi i) \\
+                          & = -\sinh z + 0 = -\sinh z
+    \end{align*}
+\end{proof}
+(b) \begin{proof}
+    \begin{align*}
+        \cosh(z + \pi i) & = \cosh z \cosh(\pi i) + \sinh z \sinh (\pi i) \\
+                         & = -\cosh z + 0 = -\cosh z
+    \end{align*}
+\end{proof}
+(c)
+\begin{proof}
+    \begin{align*}
+        \tanh(z + \pi i) & = \frac{\sinh(z + \pi i)}{\cosh(z + \pi i)} \\
+                         & = \frac{-\sinh z}{-\cosh z}                 \\
+                         & = \tanh z
+    \end{align*}
+\end{proof}
+\subsection*{17} %TODO
+\begin{proof}
+    We first note that $\cosh z = \frac{e^z + e^{-z}}{2}$, hence we write
+    \begin{gather*}
+        \cosh z = \frac{e^z + e^{-z}}{2} = -2 \\
+        e^z + e^{-z} = -4 \\
+        \log(e^z + e^{-z}) = \log(-4) \\
+        \log(e^x(e^{iy} + e^{-iy})) = \log(-4) \\
+        \log(e^x(\cos y + i\sin y + \cos y - i\sin y)) = \ln(4) + (\pi + 2n\pi)i \\
+    \end{gather*}
+    Hence, $z = \pm \ln(2 + \sqrt{3} + (2n + 1)\pi i) \ (n = 0, \pm 1, \pm 2,...).$
+\end{proof}
 \section*{40}
-\subsection*{4}
+\subsection*{4}%DONE
+\begin{proof}
+    We know that $\sin^{-1}z = w$ for $z,w \in \C$, so $z = \sin w$ and thus
+    $\frac{dz}{dw} = \cos w$. We also have that
+    $\cos w = (1-\sin^2 w)^{1/2} = (1-z^2)^{1/2}$. Combining the two
+    we get $\frac{dz}{dw} = (1-z^2)^{1/2}$ and thus
+    $$\frac{dw}{dz} = \frac{d}{dz}\sin^{-1} z = \frac{1}{(1-z^2)^{1/2}}$$
+\end{proof}
 \end{document}
