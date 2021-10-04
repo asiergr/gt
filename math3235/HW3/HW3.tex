@@ -1,0 +1,170 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\ra}{\rightarrow}
+
+% Prob theory specific
+\renewcommand{\P}[1]{\mathbb{P}(#1)}
+\newcommand{\probspace}{(\Omega, \mathcal{F}, \mathbb{P})}
+\newcommand{\Image}[1]{\text{Im}\, #1}
+\newcommand{\E}[1]{\mathbb{E}(#1)}
+
+\title{HW3}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+\maketitle
+
+\section*{Exercises}
+\subsection*{3.25} %DONE
+If $X$ and $Y$ are independent discrete random variables, show that the two random
+variables $g(X)$ and $h(Y)$ are independent also, for any functions $g$ and $h$
+which map $\R$ into $\R$.
+
+\begin{proof}
+    We know that $X,Y$ are independent. By Theorem 3.20 that means that
+    $\E{g(X)h(Y)} = \E{g(X)}\E{h(Y)}$ when the expectations exist. Hence,
+    for $g(X), h(Y)$ we have that $\E{g(X)}\E{h(Y)} = \E{g(X)h(Y)}$ and
+    then again by Thm 3.20 they are independent.
+\end{proof}
+\subsection*{3.42} %DONE
+Let $N$ be the number of the events $A_1, A_2, . . . , A_n$ which occur. Show that
+$$\E{N}= \sum_{i=1}^n \P{A_i}.$$
+
+\begin{proof}
+    Let $1_{N_i}$ be the indicator function of event $A_i$. Then we have that
+    ${N=1_{N_1} +1_{N_2} + ... + 1_{N_n}}$. Now taking expectations
+    \begin{align*}
+        \E{N} & = \E{1_{N_1} +1_{N_2} + ... + 1_{N_n}}          \\
+              & = \E{1_{N_1}} + \E{1_{N_2}} + ... + \E{1_{N_n}} \\
+              & = \P{1_{N_1}} + \P{1_{N_2}} + ... + \P{1_{N_n}} \\
+              & = \sum_{i=1}^n \P{A_i}
+    \end{align*}
+\end{proof}
+\subsection*{4.18} %DONE
+If $X$ is a random variable with probability generating function $G_X(s)$,
+and $k$ is a positive integer, show that $Y = kX$ and $Z = X + k$ have
+probability generating functions.
+$$G_Y(s) = G_X(s^k), \qquad G_Z(s) = s^k G_X(s).$$
+
+\begin{proof}
+    We will start by looking at $Y = kX$. Following from the definition of a
+    probability generating function we have that
+    \begin{align*}
+        G_Y(s) & = \E{s^Y}     \\
+               & = \E{s^{kX}}  \\
+               & = \E{(s^k)^X} \\
+               & = G_X (s^k)
+    \end{align*}
+    Now we will look at $Z = X + k$
+    \begin{align*}
+        G_Z (s) & = \E{s^Z}       \\
+                & = \E{s^{X + k}} \\
+                & = \E{s^k s^X}
+        \intertext{Now since $s^k$ is a constant.}
+                & = s^k \E{s^X}   \\
+                & = s^k G_X(s)
+    \end{align*}
+\end{proof}
+\subsection*{4.41} %DONE
+Use generating functions to find the distribution of $X + Y$,
+where $X$ and $Y$ are independent random variables,
+$X$ having the binomial distribution with parameters $m$ and $p$,
+and $Y$ having the binomial distribution with parameters $n$ and $p$.
+Deduce that the sum of $n$ independent random variables, each having the Bernoulli
+distribution with parameter $p$, has the binomial distribution with parameters $n$
+and $p$.
+
+\begin{proof}
+    We will start by finding the probability generating function of $X+Y$.
+    \begin{align*}
+        G_{X+Y} & = G_X(s) G_Y(s)                                     \\
+                & = \left(\sum_{k=0}^m\binom{m}{k} p^k q^{m-k}\right)
+        \left(\sum_{k=0}^n \binom{n}{k} p^k q^{n-k} \right)           \\
+                & =  (q + ps)^m(q + ps)^n                             \\
+                & = (q + ps)^{m+n}                                    \\
+                & = \sum_{k=0}^{m+n}\binom{m+n}{k}p^k q^{n+m -k}
+    \end{align*}
+    Now consider $n$ random variables $X_1, X_2, ..., X_n$ all with a Bernoulli
+    distribution with parameter $p$. We can write the sum $X = \sum_i X_i$
+    with probability generating function
+    \begin{align*}
+        G_X (s) & = G_{X_1 + X_2 + ... + X_n}   \\
+                & = G_{X_1}G_{X_2}...G_{X_n}    \\
+                & = (q + ps)(q + ps)...(q + ps) \\
+                & = (q+ps)^n
+    \end{align*}
+\end{proof}
+\section*{Problems}
+\subsection*{3.4}
+Let $X_1, X_2,...,X_n$ be independent discrete random variables, each having mass function
+$$ \P{X_i = k} = \frac{1}{N}, \text{ for } k = 1,2,...,N.$$
+Find the mass function of $U_n$ and $V_n$, given by
+$$U_n= \min\{X_1,X_2,...,X_n\}, \qquad V_n= \max\{X_1,X_2,...,X_n\}.$$
+
+\begin{proof}
+
+\end{proof}
+\subsection*{3.7}
+Let $X_1, X_2,...$ be discrete random variables, each having mean $\mu$ and
+let $N$ be a random variable which takes values in the non-negative integers
+and which is independent of the $X_i$. By conditioning on the value of $N$, show that
+$$\E{X_1 + X_2 + ... + X_N} = \mu\E{N}.$$
+
+\begin{proof}
+    First, we let $X = X_1 + X_2 + ... + X_N$.
+    We will partition the sample space into $\{B_1, B_2,...\}$ such that
+    $B_i = \{N = i - 1\}$. Then we can write
+    \begin{align*}
+        \E{X_1 + X_2 + ... + X_N} =
+    \end{align*}
+\end{proof}
+\subsection*{4.5} %https://math.stackexchange.com/questions/581987/probability-question-with-trees-and-fruit-using-probability-generating-functions
+Each year a tree of a particular type flowers once, and the probability that it has
+$n$ flowers is $(1-p)p^n, \ n = 0,1,2,..$ where $0 < p < 1$, clearly $N + 1$ is
+geometrically distributed.
+Each flower has probability $\frac{1}{2}$ of producing a ripe fruit, independently
+of all other flowers. Find the probability that in a given year
+(a) the tree produces $r$ ripe fruits.
+\begin{proof}
+    Let $X_i$ be the event that a flower $i$ produces a ripe fruit, clearly $X_i$
+    follows a Bernoulli distribution. Now let $N$ be the variable that represents
+    the number of flowers produced, clearly $N1$ takes values in $\{0,1,2,...\}$.
+    Finally, we let $R$ be the number of ripe fruits, it follow a binomial distribution
+    with parameters $n, \ \frac{1}{2}$. Hence, we find that
+    $$\P{R=r} = \sum_{n=r}^\infty \P{N=n}\P{R=r | N=n} = \sum_{n=r}^\infty (1-p)p^n\binom{n}{r}\frac{1}{2^n}$$
+    Now to calculate the probability generating function
+    \begin{align*}
+        G_R(s) & = \sum_{r=0}^\infty \P{R=r}s^r                                                             \\
+               & = \sum_{r=0}^\infty \sum_{n=r}^\infty \P{R=r | N=n}\P{N=n}s^r                              \\
+               & = \sum_{n=0}^\infty \P{N=n} \sum{r=0}^n \P{R=r | N=n}\P{N=n}s^r                            \\
+               & = \sum_{n=0}^\infty \P{N=n} G_{R|N=n}(s)                                                   \\
+               & = \sum_{n=0}^\infty (1-p) p^n \left(\frac{1+s}{2}\right)^r s^r                             \\
+               & = \frac{1-p}{1-p\frac{1+z}{2}}                                                             \\
+               & = \frac{2-2p}{2-p-ps} = \sum_{r=0}^\infty \frac{2-2p}{2-p}\left(\frac{p}{2-p}\right)^r s^r
+    \end{align*}
+    Hence, we get that
+    $$\P{R=r} = \frac{2-2p}{2-p}\left(\frac{p}{2-p}\right)^r$$
+\end{proof}
+(b) the tree had $n$ flowers given that it produced $r$ ripe fruits.
+\begin{proof}
+    We can do this easily with Bayes' Theorem. We write
+    \begin{align*}
+        \P{N=n | R = r} & = \frac{\P{N=n, R=r}}{\P{R = r}}                                                  \\
+                        & = \frac{\P{R=r | N=n}\P{N=n}}{\P{R=r}}                                            \\
+                        & = \frac{\binom{n}{r}2^{-n}(1-p)p^n}{\frac{2-2p}{2-p}\left(\frac{p}{2-p}\right)^n}
+    \end{align*}
+\end{proof}
+\end{document}
