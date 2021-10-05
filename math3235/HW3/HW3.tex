@@ -34,10 +34,14 @@ variables $g(X)$ and $h(Y)$ are independent also, for any functions $g$ and $h$
 which map $\R$ into $\R$.
 
 \begin{proof}
-    We know that $X,Y$ are independent. By Theorem 3.20 that means that
-    $\E{g(X)h(Y)} = \E{g(X)}\E{h(Y)}$ when the expectations exist. Hence,
-    for $g(X), h(Y)$ we have that $\E{g(X)}\E{h(Y)} = \E{g(X)h(Y)}$ and
-    then again by Thm 3.20 they are independent.
+    We can write for all $a,b \in \R$
+    \begin{align*}
+        \P{g(X) = a, h(Y) = b} & = \sum_{x,y:g(x) = a, h(y) = b} \P{X=x,Y=y}           \\
+                               & =\sum_{x,y:g(x) = a, h(y) = b} \P{X=x} \P{Y=y}        \\
+                               & = \sum_{x:g(x) = a} \P{X=x} \sum_{y:h(y) = b} \P{Y=y} \\
+                               & = \P{g(X) = a} \P{h(Y)= b}
+    \end{align*}
+    Hence, they are independent.
 \end{proof}
 \subsection*{3.42} %DONE
 Let $N$ be the number of the events $A_1, A_2, . . . , A_n$ which occur. Show that
@@ -108,14 +112,43 @@ and $p$.
     \end{align*}
 \end{proof}
 \section*{Problems}
-\subsection*{3.4}
+\subsection*{3.4} %DONE
+% help understand https://math.stackexchange.com/questions/355820/expected-value-of-the-minimum-discrete-case
 Let $X_1, X_2,...,X_n$ be independent discrete random variables, each having mass function
 $$ \P{X_i = k} = \frac{1}{N}, \text{ for } k = 1,2,...,N.$$
 Find the mass function of $U_n$ and $V_n$, given by
 $$U_n= \min\{X_1,X_2,...,X_n\}, \qquad V_n= \max\{X_1,X_2,...,X_n\}.$$
 
 \begin{proof}
+    We begin by observing that because $U_n$ is the minimum of all $X_i$
+    \begin{align*}
+        \P{U_n \geq k} & = \P{\min\{X_1  + X_2 + ... +X_n\} \geq k}                    \\
+                       & =\P{X_1 \geq k \wedge X_2 \geq k \wedge ...\wedge X_n \geq k}
+        \intertext{By independence of the $X_i$}
+                       & = \P{X_1 \geq k}\P{X_2 \geq k}...\P{X_n \geq k}
+    \end{align*}
+    Now we see that $\P{X_i \geq k} = 1 - \P{X_i < k} = 1 - \frac{k-1}{N}$.
+    % There are k -1 values under k out of N values.
+    Hence we have that finally
+    $$\P{U_n \geq k} = \left(1 - \frac{k-1}{N}\right)^n$$
 
+    Now we also note that
+    $${\P{U_n = k} = \P{U_n \geq k} - \P{U_n \geq k + 1}}$$
+    Hence we can write
+    \begin{align*}
+        \P{U_n = k} & = \left(1 - \frac{k-1}{N}\right)^n - \left(1 - \frac{k}{N}\right)^n \\
+    \end{align*}
+
+    Now, similarly for $V_n$
+    \begin{align*}
+        \P{V_n \geq k} & = \P{\max\{X_1  + X_2 + ... +X_n\} \leq k}                     \\
+                       & = \P{X_1 \geq k \wedge X_2 \geq k \wedge ...\wedge X_n \leq k} \\
+        \intertext{By independence of the $X_i$}
+                       & = \P{X_1 \leq k}\P{X_2 \leq k}...\P{X_n \leq k}                \\
+    \end{align*}
+    Now we can see that $\P{V_n = k} = \P{V_n \leq k} - \P{V_n \leq k-1}$
+    Hence,
+    $$\P{V_n = k} = \left(\frac{k}{N}\right)^n - \left(\frac{k -1}{N}\right)^n$$ \\
 \end{proof}
 \subsection*{3.7}
 Let $X_1, X_2,...$ be discrete random variables, each having mean $\mu$ and
@@ -124,13 +157,12 @@ and which is independent of the $X_i$. By conditioning on the value of $N$, show
 $$\E{X_1 + X_2 + ... + X_N} = \mu\E{N}.$$
 
 \begin{proof}
-    First, we let $X = X_1 + X_2 + ... + X_N$.
-    We will partition the sample space into $\{B_1, B_2,...\}$ such that
-    $B_i = \{N = i - 1\}$. Then we can write
-    \begin{align*}
-        \E{X_1 + X_2 + ... + X_N} =
-    \end{align*}
+    Let $S =X_1 + X_2 + ... + X_N$. We can see that by linearity of expectation
+    $$\E{S | N =n} = \E{\sum_{i=0}^n X_i} = \mu n$$
+    Hence, we have that $\E{S|N} = \mu N$. and it follows that
+    $$\E{S} = \E{\E{S|N}} = \E{\mu N} = \mu \E{N}$$
 \end{proof}
+
 \subsection*{4.5} %https://math.stackexchange.com/questions/581987/probability-question-with-trees-and-fruit-using-probability-generating-functions
 Each year a tree of a particular type flowers once, and the probability that it has
 $n$ flowers is $(1-p)p^n, \ n = 0,1,2,..$ where $0 < p < 1$, clearly $N + 1$ is
