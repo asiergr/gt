@@ -53,7 +53,7 @@ $$\E{N}= \sum_{i=1}^n \P{A_i}.$$
     \begin{align*}
         \E{N} & = \E{1_{N_1} +1_{N_2} + ... + 1_{N_n}}          \\
               & = \E{1_{N_1}} + \E{1_{N_2}} + ... + \E{1_{N_n}} \\
-              & = \P{1_{N_1}} + \P{1_{N_2}} + ... + \P{1_{N_n}} \\
+              & = \P{A_1} + \P{A_2} + ... + \P{A_n}             \\
               & = \sum_{i=1}^n \P{A_i}
     \end{align*}
 \end{proof}
@@ -141,8 +141,8 @@ $$U_n= \min\{X_1,X_2,...,X_n\}, \qquad V_n= \max\{X_1,X_2,...,X_n\}.$$
 
     Now, similarly for $V_n$
     \begin{align*}
-        \P{V_n \geq k} & = \P{\max\{X_1  + X_2 + ... +X_n\} \leq k}                     \\
-                       & = \P{X_1 \geq k \wedge X_2 \geq k \wedge ...\wedge X_n \leq k} \\
+        \P{V_n \leq k} & = \P{\max\{X_1  + X_2 + ... +X_n\} \leq k}                     \\
+                       & = \P{X_1 \leq k \wedge X_2 \leq k \wedge ...\wedge X_n \leq k} \\
         \intertext{By independence of the $X_i$}
                        & = \P{X_1 \leq k}\P{X_2 \leq k}...\P{X_n \leq k}                \\
     \end{align*}
@@ -171,32 +171,26 @@ Each flower has probability $\frac{1}{2}$ of producing a ripe fruit, independent
 of all other flowers. Find the probability that in a given year
 (a) the tree produces $r$ ripe fruits.
 \begin{proof}
-    Let $X_i$ be the event that a flower $i$ produces a ripe fruit, clearly $X_i$
-    follows a Bernoulli distribution. Now let $N$ be the variable that represents
-    the number of flowers produced, clearly $N1$ takes values in $\{0,1,2,...\}$.
-    Finally, we let $R$ be the number of ripe fruits, it follow a binomial distribution
-    with parameters $n, \ \frac{1}{2}$. Hence, we find that
-    $$\P{R=r} = \sum_{n=r}^\infty \P{N=n}\P{R=r | N=n} = \sum_{n=r}^\infty (1-p)p^n\binom{n}{r}\frac{1}{2^n}$$
-    Now to calculate the probability generating function
+    We can see that $N+1$ follows a geometric distribution. We also see that $X_i$, the
+    event that a flower grows a fruit, follows a Bernoulli distribution. Hence we can
+    find the probability generating functions
+    $$G_{N+1} (s) = \frac{1}{1-ps}, \ G_{X_i} = \frac{1}{2} + \frac{1}{2}s.$$
+    Hence, we can see that letting $R= X_1 + X_2 + ... + X_N$
     \begin{align*}
-        G_R(s) & = \sum_{r=0}^\infty \P{R=r}s^r                                                             \\
-               & = \sum_{r=0}^\infty \sum_{n=r}^\infty \P{R=r | N=n}\P{N=n}s^r                              \\
-               & = \sum_{n=0}^\infty \P{N=n} \sum{r=0}^n \P{R=r | N=n}\P{N=n}s^r                            \\
-               & = \sum_{n=0}^\infty \P{N=n} G_{R|N=n}(s)                                                   \\
-               & = \sum_{n=0}^\infty (1-p) p^n \left(\frac{1+s}{2}\right)^r s^r                             \\
-               & = \frac{1-p}{1-p\frac{1+z}{2}}                                                             \\
-               & = \frac{2-2p}{2-p-ps} = \sum_{r=0}^\infty \frac{2-2p}{2-p}\left(\frac{p}{2-p}\right)^r s^r
+        G_R & = G_{N+1}(G_X(s))                             \\
+            & = \frac{q}{1 - p(\frac{1}{2} + \frac{1}{2}s)}
     \end{align*}
-    Hence, we get that
-    $$\P{R=r} = \frac{2-2p}{2-p}\left(\frac{p}{2-p}\right)^r$$
+    Now we know that for a probability generating function
+    $$\P{R=r} = \frac{G^{(r)}(0)}{r!} = 2(1-p)p^r(2-p)^{-(r+1)}$$
 \end{proof}
 (b) the tree had $n$ flowers given that it produced $r$ ripe fruits.
 \begin{proof}
     We can do this easily with Bayes' Theorem. We write
     \begin{align*}
-        \P{N=n | R = r} & = \frac{\P{N=n, R=r}}{\P{R = r}}                                                  \\
-                        & = \frac{\P{R=r | N=n}\P{N=n}}{\P{R=r}}                                            \\
-                        & = \frac{\binom{n}{r}2^{-n}(1-p)p^n}{\frac{2-2p}{2-p}\left(\frac{p}{2-p}\right)^n}
+        \P{N=n | R = r} & = \frac{\P{N=n, R=r}}{\P{R = r}}                                    \\
+                        & = \frac{\P{R=r | N=n}\P{N=n}}{\P{R=r}}                              \\
+                        & = \frac{\binom{n}{r}\frac{1}{2^n}p^n(1-p)}{2(1-p)p^r(2-p)^{-(r+1)}} \\
+                        & = \binom{n}{r}\left(\frac{1}{2}\right)^{n+1}p^{n-r}(2-p)^{r+1}
     \end{align*}
 \end{proof}
 \end{document}
