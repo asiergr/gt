@@ -1,0 +1,226 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ra}{\xrightarrow{}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+
+\DeclareMathOperator*{\Log}{Log}
+\DeclareMathOperator*{\Arg}{Arg}
+
+\title{HW6\&7}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+\begin{document}
+\maketitle
+
+\section*{41-42}
+\subsection*{2} %DONE
+Evaluate the following integrals:
+(a)
+\begin{align*}
+    \int_0^1 (1 + it)^2 dt & = \int_0^1 1 + 2it - t^2 dt          \\
+                           & = t + it^2 - \frac{t^3}{3} \Big|_0^1 \\
+                           & = 1 + i - \frac{1}{3}                \\
+                           & = \frac{2}{3} + i
+\end{align*}
+(b)
+\begin{align*}
+    \int_1^2\left(\frac{1}{t}-i\right)^2dt & = \int_1^2 \frac{1}{t^2} -\frac{2i}{t} -1 dt          \\
+                                           & = -\frac{1}{3t^3} -2i\ln |t| -t \Big |_1^2            \\
+                                           & = \frac{1}{24} -2i\ln 2 -2 -(\frac{1}{3} -2i\ln 1 -1) \\
+                                           & = -\frac{1}{2} - i\ln 4
+\end{align*}
+(c)
+\begin{align*}
+    \int_0^{\pi/6} e^{i2t} dt & =\frac{1}{2i}e^{i2t} \Big |_0^{\pi/6} \\
+                              & =\frac{1}{2i} e^{i\frac{\pi}{3}}      \\
+                              & =\frac{\sqrt{3}}{4} + \frac{i}{4}
+\end{align*}
+(d)
+\begin{align*}
+    \int_0^\infty e^{-zt} dt & = \lim_{a \rightarrow \infty} \int_0^a e^{-zt}                    \\
+                             & = \lim_{a \rightarrow \infty} \frac{1}{-z}e^{-zt} \Big |_0^a      \\
+                             & =  \lim_{a \rightarrow \infty} \frac{1}{-z} - \frac{1}{-z}e^{-za} \\
+                             & = \frac{1}{z}
+\end{align*}
+
+\subsection*{5} %DONE
+Let $w(t) = u(t) + iv(t)$ denote a continuous complex-valued function defined
+on an interval $-a \leq t \leq a$
+
+(a) Suppose that $w(t)$ is even. That is $w(-t) = w(t)$ for each point $t$ in
+the given interval. Show that
+$$\int_{-a}^a w(t) dt = 2\int_0^aw(t) dt.$$
+
+\begin{proof}
+    We can write the intergral as
+    \begin{align*}
+        \int_{-a}^a w(t) dt & = \int_{-a}^a u(t) dt + i\int{-a}^a v(t) dt \\
+        \intertext{Now by properties of real integrals for even functions}
+                            & = 2\int_0^a u(t) dt + 2i\int_0^a v(t) dt    \\
+                            & = 2\int_0^a w(t) dt
+    \end{align*}
+\end{proof}
+
+(b) Show that if $w(t)$ is an odd function, one where $w(-t) = -w(t)$ for each
+point $t$ in the given interval, then
+$$\int_{-a}^a w(t) dt = 0$$
+
+\begin{proof}
+    We can write the integral as
+    \begin{align*}
+        \int_{-a}^a w(t) dt & = \int_{-a}^a u(t) dt + i\int{-a}^a v(t) dt \\
+        \intertext{Now by properties of real integrals for even functions}
+                            & = 0 + 0 = 0
+    \end{align*}
+\end{proof}
+
+\section*{43}
+\subsection*{4} %DONE
+Verify expression (14), Sec. 43, for the derivative of $Z(\tau) = z[\phi(\tau)]$.
+
+\begin{proof}
+    We can write
+    \begin{align*}
+        Z(\tau)  & = x[\phi(\tau)] + iy[\phi(\tau)]
+        \intertext{Now taking derivatives with respect to $\tau$}
+        Z'(\tau) & = \frac{d}{d\tau}(x[\phi(\tau)] + iy[\phi(\tau)])        \\
+                 & = \frac{dx}{d\tau} + i\frac{dy}{d\tau}                   \\
+                 & = x'(\phi(\tau))\phi'(\tau) + iy'(\phi(\tau))\phi'(\tau) \\
+                 & = (x'(\phi(\tau)) + iy'(\phi(\tau)))\phi'(\tau)          \\
+                 & = z'[\phi(\tau)]\phi(\tau)
+    \end{align*}
+\end{proof}
+
+\section*{44-46}
+\subsection*{2}
+$f(z) = z -1$ and $C$ is the arc from $z = 0$ to $z=2$ consisting of
+
+(a) the semicicle $z = 1 + e^{i\theta} \ (\pi \leq \theta \leq 2\pi)$
+\begin{proof}
+    We solve the integral
+    \begin{align*}
+        \int_C f(z) dz & = \int_{\pi}^{2\pi} (1 + e^{i\theta})(ie^{i\theta})d\theta \\
+                       & = 0
+    \end{align*}
+
+    (b) the segment $z = x \ (0 \leq x \leq 2)$ of the real axis.
+    \begin{align*}
+        \int_C f(z) dz & = \int_0^2 x -1 dx            \\
+                       & = \frac{x^2}{2} -x \Big |_0^2 \\
+                       & = \frac{4}{2} -2 = 0
+    \end{align*}
+\end{proof}
+\subsection*{6}
+$f(z)$ is the principal branch
+$$z^i = \exp(i\Log z) \ (|z| > 0, -\pi < \Arg z < \pi)$$
+of the power function $z^i$ , and $C$ is the semicricle
+$z = e^{i\theta} \ (0 \leq \theta \leq \pi)$
+
+\begin{proof}
+    First, we begin by noting that the integrand is piecewise continuous in $C$.
+    \begin{align*}
+        \int_C f(z) dz & = \int_0^\pi (e^{i\theta})^i(ie^{i\theta}) d\theta \\
+                       & = \int_0^\pi e^{-\theta}e^{i\theta} d\theta        \\
+                       & = \int_0^\pi e^{\theta(i-1)} d\theta               \\
+                       & = (i - 1)e^{\theta(i-1)} \Big |_0^\pi              \\
+                       & = (i-1)[e^{\pi(i - 1)} - e^0]                      \\
+                       & = (i-1)[e^{i\pi}e^{-\pi} -1]                       \\
+                       & = -\frac{1 + e^{-\pi}}{2}(1-i)
+    \end{align*}
+\end{proof}
+
+\section*{47}
+\subsection*{1} %DONE
+Without evaluating the integral show that
+(a)
+\begin{proof}
+    We know that
+    $$\left | \int_C \frac{z + 4}{z^3 -1} dz \right | \leq \int_C \left | \frac{z + 4}{z^3 -1} \right | dz$$
+    We also that know that the length of $C$ is $L = \pi$. Finally we know that
+    $\frac{z+ 4}{z^3 -1} \leq \frac{6}{7}$ in $C$. Hence,
+    $$\left | \int_C \frac{z + 4}{z^3 -1} dz \right | \leq \frac{6\pi}{7}$$
+\end{proof}
+
+(b)
+\begin{proof}
+    We know that
+    $$\left | \int_C \frac{dz}{z^2 -1} \right | \leq \frac{\pi}{3}.$$
+    and also that the length of the countour $C$ is $\pi$.
+    Finally, we know that $\left | \frac{1}{z^2 -1} \right | \leq \frac{1}{3}$ in $C$.
+    Hence,
+    $$\left | \int_C \frac{dz}{z^2 -1} \right | \leq \frac{\pi}{3}.$$
+\end{proof}
+
+\subsection*{6} %DONE
+Let $C_p$ denote a circle $|z| = \rho \ (0 < \rho < 1)$, oriented in the counterclockwise
+direction, and supporse that $f(z)$ is analytic in the disk $|z| \leq 1$. Show that
+if $z^{-1/2}$ represents any paricular branch of that power of $z$, then there is a
+nonnegative constant $M$, independtend of $\rho$, such that
+$$\left | \int_{C_p} z^{-1/2}f(z) dz \right | \leq 2\pi M \sqrt{\rho}.$$
+Thus show that the value of the intergral here approaches 0 as $\rho$ tends to $0$.
+
+\begin{proof}
+    We know that
+    $$\left | \int_{C_p} z^{-1/2}f(z) dz \right | \leq \int_{C_p} |z^{-1/2}f(z) | dz
+        = \int_{C_p} \frac{|f(z)|}{|z^{1/2}|}dz.$$
+
+    We know that $f(z)$ is analytic, and thus continuous throughout the disk $|z| \leq 1$
+    then it is also bounded by $M_p$ on $C_p$. We also know that for
+    $z \in C_p$, $|z| = \rho$. Hence,
+    ${|z^{1/2}| = |z|^{1/2} = \rho^{1/2}}$. Combining both of these we get that
+    $$\frac{|f(z)|}{z^{1/2}} \leq \frac{M}{\sqrt{\rho}}$$ for all $z \in C_p$.
+
+    Now we also note that $f(z)$ is also bounded on the disk $|z| \leq 1$ by $M$.
+    Because $\rho \leq 1$, $C_p \subseteq D$ and $M_p \leq M$. Now, since the
+    length of $C_p$ is $2\pi \rho$ and $M$ does not depend on $\rho$ we have that
+    $$\left | \int_{C_p} z^{-1/2}f(z) dz \right | \leq \frac{M}{\sqrt{\rho}}*2\pi\rho
+        = 2\pi M \sqrt{\rho}.$$
+
+    Now because $\lim_{\rho \rightarrow 0} 2\pi M \sqrt{\rho} = 0$ by the Squeeze
+    Theorem we have that
+    $$\lim_{\rho \rightarrow 0} \int_{C_p} z^{-1/2}f(z) dz = 0.$$
+
+
+\end{proof}
+
+\section*{48-49}
+\subsection*{2} %DONE
+By finding an antiderivative, evaluate each of these integrals, where
+the path is any contour between the indicated limits of integration:
+
+(a)
+\begin{align*}
+    \int_0^{1+i} z^2 dz & = \frac{1}{3} z^3 \Big |_0^{1+i}    \\
+                        & = \frac{1}{3}(1+ i)^3               \\
+                        & = \frac{1}{3}(\sqrt{2}e^{i\pi/4})^3 \\
+                        & = \frac{1}{3}2^{3/2}e^{i{3\pi/4}}   \\
+                        & = \frac{2}{3}(-1+i)
+\end{align*}
+(b)
+\begin{align*}
+    \int_0^{\pi + 2i} \cos \frac{z}{2}dz & = 2\sin(\frac{z}{2}) \Big |_0^{\pi +2i} \\
+                                         & =2\sin(\frac{\pi}{2} + i) - 2\sin 0     \\
+                                         & =2\cos 2i                               \\
+                                         & = e + \frac{1}{e}
+\end{align*}
+
+(c)
+\begin{align*}
+    \int_1^3(z - 2)^3 dz & = \frac{1}{4}(z - 2)^4 \Big |_1^3 \\
+                         & = \frac{1}{4}(1^4 - (1)^4)        \\
+                         & = 0
+\end{align*}
+
+\end{document}
