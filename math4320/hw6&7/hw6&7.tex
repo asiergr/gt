@@ -27,6 +27,7 @@
 \section*{41-42}
 \subsection*{2} %DONE
 Evaluate the following integrals:
+
 (a)
 \begin{align*}
     \int_0^1 (1 + it)^2 dt & = \int_0^1 1 + 2it - t^2 dt          \\
@@ -49,9 +50,9 @@ Evaluate the following integrals:
 \end{align*}
 (d)
 \begin{align*}
-    \int_0^\infty e^{-zt} dt & = \lim_{a \rightarrow \infty} \int_0^a e^{-zt}                    \\
-                             & = \lim_{a \rightarrow \infty} \frac{1}{-z}e^{-zt} \Big |_0^a      \\
-                             & =  \lim_{a \rightarrow \infty} \frac{1}{-z} - \frac{1}{-z}e^{-za} \\
+    \int_0^\infty e^{-zt} dt & = \lim_{a \rightarrow \infty} \int_0^a e^{-zt}                     \\
+                             & = \lim_{a \rightarrow \infty} \frac{1}{-z}e^{-zt} \Big |_0^a       \\
+                             & =  \lim_{a \rightarrow \infty}  \frac{1}{-z}e^{-za} - \frac{1}{-z} \\
                              & = \frac{1}{z}
 \end{align*}
 
@@ -64,11 +65,12 @@ the given interval. Show that
 $$\int_{-a}^a w(t) dt = 2\int_0^aw(t) dt.$$
 
 \begin{proof}
+    We note that if $w$ is even then so are $u$ and $v$.
     We can write the intergral as
     \begin{align*}
-        \int_{-a}^a w(t) dt & = \int_{-a}^a u(t) dt + i\int{-a}^a v(t) dt \\
+        \int_{-a}^a w(t) dt & = \int_{-a}^a u(t) dt + i\int_{-a}^a v(t) dt \\
         \intertext{Now by properties of real integrals for even functions}
-                            & = 2\int_0^a u(t) dt + 2i\int_0^a v(t) dt    \\
+                            & = 2\int_0^a u(t) dt + 2i\int_0^a v(t) dt     \\
                             & = 2\int_0^a w(t) dt
     \end{align*}
 \end{proof}
@@ -78,10 +80,11 @@ point $t$ in the given interval, then
 $$\int_{-a}^a w(t) dt = 0$$
 
 \begin{proof}
+    We note that if $w$ is odd then so are $u$ and $v$.
     We can write the integral as
     \begin{align*}
-        \int_{-a}^a w(t) dt & = \int_{-a}^a u(t) dt + i\int{-a}^a v(t) dt \\
-        \intertext{Now by properties of real integrals for even functions}
+        \int_{-a}^a w(t) dt & = \int_{-a}^a u(t) dt + i\int_{-a}^a v(t) dt \\
+        \intertext{Now by properties of real integrals for odd functions}
                             & = 0 + 0 = 0
     \end{align*}
 \end{proof}
@@ -111,7 +114,11 @@ $f(z) = z -1$ and $C$ is the arc from $z = 0$ to $z=2$ consisting of
 \begin{proof}
     We solve the integral
     \begin{align*}
-        \int_C f(z) dz & = \int_{\pi}^{2\pi} (1 + e^{i\theta})(ie^{i\theta})d\theta \\
+        \int_C f(z) dz & = \int_{\pi}^{2\pi} (1 + e^{i\theta})(ie^{i\theta})d\theta             \\
+                       & = \int_\pi^{2\pi} ie^{i\theta} + ie^{2i\theta}                         \\
+                       & = e^{i\theta} + \frac{1}{2}e^{i2\theta} \Big |_\pi^{2\pi}              \\
+                       & = e^{i2\pi} + \frac{1}{2}e^{i4\pi} - (e^{i\pi} + \frac{1}{2}e^{i2\pi}) \\
+                       & = 1 + \frac{1}{2} - (1 + \frac{1}{2})                                  \\
                        & = 0
     \end{align*}
 
@@ -131,12 +138,12 @@ $z = e^{i\theta} \ (0 \leq \theta \leq \pi)$
 \begin{proof}
     First, we begin by noting that the integrand is piecewise continuous in $C$.
     \begin{align*}
-        \int_C f(z) dz & = \int_0^\pi (e^{i\theta})^i(ie^{i\theta}) d\theta \\
-                       & = \int_0^\pi e^{-\theta}e^{i\theta} d\theta        \\
-                       & = \int_0^\pi e^{\theta(i-1)} d\theta               \\
-                       & = (i - 1)e^{\theta(i-1)} \Big |_0^\pi              \\
-                       & = (i-1)[e^{\pi(i - 1)} - e^0]                      \\
-                       & = (i-1)[e^{i\pi}e^{-\pi} -1]                       \\
+        \int_C f(z) dz & = \int_0^\pi (e^{i\theta})^i(ie^{i\theta}) d\theta        \\
+                       & = i\int_0^\pi e^{-\theta}e^{i\theta} d\theta              \\
+                       & =i\int_0^\pi e^{\theta(i-1)} d\theta                      \\
+                       & = \frac{i}{i - 1} [e^{\theta(i -1)}]_0^\pi                \\
+                       & = \frac{1}{2}(1 - i)e^{i\frac{3\pi}{4}}[e^{\pi(i-1)}-e^0] \\
+                       & = \frac{1}{2}(1-i)[e^{i\pi}e^{-\pi} - 1]                  \\
                        & = -\frac{1 + e^{-\pi}}{2}(1-i)
     \end{align*}
 \end{proof}
