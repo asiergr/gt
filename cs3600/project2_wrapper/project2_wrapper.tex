@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage{parskip}
+
+\title{Project 2 Wrapper}
+\author{Asier Garcia Ruiz }
+\date{October 2021}
+
+\begin{document}
+\maketitle
+\section*{Question 1}
+This happens because points are given on the basis of getting power-ups and doing tricks,
+and the reward function is the score the player gets while playing the game.
+The utility flows only out of locations near power-ups and tricks.
+Because there are no points associeted with crossing the finishing line, the agent
+will simply try to maximise power-ups and tricks. This leads to the depicted behaviour,
+where the optimal path to maximise power-ups is found to be a circle. Hence, the agent
+will simply follow this path instead of finishing the race.
+
+\section*{Question 2}
+This happens because humans know that the ultimate goal of the game is to finish the race.
+Hence, they implicitly place a high reward on finishing the race.
+Because there are no points associated with that, the AI agent does not know.
+In this case, humans know that if the race isn't finished, then they get less or no
+points, whereas the AI agent does not.
+
+\section*{Question 3}
+One way to improve the reward is by incorporating a term that gives points based
+on the position in the race. I.e. maximise the amount of boats behind the agent's.
+Another way to improve the behaviour is by adding a reward to the terminal state.
+Adding a term to the function that accounts for distance to the end of the race
+from the current position (not in a straight line, but rather distance along an
+ideal path to the end) would help with this.
+This way the agent will learn to pick a path that will get it to finish the race.
+
+\section*{Question 4}
+If the agent is simply trying to maximise the fare then it will learn to take
+the longest possible path to the destination. This is inconvenient for the
+passenger, and can possibly lead to strange and/or dangerous paths taken
+by the taxi.
+\end{document}
