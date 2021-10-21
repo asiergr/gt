@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+\usepackage{listings}
+
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\O}[1]{\mathcal{O}(#1)}
+
+\title{Midterm 1}
+\author{Asier Garcia Ruiz }
+\date{September 2021}
+
+\begin{document}
+\maketitle
+
+\section{}
+
+\section{}
+
+\section{}
+ (a) Given $\vec{x}, \vec{y} \in \R^n$. Computing
+$$\vec{x} \cdot \vec{y} = [x_1y_1 \ x_2y_2 \ ... \ x_ny_n]^T$$
+takes $n$ operation counts. It takes $3n$ memory accesses, $n$ to access
+the requires elements from each vector ($2n$ total), and another $n$
+to place the result after multiplying.
+
+(b) Given $\vec{x} \in \R^n$ and $\vec{y} \in \R^m$. Computing the outer product
+$$\vec{x} \times \vec{y}^T =
+    \begin{bmatrix}
+        x_1y_1 & x_1y_2 & ...    & x_1y_m \\
+        x_2y_1 & x_2y_2 & ...    & x_2y_m \\
+        \vdots & \vdots & \ddots & \vdots \\
+        x_ny_1 & x_ny_2 & ...    & x_ny_m \\
+    \end{bmatrix} $$
+would cost $nm$ operation counts since each element from $\vec{x}$ must be
+multiplied by each element of $\vec{y}$. Assuming $n=m$ the memory accesses
+required for this operation is $n + n + n^2 = n(2 + n)$. We need $2n$ accesses
+to get the values from $\vec{x}$ and $\vec{y}$, and $n^2$ accesses to place them
+in the new matrix.
+
+(c) Given $\bm{A} \in \R^{m\times n}$ and $\vec{x} \in \R^n$. Computing the
+matrix vector multiplication
+$$\bm{A}\vec{x} = \begin{bmatrix}
+        a_{11}x_1 + a_{12}x_2 + ...    + a{1n}x_n \\
+        a_{21}x_1 + a_{22}x_2 + ...    + a{2n}x_n \\
+        \vdots                                    \\
+        a_{m1}x_1 + a_{m2}x_2 + ...    + a_{mn}x_n
+    \end{bmatrix}$$
+would take $mn + n$ operations. This
+is because we must mutliply the $i$th column of $\bm{A}$ ($m$ elements) with the
+$x_i$th element of $\vec{x}$ $n$ times, and then add the $n$ elements of each row.
+The memory accesses
+
+\section{} % Q4
+
+\section{} % Q5
+ (a) We usually do not invert matrices because calculating the inverse of
+a matrix is a very expensive $\O(n^2.373)$ at best using optimised
+Coppersmith-Winograd algorithms, and $\O{n^3}$ using Gaussian elimination.
+Hence, given this inefficiency, we tend to use different methods.
+
+(b) It would be appropriate to invert a matrix if the matrix is of a known small
+size. In this case we could either use the closed form formula, or compute using
+elimination. Either way, given a small enough matrix this is probably good enough.
+
+\section{} % Q6
+
+
+
+\end{document}
