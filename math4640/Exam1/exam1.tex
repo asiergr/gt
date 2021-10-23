@@ -9,6 +9,8 @@
 \usepackage{parskip}
 
 \usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{{./}}
 
 \newcommand{\R}{\mathbb{R}}
 \renewcommand{\O}[1]{\mathcal{O}(#1)}
@@ -20,15 +22,62 @@
 \begin{document}
 \maketitle
 
-\section{}
+\section{} % Q1 DONE
+Let $f: \R \rightarrow \R$ be a smooth function. Consider the following Taylor
+expansions
+\begin{align*}
+    f(x + \Delta x)  & = f(x) + \Delta x f'(x) + \Delta x^2 \frac{f''(x)}{2} +
+    \Delta x^3 + \frac{f'''(x)}{3!} + \Delta x^4 \frac{f^{(4)}(x)}{4!} + \dots    \\
+    f(x - \Delta x)  & = f(x) - \Delta x f'(x) + \Delta x^2 \frac{f''(x)}{2} -
+    \Delta x^3 + \frac{f'''(x)}{3!} + \Delta x^4 \frac{f^{(4)}(x)}{4!} - \dots    \\
+    f(x + 2\Delta x) & = f(x) + 2\Delta x f'(x) + 4\Delta x^2 \frac{f''(x)}{2} +
+    8\Delta x^3 + \frac{f'''(x)}{3!} + 16\Delta x^4 \frac{f^{(4)}(x)}{4!} + \dots \\
+    f(x - 2\Delta x) & = f(x) - 2\Delta x f'(x) + 4\Delta x^2 \frac{f''(x)}{2} -
+    8\Delta x^3 + \frac{f'''(x)}{3!} + 16\Delta x^4 \frac{f^{(4)}(x)}{4!} - \dots
+\end{align*}
+Now if we take $8(f(x+\Delta x) - f(x - \Delta x)) - (f(x + \Delta x) - f(x - \Delta x))$
+we get the fourth-order-accurate approximation
+$$f'(x) \approx \frac{-f(x + 2\Delta x) + 8f(x + \Delta x) - 8f(x - \Delta x) + f(x-2\Delta x)}{12\Delta x}$$
 
-\section{}
+\newpage
 
-\section{}
+\section{} % Q2
+The listing is in Python 3, here
+
+\begin{lstlisting}[language=Python]
+    def central_diff(fn, x, dx):
+        return (fn(x + dx) - fn(x -dx)) / (2*dx)
+
+    def arctan_prime(x):
+        return 1 / (x*x + 1)
+
+    def q2():
+        dx_list = [1/(10**i) for i in range(0,18)]
+        true_val = arctan_prime(np.pi / 4)
+        errors = [None for _ in dx_list]
+        for i in range(len(dx_list)):
+            errors[i] = abs(true_val -
+                central_diff(np.arctan, np.pi / 4, dx_list[i]))
+        df = pd.DataFrame()
+        df["error"] = errors
+        df["delta_x"] = dx_list
+        df["log(error)"] = np.log(df['error'])
+        df["log(delta_x)"] = np.log(df['delta_x'])
+        df.plot(x="log(delta_x)", y="log(error)")
+    q2()
+\end{lstlisting}
+The plot produced is
+
+\includegraphics[scale=0.75]{q2}
+
+Note that both axes are logarithmic.
+
+
+\section{} %Q3
  (a) Given $\vec{x}, \vec{y} \in \R^n$. Computing
 $$\vec{x} \cdot \vec{y} = [x_1y_1 \ x_2y_2 \ ... \ x_ny_n]^T$$
 takes $n$ operation counts. It takes $3n$ memory accesses, $n$ to access
-the requires elements from each vector ($2n$ total), and another $n$
+the required elements from each vector ($2n$ total), and another $n$
 to place the result after multiplying.
 
 (b) Given $\vec{x} \in \R^n$ and $\vec{y} \in \R^m$. Computing the outer product
@@ -40,38 +89,167 @@ $$\vec{x} \times \vec{y}^T =
         x_ny_1 & x_ny_2 & ...    & x_ny_m \\
     \end{bmatrix} $$
 would cost $nm$ operation counts since each element from $\vec{x}$ must be
-multiplied by each element of $\vec{y}$. Assuming $n=m$ the memory accesses
-required for this operation is $n + n + n^2 = n(2 + n)$. We need $2n$ accesses
-to get the values from $\vec{x}$ and $\vec{y}$, and $n^2$ accesses to place them
-in the new matrix.
+multiplied by each element of $\vec{y}$.
+
+The memory accesses required for this operation are $(m + 1)n + mn$. This is because
+we can get the $i$th value of $\vec{x}$ and multiply it by the $m$ values of $y^T$
+(this yields the $m+1$), and we do this $n$ times. We then need to place the result
+in every cell of the resultant matrix. Clearly if $m=n$ then the operation
+count is $(n+1)n + n^2$.
 
 (c) Given $\bm{A} \in \R^{m\times n}$ and $\vec{x} \in \R^n$. Computing the
 matrix vector multiplication
 $$\bm{A}\vec{x} = \begin{bmatrix}
-        a_{11}x_1 + a_{12}x_2 + ...    + a{1n}x_n \\
-        a_{21}x_1 + a_{22}x_2 + ...    + a{2n}x_n \\
-        \vdots                                    \\
+        a_{11}x_1 + a_{12}x_2 + ...    + a_{1n}x_n \\
+        a_{21}x_1 + a_{22}x_2 + ...    + a_{2n}x_n \\
+        \vdots                                     \\
         a_{m1}x_1 + a_{m2}x_2 + ...    + a_{mn}x_n
     \end{bmatrix}$$
-would take $mn + n$ operations. This
-is because we must mutliply the $i$th column of $\bm{A}$ ($m$ elements) with the
-$x_i$th element of $\vec{x}$ $n$ times, and then add the $n$ elements of each row.
-The memory accesses
+would take $m(2n-1)$ operations. This is because there are $n$ multiplications
+and $n-1$ additions per row, and $m$ rows.
+
+Assuming that we calculate the product row by row. We need $n$ accesses to the
+matrix $\bm{A}$, and $n$ accesses to $\vec{x}$, multiplied by $m$ rows. To
+account for placing the numbers in the resultant vector we need another $m$
+accesses. Leaving us with $2n + m$ accesses.
+
+(d) Given $\bm{A} \in \R^{m\times n}$ and $\bm{B} \in \R^{n\times q}$. Assuming
+we use simple matrix-matrix multiplication. The product
+$$\bm{A}\bm{B} = \bm{C}.$$
+where $c_{ij} = \sum_{k=1}^n a_{ik}b_{kj}$ requires $qm(2n+1)$ operations.
+This is because this is just a generalisation of (c) to $q$ vectors.
+
+In terms of memory accesses we can see again that if we treat it as a generalisation
+of (c) then we have $q(2n+m)$ accesses.
 
 \section{} % Q4
+Sometimes we use the 2-norm because it has an intuitive geometrical meaning.
+It is easy to understand the concept of Euclidean distance, even in several
+dimensions. A use case for the $\infty$ norm is if we know that there is one
+vector component that is significantly larger than the rest, and we only
+care about that one.
 
 \section{} % Q5
  (a) We usually do not invert matrices because calculating the inverse of
-a matrix is a very expensive $\O(n^2.373)$ at best using optimised
+a matrix is a very expensive $\O{n^{2.373}}$ at best using optimised
 Coppersmith-Winograd algorithms, and $\O{n^3}$ using Gaussian elimination.
 Hence, given this inefficiency, we tend to use different methods.
 
 (b) It would be appropriate to invert a matrix if the matrix is of a known small
 size. In this case we could either use the closed form formula, or compute using
 elimination. Either way, given a small enough matrix this is probably good enough.
+Furthermore, some advanced algorithms are optimised for large matrices, and so
+they perform poorly on small matrices.
 
 \section{} % Q6
+Using the following listing:
+
+\begin{lstlisting}[language=Python]
+    def q6():
+        n_list = [i for i in range(10,1000,10)]
+        times = [None] * len(n_list)
+        for i in range(len(n_list)):
+            n = n_list[i]
+            mat = np.random.random_sample(size=(n, n // 2))
+            setup='import scipy.linalg'
+            stmt = 'scipy.linalg.lu(mat)'
+            times[i] = timeit.timeit(setup=setup,
+                stmt=stmt,
+                globals=locals(),
+                number=10)
+
+        df = pd.DataFrame()
+        df["n"] = n_list
+        df["time"] = times
+        df['log(time)'] = np.log(df['time'])
+        df.plot(x="n", y="log(time)")
+        
+q6() 
+\end{lstlisting}
+We obtain the plot
+
+\includegraphics[scale=0.75]{q6}
+
+Note that the $y$ axis is logarithmic. Given this, we note that at larger
+values of $n$, LU factorisation scales in big-O polynomial time. This makes
+sense because the time complexity of LU factorisation is $\O{n^3}$.
+
+\section{} % Q7
+The following listing uses Python 3
+
+\begin{lstlisting}[language=Python]
+    def q7():
+        n_list = [i for i in range(10,1000,10)]
+        times = [None] * len(n_list)
+        for i in range(len(n_list)):
+            n = n_list[i]
+            mat = np.random.random_sample(size=(n, n // 2))
+            setup='import scipy.linalg'
+            stmt = 'scipy.linalg.qr(mat)'
+            times[i] = timeit.timeit(setup=setup, stmt=stmt, globals=locals(), number=10)
+
+        df = pd.DataFrame()
+        df["n"] = n_list
+        df["time"] = times
+        df.plot(x="n", y="time")
+
+q7()
+\end{lstlisting}
+This yields plot
+
+\includegraphics[scale=0.75]{q7}
+
+We note that the algorithm clearly scales polynomially. Which makes sense given
+that for a general matrix the algorithm has $\O{n^3}$ complexity.
 
 
+\section{} % Q8
+The following Python 3 code was used
 
+\begin{lstlisting}
+def arnoldi_iteration(A: np.array, K: int) -> np.ndarray:
+    # Initial components
+    H = np.zeros(shape=(K+1, K))
+    x = np.random.random_sample(size=(A.shape[0],1))
+    q = x / np.linalg.norm(x)
+
+    for k in range(K):
+        u = A @ q # Generate next vector
+        for j in range(k):
+            H[j][k] = q.conj().T @ u
+            u = u - (H[j][k] * q)
+        H[k + 1][k] = np.linalg.norm(u)
+        if H[k + 1][k] == 0.0:
+            return H
+        q = u / H[k + 1][k]
+
+    return H
+
+def q8():
+    mat = np.random.random_sample(size=(30, 30))
+    true_eigs = np.linalg.eig(mat)[0][:10]
+    eigs_l = []
+    error_l = []
+    iters = [i for i in range(10,100,10)]
+
+    for K in iters:
+        H = arnoldi_iteration(mat, K)[:-1,:]
+        eigs = np.linalg.eig(H)[0][:10]
+        eigs_l.append(eigs)
+        error_l.append(np.abs(np.abs(true_eigs) - np.abs(eigs)))
+    
+    return iters, eigs_l, error_l
+
+iters, eigs_l, error_l = q8()
+\end{lstlisting}
+
+This yielded the following graph for the eigenvalues of the random matrix.
+Note that the $x$ axis is the number of iterations.
+
+\includegraphics[scale=0.75]{q8_1}
+
+This yielded the following graph for the error on the eigenvalues.
+Note that the $x$ axis is the number of iterations.
+
+\includegraphics[scale=0.75]{q8_2}
 \end{document}
