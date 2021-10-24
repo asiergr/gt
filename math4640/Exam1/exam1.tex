@@ -227,14 +227,14 @@ def arnoldi_iteration(A: np.array, K: int) -> np.ndarray:
 
 def q8():
     mat = np.random.random_sample(size=(30, 30))
-    true_eigs = np.linalg.eig(mat)[0][:10]
+    true_eigs = np.partition(np.linalg.eig(mat)[0],-10)[-10:]
     eigs_l = []
     error_l = []
     iters = [i for i in range(10,100,10)]
 
     for K in iters:
         H = arnoldi_iteration(mat, K)[:-1,:]
-        eigs = np.linalg.eig(H)[0][:10]
+        eigs = np.partition(np.linalg.eig(H)[0], -10)[-10:]
         eigs_l.append(eigs)
         error_l.append(np.abs(np.abs(true_eigs) - np.abs(eigs)))
     
