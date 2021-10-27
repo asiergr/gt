@@ -16,6 +16,7 @@
 
 \DeclareMathOperator*{\Log}{Log}
 \DeclareMathOperator*{\Arg}{Arg}
+\DeclareMathOperator*{\sech}{sech}
 
 \title{HW8\&9}
 \author{Asier Garcia Ruiz }
@@ -25,52 +26,306 @@
 
 \section*{50-53}
 \subsection*{1}
+Apply the Cauchy–Goursat theorem to show that
+\begin{equation*}
+    \int_C f(z) \ dz = 0
+\end{equation*}
+when the countour $C$ is the unit circle $|z| = 1$,
+in either direction, and when
+
+
+(a) $f(z) = \frac{z^2}{z+3}$
+\begin{proof}
+    Since $z^2$ and $\frac{1}{z + 3}$ are both analytic in and on the unit disk $|z|= 1$,
+    and $f(z)$ is nothing but a product of these two functions,
+    then by the Cauchy-Goursat theorem $\int_C f(z) \ dz = 0$.
+\end{proof}
+
+(b) $f(z) = ze^{-z}$
+\begin{proof}
+    Both $z$ and $e^{-z}$ are analytic in the disk $|z|=1$. Hence, their product
+    also is. By the Cauchy–Goursat theorem $\int_C f(z) \ dz = 0$.
+\end{proof}
+
+(c) $f(z) = \frac{1}{z^2 + 2z + 2}$
+\begin{proof}
+    We can compute $z^2 + 2z + 2 = 0$ when $z = -1 \pm i$. Since $|-1 \pm i| > 1$
+    these points are outside of the disk $|z| < 1$. Hence, the function is
+    nowhere zero. Furthermore, $z^2$, $2z$, and $2$ are all analytic in the disk.
+    Hence, $f(z)$ is also analytic in the disk. Then by the Cauchy–Goursat
+    theorem $\int_C f(z) \ dz = 0$.
+\end{proof}
+
+(d) $f(z) = \sech z$
+\begin{proof}
+    We have that
+    \begin{equation*}
+        \sech z = \frac{1}{\cosh z} = \frac{1}{\frac{e^z + e^{-z}}{2}} =
+        \frac{2}{e^z + e^{-z}}
+    \end{equation*}
+    Since $e^z$ and $e^{-z}$ are never $0$ we have that $f(z)$ is analytic
+    everywhere in the disk $|z| = 1$. Hence, by the Cauchy–Goursat theorem
+    $\int_C f(z) \ dz = 0$.
+\end{proof}
+
+(e) $f(z) = \tan z$
+\begin{proof}
+    We have that $\tan z = \frac{\sin z}{\cos z}$. Hence the singularities happen
+    at $z = \pm \frac{\pi}{2} + n\pi \ (n = \pm 0, \pm 1,...)$. However,
+    $|\frac{\pi}{2}| \approx 1.57 > 1$ and thus $|\frac{\pi}{2} + n| > 1$ for all
+    $n = \pm 1, \pm 2,...$ Hence $f(z)$ is analytic in the disk $|z| > 1$.
+    By the Cauchy–Goursat theorem $\int_C f(z) \ dz = 0$.
+\end{proof}
+
+(f) $f(z) = \Log(z + 2)$
+\begin{proof}
+    We know that $\Log(z + 2) = \ln r + i\Theta$. Since $\ln |z| + i\arg(z)$
+    and $\ln|z|$ and $i\arg(z)$ are both analytic, the so if $f(z)$. Hence, by
+    the Cauchy–Goursat theorem $\int_C f(z) \ dz = 0$.
+\end{proof}
+
 \subsection*{5}
+\begin{proof}
+    Consider the curve $C = C_1 + (-C_3)$. Since this is a closed contour and
+    $f$ is analytic around and in $C$, by the Cauchy–Goursat theorem we have
+    that
+    \begin{equation*}
+        \int_C f(z) \ dz = \int_{C_1} f(z) \ dz + \int_{-C_3} f(z) \ dz = 0.
+    \end{equation*}
+    Hence,
+    \begin{equation*}
+        \int_{C_1} f(z) \ dz = -\int_{-C_3} f(z) \ dz = \int_{C_3} f(z) \ dz.
+    \end{equation*}
+
+    Similarly, we redefine the contour $C = C_2 + C_3$. Again, this is a closed
+    contourn and $f$ is analytic in and on it. By the Cauchy–Goursat theorem
+    we have that
+    \begin{equation*}
+        \int_C f(z) \ dz = \int_{C_2} f(z) \ dz + \int_{C_3} f(z) \ dz = 0,
+    \end{equation*}
+    and thus,
+    \begin{equation*}
+        \int_{C_2} f(z) \ dz = -\int_{C_3} f(z) \ dz.
+    \end{equation*}
+
+    Finally, we have that
+    \begin{gather*}
+        \int_{C_1} f(z) \ dz = -\int_{C_2} f(z) \ dz \\
+        \int_{C_1} f(z) \ dz + \int_{C_2} f(z) \ dz  = 0\\
+        \int_{C_1 + C_2} f(z) \ dz = 0.
+    \end{gather*}
+\end{proof}
+
 
 \section*{54-57}
 \subsection*{2}
+Find the value of the integral of $g(z)$ around the circle $|z-i|=2$ in the
+positive sense when
+
+(a) $g(z) = \frac{1}{z^2 + 4}$
+\begin{proof}
+    Let $f(z) = \frac{1}{z+2i}$, then
+    \begin{equation*}
+        g(z) = \frac{1}{z^2 + 4} = \frac{1}{(z + 2i)(z - 2i)} =
+        \frac{f(z)}{z - 2i}.
+    \end{equation*}
+    Since $2i$ is interior to the circle and $f(z)$ is analytic inside the circle,
+    we can use the Cauchy integral formula to determine that
+    \begin{equation*}
+        \int_C g(z) \ dz = \int_C \frac{f(z)}{z - 2i} \ dz =
+        2\pi i f(2i) = 2\pi i \frac{1}{4i} = \frac{\pi}{2}.
+    \end{equation*}
+\end{proof}
+
+(b) $g(z) = \frac{1}{(z^2 + 4)^2}$
+\begin{proof}
+    Let $f(z) = \frac{1}{(z + 2i)^2}$, then
+    \begin{equation*}
+        g(z) = \frac{1}{(z^2 + 4)^2} = \frac{1}{(z - 2i)^2(z + 2i)^2} =
+        \frac{f(z)}{(z - 2i)^2}
+    \end{equation*}
+    Since $2i$ is interior to the circle and $f(z)$ is analytic inside the circle,
+    we can use the Cauchy integral formula to determine that
+    \begin{equation*}
+        \int_C g(z) \ dz  = \int_C \frac{f(z)}{(z - 2i)^2} \ dz
+        = \frac{2\pi i}{1!} f'(2i)
+    \end{equation*}
+    We find that
+    \begin{equation*}
+        f'(2i) = -\frac{2}{(z + 2i)^3} \big |_{z = 2i} = \frac{1}{32i}
+    \end{equation*}
+    Hence,
+    \begin{equation*}
+        \int_C g(z) \ dz  = 2\pi i (\frac{1}{32i}) = \frac{\pi}{16}.
+    \end{equation*}
+\end{proof}
+
 \subsection*{5}
+Show that if $f$ is analytic within and on a simple closed countour $C$ and
+$z_0$ is not on $C$, then
+\begin{equation*}
+    \int_C \frac{f'(z) \ dz}{z - z_0} = \int_C \frac{f(z) \ dz}{(z - z_0)^2}.
+\end{equation*}
+
+\begin{proof}
+    If $f(x)$ is analytic on $C$ then so is $f'(x)$. Now let $g(x) = f'(x)$.
+    By the Cauchy integral formula
+    \begin{equation*}
+        \int_C \frac{g(x)}{z - z_0} \ dz = 2\pi i g(z_0) = 2\pi i f'(z_0).
+    \end{equation*}
+    Now, similarly, by the Cauchy integral
+    \begin{equation}
+        \int_C \frac{f(z)}{(z - z_0)^2} \ dz = \frac{2\pi i}{1!}f'(z_0)
+        = \int_C \frac{g(x)}{z - z_0} \ dz = \int_C \frac{f'(x)}{z - z_0} \ dz.
+    \end{equation}
+\end{proof}
 
 \section*{58-59}
 \subsection*{1}
+Suppose that $f(z)$ is entire and that the harmonic function $u(x,y) = \Re[f(z)]$
+has an upper bound $u_0$; that is, $u(x,y) \leq u_0$ for all points $(x,y)$ in
+the $xy$ plane. Show that $u(x,y)$ must be constant throughout the plane.
+\textit{Suggestion:} Apply Liouville's theorem (Sec. 58) to the function
+$g(z) = \exp[f(z)]$.
+
+\begin{proof}
+    Let $g(z) = e^{f(z)}$ and $v(x,y) = \Im[f(z)]$. We can easily see that
+    \begin{equation*}
+        g(z) = e^{f(z)} = e^{\Re[f(z)] + i\Im[f(z)])} = e^{u(x,y)}e^{iv(x,y)}
+    \end{equation*}
+    which is nothing but the polar form of $g(z)$. Now, we know that
+    $u(x,y) \leq u_0$ for all $(x,y)$ in the $xy$ plane. Since $e^x$ is
+    monotonic increasing for all $x \in \R$ then $e^{u(x,y)} \leq e^{u_0}$
+    in the entire $xy$ plane. Hence,
+    \begin{equation*}
+        |g(z)| =  e^{u(x,y)} \leq e^{u_0}
+    \end{equation*}
+    and $g(z)$ is bounded. By Liouville's theorem this means that $g(z)$
+    is constant throughout the plane. Therefore, $u(x,y)$ is also
+    constant throughout the plane.
+\end{proof}
+
 \subsection*{3}
+Use the function $f(z) = z$ to show that in Exercise 2 the condition $f(z) \neq 0$
+anywhere in $R$ is necessary in order to obtain the result of that exercise.
+That is, show that $|f(z)|$ \textit{can} reach its minimum value at an interior
+point when the minimum value is zero.
+
+\begin{proof}
+    We start by assuming that $|f(z)|$ cannot reach itr minimum value at an interor
+    point when the minimum value is zero. We are given that $f(z) = z$, now consider
+    the disk $|z| = 1$. Clearly $f(0) = 0$, which happens at the center of the disk,
+    an interior point. We also know that $|f(z)| \leq 0$ inside and on the disk.
+    Hence, the minimum value of $0$ has been achieved at an interior point,
+    a contradiction. Therefore, $|f(z)|$ can reach its minimum value at an interior
+    point when the minimum value is $0$.
+\end{proof}
 
 \section*{60-61}
 \subsection*{3}
+Use the inequality (see Sec. 5) $||z_n| - |z|| \leq |z_n - z|$ to show that
+\begin{equation*}
+    \text{if} \ \lim_{n\rightarrow\infty}z_n = z, \ \text{then} \
+    \lim_{n\rightarrow\infty} |z_n| = |z|
+\end{equation*}
+
+\begin{proof}
+    Since $\lim_{n\rightarrow\infty}z_n = z$ we know that for some $\epsilon > 0$,
+    there exists $n > N$ such that $|z_n - z| < \epsilon$. Now by the reverse
+    triangle inequality
+    \begin{equation*}
+        ||z_n| - |z|| \leq |z_n - z| < \epsilon
+    \end{equation*}
+    whenever $n > N$. Therefore, when $n > N$, we have that
+    $||z_n| - |z|| < \epsilon$ and thus
+    \begin{equation*}
+        \lim_{n\rightarrow\infty} |z_n| = |z|.
+    \end{equation*}
+\end{proof}
+
 \subsection*{6}
+Show that
+\begin{equation*}
+    \text{if} \ \sum_{n=1}^\infty z_n = S, \ \text{then} \
+    \sum_{n=1}^\infty \overline{z_n} = \overline{S}.
+\end{equation*}
+
+\begin{proof}
+    Let $S_N$ denote the partial sum $\sum_{n=1}^N z_n$. We can write
+    \begin{align*}
+        \overline{S_N} & = \sum_{n=1}^N \overline{z_n}            \\
+                       & = \sum_{n=1}^N x_n - iy_n                \\
+                       & =  \sum_{n=1}^N x_n - \sum_{n=1}^\N iy_n \\
+                       & = X_N - iY_N
+    \end{align*}
+    Now we know that as $n\rightarrow\infty$, $X_N\rightarrow X$ and
+    $Y_N\rightarrow Y$. Thus,
+    \begin{equation*}
+        \sum_{n=1}^\infty \overline{z_n} =
+        \lim_{n\rightarrow\infty} \overline{S_N} =
+        \lim_{n\rightarrow\infty} (X_N - iY_N) = X - iY = \overline{S}.
+    \end{equation*}
+\end{proof}
 
 \section*{62-65}
-\subsection*{3}
+\subsection*{3} % DONE
+Find the Maclaurin series expansion of the function
+\begin{equation*}
+    f(z) = \frac{z}{z^4 + 4} = \frac{z}{4}\frac{1}{1 + (z^4/4)}.
+\end{equation*}
+
+\begin{proof}
+    We can write
+    \begin{align*}
+        f(z) & = \frac{z}{4}\sum_{n=0}^\infty (-\frac{z^4}{4})^n,                \\
+             & = \frac{z}{2^2} \sum_{n = 0}^\infty (-1)^n \frac{z^{4n}}{2^{2n}}, \\
+             & = \sum_{n=0}^\infty \frac{(-1)^n}{2^{2n + 2}}z^{4n+1},            \\
+    \end{align*}
+    when $|z| < 1$.
+\end{proof}
+
 \subsection*{8}
+Rederive the maclauring series (4) in Sec. 64 for the function $f(z) = \cos z$ by
+(a) using the definition \[\cos z = \frac{e^{iz} + e^{-iz}}{2}\] in Sec. 37
+and appealing to the Maclaurin series (2) for $e^z$ in Sec. 64;
 
-\section*{66-68}
-\subsection*{2}
-\subsection*{4}
-\subsection*{6}
+\begin{proof}
+    We can write
+    \begin{align*}
+        \cos z & = \frac{1}{2} (e^{iz} + e^{-iz}),                                      \\
+               & = \frac{1}{2} \left[\sum_{n=0}^\infty \frac{(iz)^n}{n!} +
+        \sum_{n=0}^\infty \frac{(-iz)^n}{n!}\right],                                    \\
+               & =\frac{1}{2}\left[\sum_{n=0}^\infty \frac{i^nz^n}{n!} +
+        (-1)^n\frac{i^nz^n}{n!} \right],                                                \\
+               & =\frac{1}{2}\left[\sum_{n=0}^\infty\frac{i^nz^n}{n!}(1-(-1)^n)\right], \\
+        \intertext{clearly $1 - (-1)^n$ will leave only even terms, which will
+            be multiplied by $2$. Hence,}
+               & =\sum_{n=0}^\infty \frac{i^{2n}z^{2n}}{(2n)!},                         \\
+               & = \sum_{n=0}^\infty (-1)^n \frac{z^{2n}}{(2n)!}.
+    \end{align*}
+\end{proof}
 
-\section*{69-72}
-\subsection*{3}
-\subsection*{8}
-\subsection*{11}
+(b) showing that
+\begin{equation*}
+    f^{(2n)}(0) = (-1)^n \ \text{and} \ f^{(2n+1)}(0) = 0 \quad (n = 0,1,2,\dots).
+\end{equation*}
 
-\section*{73}
-\subsection*{2}
+\begin{proof}
+    We will use a simple property of the derivative of $f(z) = \cos z$. We know
+    that $f'(z) = -\sin z$, $f''(z) = -\cos z$, $f'''(z) = \sin z$,
+    $f^{(4)}(z) = \cos z$,\dots. Then clearly
+    $f(0) = 1$, $f'(0) = 0$, $f''(0)=-1$,$f'''(0) = 0$, $f^{(4)}(0) = 1$,\dots.
+    Hence, it is easy to see that $f^{(2n)}(0)j=(-1)^n$ and $f^{(2n+1)}(0) = 0$.
 
-\section*{74-77}
-\subsection*{2}
-\subsection*{4}
-
-\section*{78-79}
-\subsection*{1}
-\subsection*{4}
-
-\section*{80-81}
-\subsection*{1}
-\subsection*{4}
-
-\section*{82-83}
-\subsection*{3}
-\subsection*{7}
-
+    Using this and the equation for the Maclaurin series we obtain that
+    \begin{align*}
+        \cos z & = \sum_{n=0}^\infty \frac{f^{(n)(0)}}{n!}z^n,                            \\
+               & = f(0) + \frac{z}{1!}f'(0) + \frac{z^2}{2!}f''(0) +
+        \frac{z^3}{3!}f'''(0) + \dots,                                                    \\
+               & = 1 + z(0) + \frac{z^2}{2!}(-1) + \frac{z^3}{3!}(0) + \frac{z^4}{4!}(1), \\
+               & = 1 - \frac{z^2}{2!} + \frac{z^4}{4!}-\dots,                             \\
+               & =  \sum_{n=0}^\infty (-1)^n\frac{z^{2n}}{(2n)!}.
+    \end{align*}
+\end{proof}
 
 \end{document}

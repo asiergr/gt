@@ -19,6 +19,7 @@
 \newcommand{\probspace}{(\Omega, \mathcal{F}, \mathbb{P})}
 \newcommand{\Image}[1]{\text{Im}\, #1}
 \newcommand{\E}[1]{\mathbb{E}(#1)}
+\newcommand{\deriv}[2]{\frac{d #1}{d#2}}
 
 \title{HW4}
 \author{Asier Garcia Ruiz }
@@ -28,25 +29,262 @@
 \maketitle
 
 \section*{Exercises}
-\subsection*{5.13}
+\subsection*{5.13} % DONE
 Express the distribution function of $Y=\max\{0,X\}$ in terms of the distribution
 function $F_X$ of $X$.
 
 \begin{proof}
-    We let the distribution 
+    We see that if $\P{X < 0} = 0$ then $Y=X$, which is trivial.
+    Now consider the case where $\P{X < 0} > 0$. Then we have
+    \begin{equation*}
+        \P{Y = 0} = \P{X \leq 0}  = F_X(0)
+    \end{equation*}
+    Observe now that if $X < 0$, then since $y > 0$, we have $X < y$.
+    Similarly, if $X > 0$ then $\max(X,0) = X$. Hence
+    \begin{equation}
+        \P{Y \leq y} = \P{\max(0,X) \leq y} = \P{X < y} = F_X(y)
+    \end{equation}
+    Hence we have that finally,
+    \begin{equation}
+        F_Y(y) = \begin{cases}
+            F_X(y) & \text{if} \ y \geq 0, \\
+            0      & \text{if} \ y < 0.
+        \end{cases}
+    \end{equation}
 \end{proof}
 
-\subsection*{5.18}
+\subsection*{5.18} % DONE
+Show that if $F_1$ and $F_2$ are distribution functions, then so is the
+function ${\alpha F_1(x) + (1-\alpha) F_2(x)}$ for any $\alpha$ satisfying
+$0\leq \alpha \leq 1$.
 
-\subsection*{5.30}
+\begin{proof}
+    We will show this by proving that the function is characterised by all the
+    rquired properties.
+
+    Let $x \leq y$. Since $F_1$ and $F_2$ are distribution functions we know that
+    $F_1(x) \leq F_1(y)$ and $F_2(x) \leq F_2(y)$. Hence we know that
+    $$F_1(x) + (1-\alpha)F_2(x) \leq F_1(y) + (1-\alpha)F_2(y).$$
+
+    Again, since $F_1$ and $F_2$ are distribution functions we know that
+    $F_1(x) \rightarrow 0$ as $x \rightarrow -\infty$, and
+    $F_1(x) \rightarrow 1$ as $x \rightarrow \infty$. The same applies for $F_2$.
+    Hence,
+    \begin{align*}
+        \lim_{x\rightarrow -\infty} \alpha F_1(x) + (1-\alpha) F_2(x) & =
+        \lim_{x\rightarrow -\infty} \alpha F_1(x) + \lim_{x\rightarrow -\infty} (1-\alpha) F_2(x) \\
+                                                                      & = 0 + 0 = 0.
+    \end{align*}
+    and
+    \begin{align*}
+        \lim_{x\rightarrow \infty} \alpha F_1(x) + (1-\alpha) F_2(x) & =
+        \lim_{x\rightarrow \infty} \alpha F_1(x) + \lim_{x\rightarrow \infty} (1-\alpha) F_2(x)     \\
+                                                                     & = \alpha + (1 - \alpha) = 1.
+    \end{align*}
+
+    Finally, since $F_1$ and $F_2$ are both continuous from the right, it is easy
+    to see that $\alpha F_1 + (1-\alpha) F_2$ is also continuous from the right.
+
+    Hence $\alpha F_1 + (1-\alpha) F_2$ is a distribution function.
+\end{proof}
+
+\subsection*{5.30} % DONE
+A random variable $X$ has density function
+\begin{equation*}
+    f(x) = \begin{cases}
+        2x & \text{if} \quad  0 < x < 1, \\
+        0  & \text{otherwise}.
+    \end{cases}
+\end{equation*}
+Find the distribution function of $X$.
+
+\begin{proof}
+    We can write
+    \begin{align*}
+        F_X(x) & = \P{X \leq x}                                          \\
+               & = \int_{-\infty}^x f_X(u)du                             \\
+               & = \begin{cases}
+                       \int_{-\infty}^x 2u \ du & \text{if} \quad 0 < x < 1, \\
+                       \int_{-\infty}^x 0 \ du  & \text{otherwise.}
+                   \end{cases} \\
+               & = \begin{cases}
+                       0   & \text{if} \ x < 0         \\
+                       x^2 & \text{if} \ 0 \leq x < 1, \\
+                       1   & \text{otherwise}.
+                   \end{cases}
+    \end{align*}
+\end{proof}
 
 \subsection*{5.32}
+If $X$ has distribution function
+\begin{equation*}
+    F_X(x) = \begin{cases}
+        \frac{1}{2(1+x^2)}      & \text{for} \ -\infty < x \leq 0, \\
+        \frac{1+2x^2}{2(1+x^2)} & \text{for} \ 0 < x < \infty.
+    \end{cases}
+\end{equation*}
+show that $X$ is continuous and find its density function.
 
-\subsection*{5.54}
+\begin{proof}
+    We can see that the denominator in both parts of the piecewise $F_X$ is never
+    $0$. Hence, there are no discontinuities there and the only discontinuity we
+    need to check is the one at $x = 0$. We can see that
+    \begin{equation*}
+        F_X(0) = \frac{1}{2(1 + x^2)} = \frac{1}{2}
+    \end{equation*}
+    and
+    \begin{equation*}
+        \lim_{x\downarrow 0} \frac{1 + 2x^2}{2(1 + x^2)} = \frac{1}{2}.
+    \end{equation*}
+    Hence, $F_X$ is continuous and it exists everywhere.
+    This means that we can find $f_X$ as such
+    \begin{align*}
+        f_X(x) & = \deriv{F_X(x)}{x}                                                       \\
+               & = \begin{cases}
+                       \deriv{}{x}\frac{1}{2(1 + x^2)}      & \text{for} \ -\infty < x \leq 0, \\
+                       \deriv{}{x}\frac{1 + 2x^2}{2(1+x^2)} & \text{for} \ 0 < x < \infty.     \\
+                   \end{cases} \\
+               & = \begin{cases}
+                       -\frac{x}{(1 + x^2)^2} & \text{for} \ -\infty < x \leq 0, \\
+                       \frac{x}{(1+x^2)^2}    & \text{for} \ 0 < x < \infty
+                   \end{cases}
+    \end{align*}
+\end{proof}
+
+\subsection*{5.54} % DONE
+Let $X$ be a random variable with the exponential distribution, parameter $\lambda$.
+Find the density function of
+
+We note first that
+\begin{equation*}
+    f_X(x) = \begin{cases}
+        \lambda e^{-\lambda x} & \text{if} \ x > 0,    \\
+        0                      & \text{if} \ x \leq 0. \\
+    \end{cases}
+\end{equation*}
+
+(a) $A = 2X + 5$
+\begin{proof}
+    Let $g(x) = 2x + 5$, clearly $g^{-1}(x) = \frac{1}{2}(x - 5)$ and
+    ${\deriv{g^{-1}}{x} = \frac{1}{2}}$. Thus,
+    \begin{align*}
+        f_A(a) & = f_X(\frac{1}{2}(a - 5))\frac{1}{2}                                                                        \\
+               & = \begin{cases}
+                       \frac{1}{2}\lambda \exp\left(-\frac{1}{2}\lambda (a-5)\right) & \text{if} \ a > 5     \\
+                       0                                                             & \text{if} \ a \leq 5.
+                   \end{cases}
+    \end{align*}
+\end{proof}
+
+(b) $B=e^X$
+Let $g(b) = e^b$ then $g^{-1} (b) = \ln(|b|)$ and
+$\deriv{g^{-1}}{b} = \frac{1}{b}$. Thus,
+\begin{align*}
+    f_B(b) & = f_X(\ln(|b|))\frac{1}{b}                                                    \\
+           & = \begin{cases}
+                   \frac{1}{b} \lambda e^{-\lambda ln(|b|)} & \text{if} \ b > 1,    \\
+                   0                                        & \text{if} \ b \leq 1.
+               \end{cases}            \\
+           & = \begin{cases}
+                   \frac{1}{b} \lambda e^{\ln(\frac{1}{b^{-\lambda}})} & \text{if} \ b > 1,    \\
+                   0                                                   & \text{if} \ b \leq 1.
+               \end{cases} \\
+           & = \begin{cases}
+                   \frac{1}{b} \lambda \frac{1}{b^\lambda} & \text{if} \ b > 1,    \\
+                   0                                       & \text{if} \ b \leq 1.
+               \end{cases}             \\
+           & = \begin{cases}
+                   \lambda b^{-\lambda - 1} & \text{if} \ b > 1,    \\
+                   0                        & \text{if} \ b \leq 1.
+               \end{cases}
+\end{align*}
+
+(c) $C = (1 + X))^{-1}$
+\begin{proof}
+    Let $g(c) = (1 + c)^{-1}$, then $g^{-1}(c) = c^-1 - 1$ and
+    $\deriv{g^{-1}}{c} = -c^{-2}$. Hence,
+    \begin{align*}
+        f_C(c) & = f_X(\frac{1}{c} - 1)(-c^{-2}),                                     \\                                              \\
+               & = \begin{cases}
+                       -c^{-2}\lambda e^{-\lambda(c^{-1} -1)} & \text{if} \ c < 1,    \\
+                       0                                      & \text{if} \ c \geq 1. \\
+                   \end{cases}
+    \end{align*}
+\end{proof}
+
+(d) $D = (1 + X)^{-2}$
+\begin{proof}
+    Let $g(d) = (1 + d)^{-2}$, then $g^{-1} (d) = d^{-1/2} - 1$
+    and $\deriv{g^{-1}}{d} = \frac{1}{2}d^{-3/2}$. Hence,
+    \begin{align*}
+        f_D(d) & = \frac{1}{2}d^{-3/2}f_X(d^{-1/2} - 1)                                                      \\
+               & = \begin{cases}
+                       \frac{1}{2}\lambda d^{-3/2} e^{d^{-1/2} - 1} & \text{if} \ d < 1,    \\
+                       0                                            & \text{if} \ d \geq 1.
+                   \end{cases}
+    \end{align*}
+\end{proof}
 
 \section*{Problems}
-\subsection*{7}
+\subsection*{7} % DONE
+% https://math.stackexchange.com/questions/958472/expected-value-of-a-non-negative-random-variable
+If $X$ if a continuous random variable taking non-negative values only, show that
+\begin{equation*}
+    \E{X} = \int_0^\infty [1 - F_X(x)] \ dx,
+\end{equation*}
+whenever this integral exists.
 
-\subsection*{11}
+\begin{proof}
+    Clearly since $X$ only takes non-negative values we have
+    \begin{equation*}
+        \E{X} = \int_0^\infty yf_X (x) \ dy.
+    \end{equation*}
+    Now, We will let $y = \int_{x = 0}^y 1 \ dx$. Hence we can write
+    \begin{align*}
+        \E{X} & = \int_0^\infty yf_X (x) \ dy,                       \\
+              & = \int_{y = 0}^\infty f_X(y) \int_{x=0}^y 1 \ dx dy. \\
+              & = \int_{y = 0}^\infty \int_{x=0}^y f_X(y) \ dxdy.    \\
+        \intertext{Now, by Fubini's Theorem}
+              & = \int_{y=0}^\infty \int_{x}^\infty f_X(x) \ dydx    \\
+              & = \int_{x=0}^\infty [1 - F_X(x)] \ dx
+    \end{align*}
+\end{proof}
+
+\subsection*{11} % DONE
+William Tell is a very bad shot. In practice, he places a small green apple on
+top of a straight wall which stretches to infinity in both directions.
+He then takes up position at a distance of one perch from the apple, so that
+his line of sight to the target is perpendicular to the wall. He now selects
+an angle uniformly at random from his entire field of view and shoots his arrow
+in this direction. Assuming that his arrow hits the wall somewhere, what
+is the distribution function of the horizontal distance (measured in perches)
+between the apple and the point which the arrow strikes? There is no wind
+
+\begin{proof}
+    We are given that the angle $\theta$ between the line joining the apple
+    and William follow a uniform distribution in $[-\frac{\pi}{2}, \frac{\pi}{2}]$.
+    \begin{equation*}
+        F_\theta(x) = \frac{x + \frac{\pi}{2}}{\pi} = \frac{x}{\pi} + \frac{1}{2}.
+    \end{equation*}
+    Thus we have the density function
+    \begin{equation*}
+        f_\theta(x) = \frac{1}{\pi}.
+    \end{equation*}
+    Now, the distance between the apple and where the arrow strikes is nothing but
+    \begin{equation*}
+        d = \tan(\theta).
+    \end{equation*}
+    We then take $|d|$ since the distance will always be positive.
+    Now, to find the density function we can simply write
+    \begin{align*}
+        F_D(x) & = \P{|d| \leq x},                                  \\
+               & = \P{-x \leq \tan\theta \leq x},                   \\
+               & = \P{-\arctan(x) \leq \theta \leq \arctan(x)},     \\
+               & =\int_{-\arctan x}^{\arctan x} f_\theta(u) du,     \\
+               & =\int_{-\arctan x}^{\arctan x} \frac{1}{\pi} du,   \\
+               & = \frac{1}{\pi}\int^{\arctan(x)}_{-\arctan(x)} du, \\
+               & = \frac{2}{\pi}\arctan(x).
+    \end{align*}
+\end{proof}
 
 \end{document}
