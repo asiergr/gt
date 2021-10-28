@@ -37,7 +37,8 @@ in either direction, and when
 (a) $f(z) = \frac{z^2}{z+3}$
 \begin{proof}
     Since $z^2$ and $\frac{1}{z + 3}$ are both analytic in and on the unit disk $|z|= 1$,
-    and $f(z)$ is nothing but a product of these two functions,
+    and $f(z)$ is nothing but a product of these two functions (and thus also analytic
+    in the disk),
     then by the Cauchy-Goursat theorem $\int_C f(z) \ dz = 0$.
 \end{proof}
 
@@ -63,7 +64,8 @@ in either direction, and when
         \sech z = \frac{1}{\cosh z} = \frac{1}{\frac{e^z + e^{-z}}{2}} =
         \frac{2}{e^z + e^{-z}}
     \end{equation*}
-    Since $e^z$ and $e^{-z}$ are never $0$ we have that $f(z)$ is analytic
+    Since $e^z$ and $e^{-z}$ are never $0$, and $e^z + e^{-z} = 0$ only at
+    $z = \frac{1}{2}i\pi$, which is outside the disk, we have that $f(z)$ is analytic
     everywhere in the disk $|z| = 1$. Hence, by the Cauchy–Goursat theorem
     $\int_C f(z) \ dz = 0$.
 \end{proof}
@@ -72,36 +74,37 @@ in either direction, and when
 \begin{proof}
     We have that $\tan z = \frac{\sin z}{\cos z}$. Hence the singularities happen
     at $z = \pm \frac{\pi}{2} + n\pi \ (n = \pm 0, \pm 1,...)$. However,
-    $|\frac{\pi}{2}| \approx 1.57 > 1$ and thus $|\frac{\pi}{2} + n| > 1$ for all
+    $|\frac{\pi}{2}| \approx 1.57 > 1$ and thus $|\frac{\pi}{2} + n\pi| > 1$ for all
     $n = \pm 1, \pm 2,...$ Hence $f(z)$ is analytic in the disk $|z| > 1$.
     By the Cauchy–Goursat theorem $\int_C f(z) \ dz = 0$.
 \end{proof}
 
 (f) $f(z) = \Log(z + 2)$
 \begin{proof}
-    We know that $\Log(z + 2) = \ln r + i\Theta$. Since $\ln |z| + i\arg(z)$
-    and $\ln|z|$ and $i\arg(z)$ are both analytic, the so if $f(z)$. Hence, by
+    We know that $f'(z) = \frac{1}{z + 2}$. Hence, the only discontinuity is at
+    $z = -2$, which is outside of the disk. Therefore $f$ is analytic everywhere
+    in the disk. Hence, by
     the Cauchy–Goursat theorem $\int_C f(z) \ dz = 0$.
 \end{proof}
 
 \subsection*{5}
 \begin{proof}
-    Consider the curve $C = C_1 + (-C_3)$. Since this is a closed contour and
+    Consider the curve $C_1 + (-C_3)$. Since this is a closed contour and
     $f$ is analytic around and in $C$, by the Cauchy–Goursat theorem we have
     that
     \begin{equation*}
-        \int_C f(z) \ dz = \int_{C_1} f(z) \ dz + \int_{-C_3} f(z) \ dz = 0.
+        \int_{C_1 - C_3} f(z) \ dz = \int_{C_1} f(z) \ dz + \int_{-C_3} f(z) \ dz = 0.
     \end{equation*}
     Hence,
     \begin{equation*}
         \int_{C_1} f(z) \ dz = -\int_{-C_3} f(z) \ dz = \int_{C_3} f(z) \ dz.
     \end{equation*}
 
-    Similarly, we redefine the contour $C = C_2 + C_3$. Again, this is a closed
+    Similarly, we consider the contour $C_2 + C_3$. Again, this is a closed
     contourn and $f$ is analytic in and on it. By the Cauchy–Goursat theorem
     we have that
     \begin{equation*}
-        \int_C f(z) \ dz = \int_{C_2} f(z) \ dz + \int_{C_3} f(z) \ dz = 0,
+        \int_{C_2 + C_3} f(z) \ dz = \int_{C_2} f(z) \ dz + \int_{C_3} f(z) \ dz = 0,
     \end{equation*}
     and thus,
     \begin{equation*}
@@ -168,7 +171,7 @@ $z_0$ is not on $C$, then
 \end{equation*}
 
 \begin{proof}
-    If $f(x)$ is analytic on $C$ then so is $f'(x)$. Now let $g(x) = f'(x)$.
+    If $f(z)$ is analytic on $C$ then so is $f'(z)$. Now let $g(z) = f'(z)$.
     By the Cauchy integral formula
     \begin{equation*}
         \int_C \frac{g(x)}{z - z_0} \ dz = 2\pi i g(z_0) = 2\pi i f'(z_0).
@@ -176,7 +179,7 @@ $z_0$ is not on $C$, then
     Now, similarly, by the Cauchy integral
     \begin{equation}
         \int_C \frac{f(z)}{(z - z_0)^2} \ dz = \frac{2\pi i}{1!}f'(z_0)
-        = \int_C \frac{g(x)}{z - z_0} \ dz = \int_C \frac{f'(x)}{z - z_0} \ dz.
+        = \int_C \frac{g(z)}{z - z_0} \ dz = \int_C \frac{f'(x)}{z - z_0} \ dz.
     \end{equation}
 \end{proof}
 
@@ -212,7 +215,7 @@ That is, show that $|f(z)|$ \textit{can} reach its minimum value at an interior
 point when the minimum value is zero.
 
 \begin{proof}
-    We start by assuming that $|f(z)|$ cannot reach itr minimum value at an interor
+    We start by assuming that $|f(z)|$ cannot reach its minimum value at an interor
     point when the minimum value is zero. We are given that $f(z) = z$, now consider
     the disk $|z| = 1$. Clearly $f(0) = 0$, which happens at the center of the disk,
     an interior point. We also know that $|f(z)| \leq 0$ inside and on the disk.
@@ -230,7 +233,7 @@ Use the inequality (see Sec. 5) $||z_n| - |z|| \leq |z_n - z|$ to show that
 \end{equation*}
 
 \begin{proof}
-    Since $\lim_{n\rightarrow\infty}z_n = z$ we know that for some $\epsilon > 0$,
+    Since $\lim_{n\rightarrow\infty}z_n = z$ we know that for any $\epsilon > 0$,
     there exists $n > N$ such that $|z_n - z| < \epsilon$. Now by the reverse
     triangle inequality
     \begin{equation*}
@@ -285,7 +288,7 @@ Find the Maclaurin series expansion of the function
 \end{proof}
 
 \subsection*{8}
-Rederive the maclauring series (4) in Sec. 64 for the function $f(z) = \cos z$ by
+Rederive the Maclauring series (4) in Sec. 64 for the function $f(z) = \cos z$ by
 (a) using the definition \[\cos z = \frac{e^{iz} + e^{-iz}}{2}\] in Sec. 37
 and appealing to the Maclaurin series (2) for $e^z$ in Sec. 64;
 
@@ -315,7 +318,7 @@ and appealing to the Maclaurin series (2) for $e^z$ in Sec. 64;
     that $f'(z) = -\sin z$, $f''(z) = -\cos z$, $f'''(z) = \sin z$,
     $f^{(4)}(z) = \cos z$,\dots. Then clearly
     $f(0) = 1$, $f'(0) = 0$, $f''(0)=-1$,$f'''(0) = 0$, $f^{(4)}(0) = 1$,\dots.
-    Hence, it is easy to see that $f^{(2n)}(0)j=(-1)^n$ and $f^{(2n+1)}(0) = 0$.
+    Hence, it is easy to see that $f^{(2n)}(0)=(-1)^n$ and $f^{(2n+1)}(0) = 0$.
 
     Using this and the equation for the Maclaurin series we obtain that
     \begin{align*}
