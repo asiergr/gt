@@ -1,0 +1,151 @@
+
+\documentclass{article}
+\usepackage{parskip}
+\usepackage{amsmath}
+
+\title{Midterm}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+\maketitle
+
+Collaborators: Rocco Russo
+\section*{Question 1: Rook Jumping Maze}
+\subsection*{1.a.}
+Using the following table
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        2 & 1 & 3 & 2 & 2 \\
+        \hline
+        2 & 2 & 1 & 0 & 2 \\
+        \hline
+        1 & 4 & 4 & 3 & 1 \\
+        \hline
+        1 & 2 & 1 & 2 & 2 \\
+        \hline
+        2 & 3 & 1 & 2 & 2 \\
+        \hline
+    \end{tabular}
+\end{center}
+for the number of branches in each state, we get an average branching factor
+of $1.91\bar{6}$.
+
+\subsection*{1.b.}
+To compute the predecessors of $s$ we must look for any other state $s'$ from
+which we can get to $s$. To do this, we can simply iterate through the cells
+that are up, down, left, and right of $s$ to find which ones contain a digit
+that would allow going from $s'$ to $s$.
+
+\subsection*{1.c.}
+Again, using the following table
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        0 & 1 & 3 & 5 & 1 \\
+        \hline
+        0 & 2 & 2 & 2 & 2 \\
+        \hline
+        2 & 2 & 1 & 1 & 2 \\
+        \hline
+        2 & 3 & 0 & 2 & 2 \\
+        \hline
+        3 & 2 & 4 & 1 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+we get a branching factor of $1.84$.
+
+\subsection*{1.d.}
+Given the lower branching factor of the backward search, this is the better
+alternative. A lower branching factor indicates less expansions and thus
+less compute time.
+
+\section*{Question 2}
+\subsection*{2.a.}
+The length of the optimal path is $18$.
+
+\subsection*{2.b.}
+We must visit $51$ states (including the initial state).
+
+\subsection*{2.c.}
+In order to create a dense reward function we need a metric that
+will always return useful information. We do not want to overestimate
+in our reward function. Since this is inherently a path optimisation
+problem we want to include a notion of distance, Manhattan or
+Euclidean could both work. Another term that might be useful is
+the distance from the agent to the nearest wall minus the distance
+of the goal to the nearest wall (distance being Euclidean/manhattan
+or otherwise). This is because if the goal is near a wall, the agent
+should try and stay near walls and vice versa. This term should be
+small though since it is possible that walls are arranged as
+"islands". All this can be done in O(n) time.
+
+\subsection*{2.d.}
+No, the randomisation introduced by $\epsilon$ will ensure the opposite.
+If the reward values are misleading, thanks to the $\epsilon$ term
+it is still possible that the agent chooses a random action to
+explore the other states instead of getting stuck in a single state
+that is not the goal state.
+
+\section*{Question 3}
+\subsection*{3.a.}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{BATTERY} & \textbf{P(RADIO=play)$|$BATTERY)} & \textbf{P(RADIO=silent $|$ BATTERY)} \\
+        \hline
+        Working          & 0.9                               & 0.1                                  \\
+        \hline
+        Dead             & 0                                 & 1                                    \\
+        \hline
+    \end{tabular}
+\end{center}
+
+We will abbreviate the random variables to just the first letter for brevity.
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        {\textbf B} & {\textbf G} & {\textbf P(E=turn$|$B,G)} & {\textbf P(E=still$|$B,G)} \\
+        \hline
+        Working     & Yes         & 0.8                       & 0.2                        \\
+        \hline
+        Working     & No          & 0                         & 1                          \\
+        \hline
+        Dead        & Yes         & 0                         & 1                          \\
+        \hline
+        Dead        & No          & 0                         & 1                          \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsection*{3.b.}
+For scenario 1 we only know $E=still$
+\begin{align*}
+    P( & G=yes  | E=still)  = \frac{P(E=still | G=yes)P(G=yes)}{P(E=still)}          \\
+       & = \frac{[P(E=still | B=working,G=yes) + P(E=still | G=yes,B=dead)]P(G=yes)}
+    {P(G=yes)[P(E=still | B=working,G=yes) + P(E=still | G=yes, B=dead)]P(G=no)}     \\
+       & = \frac{P(E=still | B=working,G=yes)P(B=dead)P(B=dead))P(G=yes)}
+    {P(G=yes)[P(E=still | B=working,G=yes) + P(B=dead)]P(G=no)}                      \\
+       & = \frac{(0.1+0.9*0.2)*0.3}{0.3(0.1+0.9*0.2)+0.7}                            \\
+       & \approx 0.107
+\end{align*}
+and for scenarion 2 we have that
+\begin{align*}
+    P(G=yes | E=still, B=dead) & = \frac{P(E=still | G=yes, B=dead)P(G=yes))}{P(E=still, B=dead)} \\
+                               & = \frac{1*0.3}{1} = 0.3
+\end{align*}
+Hence, knowing the battery is dead increases the belief the car has gas.
+
+\subsection*{3.c.}
+We know $B=dead$. We will use $A\perp B$ to denote $A$ is conditionally
+independent of $B$. We will also denote $X=E\cap G$ We want to show that
+\[P(R,X | B=dead) = P(R|B=dead)P(X|B=dead)\].
+We know that if $B=dead$ then $E=still$ always and $R=silent$ always.
+Both sides of the equation are either $0$ or $1$ for all possible
+values. Hence the equation holds.
+
+
+
+\end{document}
