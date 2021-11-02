@@ -1,0 +1,225 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+
+\DeclareMathOperator*{\Log}{Log}
+\DeclareMathOperator*{\Arg}{Arg}
+\DeclareMathOperator*{\sech}{sech}
+
+\title{HW 10}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+\begin{document}
+\maketitle
+
+\section*{66-68}
+\subsection*{2}
+Find a representation for the function
+\[f(z)=\frac{1}{z + 1}= \frac{1}{z}*\frac{1}{1+1/z}\]
+in negative powers of z that is valid when $1 < |z| < \infty$.
+
+\begin{proof}
+    We know that $f(z)$ is not analytic at $z=-1$. We can write
+    \begin{align*}
+        f(z) & = \frac{1}{z}*\frac{1}{1+1/z},                                            \\
+             & = \frac{1}{z} \sum_{n=0}^\infty (-\frac{1}{z})^n \qquad (1<|z|<\infty),   \\
+             & = \frac{1}{z} \sum_{n=0}^\infty \frac{(-1)^n}{z^n} \qquad (1<|z|<\infty), \\
+             & = \sum_{n=0}^\infty \frac{(-1)^{n}}{z^{n+1}} \qquad (1<|z|<\infty),       \\
+        \intertext{now shifting the index,}
+             & = \sum_{n=1}^\infty \frac{(-1)^{n+1}}{z^n} \qquad (1<|z|<\infty).         \\
+    \end{align*}
+\end{proof}
+
+\subsection*{4}
+Give two Laurent series expansions in powers of $z$ for the function
+\[f(z) = \frac{1}{z^2(1-z)}\]
+and specify the regions in which those expansions are valid.
+
+\begin{proof}
+    Clearly $f(z)$ is not analytic at $z=0,1$. First we will rewrite $f(z)$ as such
+    \begin{align*}
+        f(z) & = \frac{1}{z^2}\frac{1}{1-z},                                              \\
+             & = \frac{1}{z^2}\sum_{n=0}^\infty z^n \qquad (0 < |z| < 1),                 \\
+             & = \sum_{n=0}^\infty z^n +\frac{1}{z} + \frac{1}{z^2} \qquad (0 < |z| < 1).
+    \end{align*}
+
+    Similarly we can write
+    \begin{align*}
+        f(z) & =  \frac{1}{z^2(1-z)},                                     \\
+             & = \frac{1}{z^3(1-1/z)},                                    \\
+             & = -\frac{1}{z^3} \sum \frac{1}{z^n} \qquad (1<|z|<\infty), \\
+             & = -\sum_{n=3}^\infty\frac{1}{z^n} \qquad (1<|z|<\infty).   \\
+    \end{align*}
+\end{proof}
+
+\subsection*{6}
+Show that when $0<|z-1|<2$,
+\[\frac{z}{(z-1)(z-3)}= -3\sum_{n=0}^\infty \frac{(z-1)^n}{2^{n+2}} - \frac{1}{2(z-1)}.\]
+
+\begin{proof}
+    We can write
+    \begin{align*}
+        f(z) & = \frac{z}{(z-1)(z-3)},                                   \\
+        \intertext{using partial fractions we get}
+             & = -\frac{1}{2}\frac{1}{z-1} + \frac{3}{2}\frac{1}{z - 3}, \\
+             & = \frac{1}{2}\frac{1}{1-z} + \frac{1}{2}\frac{1}{z-3}.
+    \end{align*}
+    Now, we are given that the domain is $0<|z-1|<2$. Hence
+    \begin{align*}
+        \frac{3}{2}\frac{1}{z-3} & = \frac{3}{2}\frac{1}{(z-1)-2},                               \\
+                                 & = -\frac{3}{4}\frac{1}{1-\frac{z-1}{2}},                      \\
+                                 & = -\frac{3}{4}\sum_{n=0}^\infty \left(\frac{z-1}{2}\right)^n, \\
+                                 & = -3\sum_{n=0}^\infty \frac{(z-1)^n}{2^{n+2}}.                \\
+    \end{align*}
+    Hence, we finally have that
+    \[\frac{z}{(z-1)(z-3)}= -3\sum_{n=0}^\infty \frac{(z-1)^n}{2^{n+2}} - \frac{1}{2(z-1)}.\]
+\end{proof}
+
+\section*{69-72}
+\subsection*{3}
+Find the Taylor series for the function
+\[\frac{1}{z}=\frac{1}{2 + (z-2)}=\frac{1}{2}*\frac{1}{1+(z-2)/2}\]
+about the point $z_0=2$. Then, By differentiation that series term by term, show
+that
+\[\frac{1}{z^2} = \frac{1}{4}\sum_{n=0}^\infty (-1)^n(n+1)\left(\frac{z-2}{2}\right)^n
+    \qquad (|z-2|<2).\]
+\begin{proof}
+    First we can find the Taylor series about $z_0=2$ by writing
+    \begin{align*}
+        \frac{1}{z} & = \frac{1}{2}*\frac{1}{1+(z-2)/2},                           \\
+                    & = \frac{1}{2}\sum_{n=0}^\infty \left(-\frac{z-2}{2}\right)^n
+        \qquad (|z-2|<2).                                                          \\
+                    & = \sum_{n=0}^\infty (-1)^n\frac{(z-2)^n}{2^{n+1}}.
+        \qquad (|z-2|<2).
+    \end{align*}
+
+    Now, to find the Taylor series for $\frac{1}{z^2}$ we can simply take the
+    derivative.
+    \begin{align*}
+        \frac{d}{dz}\frac{1}{z} & = \frac{d}{dz}\sum_{n=0}^\infty (-1)^n\frac{(z-2)^n}{2^{n+1}}
+                                & \qquad (|z-2|<2),                                                       \\
+        -\frac{1}{z^2}          & = \sum_{n=0}^\infty (-1)^n\frac{d}{dz}\frac{(z-2)^n}{2^{n+1}}
+                                & \qquad (|z-2|<2),                                                       \\
+        \frac{1}{z^2}           & = \sum_{n=1}^\infty (-1)^{n+1}\frac{1}{2}(n)\frac{(z-2)^{n-1}}{2^{n+1}}
+                                & \qquad (|z-2|<2),                                                       \\
+        \intertext{we let $n=n+1$.}
+                                & = \sum_{n=0}^\infty \frac{(-1)^n}{2^{n+2}} (n+1)(z-2),
+                                & \qquad (|z-2|<2),                                                       \\
+                                & = \frac{1}{4}\sum_{n=0}^\infty (-1)^n(n+1)\left(\frac{z-2}{2}\right)^n
+                                & \qquad (|z-2|<2).                                                       \\
+    \end{align*}
+\end{proof}
+
+\subsection*{8}
+Prove that if $f$ is analytic at $z_0$ and $f(z_0) = f'(z_0) = \dots = f^{(m)}(z_0)=0$,
+then the function $g$ defined by means of the equations
+\begin{equation*}
+    g(z) = \begin{cases}
+        \frac{f(z)}{(z-z_0)^{m+1}} \ \text{when} \ z \neq z_0, \\
+        \frac{f^{(m+1)(z_0)}}{(m+1)!} \ \text{when} \ z = z_0
+    \end{cases}
+\end{equation*}
+is analytic at $z_0$.
+
+\begin{proof}
+    Becuase $f$ is analytic at $z_0$, there exists a neighborhood $R_0$ around $z_0$ where
+    $f$ is analytic. Hence, we can rewrite $f$ as
+    \begin{equation*}
+        f(z) = \sum_{n=0}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n \qquad (|z-z_0|<R_0).
+    \end{equation*}
+    Now since $f(z_0) = f'(z_0) = \dots = f^{(m)}(z_0)=0$ we can rewrite it as
+    \begin{equation*}
+        f(z) = \sum_{n=m+1}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n.
+    \end{equation*}
+
+    Now consider the case when $z \neq z_0$. We can write $g(z)$ as
+    \begin{align*}
+        g(z) & = \frac{f(z)}{(z-z_0)^{m+1}},                                                               \\
+             & = \frac{1}{(z-z_0)^{m+1}}\left[\sum_{n=m+1}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n\right], \\
+             & = \sum_{n=0}^\infty \frac{f^{(m+1+n)(z_0)}}{(m+1+n)!}(z-z_0)^n.
+    \end{align*}
+
+    Now consider the case when $z = z_0$, we can write
+    \begin{equation*}
+        g(z) = \frac{f^{m+1}(z_0)}{(m+1)!}.
+    \end{equation*}
+
+    Hence, $g$ has a power series representation in the neighborhood $|z-z_0|<R_0$.
+    We also know that the power series of a function is analytic at each point within
+    the neighborhood. Since the power series of $g(z)$ is analytic inside $|z-z_0|<R_0$,
+    then $g(z)$ is analytic at $z_0$.
+\end{proof}
+
+\subsection*{11}
+Show that the function
+\[f_2(z) = \frac{1}{z^2 + 1} \qquad (z \neq \pm i)\]
+is the analytic continuation (Sec.28) of the function
+\[f_1(z) = \sum_{n=0}^\infty(-1)^nz^{2n}\qquad (|z| < 1)\]
+into the domain consisting of all points in the $z$ plane except $z = \pm i$.
+
+\begin{proof}
+    To prove that $f_2$ is an analytic continuation of $f_1$ into the $z$ plane
+    expect for $z = \pm i$ it suffices to show that both $f_1$ and $f_2$ are
+    analytic in their respective domains, and that $f_1(z) = f_2(z)$ for all
+    $z$ in the intersection of the domains.
+
+    We can rewrite $f_2(z)$ into a power series as such
+    \begin{align*}
+        f_2(z) & = \frac{1}{z^2 + 1},                         \\
+               & = -\frac{1}{1 - (-z^2)},                     \\
+               & = \sum_{n=0}^\infty (-z^2)^n    & (|z| < 1), \\
+               & = \sum_{n=0}^\infty (-1)^n z^2n & (|z| < 1), \\
+               & = f_1(z)                        & (|z| < 1). \\
+    \end{align*}
+    Hence, clearly the two functions are equal in $|z| < 1$ since $f_1$
+    nothing but the Taylor series expansion of $f_2$ about $z=0$.
+
+    By definition, $f_1$ is analytic. It is also clear that $f_2$ is analytic
+    everywhere but $z = \pm i$.
+
+    Hence, $f_2$ is the analytic continuation of $f_1$ into the domain of
+    the $z$ plane excluding $z = \pm i$.
+\end{proof}
+
+\section*{73}
+\subsection*{2}
+By multiplying two Maclaurin series term by term show that
+
+(a) $e^z \sin z = z + z^2 + \frac{1}{3}z^3 + ... \qquad (|z| < \infty)$;
+\begin{proof}
+    We can multiplying the series for $e^z$ and $\sin z$ to obtain
+    \begin{align*}
+        e^z \sin z & = \left(\sum_{n=0}^\infty \frac{z^n}{n!}\right)
+        \left(\sum_{n=0}^\infty (-1)^n \frac{z^{2n+1}}{(2n+1)!}\right),        \\
+                   & = \left(1+ z + \frac{z^2}{2} + \frac{z^3}{6} + ...\right)
+        \left(z - \frac{z^3}{6} + \frac{z^5}{5!} + ...\right),                 \\
+                   & = z + z^2 + \frac{1}{3}z^3 + ... \qquad (|z| < \infty).
+    \end{align*}
+\end{proof}
+
+(b) $\frac{e^2}{1 + z} = 1 + \frac{1}{2}z^2 - \frac{1}{3}z^3 + ... \qquad (|z| < \infty)$.
+\begin{proof}
+    We can simply use the Maclaurin series for $e^z$ evaluated at $2$ and the
+    Maclauring series for $\frac{1}{1 - (-z)}$. Thus, we write
+    \begin{align*}
+        e^2 * \frac{1}{1-(-z)} & = [1 + z + \frac{z^2}{2} + \frac{z^3}{6} + \dots]_{z=2}
+        (1 - z + z^2 - z^3 + \dots) \qquad (|z| \leq 1),                                          \\
+                               & = (1 + 2 + \frac{4}{2} + \frac{8}{6} + \dots)
+        (1 - z + z^2 - z^3 + \dots) \qquad (|z| \leq 1),                                          \\
+                               & = 1 + \frac{1}{2}z^2 - \frac{1}{3}z^3 + ... \qquad (|z| \leq 1). \\
+    \end{align*}
+\end{proof}
+
+\end{document}
