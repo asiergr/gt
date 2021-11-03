@@ -33,12 +33,12 @@ in negative powers of z that is valid when $1 < |z| < \infty$.
 \begin{proof}
     We know that $f(z)$ is not analytic at $z=-1$. We can write
     \begin{align*}
-        f(z) & = \frac{1}{z}*\frac{1}{1+1/z},                                            \\
-             & = \frac{1}{z} \sum_{n=0}^\infty (-\frac{1}{z})^n \qquad (1<|z|<\infty),   \\
-             & = \frac{1}{z} \sum_{n=0}^\infty \frac{(-1)^n}{z^n} \qquad (1<|z|<\infty), \\
-             & = \sum_{n=0}^\infty \frac{(-1)^{n}}{z^{n+1}} \qquad (1<|z|<\infty),       \\
+        f(z) & = \frac{1}{z}*\frac{1}{1+1/z},                                       \\
+             & = \frac{1}{z} \sum_{n=0}^\infty (-\frac{1}{z})^n   & (1<|z|<\infty), \\
+             & = \frac{1}{z} \sum_{n=0}^\infty \frac{(-1)^n}{z^n} & (1<|z|<\infty), \\
+             & = \sum_{n=0}^\infty \frac{(-1)^{n}}{z^{n+1}}       & (1<|z|<\infty), \\
         \intertext{now shifting the index,}
-             & = \sum_{n=1}^\infty \frac{(-1)^{n+1}}{z^n} \qquad (1<|z|<\infty).         \\
+             & = \sum_{n=1}^\infty \frac{(-1)^{n+1}}{z^n}         & (1<|z|<\infty). \\
     \end{align*}
 \end{proof}
 
@@ -50,17 +50,17 @@ and specify the regions in which those expansions are valid.
 \begin{proof}
     Clearly $f(z)$ is not analytic at $z=0,1$. First we will rewrite $f(z)$ as such
     \begin{align*}
-        f(z) & = \frac{1}{z^2}\frac{1}{1-z},                                              \\
-             & = \frac{1}{z^2}\sum_{n=0}^\infty z^n \qquad (0 < |z| < 1),                 \\
-             & = \sum_{n=0}^\infty z^n +\frac{1}{z} + \frac{1}{z^2} \qquad (0 < |z| < 1).
+        f(z) & = \frac{1}{z^2}\frac{1}{1-z},                                         \\
+             & = \frac{1}{z^2}\sum_{n=0}^\infty z^n                 & (0 < |z| < 1), \\
+             & = \sum_{n=0}^\infty z^n +\frac{1}{z} + \frac{1}{z^2} & (0 < |z| < 1).
     \end{align*}
 
     Similarly we can write
     \begin{align*}
-        f(z) & =  \frac{1}{z^2(1-z)},                                     \\
-             & = \frac{1}{z^3(1-1/z)},                                    \\
-             & = -\frac{1}{z^3} \sum \frac{1}{z^n} \qquad (1<|z|<\infty), \\
-             & = -\sum_{n=3}^\infty\frac{1}{z^n} \qquad (1<|z|<\infty).   \\
+        f(z) & =  \frac{1}{z^2(1-z)},                                \\
+             & = \frac{1}{z^3(1-1/z)},                               \\
+             & = -\frac{1}{z^3} \sum \frac{1}{z^n} & (1<|z|<\infty), \\
+             & = -\sum_{n=3}^\infty\frac{1}{z^n}   & (1<|z|<\infty). \\
     \end{align*}
 \end{proof}
 
@@ -100,9 +100,9 @@ that
     \begin{align*}
         \frac{1}{z} & = \frac{1}{2}*\frac{1}{1+(z-2)/2},                           \\
                     & = \frac{1}{2}\sum_{n=0}^\infty \left(-\frac{z-2}{2}\right)^n
-        \qquad (|z-2|<2).                                                          \\
+                    & (|z-2|<2).                                                   \\
                     & = \sum_{n=0}^\infty (-1)^n\frac{(z-2)^n}{2^{n+1}}.
-        \qquad (|z-2|<2).
+                    & (|z-2|<2).
     \end{align*}
 
     Now, to find the Taylor series for $\frac{1}{z^2}$ we can simply take the
@@ -146,8 +146,9 @@ is analytic at $z_0$.
 
     Now consider the case when $z \neq z_0$. We can write $g(z)$ as
     \begin{align*}
-        g(z) & = \frac{f(z)}{(z-z_0)^{m+1}},                                                               \\
-             & = \frac{1}{(z-z_0)^{m+1}}\left[\sum_{n=m+1}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n\right], \\
+        g(z) & = \frac{f(z)}{(z-z_0)^{m+1}},                                   \\
+             & = \frac{1}{(z-z_0)^{m+1}}
+        \left[\sum_{n=m+1}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n\right],     \\
              & = \sum_{n=0}^\infty \frac{f^{(m+1+n)(z_0)}}{(m+1+n)!}(z-z_0)^n.
     \end{align*}
 
