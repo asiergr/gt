@@ -1,1 +1,6 @@
 *.pyc
+*.png
+*.test
+*.solution
+CONFIG
+*.lay
