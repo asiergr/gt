@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\ra}{\rightarrow}
+
+% Prob theory specific
+\renewcommand{\P}[1]{\mathbb{P}(#1)}
+\newcommand{\probspace}{(\Omega, \mathcal{F}, \mathbb{P})}
+\newcommand{\Image}[1]{\text{Im}\, #1}
+\newcommand{\E}[1]{\mathbb{E}(#1)}
+\newcommand{\deriv}[2]{\frac{d #1}{d#2}}
+
+\title{HW4}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+
+\begin{document}
+\maketitle
+
+\section*{Exercises}
+\subsection*{6.14}
+Let the pair $(X,Y)$ of random variables have joint distribution function
+$F(x,y)$. Prove that
+\[\P{a<X \leq b, c<Y\leq d} = F(b,d) + F(a,c) - F(a,d) - F(b,c)\]
+for any $a,b,c,d \in \R$ such that $a < b$ and $c < d$.
+
+\begin{proof}
+    We know that $\P{a < X \leq b} = F(b) - F(a)$. Hence, we can write
+    \begin{align*}
+        \P{a<X \leq b, c<Y\leq d} = F(b,d) - F(a,c), \\
+    \end{align*}
+\end{proof}
+
+\subsection*{6.26}
+Random variables $X$ and $Y$ have joint density function
+\begin{equation*}
+    f(x,y) = \begin{cases}
+        e^{-x-y} & \text{if} \ x,y > 0, \\
+        0        & \text{otherwise}.
+    \end{cases}
+\end{equation*}
+Find $\P{X+Y \leq 1}$ and $\P{X>Y}$.
+
+\begin{proof}
+
+\end{proof}
+
+\subsection*{6.36}
+Random variables $X,Y$ and $Z$ have joint density function
+\begin{equation*}
+    f(x,y,z) = \begin{cases}
+        8xyz & \text{if} \ 0 < x,y,z < 1, \\
+        0    & \text{otherwise}.
+    \end{cases}
+\end{equation*}
+Are $X,Y$ and $Z$ independent? Find $\P{X>Y}$ and $\P{Y > Z}$.
+
+\begin{proof}
+
+\end{proof}
+
+\subsection*{6.45}
+If $X$ and $Y$ are independent random variables having the $\chi^2$ distribution
+with $m$ and $n$ degrees of freedom, respectively, prove that $X+Y$ has the
+$\chi^2$ distribution with $m+n$ degrees of freedom.
+
+\begin{proof}
+
+\end{proof}
+
+\subsection*{6.55}
+\subsection*{6.61}
+\subsection*{6.70}
+
+\section*{Problems}
+\subsection*{6}
+\subsection*{20}
+
+\end{document}

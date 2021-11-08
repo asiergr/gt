@@ -1,5 +1,6 @@
 import itertools
 import random
+from typing import DefaultDict
 import busters
 import game
 
@@ -420,9 +421,12 @@ class ParticleFilter(InferenceModule):
 
 
         """
-        "*** YOUR CODE HERE ***"
 
-        raiseNotDefined()
+        part_dist_map = DefaultDict(self.getPositionDistribution)
+        for pos in self.allPositions:
+            part_dist_map[pos] = self.getPositionDistribution(gameState, pos)
+        for k, part in enumerate(self.particles):
+            self.particles[k] = part_dist_map[part].sample()
 
     def getBeliefDistribution(self):
         """
@@ -434,10 +438,10 @@ class ParticleFilter(InferenceModule):
         """
         "*** YOUR CODE HERE ***"
 
-        bDistr = util.Counter()
+        counter = util.Counter()
         for particle in self.particles:
-            bDistr[particle] += float(1) / self.numParticles
-        return bDistr
+            counter[particle] += 1.0 / self.numParticles
+        return counter
 
 
 class JointParticleFilter(ParticleFilter):
