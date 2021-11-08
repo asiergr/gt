@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\O}[1]{\mathcal{O}(#1)}
+\DeclareMathOperator{\sign}{sign}
+
+\title{Midterm 1}
+\author{Asier Garcia Ruiz }
+\date{September 2021}
+
+\begin{document}
+\maketitle
+
+\section*{1}
+Do three iterations of the bisection method by hand for $f(x) = x^3 - 2$
+starting with the interval $a,b = [0,2]$. What is the interval at the end
+of the third iteration? Show your work.
+
+\textbf{Answer:}\\
+Iteration 1:\\
+We have that $a=0$ and $m = 1$, hence $\sign(f(0)) =\sign(f(1))$. So the interval
+is now $[1,2]$
+
+Iteration 2:\\
+We have that $a = 1$, and $m = 1.5$. Thus, $\sign(f(1)) \neq sign(f(1.5))$. The
+new interval is now $[1,1.5]$.
+
+Iteration 3:\\
+We have that $a=1$ and $m= 1.25$. Thus, $sign(f(1)) = sign(f(1.25))$. The new
+interval is $[1.25,1.5]$.
+
+After the third iteration we are left with the interval $a,b = [1.25,1.5]$.
+
+\section*{2}
+Write a program that does the bisection method for the following functions
+until the approximation error (how far away you could be from the real root)
+is less that Err. Tol = $10^{-6}$. Use the relationship discussed in class to
+determina a priori how many iterations you expect ir to take for the method to
+converge to this error tolerance. Plot the approximation error versus
+iteration number for all cases on one log-log plot. What is the slope of the
+line on the plot? What does the slope of the plot indicate?
+
+\textbf{Answer:}\\
+The following listing is in Python 3:
+
+
+
+\end{document}
