@@ -24,9 +24,8 @@
 
 \DeclareMathOperator{\area}{area}
 
-\title{HW4}
+\title{HW5}
 \author{Asier Garcia Ruiz }
-\date{August 2021}
 
 \begin{document}
 \maketitle
@@ -99,7 +98,7 @@ Are $X,Y$ and $Z$ independent? Find $\P{X>Y}$ and $\P{Y > Z}$.
 
     Now to find $\P{X > Y}$ we can write
     \begin{align*}
-        \P{X > Y} & = \int_0^1 \int_0^x \int 0^1 8xyz \ dzdydx,   \\
+        \P{X > Y} & = \int_0^1 \int_0^x \int_0^1 8xyz \ dzdydx,   \\
                   & = \int_0^1 \int_0^x 4xyz^2 \big |_0^1 \ dydx, \\
                   & = \int_0^1 \int_0^x 4xy \ dydx,               \\
                   & = \int_0^1 2xy^2 \big |_0^x \ dx,             \\
@@ -110,7 +109,7 @@ Are $X,Y$ and $Z$ independent? Find $\P{X>Y}$ and $\P{Y > Z}$.
 
     To find $\P{Y > Z}$ we can write
     \begin{align*}
-        \P{Y > Z} & = \int_0^1 \int_0^y \int 0^1 8xyz \ dxdzdy,   \\
+        \P{Y > Z} & = \int_0^1 \int_0^y \int_0^1 8xyz \ dxdzdy,   \\
                   & = \int_0^1 \int_0^y 4zyx^2 \big |_0^1 \ dzdy, \\
                   & = \int_0^1 \int_0^y 4zy \ dzdy,               \\
                   & = \int_0^1 2yz^2 \big |_0^y \ dy,             \\
@@ -141,7 +140,7 @@ $\chi^2$ distribution with $m+n$ degrees of freedom.
         \frac{2}{2^{\frac{1}{2}(m+n)-1}} \int_0^z
         x^{\frac{1}{2}m-1}(z-x)^{\frac{1}{2}n-1}e^{-\frac{1}{2}x} \ dx,                 \\
                & =\frac{1}{2\Gamma(\frac{1}{2}(m + n))}\frac{1}{2^{\frac{1}{2}(m+n)-1}}
-        \left(\frac{1}{2}z\right)^{\frac{1}{2}(m+n)-1}e^{-\frac{1}{2}z}.
+        z^{\frac{1}{2}(m+n)-1}e^{-\frac{1}{2}z}.
     \end{align*}
     Which is nothing but the $\chi^2$ distribution with $m+n$ degrees
     of freedom.
@@ -200,7 +199,41 @@ In other words, the knowledge that $X+Y = a$ provides no useful clue
 about the position of $X$ in the interval $(0,a)$.
 
 \begin{proof}
-    We will start by finding the density function of $Z=X+Y$
+    To find the joint distribution for $X, X + Y$ we will consider the
+    transformation $T: (0,\infty) \rightarrow (0,\infty)$ defined by
+    \[T(x,y) = (u,v) = (x, x+y).\]
+    Clearly, this is bijection. Hence, it has an inverse
+    \[T^{-1}(u,v) = (x, y) = (u, v-u).\]
+    The Jacobian of $T^{-1}$ is
+    \begin{equation*}
+        \begin{vmatrix}
+            \partiald{x}{u} & \partiald{x}{v} \\
+            \partiald{y}{u} & \partiald{y}{v}
+        \end{vmatrix} =
+        \begin{vmatrix}
+            1  & 0 \\
+            -1 & 1
+        \end{vmatrix} = 1.
+    \end{equation*}
+    Hence, we have that $(U,V) = (X, X+Y)$ has joint density function
+    \begin{align*}
+        f_{U,V}(u,v)      & = f_{X,Y}(x(u,v),y(u,v))|J(u,v)|,             \\
+        \intertext{but we know that $X$ and $Y$ are independent. Hence
+            $f_{X,Y}(x,y) = f_X(x)f_Y(y)$, and we can write}
+                          & = f_X(u), f_Y(v - u),                         \\
+        f_{X, X + Y}(u,v) & = (1-e^{-\lambda u})(1-e^{-\lambda (v - u)}).
+    \end{align*}
+
+    Now, we will find the conditional density of $X$ given that $X + Y = a$
+    for some $a \in (0,a)$
+    \begin{align*}
+        f_{X|X + Y}(x | a) & = \frac{f_{X, X+Y}(x,y)}{f_X(x)},                                  \\
+                           & = \frac{(1-e^{-\lambda x})(1-e^{-\lambda a})}{(1-e^{-\lambda x})}, \\
+                           & = (1-e^{-\lambda a})
+    \end{align*}
+    Thus, the information that $X + Y = a$ provides no useful information
+    about the position of $X$ in the interval $(0,a)$ since
+    $f_{X|X + Y}(x | a)$ is uniform in this interval
 \end{proof}
 
 \subsection*{6.70}
@@ -269,17 +302,40 @@ Show that the joint density function of $U$ and $V$ is
     \end{align*}
 
     Now, to find the density function of $U$ and $V$ we will first
-    find the joint distribution function
+    find the joint distribution function. We can write
     \begin{align*}
-        F_{U,V}(u,v) & = \P{U \leq u, V \leq v}, \\
-                     & = \dots,                  \\
-                     & = [F(v) - F(u)]^n
+        F_{U,V}(u,v) & = \P{U \leq u, V \leq v},              \\
+                     & = \P{\min\{X_1,X_2,\dots,X_n\} \leq u,
+            \max\{X_1,X_2,\dots,X_n\} \leq v}
     \end{align*}
+    We also know that
+    \begin{equation}
+        \P{V \leq v} = \P{U\leq u, V \leq v} + \P{U > u, V \leq v}.
+    \end{equation}
+    We know the value of $\P{V \leq v}$, and we are looking for the value
+    of $\P{U\leq u, V \leq v}$. We will now turn our attention to
+    $\P{U > u, V \leq v}$. First, note that this term is $0$ when
+    $u \geq v$. Consider the case when $u < v$, we can write
+    \begin{align*}
+        \P{U > u, V \leq v} & = \P{u < X_1 \leq v, u < X_2 \leq v,\dots, u < X_n \leq v}, \\
+        \intertext{by independence}
+                            & = [\P{u < X_1 \leq v}]^n,                                   \\
+                            & = [F(v) - F(u)]^n.
+    \end{align*}
+
+    Therefore, from (1) we get that
+    \begin{align*}
+        F_{U,V}(u,v) & = \P{U \leq x, V \leq v},             \\
+                     & = \P{V \leq v} - \P{U > u, V \leq v}, \\
+                     & = [F(v)]^n - [F(v) - F(u)]^n.
+    \end{align*}
+
     Now, to find the density function we can simply take derivatives
-    \begin{equation*}
-        \frac{\partial^2}{\partial u \partial v}[F(v) - F(u)]^n
-        = n(n-1)f(u)f(v)[F(v)-F(u)]^{n-2} \ \text{if} \ u < v.
-    \end{equation*}
+    \begin{align*}
+        f_{U,V} & = \frac{\partial^2}{\partial u \partial v}[[F(v)]^n - [F(v) - F(u)]^n, \\
+                & = \partiald{}{u}[n[F(v)]^{n-1}f(v) - n[F(v)-F(u)]^{n-1}f(v)],          \\
+                & = n(n-1)[F(v)-F(u)]^{n-2}f(u)f(v).
+    \end{align*}
 \end{proof}
 
 \subsection*{20}
@@ -311,16 +367,15 @@ probability density function of $(X,Y)$. Find $\P{X+Y < 1}$.
     Now, to find $\P{X+Y < 1}$ we can write
     \begin{align*}
         \P{X + Y < 1} & = \int_0^{1/2}\int_0^x f(x,y) \ dydx
-        + \int_{1/2}^{1}\int_0^{1-x} f(x,y) \ dydx,                \\
-                      & = \int_0^1\int_0^x \frac{1}{2} \ dydx
-        +\int_{1/2}^{1}\int_0^{1-x} 2 \ dydx,            \\ , \\
-                      & = \int_0^{1/2} 2 \ dx
-        + \int_{1/2}^1 2 \ dx,                      \\
-                      & = \left[\frac{1}{4}x^2 \right]_0^{1/2}
-        + \left[\frac{1}{2}x - \frac{1}{4}x^2 \right]_{1/2}^1,     \\
-                      & = \frac{1}{16} + \frac{1}{2} - \frac{1}{4}
-        - \left(\frac{1}{4} - \frac{1}{16}\right),                 \\
-                      & = \frac{2}{16} = \frac{1}{8}.
+        + \int_{1/2}^{1}\int_0^{1-x} f(x,y) \ dydx,              \\
+                      & = \int_0^{1/2}\int_0^x 2 \ dydx
+        +\int_{1/2}^{1}\int_0^{1-x} 2 \ dydx,                    \\ ,
+                      & = \int_0^{1/2} 2x \ dx
+        + \int_{1/2}^1 2(1-x) \ dx,                              \\
+                      & = \left[x^2 \right]_0^{1/2}
+        + \left[2x - x^2 \right]_{1/2}^1,                        \\
+                      & = \frac{1}{4} + 2 - 1 - (1-\frac{1}{4}), \\
+                      & = \frac{2}{4} = \frac{1}{2}
     \end{align*}
 \end{proof}
 
