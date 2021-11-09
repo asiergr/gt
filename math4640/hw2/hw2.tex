@@ -16,9 +16,8 @@
 \renewcommand{\O}[1]{\mathcal{O}(#1)}
 \DeclareMathOperator{\sign}{sign}
 
-\title{Midterm 1}
+\title{HW 3}
 \author{Asier Garcia Ruiz }
-\date{September 2021}
 
 \begin{document}
 \maketitle
@@ -29,16 +28,19 @@ starting with the interval $a,b = [0,2]$. What is the interval at the end
 of the third iteration? Show your work.
 
 \textbf{Answer:}\\
+We will calculate $m = b - \frac{b - a}{2}$. Following the algorithm, if
+$\sign(f(a)) = \sign(f(m))$ then we let $a = m$. Otherwise we let $b = m$.\\
+
 Iteration 1:\\
 We have that $a=0$ and $m = 1$, hence $\sign(f(0)) =\sign(f(1))$. So the interval
 is now $[1,2]$
 
 Iteration 2:\\
-We have that $a = 1$, and $m = 1.5$. Thus, $\sign(f(1)) \neq sign(f(1.5))$. The
+We have that $a = 1$, and $m = 1.5$. Thus, $\sign(f(1)) \neq \sign(f(1.5))$. The
 new interval is now $[1,1.5]$.
 
 Iteration 3:\\
-We have that $a=1$ and $m= 1.25$. Thus, $sign(f(1)) = sign(f(1.25))$. The new
+We have that $a=1$ and $m= 1.25$. Thus, $\sign(f(1)) = \sign(f(1.25))$. The new
 interval is $[1.25,1.5]$.
 
 After the third iteration we are left with the interval $a,b = [1.25,1.5]$.
@@ -47,14 +49,225 @@ After the third iteration we are left with the interval $a,b = [1.25,1.5]$.
 Write a program that does the bisection method for the following functions
 until the approximation error (how far away you could be from the real root)
 is less that Err. Tol = $10^{-6}$. Use the relationship discussed in class to
-determina a priori how many iterations you expect ir to take for the method to
+determine a priori how many iterations you expect it to take for the method to
 converge to this error tolerance. Plot the approximation error versus
 iteration number for all cases on one log-log plot. What is the slope of the
 line on the plot? What does the slope of the plot indicate?
 
 \textbf{Answer:}\\
-The following listing is in Python 3:
+Given the relationship studied in class, we should expect
+\[\log_2\left(\frac{b-a}{10^{-6}}\right)\]
+iterations for this method to converge. Hence, for (a) we would expect
+\[\log_2\left(\frac{1}{10^{-6}}\right) = \log_2 10^6 \approx 20\]
+iterations. For (b) we would expect
+\[\log_2 (3 * 10^6) \approx 22\]
+iterations. For (c) we would expect
+\[\log_2 [(\pi - 0.1)*10^6] \approx 22 \]
+iterations.
 
+The following listing is in Python 3:
+\begin{lstlisting}[language=Python, basicstyle=\small]
+import numpy as np
+from typing import Callable, Tuple, List
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def bisection_method(
+    interval: Tuple[float, float],
+        fn: Callable[[float], float],
+        real_solution: float,
+) -> np.array:
+    """Bisection method.
+    @param interval: the interval considered.
+    @param fn: the function we are finding the roots of.
+    @param real_solution: the true solution.
+    @return: numpy array with the iterations and errors."""
+    # Iteration counter
+    i = 0
+    # where we will store the approximation error
+    iter_error = []
+    while interval[1] - interval[0] > 10e-6:
+        a, b = interval
+        m = a + (b - a) / 2
+        if np.sign(fn(a)) == np.sign(fn(m)):
+            a = m
+        else:
+            b = m
+        # Update interval
+        interval = (a, b)
+        # Append iteration and error
+        iter_error.append((i, abs(real_solution - m)))
+        i += 1
+
+    return np.array(iter_error)
+
+
+def main():
+    # Each of these is just the triple of params
+    # that we want to pass into the bisection_method function.
+    fn_a = lambda x: np.exp(x) - 2
+    int_a = (0, 1)
+    sol_a = np.log(2)
+
+    fn_b = lambda x: np.power(x, 3) - x - 5
+    int_b = (0, 3)
+    sol_b = 2.094551482
+
+    fn_c = lambda x: np.power(x, 2) - np.sin(x)
+    int_c = [0.1, np.pi]
+    sol_c = 0.876726
+
+    # For easier iterating
+    fn_tup = [(fn_a, int_a, sol_a), (fn_b, int_b, sol_b), (fn_c, int_c, sol_c)]
+
+    for fn, interval, sol in fn_tup:
+        data = bisection_method(interval, fn, sol)
+        df = pd.DataFrame(data)
+        # NOTE: This is a log-log plot
+        df.plot(x=0, y=1, kind="scatter", logx=True, logy=True)
+
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+This produces the log-log plots for\\
+(a) \\ \includegraphics[scale=0.75]{q2a}\\
+(b) \\ \includegraphics[scale=0.75]{q2b}\\
+(c) \\ \includegraphics[scale=0.75]{q2c}
+
+The slope of the line in the plot is either downward in (a) and (c)
+or constant in (b). The downward slope indicated that the algorithm
+converges to a solution at an exponential rate. The constant slope
+indicated that the algorithm converged to the solution quickly and then
+"fine-tuned" until the tolerance threshold was met.
+
+\section*{3}
+Repeat question 1 but use the secant method with initial points
+$x_0 = 0, x_1 = 1$. What is the approximate root after three iterations?
+
+\textbf{Answer:}
+For the sake of simplicity and brevity, the formula will be written here and
+simply evaluated at each step. The formula for the next point is
+\[x_{k+1} = x_k - \frac{f(x_k)(x_k - x_{k-1})}{f(x_k)-f(x_{k - 1})}.\]
+Our function is $f(x) = x^3 - 2$.
+
+Iteration 1:\\
+Evaluating the function using $x_{k-1} = x_0 = 0, x_k = x_1 = 1$ we get
+$x_2 = 2$.
+
+Iteration 2:\\
+Evaluating the function using $x_{k-1} = x_1 = 1, x_k = x_2 = 2 $ we get
+$x_3 \approx 1.1428571428571428$.
+
+Iteration 3:\\
+Evaluating the function using $x_{k-1} = x_2 = 2, x_k = x_3 = 1.1428571428571428$
+we get $x_4 = 1.2096774193548387$.
+
+After three iterations we get the approximate root $x_4 = 1.2096774193548387$.
+
+\section*{4}
+Steffenson's method computer a fixed point iteration
+\[x_{k+1} = x_k - f(x_k)\frac{f(x_k)}{f(x_k + f(x_k))-f(x_k)}.\]
+Show that this method is quadratic.
+
+\begin{proof}
+    We will denote the error at iteration $k$ by $e_k = x_k - x^*$, where
+    $x_k$ is the approximate root at iteration $k$ and $x^*$ is the
+    true solution. We will simplify the equation as
+    \[F(x) = x_k - f(x_k)\frac{f(x_k)}{f(x_k + f(x_k))-f(x_k)} =
+        x_k - \frac{f(x_k)}{g(x_k)}\].
+    where
+    \[g(x) = \frac{f(x+f(x)) - f(x)}{f(x)}\]
+
+    Now, consider the Taylor series of $e_{k+1}$, we know
+    \[e_{k+1} \approx e_k F'(x^*) + \frac{1}{2}e^2_k F''(x^*).\]
+
+    Consider the Taylor expansion for $f(x - f(x))$. We have
+    \[f(x + f(x)) = f(x) + f'(x)f(x) + \frac{1}{2}f''(c)f(x^2)\]
+    for some $c \in [x, x + f(x)]$. This allows us to rewrite $g(x)$ as
+    \begin{equation*}
+        g(x) = \frac{f(x+f(x)) - f(x)}{f(x)}
+        = \frac{f'(x)f(x) + \frac{1}{2}f''(c)f(x)^2}{f(x)}
+        = f'(x) + \frac{1}{2}f''(c)f(x).
+    \end{equation*}
+
+    This, in turn, allows us to rewrite $F(x)$ as
+    \begin{equation*}
+        F(x) = x - \frac{f(x)^2}{f(x + f(x)) - f(x)}
+        = x - \frac{f(x)}{f'(x) + \frac{1}{2}f''(c)f(x)}.
+    \end{equation*}
+    Now, we define $F'(x^*) = x^*$ by continuity, and subtract $F(x^*)$ to
+    both sides. We then divide both sides by $x - x^*$ we get
+    \begin{align*}
+        \frac{F(x) - F(x^*)}{x - x^*}
+         & = \frac{x - \frac{f(x)}{f'(x) + \frac{1}{2}f''(c)f(x)} - x^*}{x - x^*}
+        = \frac{x - x^* - \frac{f(x)}{f'(x) + \frac{1}{2}f''(c)f(x)}}{x - x^*},        \\
+         & = 1 - \frac{f(x) - f(x^*)}{x - x^*}\frac{1}{f'(x) + \frac{1}{2}f''(c)f(x)}. \\
+    \end{align*}
+    Finally, from the definition of a derivative, we have that
+    \begin{equation*}
+        F'(x^*) = \lim_{x\rightarrow r} \frac{F(x) - F(r)}{x - x^*}
+        = 1 - f'(x^*)\frac{1}{f'(x^*)} = 0.
+    \end{equation*}
+    Of course, this is contingent on $f'(x^*) \neq 0$, which we assume.
+
+    Hence, we have that $F(x^*) = 0$, leading to the conclusion that
+    \begin{equation*}
+        \lim_{k\rightarrow\infty} \frac{||e_{k+1}||}{||e_k||^2}
+        = \frac{\frac{1}{2}e^2_k F''(x^*)}{||e_k||^2} = \frac{1}{2}F''(x^*),
+    \end{equation*}
+    which is some constant. Hence, this method converges at least quadratically.
+
+
+
+\end{proof}
+
+\section*{5}
+Use Steffensons's method to find the root of $f(x) = 2 - e^x$ using $x_0 = 0$.
+Do the first three iterations.
+
+\textbf{Answer:}\\
+Again, for the sake of simplicity and brevity we will simply evaluate the
+points $x_{k+1}$ rather than typing out the entire equation evaluated at that
+point each time. To recap, Steffenson's method is such that
+\begin{equation*}
+    x_{k+1} = x_k - f(x_k)\frac{f(x_k)}{f(x_k + f(x_k))-f(x_k)}.
+\end{equation*}
+
+Iteration 1:\\
+We evaluate the function at $x_0 = 0$ and get $x_1 \approx 0.5819767068693265$.
+
+Iteration 2:\\
+We evaluate the function at $x_1 = 0.5819767068693265$ and
+get $x_2 \approx 0.6876240765458194$.
+
+Iteration 3:\\
+We evaluate the function at $x_2 = 0.6876240765458194$
+and get $x_3 \approx 0.69313201226772$.
+
+Hence, after the third iteration we get to an approximate root of\\
+${x \approx 0.69313201226772}$.
+
+\section*{6}
+Given an example of a constrained optimization problem and an unconstrained
+optimization problem. Write out each in words and formulate the problem
+mathematically, i.e where you define the appropriate functions as needed in
+\[\min_{\bm{x}}f(\bm{x}) \ \text{subject to} \ \bm{g}(\bm{x}) = \bm{0} \
+    \text{and} \ \bm{h}(\bm{x}) \leq 0.\]
+
+\textbf{Answer:}\\
+An example of an unconstrained optimization problem is, for example, to
+find all local minima to $(x_2 - x_1^2)(x_2-2x_1^2)$. Mathematically we
+can simply write $\min_{x_1,x_2} f(x_1, x_2)$ where
+$f(x_1,x_2) = (x_2 - x_1^2)(x_2-2x_1^2)$.
+
+Constained optimization problems are often observed in economics. For example,
+consider two goods $x_1, x_2$ with utility function $u(x_1, x_2) = x_1x_2$, and
+prices $P_{x_1} = 10$ and $P_{x_2} = 20$. Find the maximum utility with a
+budget of $400$. Formally, we have to find $\max_{x_1,x_2}u(x_1, x_2)$
+subject to ${g(x_1, x_2) = 10x_1 + 20x_2 = 400}$
 
 
 \end{document}

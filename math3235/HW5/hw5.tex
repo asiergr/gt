@@ -38,7 +38,10 @@ for any $a,b,c,d \in \R$ such that $a < b$ and $c < d$.
 \begin{proof}
     We know that $\P{a < X \leq b} = F(b) - F(a)$. Hence, we can write
     \begin{align*}
-        \P{a<X \leq b, c<Y\leq d} = F(b,d) - F(a,c), \\
+        \P{a<X \leq b, c<Y\leq d} & = \P{X \leq b, c \leq Y \leq d} - \P{X \leq a, c \leq Y \leq d}, \\
+                                  & = \P{X \leq b, Y \leq d} + \P{X \leq a, Y \leq c}                \\
+                                  & \qquad - \P{X \leq a, Y \leq d} - \P{X \leq b, Y \leq c},        \\
+                                  & = F(b,d) + F(a,c) - F(a,d) - F(b,c).
     \end{align*}
 \end{proof}
 
@@ -53,7 +56,26 @@ Random variables $X$ and $Y$ have joint density function
 Find $\P{X+Y \leq 1}$ and $\P{X>Y}$.
 
 \begin{proof}
+    For the first we can write
+    \begin{align*}
+        \P{X + Y \leq 1} & = \int_0^1 \int_0^{1-x} e^{-x-y} \ dydx,  \\
+                         & = \int_0^1 -e^{-x-y} \big |_0^{1-x} \ dx, \\
+                         & = \int_0^1 -e^{-1} + e^{-x} \ dx,         \\
+                         & = -e^{-1}x - e^{-x} \big |_0^1,           \\
+                         & = -e^{-1} - e^{-1} - 0 + 1,               \\
+                         & = 1 - 2e^{-1}.
+    \end{align*}
 
+    For the second we can write
+    \begin{align*}
+        \P{X > Y} & = \int_0^\infty \int_0^y e^{-x-y} \ dxdy,                                   \\
+                  & = \int_0^\infty -e^{-x-y} \big |_0^y,                                       \\
+                  & = \int_0^\infty -e^{-2y} + e^{-y} \ dy,                                     \\
+                  & = \lim_{A\rightarrow \infty}[\frac{1}{2}e^{-2y} - e^{-y}]_0^A,              \\
+                  & = \lim_{A\rightarrow \infty} \frac{1}{2}e^{-2A} - e^{-A} - \frac{1}{2} + 1, \\
+                  & = 0 - 0 -\frac{1}{2} + 1,                                                   \\
+                  & = \frac{1}{2}.
+    \end{align*}
 \end{proof}
 
 \subsection*{6.36}
@@ -67,7 +89,32 @@ Random variables $X,Y$ and $Z$ have joint density function
 Are $X,Y$ and $Z$ independent? Find $\P{X>Y}$ and $\P{Y > Z}$.
 
 \begin{proof}
+    Clearly $X, Y$ and $Z$ are independent since we can rewrite
+    $f(x,y,z) = g(x)h(y)k(z)$ where $g(x) = 8x$, $h(y) = y$, and
+    $k(z) = z$ when $0 < x,y,z < 1$, and $g(x)=h(y)=k(z) = 0$
+    otherwise.
 
+    Now to find $\P{X > Y}$ we can write
+    \begin{align*}
+        \P{X > Y} & = \int_0^1 \int_0^x \int 0^1 8xyz \ dzdydx,   \\
+                  & = \int_0^1 \int_0^x 4xyz^2 \big |_0^1 \ dydx, \\
+                  & = \int_0^1 \int_0^x 4xy \ dydx,               \\
+                  & = \int_0^1 2xy^2 \big |_0^x \ dx,             \\
+                  & = \int_0^1 2x^3 \ dx,                         \\
+                  & = \frac{2}{4}x^4 \big |_0^1,                  \\
+                  & = \frac{1}{2}.
+    \end{align*}
+
+    To find $\P{Y > Z}$ we can write
+    \begin{align*}
+        \P{Y > Z} & = \int_0^1 \int_0^y \int 0^1 8xyz \ dxdzdy,   \\
+                  & = \int_0^1 \int_0^y 4zyx^2 \big |_0^1 \ dzdy, \\
+                  & = \int_0^1 \int_0^y 4zy \ dzdy,               \\
+                  & = \int_0^1 2yz^2 \big |_0^y \ dy,             \\
+                  & = \int_0^1 2y^3 \ dy,                         \\
+                  & = \frac{2}{4}y^4 \big |_0^1,                  \\
+                  & = \frac{1}{2}.
+    \end{align*}
 \end{proof}
 
 \subsection*{6.45}
@@ -76,15 +123,96 @@ with $m$ and $n$ degrees of freedom, respectively, prove that $X+Y$ has the
 $\chi^2$ distribution with $m+n$ degrees of freedom.
 
 \begin{proof}
-
+    Using the convolution formula we can write
+    \begin{align*}
+        f_Z(z) & = \int_{-\infty}^\infty f_X(x)f_Y(z-x) \ dx,                           \\
+               & = \int_0^z
+        \frac{1}{2\Gamma(\frac{1}{2}m)}\left(\frac{1}{2}x\right)^{\frac{1}{2}m-1}
+        e^{-\frac{1}{2}x}\frac{1}{2\Gamma(\frac{1}{2}n)}
+        \left(\frac{1}{2}(z-x)\right)^{\frac{1}{2}n-1}e^{-\frac{1}{2}(z-x)} \ dx,       \\
+               & = \int_0^z
+        \frac{1}{2\Gamma(\frac{1}{2}m)}\frac{1}{2\Gamma(\frac{1}{2}n)}
+        \left(\frac{1}{2}x\right)^{\frac{1}{2}m-1}\left(\frac{1}{2}(z-x)\right)^{\frac{1}{2}n-1}
+        e^{-\frac{1}{2}z} \ dx,                                                         \\
+               & = \frac{1}{4\Gamma(\frac{1}{2}(m + n))}
+        \frac{2}{2^{\frac{1}{2}(m+n)-1}} \int_0^z
+        x^{\frac{1}{2}m-1}(z-x)^{\frac{1}{2}n-1}e^{-\frac{1}{2}x} \ dx,                 \\
+               & =\frac{1}{2\Gamma(\frac{1}{2}(m + n))}\frac{1}{2^{\frac{1}{2}(m+n)-1}}
+        \left(\frac{1}{2}z\right)^{\frac{1}{2}(m+n)-1}e^{-\frac{1}{2}z}.
+    \end{align*}
+    Which is nothing but the $\chi^2$ distribution with $m+n$ degrees
+    of freedom.
 \end{proof}
 
 \subsection*{6.55}
+Let $X$ and $Y$ be random variables with joint density function
+\begin{equation*}
+    f(x,y) = \begin{cases}
+        \frac{1}{4}e^{-\frac{1}{2}(x+y)} & \text{if} \ x,y>0, \\
+        0                                & \text{otherwise.}
+    \end{cases}
+\end{equation*}
+Show that the joint density function of $U=\frac{1}{2}(X-Y)$ and
+$V=Y$ is
+\begin{equation*}
+    f_{U,V}(u,v) = \begin{cases}
+        \frac{1}{2}e^{-u-v} & \text{if} (u,v) \in A, \\
+        0                   & \text{otherwise}.
+    \end{cases}
+\end{equation*}
+
+\begin{proof}
+    The mapping $T$ is given by $T(x,y) = (u,v) = (\frac{1}{2}(x-y), y)$. We can
+    see that $T$ is a bijection from $D=\{(x,y): x,y > 0\}$ to
+    ${S = \{(u,v): u \in \R, y>0\}}$.
+\end{proof}
+
 \subsection*{6.61}
+Let $X$, and $Y$ be independent random variables, each having the exponential
+distribution with parameter $\lambda$. Find the joint density function of
+$X$ and $X+Y$, and deduce that the conditional density function of $X$,
+given that $X+Y=a$, in uniform on the interval $(0,a)$ for each $a>0$.
+In other words, the knowledge that $X+Y = a$ provides no useful clue
+about the position of $X$ in the interval $(0,a)$.
+
+\begin{proof}
+
+\end{proof}
+
 \subsection*{6.70}
+Let the pait $(X,Y)$ be uniformly distributed on the unit disc, so that
+\begin{equation*}
+    f_{X,Y}(x,y) = \begin{cases}
+        \pi^{-1} & \text{if} \ x^2 + y^2 \leq 1, \\
+        0        & \text{otherwise}.
+    \end{cases}
+\end{equation*}
+Find $\E{\sqrt{X^2 + Y^2}}$ and $\E{X^2 + Y^2}$.
+
+\begin{proof}
+
+\end{proof}
 
 \section*{Problems}
 \subsection*{6}
+Let $X_1, X_2,...,X_n$ be independent random variables, each having
+distribution function $F$ and density function $f$. Find the distribution
+function of $U$ and the density functions of $U$ and $V$, where
+$U = \min\{X_1,X_2,...,X_n\}$ and $V = \max\{X_1, X_2,...,X_n\}$.
+Show that the joint density function of $U$ and $V$ is
+\begin{equation*}
+    f_{U,V}(u,v) = n(n-1)f(u)f(v)[F(v)-F(u)]^{n-2} \ \text{if} \ u < v.
+\end{equation*}
+
 \subsection*{20}
+Let $X$ and $Y$ be random variables with the vector $(X,Y)$ uniformly
+distributed on the region $R= \{(x,y): 0<y<x<1\}$. Write down the joint
+probability density function of $(X,Y)$. Find $\P{X+Y < 1}$.
+
+\begin{proof}
+
+\end{proof}
+
+
 
 \end{document}
