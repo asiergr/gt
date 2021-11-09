@@ -13,6 +13,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\ra}{\rightarrow}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
 
 % Prob theory specific
 \renewcommand{\P}[1]{\mathbb{P}(#1)}
@@ -20,6 +21,8 @@
 \newcommand{\Image}[1]{\text{Im}\, #1}
 \newcommand{\E}[1]{\mathbb{E}(#1)}
 \newcommand{\deriv}[2]{\frac{d #1}{d#2}}
+
+\DeclareMathOperator{\area}{area}
 
 \title{HW4}
 \author{Asier Garcia Ruiz }
@@ -164,7 +167,28 @@ $V=Y$ is
 \begin{proof}
     The mapping $T$ is given by $T(x,y) = (u,v) = (\frac{1}{2}(x-y), y)$. We can
     see that $T$ is a bijection from $D=\{(x,y): x,y > 0\}$ to
-    ${S = \{(u,v): u \in \R, y>0\}}$.
+    ${S = \{(u,v): u \in \R, y>0\}}$. It also has an inverse
+    $T_{-1}(u,v) = (x,y) = (2u-v, v)$. The Jacobian of $T^{-1}$ is
+    \begin{equation*}
+        \begin{vmatrix}
+            \partiald{x}{u} & \partiald{x}{v} \\
+            \partiald{y}{u} & \partiald{y}{v}
+        \end{vmatrix} =
+        \begin{vmatrix}
+            2 & -1 \\
+            0 & 1
+        \end{vmatrix} = 2.
+    \end{equation*}
+    Hence, we have that $U,V$ have joint density function
+    \begin{align*}
+        f_{U,V}(u,v) & = \frac{1}{4}f_{X,Y}(x(u,v),y(u,v))|J(u,v)|
+                     & \text{if} \ (u,v) \in A,                    \\
+                     & = \frac{1}{4}e^{-\frac{1}{2}(2u+v+v)}|2|
+                     & \text{if} \ (u,v) \in A,                    \\
+                     & = \frac{1}{2}e^{-u-v}
+                     & \text{if} \ (u,v) \in A,                    \\
+    \end{align*}
+    and $f_{U,V} = 0$ if $(u,v) \not \in A$, where $A = \R \times (0,\infty)$.
 \end{proof}
 
 \subsection*{6.61}
@@ -176,11 +200,11 @@ In other words, the knowledge that $X+Y = a$ provides no useful clue
 about the position of $X$ in the interval $(0,a)$.
 
 \begin{proof}
-
+    We will start by finding the density function of $Z=X+Y$
 \end{proof}
 
 \subsection*{6.70}
-Let the pait $(X,Y)$ be uniformly distributed on the unit disc, so that
+Let the pair $(X,Y)$ be uniformly distributed on the unit disc, so that
 \begin{equation*}
     f_{X,Y}(x,y) = \begin{cases}
         \pi^{-1} & \text{if} \ x^2 + y^2 \leq 1, \\
@@ -190,8 +214,25 @@ Let the pait $(X,Y)$ be uniformly distributed on the unit disc, so that
 Find $\E{\sqrt{X^2 + Y^2}}$ and $\E{X^2 + Y^2}$.
 
 \begin{proof}
+    Let $D = \{(x,y): x^2 + y^2 \leq 1\}$. We can now write
+    \begin{align*}
+        \E{\sqrt{X^2+Y^2}} & = \int\int_D \pi^{-1}\sqrt{x^2+y^2} \ dA,        \\
+        \intertext{changing to polar coordinates for simplicity,}
+                           & = \pi^{-1}\int_0^{2\pi}\int_0^1 r^2 \ drd\theta, \\
+                           & = \pi^{-1}\int_0^{2\pi}\frac{1}{3} \ d\theta,    \\
+                           & = \frac{1}{3\pi}2\pi = \frac{2}{3}.
+    \end{align*}
 
+    Using the same $D$ we can write
+    \begin{align*}
+        \E{\sqrt{X^2+Y^2}} & = \int\int_D \pi^{-1}(x^2+y^2) \ dA,             \\
+        \intertext{changing to polar coordinates for simplicity,}
+                           & = \pi^{-1}\int_0^{2\pi}\int_0^1 r^3 \ drd\theta, \\
+                           & = \pi^{-1}\int_0^{2\pi}\frac{1}{4} \ d\theta,    \\
+                           & = \frac{1}{4\pi}2\pi = \frac{1}{2}.
+    \end{align*}
 \end{proof}
+
 
 \section*{Problems}
 \subsection*{6}
@@ -204,13 +245,83 @@ Show that the joint density function of $U$ and $V$ is
     f_{U,V}(u,v) = n(n-1)f(u)f(v)[F(v)-F(u)]^{n-2} \ \text{if} \ u < v.
 \end{equation*}
 
+\begin{proof}
+    We will begin by finding the distribution function of $U$.
+    We can write
+    \begin{align*}
+        F_U(u) & = \P{U \leq u},                                \\
+               & = \P{\min\{X_1,X_2,\dots,X_n\} \leq u},        \\
+               & = 1 - \P{\max\{X_1,X_2,\dots,X_n > u\}},       \\
+               & = 1 - \P{X_1 > u, X_2 > u,\dots,X_n > u},      \\
+        \intertext{by independence,}
+               & = 1 -[\P{X_1 > u}\P{X_2 > u}\dots\P{X_n} > u], \\
+               & = 1 - [1 - F(u)]^n.
+    \end{align*}
+
+    Similarly, the distribution function of $V$ is
+    \begin{align*}
+        F_V(v) & = \P{V \leq v},                                    \\
+               & = \P{\max\{X_1,X_2,\dots,X_n\} \leq v},            \\
+               & = \P{X_1 \leq v, X_2 \leq v,\dots,X_n \leq v},     \\
+        \intertext{by independece,}
+               & = \P{X_1 \leq v}\P{X_2 \leq v}\dots\P{X_n \leq v}, \\
+               & = F(v)^n
+    \end{align*}
+
+    Now, to find the density function of $U$ and $V$ we will first
+    find the joint distribution function
+    \begin{align*}
+        F_{U,V}(u,v) & = \P{U \leq u, V \leq v}, \\
+                     & = \dots,                  \\
+                     & = [F(v) - F(u)]^n
+    \end{align*}
+    Now, to find the density function we can simply take derivatives
+    \begin{equation*}
+        \frac{\partial^2}{\partial u \partial v}[F(v) - F(u)]^n
+        = n(n-1)f(u)f(v)[F(v)-F(u)]^{n-2} \ \text{if} \ u < v.
+    \end{equation*}
+\end{proof}
+
 \subsection*{20}
 Let $X$ and $Y$ be random variables with the vector $(X,Y)$ uniformly
 distributed on the region $R= \{(x,y): 0<y<x<1\}$. Write down the joint
 probability density function of $(X,Y)$. Find $\P{X+Y < 1}$.
 
 \begin{proof}
+    Because the vector $(X,Y)$ is uniformly distributed in $R$ we know
+    the density function is of the form
+    \begin{equation*}
+        f(x,y) = \begin{cases}
+            c & \text{if} \ (x,y) \in R, \\
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
+    Where $c$ is some constant. We know that for some $E\subset \R^2$ we can
+    write
+    \begin{equation*}
+        \P{(X,Y) \in E} = \int\int_{E} f_{X,Y}(x,y)
+        = \int\int_{E\cap R} c = c*\area(E\cap R)\ dxdy
+    \end{equation*}
+    Now, since $f(x,y)$ is a joint density function.
+    \begin{align*}
+        1 = \P{(X,Y) \in \R^2} = c*\area(\R^2 \cap R) = c*\area(R).
+    \end{align*}
+    Since, $\area(R) = \frac{1}{2}$, we have that $c = 2$.
 
+    Now, to find $\P{X+Y < 1}$ we can write
+    \begin{align*}
+        \P{X + Y < 1} & = \int_0^{1/2}\int_0^x f(x,y) \ dydx
+        + \int_{1/2}^{1}\int_0^{1-x} f(x,y) \ dydx,                \\
+                      & = \int_0^1\int_0^x \frac{1}{2} \ dydx
+        +\int_{1/2}^{1}\int_0^{1-x} 2 \ dydx,            \\ , \\
+                      & = \int_0^{1/2} 2 \ dx
+        + \int_{1/2}^1 2 \ dx,                      \\
+                      & = \left[\frac{1}{4}x^2 \right]_0^{1/2}
+        + \left[\frac{1}{2}x - \frac{1}{4}x^2 \right]_{1/2}^1,     \\
+                      & = \frac{1}{16} + \frac{1}{2} - \frac{1}{4}
+        - \left(\frac{1}{4} - \frac{1}{16}\right),                 \\
+                      & = \frac{2}{16} = \frac{1}{8}.
+    \end{align*}
 \end{proof}
 
 
