@@ -120,30 +120,24 @@ Are $X,Y$ and $Z$ independent? Find $\P{X>Y}$ and $\P{Y > Z}$.
 \end{proof}
 
 \subsection*{6.45}
-If $X$ and $Y$ are independent random variables having the $\chi^2$ distribution
-with $m$ and $n$ degrees of freedom, respectively, prove that $X+Y$ has the
-$\chi^2$ distribution with $m+n$ degrees of freedom.
+If $X$ and $Y$ have joint density function
+\begin{equation*}
+    f(x,y) = \begin{cases}
+        \frac{1}{2}(x+y)e^{-x-y} & \text{if} \ x,y > 0, \\
+        0                        & \text{otherwise}.
+    \end{cases}
+\end{equation*}
+find the density function of $X+Y$.
 
 \begin{proof}
-    Using the convolution formula we can write
+    Using the convolution formula for $Z = X+Y$ we can write
     \begin{align*}
-        f_Z(z) & = \int_{-\infty}^\infty f_X(x)f_Y(z-x) \ dx,                           \\
-               & = \int_0^z
-        \frac{1}{2\Gamma(\frac{1}{2}m)}\left(\frac{1}{2}x\right)^{\frac{1}{2}m-1}
-        e^{-\frac{1}{2}x}\frac{1}{2\Gamma(\frac{1}{2}n)}
-        \left(\frac{1}{2}(z-x)\right)^{\frac{1}{2}n-1}e^{-\frac{1}{2}(z-x)} \ dx,       \\
-               & = \int_0^z
-        \frac{1}{2\Gamma(\frac{1}{2}m)}\frac{1}{2\Gamma(\frac{1}{2}n)}
-        \left(\frac{1}{2}x\right)^{\frac{1}{2}m-1}\left(\frac{1}{2}(z-x)\right)^{\frac{1}{2}n-1}
-        e^{-\frac{1}{2}z} \ dx,                                                         \\
-               & = \frac{1}{4\Gamma(\frac{1}{2}(m + n))}
-        \frac{2}{2^{\frac{1}{2}(m+n)-1}} \int_0^z
-        x^{\frac{1}{2}m-1}(z-x)^{\frac{1}{2}n-1}e^{-\frac{1}{2}x} \ dx,                 \\
-               & =\frac{1}{2\Gamma(\frac{1}{2}(m + n))}\frac{1}{2^{\frac{1}{2}(m+n)-1}}
-        z^{\frac{1}{2}(m+n)-1}e^{-\frac{1}{2}z}.
+        f_Z(z) & = \int_0^\infty f_X(x)f_Y(z - x) \ dx,  \\
+               & = \int_0^z f(x, z - x) \ dx,            \\
+               & = \int_0^z \frac{1}{2}(z)e^{-z},        \\
+               & = \left[\frac{1}{2}ze^{-z}x\right]_0^z, \\
+               & = \frac{1}{2}z^2e^{-z}.
     \end{align*}
-    Which is nothing but the $\chi^2$ distribution with $m+n$ degrees
-    of freedom.
 \end{proof}
 
 \subsection*{6.55}
@@ -162,6 +156,9 @@ $V=Y$ is
         0                   & \text{otherwise}.
     \end{cases}
 \end{equation*}
+where $A$ is the region of the $(u,v)$ plane to be determined. Deduce that $U$ has the
+bilateral exponential distribution with density function
+\[f_U(u) = \frac{1}{2}e^{-|u|} \ \text{for} \ u \in \R.\]
 
 \begin{proof}
     The mapping $T$ is given by $T(x,y) = (u,v) = (\frac{1}{2}(x-y), y)$. We can
@@ -188,6 +185,17 @@ $V=Y$ is
                      & \text{if} \ (u,v) \in A,                    \\
     \end{align*}
     and $f_{U,V} = 0$ if $(u,v) \not \in A$, where $A = \R \times (0,\infty)$.
+
+    Now to find the distribution of $U$ we can simply integrate over all values of $V$.
+    Hence we write
+    \begin{align*}
+        f_U(u) & = \int_0^\infty f_{U,V}(u,v) \ dv,            \\
+               & = \int_0^\infty \frac{1}{2}e^{-u-v} \ dv,     \\
+               & = \frac{1}{2}e^{-u}\int_0^\infty e^{-v} \ dv, \\
+               & = \frac{1}{2}e^{-u}.
+        \intertext{since $u > 0$.}
+               & = \frac{1}{2}e^{-|u|}.
+    \end{align*}
 \end{proof}
 
 \subsection*{6.61}
@@ -215,21 +223,32 @@ about the position of $X$ in the interval $(0,a)$.
             -1 & 1
         \end{vmatrix} = 1.
     \end{equation*}
+    Recall that
+    \begin{equation*}
+        f_{X,Y}(x,y) = \begin{cases}
+            \lambda^2e^{-\lambda(x+y)} = \lambda e^{-\lambda x} \lambda e^{-\lambda y} & \text{if} \ x,y > 0. \\
+            0                                                                          & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
     Hence, we have that $(U,V) = (X, X+Y)$ has joint density function
     \begin{align*}
-        f_{U,V}(u,v)      & = f_{X,Y}(x(u,v),y(u,v))|J(u,v)|,             \\
-        \intertext{but we know that $X$ and $Y$ are independent. Hence
-            $f_{X,Y}(x,y) = f_X(x)f_Y(y)$, and we can write}
-                          & = f_X(u), f_Y(v - u),                         \\
-        f_{X, X + Y}(u,v) & = (1-e^{-\lambda u})(1-e^{-\lambda (v - u)}).
+        f_{U,V}(u,v)      & = f_{X,Y}(x(u,v),y(u,v))|J(u,v)|,     \\
+                          & = \lambda^2 e^{-\lambda (u + v - u)}, \\
+                          & = \lambda^2 e^{-\lambda (v)},         \\
+        f_{X, X + Y}(u,v) & = \lambda^2 e^{-\lambda(x + y)},      \\
     \end{align*}
 
     Now, we will find the conditional density of $X$ given that $X + Y = a$
-    for some $a \in (0,a)$
+    for some $a \in (0,a)$. First note that
+    \begin{equation*}
+        f_V(v) = \int_0^v \lambda^2e^{-\lambda v} \ du = \lambda^2 ve^{-\lambda v}
+    \end{equation*}
     \begin{align*}
-        f_{X|X + Y}(x | a) & = \frac{f_{X, X+Y}(x,y)}{f_X(x)},                                  \\
-                           & = \frac{(1-e^{-\lambda x})(1-e^{-\lambda a})}{(1-e^{-\lambda x})}, \\
-                           & = (1-e^{-\lambda a})
+        f_{X|X + Y}(x | a) & = \frac{f_{U,V}(u,v)}{f_V(v)},                                \\
+                           & = \frac{\lambda^2 e^{-\lambda v}}{\lambda^2 ve^{-\lambda v}}, \\
+                           & = \frac{1}{v},
+        \intertext{since $v = x + y = a$,}
+                           & = \frac{1}{a}
     \end{align*}
     Thus, the information that $X + Y = a$ provides no useful information
     about the position of $X$ in the interval $(0,a)$ since
@@ -313,7 +332,7 @@ Show that the joint density function of $U$ and $V$ is
         \P{V \leq v} = \P{U\leq u, V \leq v} + \P{U > u, V \leq v}.
     \end{equation}
     We know the value of $\P{V \leq v}$, and we are looking for the value
-    of $\P{U\leq u, V \leq v}$. We will now turn our attention to
+    of ${\P{U \leq u, V \leq v}}$. We will now turn our attention to
     $\P{U > u, V \leq v}$. First, note that this term is $0$ when
     $u \geq v$. Consider the case when $u < v$, we can write
     \begin{align*}
@@ -342,6 +361,11 @@ Show that the joint density function of $U$ and $V$ is
 Let $X$ and $Y$ be random variables with the vector $(X,Y)$ uniformly
 distributed on the region $R= \{(x,y): 0<y<x<1\}$. Write down the joint
 probability density function of $(X,Y)$. Find $\P{X+Y < 1}$.
+
+Find the probability density function $f_X(x)$ of $X$, and find also
+$\E{X}$. Find the conditional probability density function
+$f_{Y|X}(y|x)$ of $Y$ given that $X=x$, and find also
+$\E{Y|X = x}$.
 
 \begin{proof}
     Because the vector $(X,Y)$ is uniformly distributed in $R$ we know
@@ -376,6 +400,34 @@ probability density function of $(X,Y)$. Find $\P{X+Y < 1}$.
         + \left[2x - x^2 \right]_{1/2}^1,                        \\
                       & = \frac{1}{4} + 2 - 1 - (1-\frac{1}{4}), \\
                       & = \frac{2}{4} = \frac{1}{2}
+    \end{align*}
+
+    Now to find $f_X(x)$ we can simply take the marginal distribution
+    \begin{align*}
+        f_X(x) & = \int_0^x f(x,y) \ dy, \\
+               & = \int_0^x 2 \ dy,      \\
+               & = 2y \big |_0^x,        \\
+               & = 2x.
+    \end{align*}
+    Now we calculate the expectation
+    \begin{align*}
+        \E{X} & = \int_0^1 x f_X(x) \ dx,    \\
+              & = \int_0^1 2x^2 \ dx,        \\
+              & = \frac{2}{3}x^3 \big |_0^1, \\
+              & = \frac{2}{3}.
+    \end{align*}
+    Now we calculate the conditional density function
+    \begin{align*}
+        f_{Y|X}(y|x) & = \frac{f_{X,Y}(x,y)}{f_X(x)}, \\
+                     & = \frac{2}{2x},                \\
+                     & = \frac{1}{x}.
+    \end{align*}
+    Finally, we find the conditional expectation
+    \begin{align*}
+        \E{Y|X=x} & = \int_0^x y f_{Y|X}(y|x) \ dy,                \\
+                  & = \int_0^x y \frac{1}{x} \ dy,                 \\
+                  & = \frac{1}{x} \left[\frac{1}{2}y^2\right]_0^x, \\
+                  & = \frac{x^2}{2x} = \frac{1}{2}x.
     \end{align*}
 \end{proof}
 
