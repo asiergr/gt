@@ -1,6 +1,10 @@
 *.pyc
 *.png
 *.test
-*.solution
+*.solution*
+nnet
+percep
+*.txt
+*.csv
 CONFIG
 *.lay
