@@ -17,11 +17,565 @@
 \DeclareMathOperator*{\Log}{Log}
 \DeclareMathOperator*{\Arg}{Arg}
 \DeclareMathOperator*{\sech}{sech}
+\DeclareMathOperator*{\Res}{Res}
 
-\title{HW 10}
+\title{HW 11\&12}
 \author{Asier Garcia Ruiz }
 \date{August 2021}
 \begin{document}
 \maketitle
+
+
+\section*{74-77}
+\subsection*{2}
+Use Cauchy's Residue theorem (Sec.76) to evaluate the integral of each of these
+functions around the circle $|z|=3$ in the positive sense:
+
+(a) $\frac{\exp(-z)}{z^2}$
+\begin{proof}
+    We have that $f(z) = \frac{e^{-z}}{z^2}$ is not analytic at $z = 0$ in the disk.
+    Hence, we find the Laurent expansion about this point. This is
+    \begin{align*}
+        \frac{e^{-z}}{z^2} & = \frac{1}{z^2}\sum_{n=0}^\infty \frac{(-1)^n}{n!}z^n,       \\
+                           & = \frac{1}{z^2}\left(1 - z + \frac{1}{2}z^2 - \dots \right), \\
+                           & = (\frac{1}{z^2} - \frac{1}{z} + \frac{1}{2} - \dots).
+    \end{align*}
+    Clearly $\Res_{z=0} f(z) = -1$. Thus,
+    \[\int_C f(z) \ dz = -2\pi i\]
+\end{proof}
+
+(b) $f(z) = \frac{\exp(-z)}{(z-1)^2}$
+\begin{proof}
+    We have that $f(z)$ is not analytic only at $z = 1$ in the disk. Hence,
+    we find the Laurent expansion about this point. We write
+    \begin{align*}
+        \frac{e^{-z}}{(z-1)^2} & = \frac{1}{(z-1)^2}
+        (\frac{1}{e} - \frac{1}{e}(z-1) + \frac{1}{2e}(z-1)^2 - \frac{1}{6e}(z-1)^3 + \dots),                \\
+                               & = \frac{1}{e(z-1)^2} - \frac{1}{e(z-1)} + \frac{1}{2e} - \frac{1}{6e(z-1)}. \\
+    \end{align*}
+    Clearly, $\Res_{z=1} f(z) = -\frac{1}{e}$. Thus,
+    \[\int_C f(z) \ dz = -\frac{2\pi i}{e}\]
+\end{proof}
+
+(c) $f(z) = z^2 e^{1/z}$
+\begin{proof}
+    We have that $f(z)$ is not analytic only at $z=0$ in the disk. The Laurent
+    expansion about this point is
+    \begin{align*}
+        f(z) & = z^2\sum_{n=0}^\infty \frac{1}{k!z^k},                           \\
+             & = z^2(1 + \frac{1}{z} + \frac{1}{2z^2} + \frac{1}{6z^3} + \dots), \\
+             & = z^2 + z + \frac{1}{2} + \frac{1}{6z} + \dots.
+    \end{align*}
+    Clearly $\Res_{z=0} f(z) = \frac{1}{6}$. Thus,
+    \[\int_C f(z) \ dz = \frac{\pi i}{3}\]
+\end{proof}
+
+(d) $f(z) = \frac{z + 1}{z^2 - 2z}$
+\begin{proof}
+    We have that $f(z)$ is not analytic at $z=0,2$. First, we find the Laurent
+    expansion about $z =0$. We write
+    \begin{align*}
+        \frac{z+1}{z(z-2)} & = \frac{z+1}{z}\frac{1}{-2+z},                  \\
+                           & = \frac{z+1}{-2z} \frac{1}{1-z/2},              \\
+                           & = (-\frac{1}{2} - \frac{1}{2z})(1 - \frac{z}{2}
+        + \frac{z^2}{3} - \dots ).                                           \\
+    \end{align*}
+    We find that $\Res_{z=0} f(z) = -\frac{1}{2}$.
+
+    Now to find the Laurent expression about $z =2$ we write
+    \begin{align*}
+        \frac{z+1}{z(z-2)} & =\frac{(z-2) + 3}{z-2} * \frac{1}{2 + (z-2)}, \\
+                           & = \frac{1}{2}(1 + \frac{3}{z-2})
+        \left[1 - \frac{z-2}{2} + \frac{(z-2)^2}{4} - \dots\right].        \\
+    \end{align*}
+    We find that $\Res_{z=2} f(z) = \frac{3}{2}$.
+
+    Hence, finally we have that
+    \[\int_C f(z) \ dz = 2\pi i(-\frac{1}{2} + \frac{3}{2}) = 2\pi i.\]
+\end{proof}
+
+\subsection*{4}
+Use theorem in Sec. 77, involving a single residue, to evaluate the integral
+of each of these functions around the circle $|z|=2$ in the positive sense.
+
+(a)$f(z) = \frac{z^5}{1-z^3}$
+\begin{proof}
+    To compute the integral first we will find
+    ${\Res_{z=0}[(\frac{1}{z^2})f(\frac{1}{z})]}$. We can easily compute the
+    Laurent expansion
+    \begin{align*}
+        \frac{1}{z^2}f(\frac{1}{z}) & = \frac{1}{z^2}\frac{1}{z^7 - z^4},      \\                                         \\
+                                    & = -\frac{1}{z^4}\frac{1}{1-z^3},         \\
+                                    & = -\frac{1}{z^4}(1 + z^3 + z^6 + \dots). \\
+    \end{align*}
+    We find that the residue is $B = -1$, thus
+    \[\int_C f(z) \ dz = -2\pi i\]
+\end{proof}
+
+(b) $f(z) = \frac{1}{1 + z^2}$.
+\begin{proof}
+    To compute the integral first we will find
+    ${\Res_{z=0}[(\frac{1}{z^2})f(\frac{1}{z})]}$. We can easily compute the
+    Laurent expansion
+    \begin{align*}
+        \frac{1}{z^2}\frac{1}{1 + (1/z)^2} & = \frac{1}{z^2}\frac{1}{1 - (-z^{-2})},                     \\
+                                           & = \frac{1}{z^2}(1 - \frac{1}{z^2} + \frac{1}{z^4} - \dots). \\
+    \end{align*}
+    We find that the residue is $B = 0 $, thus
+    \[\int_C f(z) \ dz = 0\]
+\end{proof}
+
+(c) $f(z) = \frac{1}{z}$
+\begin{proof}
+    To compute the integral first we will find
+    ${\Res_{z=0}[(\frac{1}{z^2})f(\frac{1}{z})]}$. We can easily compute the
+    Laurent expansion
+    \begin{align*}
+        \frac{1}{z^2}\frac{1}{z^{-1}} & = \frac{1}{z}. \\
+    \end{align*}
+    Evidently $B = 1$, thus
+    \[\int_C f(z) \ dz = 1.\]
+\end{proof}
+
+
+\section*{78-79}
+\subsection*{1}
+In each case, write the principal part of the function at its isolated singular point
+and determine whether that point is a removable singular point, an essential
+singular point, or a pole:
+
+(a) $f(z) = ze^{-z}$
+\begin{proof}
+    We see that $f(z)$ is not analytic at $z = 0$. We find the Laurent expansion
+    at this point to
+    \begin{align*}
+        ze^{-z} & = z(1 - z + \frac{z^2}{2} - \frac{z^3}{6} + \dots).
+    \end{align*}
+    Clearly, this is an essential singularity
+\end{proof}
+
+(b) $f(z) = \frac{z^2}{1 + z}$
+\begin{proof}
+    We see that $f(z)$ is not analytic at $z = -1$. We find the Laurent expansion
+    at this point to
+    \begin{align*}
+        f(z) & = z + \frac{1}{z + 1} - 1
+    \end{align*}
+    Thus, this is a pole of order $1$.
+\end{proof}
+
+(c) $f(z) = \frac{\sin z}{z}$
+\begin{proof}
+    We see that $f(z)$ is not analytic at $z = 0$. We find the Laurent expansion
+    at this point to be function itself. Hence, this is a pole of order $1$.
+\end{proof}
+
+(d) $f(z) = \frac{\cos z}{z}$
+\begin{proof}
+    We see that $f(z)$ is not analytic at $z = 0$. We find the Laurent expansion
+    at this point to be function itself. Hence, this is a pole of order $1$.
+\end{proof}
+
+(e) $f(z) = \frac{1}{(2-z)^3}$
+\begin{proof}
+    We see that $f(z)$ is not analytic when $z = 2$. We find the Laurent expansion
+    at this point to be $f(z)$ itself. Hence, this is a pole of order $1$.
+\end{proof}
+
+\subsection*{4}
+Write a function
+\[f(z) = \frac{8a^3z^2}{(z^2 + a^2)^3} \quad (a > 0)\]
+as
+\[f(z) = \frac{\phi(z)}{(z-ai)^3} \ \text{where} \ \phi(z) = \frac{8a^3z^2}{(z+ai)^3}.\]
+
+Point out why $\phi(z)$ has a Taylor series representation about $z = ai$, and then
+use it to show that the principal part of $f$ at that point is
+\[\frac{\phi''(ai)/2}{z - ai} + \frac{\phi'(ai)}{(z-ai)^2} + \frac{\phi(ai)}{(z-ai)^3}
+    = \frac{i/2}{z - ai} - \frac{a/2}{(z-ai)^2} - \frac{a^2i}{(z-ai)^3}.\]
+
+\begin{proof}
+    First we can easily rearrage $f(z)$ as
+    \begin{align*}
+        f(z) & = \frac{8a^3z^2}{(z^2 + a^2)^3},        \\
+             & = \frac{8a^3z^2}{((z - ai)(z + ai))^3}, \\
+             & = \frac{8a^3z^2}{(z-ai)^3(z+ai)^3},     \\
+             & = \frac{\phi(z)}{(z - ai)^3}.
+    \end{align*}
+    where $\phi(z) = \frac{8a^3z^2}{(z+ai)^3}$.
+
+    Now, $\phi(z)$ has a Taylor series at $z = ai$ because it is analytic within
+    a neighborhood of $z = ai$. Thus we can write the Taylor expansion of $f(z)$
+    about $z = ai$ as
+    \begin{equation*}
+        f(z) = \frac{1}{(z-ai)^3}\left[\phi(ai) + \phi'(ai)(z-ai)
+            + \frac{1}{2}\phi''(ai)(z-ai)^3 + \dots\right].
+    \end{equation*}
+    By simple differentiation
+    \begin{equation*}
+        \phi'(z) = \frac{16a^4iz-8a^3z^2}{(z+ai)^4},
+    \end{equation*}
+    and
+    \begin{equation*}
+        \phi''(z) = \frac{16a^3(z^2-4aiz-a^2)}{(z+ai)^3}.
+    \end{equation*}
+    Thus
+    \begin{equation*}
+        \phi(ai) = -a^2i, \phi'(z) = -\frac{a}{2}, \phi''(z) = -i.
+    \end{equation*}
+    Thus, finally
+    \begin{equation*}
+        f(z) = \frac{1}{(z-ai)^3}\left[-a^2i - \frac{a}{2}(z-ai) - \frac{i}{2}(z-ai)^2\right],
+    \end{equation*}
+    giving that the principal part of $f(z)$ is
+    \[\frac{i/2}{z - ai} - \frac{a/2}{(z-ai)^2} - \frac{a^2i}{(z-ai)^3}.\]
+\end{proof}
+
+\section*{80-81}
+\subsection*{1}
+In each case, show that any singular point of the function is a pole.
+Determine the order $m$ of each pole, and find the corresponding residue $B$.
+
+(a) $f(z) = \frac{z + 1}{z^2 + 9}$
+\begin{proof}
+    Clearly $f(z)$ has two singular points at $z = \pm 3i$. Since we can write
+    \[\frac{z + 1}{(z-3i)(z+3i)},\]
+    we can write
+    \begin{equation*}
+        \phi(z) = \frac{z + 1}{z \pm 3i},
+    \end{equation*}
+    and
+    \begin{equation*}
+        f(z) = \frac{\phi(z)}{z \mp 3i},
+    \end{equation*}
+    we have two poles of order $1$. Hence, the residues are
+    \[\phi(\pm 3i) = \frac{3 \pm i}{6}.\]
+\end{proof}
+
+(b) $f(z) = \frac{z^2 + 2}{z - 1}$
+\begin{proof}
+    Clearly $f(z)$ has a singular point at $z = 1$. We let $\phi(z) = z^2 + 2$
+    and thus $B = \phi(1) = 3$.
+\end{proof}
+
+(c) $f(z) = \frac{z^3}{(2z + 1)^3} = \frac{1}{2^3}\frac{z^3}{(z + 1/2)^3}$
+\begin{proof}
+    Clearly we have a pole of order $3$ at $z = -\frac{1}{2}$.
+    Let $\phi(z) = \frac{z^3}{8}$
+    and thus
+    \[B = \frac{\phi^{(2)}(-\frac{1}{2})}{2!} = \frac{-3}{16}\]
+\end{proof}
+
+(d) $f(z) = \frac{e^z}{z^2 + \pi^2}$
+\begin{proof}
+    By rewritting $f(z) = \frac{e^z}{(z - \pi i)(z + \pi i)}$ we see we have
+    two poles of order $1$ at $z = \pm \pi i$.
+    We let $\phi(z) = \frac{e^z}{z \pm \pi i}$ and thus we get that the residuals
+    are $B = \phi(z) = \pm \frac{i}{2\pi}$.
+\end{proof}
+
+\subsection*{4}
+Find the value of the integral
+\[\int_C \frac{3z^3 + 2}{(z-1)(z^2 + 9)} \ dz,\]
+taken counterclockwise around the circle
+
+(a) $|z - 2| = 2$
+\begin{proof}
+    In this circle the integrand is not analytic at $z = 1$. Hence,
+    we have a pole of order $1$. We can let
+    \[\phi(z) = \frac{3z^2+2}{(z^2 + 9)}.\]
+    Thus, the residue is $B = \phi(1) = \frac{5}{10}$. Finally we get that
+    \[\int_C \frac{3z^3 + 2}{(z-1)(z^2 + 9)} \ dz = 2\pi i \frac{1}{2} = \pi i.\]
+\end{proof}
+
+(b) $|z| = 4$
+\begin{proof}
+    In this circle the integrand is not analytic at $z = 1, \pm 3i$.
+    The computation for the residue at $z =1$ is the same as in (a).
+    To find the residue at $z = \pm 3i$ we let
+    \[\phi(z) = \frac{3z^2 + 2}{(z-1)(z\pm 3i)}.\]
+    Hence, we have two poles of order 1. We can find the residues
+    $B = \phi(\pm 3i) = \frac{5}{4} \pm \frac{5i}{12}$.
+
+    Finally we get that
+    \[\int_C \frac{3z^3 + 2}{(z-1)(z^2 + 9)} \ dz =
+        2\pi i \left(\frac{1}{2} + \frac{5}{2}\right) = 6\pi i.\]
+\end{proof}
+
+\section*{82-83}
+\subsection*{3}
+Show that
+
+(a) $\Res_{z=\pi i/2} \frac{\sinh z}{z^2\cosh z} = -\frac{4}{\pi^2}$
+\begin{proof}
+    We let $\frac{\sinh z}{z^2 \cosh z} = \frac{p(z)}{q(z)}$. Then
+    we have that both $p(z),g(z)$ are analytic at ${z_0 = \pi i/2}$. Additionally,
+    $p(z_0) = i$, $g(z_0) = 0$, and
+    \[g'(z_0) = 2z\cosh z + z^2\sinh(z) \big |_{z_0} = i\frac{-\pi^2}{4}.\]
+    Hence,
+    \begin{equation*}
+        \Res_{z = \pi i/2}\frac{p(z)}{q(z)} = \frac{p(z_0)}{q'(z_0)}
+        = \frac{i}{i\frac{-\pi^2}{4}} = -\frac{4}{\pi^2}
+    \end{equation*}
+\end{proof}
+
+(b) $\Res_{z=\pi i} \frac{e^{zt}}{\sinh z}
+    + \Res_{z=-\pi i} \frac{e^{zt}}{\sinh z} = -2\cos(\pi t)$
+\begin{proof}
+    We let $\frac{e^{zt}}{\sinh z} = \frac{p(z)}{q(z)}$. Then we have that
+    both $p(z), g(z)$ are analytic at $z_0 = \pm \pi i$. Furthermore,
+    $p(z_0) = e^{\pm \pi i} \neq 0$, $g(z_0) = 0$, and
+    \[g'(z_0) = \cosh z \big |_{z_0} = -1\].
+
+    Hence,
+    \begin{align*}
+        \Res_{z=\pi i} \frac{e^{zt}}{\sinh z}
+        + \Res_{z=-\pi i} \frac{e^{zt}}{\sinh z}
+         & = \frac{e^{\pi i t}}{-1} + \frac{e^{-\pi i t}}{-1}, \\
+         & = -2\cos(\pi t).
+    \end{align*}
+\end{proof}
+
+\subsection*{7}
+Show that
+\[\int_C \frac{dz}{(z^2 - 1)^2 + 3} = \frac{\pi}{2\sqrt{2}},\]
+where $C$ is the positively oriented boundary of the rectangle whose
+sides lie along the lines $x = \pm 2, y = 0$ and $y = 1$.
+
+\begin{proof}
+    We let \[f(z) = \frac{1}{(z^2-1)^2 + 3} = \frac{p(z)}{q(z)}\]
+    where $p(z) = 1$ and $q(z) = (z^2-1)^2 + 3$. We have by the
+    suggestion that the zeros of $q(z)$ are the square roots of
+    $1 \pm \sqrt{3}i$ hence
+    \[z = \pm\left(\frac{i + \sqrt{3}}{\sqrt{2}}\right),\]
+    and
+    \[z = \pm\left(\frac{i - \sqrt{3}}{\sqrt{2}}\right).\]
+
+    Of these roots $z_0 = \frac{i + \sqrt{3}}{\sqrt{2}}$ and
+    $-\overline{z_0} = \frac{i - \sqrt{3}}{\sqrt{2}}$ are within
+    the boundary rectangle.
+
+    Now, we can calculate
+    \begin{equation*}
+        q'(z) = 2(z^2 - 1)(2z).
+    \end{equation*}
+    Hence we can evaluate
+    \begin{align*}
+        q'(z_0) & = 2(\left(\frac{\sqrt{3} + i}{\sqrt{2}}\right)^2 -1)*2\left(\frac{\sqrt{3}+i}{\sqrt{2}}\right), \\
+                & = 4\sqrt{3}i\left(\frac{\sqrt{3} + i}{\sqrt{2}}\right) \neq 0,
+    \end{align*}
+    and
+    \begin{align*}
+        q'(-\overline{z_0}) & = 2(\left(\frac{-\sqrt{3} + i}{\sqrt{2}}\right)^2 -1)*2\left(\frac{-\sqrt{3}+i}{\sqrt{2}}\right), \\
+                            & = -4\sqrt{3}i\left(\frac{i - \sqrt{3}}{\sqrt{2}}\right) \neq 0.
+    \end{align*}
+
+    Now by Theorem 2,
+    \begin{equation*}
+        \Res_{z=z_0} \frac{p(z)}{q(z)} = \frac{p(z_0)}{q'(z_0)}
+        = \frac{\sqrt{2}}{4\sqrt{3}i(\sqrt{3} + i)}
+    \end{equation*}
+    and
+    \begin{equation*}
+        \Res_{z=-\overline{z_0}} \frac{p(z)}{q(z)} = \frac{p(-\overline{z_0})}{q'(-\overline{z_0})}
+        = \frac{-\sqrt{2}}{4\sqrt{3}i(-\sqrt{3} + i)}
+    \end{equation*}
+
+    Finally by the Cauchy Residue Theorem we have that
+    \begin{align*}
+        \int_C f(z) \ dz & = 2\pi i \sum_{k=0}^1 \Res_{z=z_k} f(z),                                                                      \\
+                         & = 2\pi i\left[\frac{\sqrt{2}}{4\sqrt{3}i(\sqrt{3} + i)} + \frac{-\sqrt{2}}{4\sqrt{3}i(-\sqrt{3} + i)}\right], \\
+                         & = 2\pi i\frac{1}{2\sqrt{2}\sqrt{3}i}\left[\frac{-2\sqrt{3}}{(\sqrt{3} + i)(-\sqrt{3} + i)}\right],            \\
+                         & = 2\pi i\frac{-1}{-4\sqrt{2}i},                                                                               \\
+                         & = 2\pi i \frac{1}{4\sqrt{2}i},                                                                                \\
+                         & = \frac{\pi}{2\sqrt{2}}.
+    \end{align*}
+\end{proof}
+
+
+\section*{85-86}
+\subsection*{2}
+Use residues to derive the integration formula of
+\[\int_0^\infty \frac{dx}{(x^2 + 1)^2} = \frac{\pi}{4}.\]
+
+\begin{proof}
+    We start by extending the function to the complex plane. Let
+    ${f(z) = \frac{1}{(z^2 + 1)^2}}$.
+    We observe that $(z^2 + 1)^2 = ((z + i)(z-i))^2 = (z+i)^2(z-i)^2$. Thus,
+    the function has two poles of order 2 at $z = \pm i$. Now we will find
+    define the contour $C_R$ as a semicircle on the upper half plane with
+    radius $R$, and $C$ as the sum of this contour and the line joining
+    where it touches the real axis.
+
+    Hence, we have that
+    \[\int_C f(z) \ dz = \int_{-R}^R f(x) \ dx + \int_{C_R} f(z) \ dz.\]
+
+    We also have that
+    \[\int_C f(z) \ dz  = 2\pi i \Res_{z=i} f(z) = 2\pi i\frac{-i}{4} = \frac{\pi}{2}.\]
+
+    Now we will show that $\int_{C_R} f(z) \ dz$ tends to 0 as $R\rightarrow\infty$.
+    We know that $|z^2 + 1| \geq ||z^2| - |1|| = R^2 - 1$. So on any point on $C_R$
+    we have that
+    \begin{equation*}
+        |f(z)| = \frac{1}{(z^2 + 1)} \leq \frac{1}{(R^2 - 1)^2}.
+    \end{equation*}
+    This means that
+    \begin{equation*}
+        \left| \int_{C_R} f(z) \ dz \right| \leq \pi R\frac{1}{(R^2 -1)^2}.
+    \end{equation*}
+    Evidently, this tends to $0$ as $R\rightarrow\infty$.
+    Hence, we have that
+    \begin{equation*}
+        \int_{-R}^R f(x) \ dx = \frac{\pi}{2}.
+    \end{equation*}
+    as $R\rightarrow\infty$.
+    and since the function is even we can write
+    \begin{equation*}
+        \int_0^\infty f(x) \ dx = \frac{\pi}{4}.
+    \end{equation*}
+\end{proof}
+
+\subsection*{6}
+Use residues to derive the integration formula of
+\[\int_0^\infty \frac{x^2 dx}{(x^2 + 9)(x^2 + 4)^2} = \frac{\pi}{200}.\]
+
+\begin{proof}
+    We extend the function to the complex plane and let
+    \[f(z) = \frac{z^2 dx}{(z^2 + 9)(z^2 + 4)^2}\]. We let $C_R$ be the
+    semicircle with radius $R > 3$ centered at the origin, we let $C$ be the
+    contour of $C_R$ and the line that joins the two places where it touches
+    the real axis.
+
+    Hence, we have that
+    \[\int_C f(z) \ dz = \int_{-R}^R f(x) \ dx + \int_{C_R} f(z) \ dz.\]
+
+    Then we can find
+    \begin{align*}
+        \int_C f(z) \ dz & = 2\pi i\left[\Res_{z=2i} f(z) + \Res_{z=3i} f(z)\right], \\
+                         & =2\pi i\left[\frac{-13i}{200} + \frac{3i}{50}\right],     \\
+                         & = 2\pi i \frac{-i}{200},                                  \\
+                         & = \frac{\pi}{100}.
+    \end{align*}
+    Now, to show that $\int_{C_R} f(z) \ dz$ goes to zero we consider any $z$
+    on $C_R$. We know that $|z^2 + 9| \geq ||z|^2 - 9| = R^2 - 9$ and
+    $|z^2 + 4| \geq ||z|^2 - 4| = R^2 - 4$. Hence
+    \[|\int_{C_R} f(z) \ dz \leq \frac{\pi R^3}{(R^2 - 9)(R^2 -4)},\]
+    which clearly goes to zero as $R$ goes to infinity. Thus, we have that
+    \[\int_{-R}^R f (x) \ dx = \int_C f(z) \ dz = \frac{\pi}{100}\]
+    considering that the function is even, we let $R$ go to infinity to get
+    \[\int_0^\infty f(x) \ dx = \frac{\pi}{200}.\]
+\end{proof}
+
+\subsection*{9}
+We start by extending the function to the complex plane. We let
+$f(z) = \frac{dz}{1 + z^3}$. The contour $C$ will be defined as
+in the figure, with $C_1$ being the line on the real axis, $C_R$ with $R>1$,
+being the curved line, and $C_2$ being the remaining line. Since we have
+that $C = C_1 + C_R + C_2$ then clearly
+\begin{equation}
+    \int_C f(z) \ dz = \int_{C_1} f(x) \ dx + \int_{C_R} f(z) \ dz + \int_{C_2} f(z) \ dz.
+\end{equation}
+
+Clearly the singularities of $f(z)$ are the unit roots of $z^3$ which
+can be easily found to be $z = -1, e^{i\pi/3}, e^{-i\pi/3}$. Clearly
+only $z_0 = e^{i\pi/3}$ lies within the contour. By the Residue Theorem
+we have that
+\[\int_C f(z) \ dz = 2\pi i\Res_{z = z_0} f(z)
+    = \left(-\frac{1}{6}(1 + \sqrt{3}i)\right) = \frac{\pi}{3}(\sqrt{3} - i). \]
+
+Now we will consider the contour integral over $C_R$. We write
+\begin{align*}
+    |\int_{C_R} \frac{dz}{1 + z^3}| & \leq \int_{C_R} \left|\frac{1}{1 + z^3}\right||dz|,   \\
+                                    & \leq \int_{C_R} \left[\frac{1}{|z|^3 - 1}|dz|\right], \\
+    = \int_0^{2\pi/3} \frac{R}{R^3 - 1} \ d\theta.
+\end{align*}
+This clearly goes to zero as $R$ goes to infinity.
+
+Now we consider the integral over $C_2$. Considering the substitution
+$z = xe^{\frac{2\pi i}{3}}$, then $dz = e^{\frac{2\pi i}{3}}dx$ we can then write.
+\begin{align*}
+    \int_{C_2} \frac{dz}{1 + z^3} & = \int_R^0 \frac{\exp(2\pi i/3)}{1 + x^3e^{2\pi i}}, \\
+                                  & = -e^{\frac{2\pi i}{3}} \int_0^R \frac{dx}{1 + x^3}
+\end{align*}
+
+Now from (1) and letting $R$ go to infinity we have
+\begin{gather*}
+    \frac{\pi}{3}(\sqrt{3} - i) = \int_0^\infty \frac{dx}{1 + x^3} + 0 - -e^{\frac{2\pi i}{3}} \int_0^R \frac{dx}{1 + x^3},\\
+    \frac{\pi}{3}(\sqrt{3} - i) = \left(1 - e^{2\pi i/3}\right)\int_0^\infty \frac{dx}{1 + x^3}, \\
+    \frac{\pi}{3}(\sqrt{3} - i) = \left[1 + \frac{1}{2} - \frac{\sqrt{3}}{2}i\right]\int_0^\infty \frac{dx}{1 + x^3}, \\
+    \int_0^\infty \frac{dx}{1 + x^3} = \frac{2\pi}{3\sqrt{3}}.
+\end{gather*}
+
+\section*{87-88}
+\subsection*{2}
+\begin{proof}
+    We start by considering the function $f(z) = \frac{1}{z^2 + 1}$. Clearly
+    this has singularities at $z = i, -i$. We now construct a contour $C = C_R + C_1$
+    where $C_R$ is a positively oriented semicircle with radius $R > 1$ and
+    $C_1$ is the line along the real axis joining the semicircle. We will now
+    consider the function $f(z)e^{iaz}$. By the Residue Thm. we have
+    \begin{equation*}
+        \int_C f(z)e^{iaz} = 2\pi i \Res_{z=i} f(z)e^{iaz} = 2\pi i \frac{e^{-a}}{2i} = \pi e^{-a}.
+    \end{equation*}
+
+    Now consider the line integral along $C_R$. We can write
+    \begin{align*}
+        \left|\int_{C_R} f(z) e^{iaz} \ dz \right| & \leq \int_{C_R}\left| f(z) e^{iaz} \right| \ dz,
+                                                   & \leq \frac{\pi Re^{-ay}}{R^2 - 1},               \\
+                                                   & \leq \frac{\pi R}{R^2 - 1},
+    \end{align*}
+    Which clearly goes to zero as $R$ goes to infinity.
+
+    Now since
+    \begin{equation*}
+        \int_C f(z)e^{iaz} = \int_{C_R} f(z)e^{iaz} + \int_{C_1} f(z)e^{iaz}.
+    \end{equation*}
+    We have that as $R$ goes to infinity
+    \begin{equation*}
+        \int_{-\infty}^\infty \frac{\cos ax}{x^2 + 1} = \pi e^{-a}.
+    \end{equation*}
+    Since the function is even
+    \begin{equation*}
+        \int_0^\infty \frac{\cos ax}{x^2 + 1} = \frac{\pi e^{-a}}{2}.
+    \end{equation*}
+\end{proof}
+
+\subsection*{10}
+We will consider
+\begin{equation*}
+    \int_C \frac{(z+1)e^{iz}}{z^2 + 4z + 5}dz = \int_C f(z) \ dz,
+\end{equation*}
+where $C = C_R + C_1$ is made up of the semicircle $C_R$ of radius $R>2$ and the
+line on the real axis $C_1$ connecting the ends of the semicircle. We can see that
+$f(z)$ has singularities at $z = -2 \pm i$ and only $z_0 = -2 + i$ lies inside $C$.
+By the residue theorem
+\begin{equation*}
+    \int_C f(z) \ dz = 2\pi i\Res_{z=z_0} f(z) = 2\pi i \frac{(i -1)e^{i(-2+i)}}{2i}
+    = \frac{\pi}{e}(\sin 2 - \cos 2).
+\end{equation*}
+
+Now consider the integral along $C_R$, we write
+\begin{align*}
+    \left|\int_C \frac{(z+1)e^{iz}}{z^2 + 4z + 5}dz\right| & \leq
+    \int_C \frac{(|z|+1)e^{iz}}{(|z| - \sqrt{5})^2}dz,                                           \\
+                                                           & \leq \frac{R + 1}{(R - \sqrt{5})^2}
+\end{align*}
+which clearly goes to zero as $R$ goes to infinity.
+
+Finally, since
+\begin{equation*}
+    \int_C f(z) = \int_{C_R} f(z) + \int_{C_1} f(z).
+\end{equation*}
+we get that
+\begin{equation*}
+    \int_{-\infty}^\infty \frac{(x+1)\cos x}{x^2 + 4x + 5}dx = \frac{\pi}{e}(\sin 2 - \cos 2).
+\end{equation*}
+
+\section*{89-91}
+\subsection*{3}
+This homework was way too long.
+
+\section*{92}
+\subsection*{1}
+\subsection*{4}
 
 \end{document}
