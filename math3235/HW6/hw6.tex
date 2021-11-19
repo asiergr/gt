@@ -1,0 +1,225 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+
+% Prob theory specific
+\renewcommand{\P}[1]{\mathbb{P}(#1)}
+\newcommand{\probspace}{(\Omega, \mathcal{F}, \mathbb{P})}
+\newcommand{\Image}[1]{\text{Im}\, #1}
+\newcommand{\E}[1]{\mathbb{E}(#1)}
+\newcommand{\deriv}[2]{\frac{d #1}{d#2}}
+
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
+
+\title{HW6}
+\author{Asier Garcia Ruiz }
+
+\begin{document}
+\maketitle
+
+\section*{Exercises}
+\subsection*{7.10}
+If $X$ is uniformly distributed on $(a,b)$, show that
+\begin{equation*}
+    \E{X^k} = \frac{b^{k+1}-a^{k+1}}{(b-a)(k+1)}.
+\end{equation*}
+
+\begin{proof}
+    We consider $X ~ \text{uniform}(a,b)$. We can write
+    \begin{align*}
+        \E{X^k} & = \int_a^b \frac{x^k}{b-a} \ dx,            \\
+                & = \frac{1}{b-a}\int_a^b x^k \ dx,           \\
+                & = \frac{1}{b-a} [\frac{1}{k+1}x^{k+1}]_a^b, \\
+                & = \frac{1}{(b-a)(k+1)}(b^{k+1} - a^{k+1}),  \\
+                & = \frac{b^{k+1}-a^{k+1}}{(b-a)(k+1)}.
+    \end{align*}
+    Hence proven.
+\end{proof}
+
+\subsection*{7.36}
+Let $X_1, X_2, ...$ be a sequence of uncorrelated random variables, each having variance
+$\sigma^2$. If $S_n = X_1 + X_2 + \dots X_n$, show that
+\begin{equation*}
+    \cov(S_m, S_n) = \var(S_m) = m\sigma^2 \qquad \text{if} \ m < n.
+\end{equation*}
+
+\begin{proof}
+    We will preface this proof with a useful lemma. If $\{X_i\}_{i\in\N}$
+    and $\{Y_j\}_{j\in\N}$ are two sequences of random variables then
+    \begin{align*}
+        \cov\left(\sum_{i=1}^m X_i, \sum_{j=1}^n Y_j\right) & =
+        \sum_{i=1}^m\sum_{j=1}^n \cov(X_i, Y_j).
+    \end{align*}
+    This proof follows easily from the definition of the covariance.
+
+    We now define $S_{n-m} = S_n - S_m$ and note that
+    $S_n = S_m + S_{n-m}$. Now we can write
+    \begin{align*}
+        \cov(S_m, S_n) & = \cov(S_m, S_m + S_{n-m}),            \\
+                       & = \cov(S_m, S_m) + \cov(S_m, S_{n-m}), \\
+                       & = \var(S_m) + \cov(S_m, S_{n-m}).      \\
+    \end{align*}
+    Clearly we have that
+    \begin{equation*}
+        \var(S_m)=\var(X_1 + X_2 + \dots + X_m)
+        = \var(X_1) + \dots + \var(X_m) = m\sigma^2.
+    \end{equation*}
+    Hence, it suffices to show that $\cov(S_m, S_{n-m}) = 0$. In fact, we
+    observe that
+    \begin{equation*}
+        \cov(S_m, S_{n-m}) = \sum_{i=1}^m\sum_{j=m+1}^n \cov(X_i, X_j).
+    \end{equation*}
+    Since they are all uncorrelated, this term is zero and the result follows.
+\end{proof}
+
+\subsection*{7.60}
+If $X$ has the normal distribution with mean $\mu$ and variance $\sigma^2$,
+find $\E{X^3}$.
+
+\begin{proof}
+    From the moment generating function we have that
+    \begin{equation*}
+        \E{X^3} = M_X^{(3)}(0).
+    \end{equation*}
+    We have that
+    \begin{align*}
+        M_X(t) & = \E{e^{tX)}},                                                                 \\
+               & = \int_{-\infty}^\infty e^{tx} \frac{1}{\sqrt{2\pi\sigma^2}}
+        \exp\left(-\frac{1}{2\sigma^2}(x-\mu)^2\right) \ dx,                                    \\
+               & = \frac{1}{\sqrt{2\pi\sigma^2}}\int_{-\infty}^\infty
+        \exp\left(-\frac{2\sigma^2tx+(x^2-2x\mu + \mu^2)}{2\sigma^2}\right),                    \\
+               & = \frac{1}{\sqrt{2\pi\sigma^2}}\int_{-\infty}^\infty
+        \exp\left(-\frac{-(x-(\mu-t\sigma^2))^2 + t\sigma^2(2\mu+t\sigma^2)}{2\sigma^2}\right), \\
+               & = \exp\left(\mu t + \frac{t^2\sigma^2}{2}\right) \int_{-\infty}^\infty
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu')^2}{2\sigma^2}\right),           \\
+        \intertext{where $\mu' = \mu - t\sigma^2$,}
+               & = \exp\left(\mu t + \frac{t^2\sigma^2}{2}\right).
+    \end{align*}
+    Now taking derivatives with respect to $t$ we get
+    \begin{align*}
+        \frac{d}{dt}M_X(t)     & = (\mu + t\sigma^2)\exp\left(\mu t + \frac{t^2\sigma^2}{2}\right),                          \\
+        \frac{d^2}{dt^2}M_X(t) & = \sigma^2\exp\left(\mu t + \frac{t^2\sigma^2}{2}\right)
+        + (\mu + t\sigma^2)^2\exp\left(\mu t + \frac{t^2\sigma^2}{2}\right),                                                 \\
+        \frac{d^3}{dt^3}M_X(t) & =\sigma^2(\mu + t\sigma^2)\exp\left(\mu t + \frac{t^2\sigma^2}{2}\right)                    \\
+                               & \quad + 2\sigma^2(\mu+t\sigma^2)\exp\left(\mu t + \frac{t^2\sigma^2}{2}\right)              \\
+                               & \quad + (\mu + t\sigma^2)^2(\mu + t\sigma^2)\exp\left(\mu t + \frac{t^2\sigma^2}{2}\right), \\
+        \intertext{now letting $t=0$ we get}
+        \E{X^3}                & = \sigma^2\mu + 2\sigma^2\mu + \mu^3,                                                       \\
+                               & = 3\sigma^2\mu + \mu^3.
+    \end{align*}
+\end{proof}
+\subsection*{7.75}
+The harmonic mean $\eta$ of the positive reals $x_1, x_2,\dots,x_n$ is given by
+\begin{equation*}
+    \frac{1}{\eta} = \frac{1}{n}\sum_{i=1}^n \frac{1}{x_i}.
+\end{equation*}
+Show that $\eta$ is no greater than the geometric mean of the $x_i$.
+
+\begin{proof}
+    First we note that the geometric mean of the positive reals
+    ${x_1, x_2,\dots,x_n}$ is
+    \begin{equation*}
+        \left(\prod_{i=1}^n x_i\right)^{1/n}.
+    \end{equation*}
+    and the arithmetic mean of the positive reals
+    ${x_1, x_2,\dots,x_n}$ is
+    \begin{equation*}
+        \frac{1}{n}\sum_{i=1}^n x_i.
+    \end{equation*}
+
+    Now, consider the concave $\log$ function, by Jensen's inequality
+    \begin{equation*}
+        \log\left(\frac{1}{n}\sum_{i}x_i\right) \geq \sum_i \log(x_i)
+        = \sum_i \log(x_i^{1/n}) = \log\left(\left(\prod_i x_i\right)^{1/n}\right)
+    \end{equation*}
+    Taking antilogs we can see that the arithmetic mean is greater than
+    the geometric mean.
+
+    Now, we can see that $\eta = \frac{n}{A(\frac{1}{x_i})}$ where $A$ is the
+    arithmetic mean. From our previous relation we can thus write
+    \begin{align*}
+        \frac{1}{\eta}                                 & = \frac{1}{n}\sum_{i=1}^n\frac{1}{x_i},              \\
+                                                       & \geq \left(\prod_{i=1}^n \frac{1}{x_i}\right)^{1/n}, \\
+        \intertext{rearraning,}
+        \left(\prod_{i=1}^n \frac{1}{x_i}\right)^{1/n} & \geq \frac{1}{\frac{1}{n}\sum_{i=1}^n\frac{1}{x_i}}, \\
+                                                       & = \frac{1}{\frac{1}{\eta}} = \eta.
+    \end{align*}
+    Hence, the geometric mean is no grater that the geometric mean.
+\end{proof}
+
+\subsection*{7.96}
+Let $X$ be uniformly distributed on $(a,b)$. Show that
+\begin{equation*}
+    \phi_X(t) = \frac{e^{itb}-e^{ita}}{it(b-a)}.
+\end{equation*}
+If $X$ is uniformly distributed on $(-b,b)$, show that
+\begin{equation*}
+    \phi_X(t) = \frac{1}{bt}\sin bt.
+\end{equation*}
+
+\begin{proof}
+    Consider $X$ to be uniformly distributed on $(a,b)$. Then
+    \begin{align*}
+        \phi_X(t) & = \E{e^{itX}},                                       \\
+                  & = \int_a^b e^{itx}\frac{1}{b-a} \ dx,                \\
+                  & = \frac{1}{b-a}\left[\frac{1}{it}e^{itx}\right]_a^b, \\
+                  & =\frac{e^{itb}-e^{ita}}{it(b-a)}.
+    \end{align*}
+    Now consider if instead $X$ is uniformly distributed on $(-b,b)$. Then
+    \begin{align*}
+        \phi_X(t) & = \E{e^{itX}},                                         \\
+                  & = \int_{-b}^b e^{itx}\frac{1}{b-(-b)} \ dx,            \\
+                  & = \frac{1}{2b}\left[\frac{1}{it}e^{itx}\right]_{-b}^b, \\
+                  & = \frac{1}{2bt}\frac{e^{itb} - e^{-itb}}{i},           \\
+                  & = \frac{1}{bt}\sin bt.
+    \end{align*}
+    Hence proven.
+\end{proof}
+
+\section*{Problems}
+\subsection*{11}
+The \textit{joint moment generating function} of two random variables $X$ and $Y$
+is defined to be the function $M(s,t)$ of two real variables defined by
+\begin{equation*}
+    M(s,t) = \E{e^{sX+tY}}
+\end{equation*}
+for all values of $s$ and $t$ for which the expectation exists. Show that the
+joint moment generating function of a pair of random variables having the
+standard bivariate normal distribution (6.73) is
+\begin{equation*}
+    M(s,t) = \exp\left(\frac{1}{2}(s^2 + 2\rho st + t^2)\right).
+\end{equation*}
+
+Deduce the joint moment generating function of a pair of random variables
+having the bivariate normal distribution (6.76) with parameters
+$\mu_1, \mu_2, \sigma_1, \sigma_2, \rho$.
+
+\begin{proof}
+    We will start with the case where $X$ and $Y$ follow the standard bivariate
+    distribution. We can thus find
+    \begin{align*}
+        M(s,t) & = \E{e^{sX + tY}},                                       \\
+               & = \int_{-\infty}^\infty\int_{-\infty}^\infty e^{sx+ty}
+        \frac{1}{2\pi\sqrt{1 - \rho^2}}
+        \exp\left(-\frac{1}{2(1-\rho^2)}(x^2-2\rho xy + y^2)\right) dxdy, \\
+               & =
+    \end{align*}
+
+    Now we will consideer the general case where $X$ and $Y$ are
+\end{proof}
+
+\end{document}
