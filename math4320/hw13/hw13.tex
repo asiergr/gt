@@ -1,0 +1,282 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\usepackage{graphicx}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+
+\DeclareMathOperator*{\Log}{Log}
+\DeclareMathOperator*{\Arg}{Arg}
+\DeclareMathOperator*{\sech}{sech}
+\DeclareMathOperator*{\Res}{Res}
+
+\title{HW 13}
+\author{Asier Garcia Ruiz }
+\date{August 2021}
+\begin{document}
+\maketitle
+
+\section*{96}
+\subsection*{1} % CORRECT
+State why the transformation $w=iz$ is a rotation in the $z$ plane through the
+angle $\pi/2$. Then find the image of the infinite strip $0<x<1$.
+
+\begin{proof}
+    We can see that for any $z = e^{i\theta}$ we get
+    \begin{equation*}
+        w = iz = e^{i\pi/2}e^{i\theta} = e^{i(\theta + \pi/2)}
+    \end{equation*}
+    which is clearly a rotation through the angle $\pi/2$.
+
+    Now we consider the infinite strip $0<x<1$. We can see that in the transformation
+    $w = u + iv$ we get $w = iz = -y + ix$. Hence, $u = -y$ and $v = x$.
+    Hence, clearly the strip $0<x<1$ gets mapped to $0<v<1$.
+\end{proof}
+
+\subsection*{3} %CORRECT 
+Find a linear transformation that maps the strip $x>0$, $0<y<2$ onto the strip
+$-1<u<1$, $v>0$, as shown in Fig. 117.
+
+\begin{proof}
+    We want to achieve a rotation of $\pi/2$ about the origin and then a
+    translation of 1 to the right. Hence, our transformation is simply
+    $w = iz + 1$.
+\end{proof}
+
+\section*{97-98}
+\subsection*{4} %CORRECT
+Find the image fo the infinite strip $0<y<1/(2c)$ under the transformation
+$w = 1/z$. Sketch the strip and its image.
+
+\begin{proof}
+    First, we graph the strip
+
+    \includegraphics[scale=0.7]{q4prev}
+
+    Note that the height of the strip is simply $\frac{1}{2c}$.
+
+    We know that in this transformation $y = \frac{-v}{u^2 + v^2}$. Thus,
+    the line $y = 0$ gets mapped to $v = 0$. Furthermore, the region
+    $y > 0$ gets mapped to
+    \begin{gather*}
+        \frac{-v}{u^2 + v^2} > 0,\\
+        -v > 0,\\
+        v < 0.
+    \end{gather*}
+    Now, the line $y = \frac{1}{2c}$ gets mapped to
+    \begin{gather*}
+        \frac{-v}{u^2+v^2} = \frac{1}{2c},\\
+        -2cv = u^2 + v^2,\\
+        u^2 + v^2 + 2vc = 0,\\
+        u^2 + (v^2 + 2vc + c^2) - c^2 = 0,\\
+        u^2 + (v+c)^2 = c^2.
+    \end{gather*}
+    Hence, the region $y < \frac{1}{2c}$ gets mapped to
+    \begin{gather*}
+        \frac{-v}{u^2 + v^2} < \frac{1}{2c},\\
+        u^2 + v^2 > -2cv,\\
+        u^2 + v^2 + 2cv > 0,\\
+        u^2 + (v+c)^2 > c^2.
+    \end{gather*}
+    Finally, the region $0<y<\frac{1}{2c}$ gets mapped to
+    $u^2 + (v+c)^2 > c^2, v < 0$. A graph for this region is
+
+    \includegraphics[scale=0.65]{q4post}
+
+    Note that the radius of the circle is $c$.
+\end{proof}
+
+\subsection*{9} %CORRECT
+Find the image of the semi-infinite strip $x > 0, 0<y<1$ when $w=\frac{i }{z}$.
+Sketch the strip and its image.
+
+\begin{proof}
+    We start with the graph of the semi-infinite strip
+
+    \includegraphics[scale=0.5]{q9prev}
+
+    We can get the transformation as a composition of $Z = \frac{1}{z}$ and
+    $w = iZ$. Now, we will find how the transformation acts on individual components
+    \begin{align*}
+        u + iv & = w = \frac{i }{z} = \frac{i }{x + iy},       \\
+               & = \frac{y + ix}{(x + iy)(x-iy)},              \\
+               & = \frac{y}{x^2 + y^2} + \frac{ix}{x^2 + y^2},
+    \end{align*}
+    thus
+    \begin{equation*}
+        u = \frac{y}{x^2+ y^2}, \ v = \frac{x}{x^2 + y^2},
+    \end{equation*}
+    taking inverses,
+    \begin{equation*}
+        x = \frac{v }{u^2 + v^2}, \ y = \frac{u }{u^2 + v^2}.
+    \end{equation*}
+
+    Then the region $x > 0$ gets mapped to
+    \begin{gather*}
+        \frac{v }{u^2 + v^2} > 0,\\
+        v > 0
+    \end{gather*}
+    and the region $y < 1$ gets mapped to
+    \begin{gather*}
+        \frac{u }{u^2 + v^2} < 1,\\
+        u < u^2 + v^2,\\
+        0 < u^2 + v^2 - u,\\
+        0 < -\frac{1}{4} + \frac{1}{4} - u + u^2 + v^2,\\
+        \frac{1}{4} < (u - \frac{1}{2})^2 + v^2,
+    \end{gather*}
+    and the region $y > 0$ gets mapped to
+    \begin{gather*}
+        \frac{u }{u^2 + v^2} > 0,\\
+        u > 0.
+    \end{gather*}
+    Finally, we get that
+    \begin{equation*}
+        v > 0, \ u > 0, \ \frac{1}{4} < (u - \frac{1}{2})^2 + v^2.
+    \end{equation*}
+    The graph for this follows
+
+    \includegraphics[scale=0.4]{q9post}
+
+\end{proof}
+
+\section*{99-100}
+\subsection*{4} % CORRECT
+Find the bilinear transformation that maps distinct points $z_1, z_2, z_3$ onto the
+points $w_1 = 0, w_2 = i, w_3=\infty$.
+
+\begin{proof}
+    To solve this we will use the implicit form of the linear fractional
+    transformation.
+    \begin{equation*}
+        \frac{(w-w_1)(w_2-w_3)}{(w-w_3)(w_2-w_1)} = \frac{(z-z_1)(z_2-z_3)}{(z-z_3)(z_2-z_1)}.
+    \end{equation*}
+    Since one of the points is at infinity we can rewrite the left hand side as
+    \begin{equation*}
+        \lim_{w_3\to0} \frac{(w-w_1)(w_2-\frac{1}{w_3})}{(w-\frac{1}{w_3})(w_2-w_1)}\frac{w_3}{w_3}
+        =\lim_{w_3\to0} \frac{(w-w_1)(w_2w_3 - 1)}{(ww_3 - 1)(w_2-w_1)}
+        = \frac{w-w_1}{w_2-w_1}
+    \end{equation*}
+
+    Now we can rewrite the first equation
+    \begin{align*}
+        \frac{w-w_1}{w_2-w_1} & =  \frac{(z-z_1)(z_2-z_3)}{(z-z_3)(z_2-z_1)}, \\
+        \intertext{and let $w_1 = 0, w_2 = 1, w_3=\infty$.}
+        w                     & = \frac{(z-z_1)(z_2-z_3)}{(z-z_3)(z_2-z_1)},  \\
+    \end{align*}
+\end{proof}
+
+\subsection*{7} % CORRECT
+Find the fixed points (see Exercise 6) of the transformation
+
+(a) $w = \frac{z-1}{z+1}$;
+\begin{proof}
+    To find the fixed points we simply write
+    \begin{gather*}
+        f(z_0) = z_0, \\
+        \frac{z_0 -1}{z_0+1} = z_0,\\
+        z_0 -1 =  z_0^2 + z_0,\\
+        z_0^2 = -1,\\
+        z_0 = \pm i.
+    \end{gather*}
+\end{proof}
+
+(b) $w= \frac{6z-9}{z}$.
+\begin{proof}
+    To find the fixed points we simply write
+    \begin{gather*}
+        f(z_0) = z_0, \\
+        \frac{6z_0-9}{z_0} = z_0, \\
+        6z_0 - 9 = z_0^2,\\
+        z_0^2 -6z_0 + 9 = 0,\\
+        (z_0 -3)^2 = 0,\\
+        z_0 = 3.
+    \end{gather*}
+\end{proof}
+
+\section*{101-102}
+\subsection*{3}
+(a) By finding the inverse of the transformation
+\begin{equation*}
+    w = \frac{i-z}{i+z}
+\end{equation*}
+and appealing to Fig. 13, Appendix 2, whose verification was completed in Exercise 1,
+show that the transformation
+\begin{equation*}
+    w = i\frac{1-z}{1+z}
+\end{equation*}
+maps the disk $|z| \leq 1$ onto the half plane $\Im(w) \geq 0$
+
+\begin{proof}
+    We start by finding the inverse of
+    \begin{equation*}
+        w = \frac{i-z}{i+z}.
+    \end{equation*}
+    We write
+    \begin{gather*}
+        z = \frac{i-w}{i + w},\\
+        iz + wz = i - w, \\
+        wz + w = i - iz, \\
+        w(z + 1) = \frac{i - iz}{z + 1} = i\frac{1-z}{1+z}.
+    \end{gather*}
+    Because Fig.13 in Appendix 2 has been verified, we then readily have that this
+    inverse maps the disk $|z|\leq 1$ to the half plane $\Im(w) \geq 0$.
+\end{proof}
+
+(b) Show that the linear fractional transformation
+\begin{equation*}
+    s = \frac{z-2}{z}
+\end{equation*}
+can be written
+\begin{equation*}
+    Z = z - 1, \ W = i\frac{1-Z}{1+Z}, \ w = iW.
+\end{equation*}
+
+\begin{proof}
+    We start by substituting in $Z$
+    \begin{align*}
+        W & = i\frac{1-(z-1)}{1 + z-1}, \\
+          & = i\frac{2 + z}{z}.
+    \end{align*}
+    Now we substitute $W$ in
+    \begin{align*}
+        w & = iW,                             \\
+          & = i\left[i\frac{2 - z}{z}\right], \\
+          & = \frac{z - 2}{z}.
+    \end{align*}
+    Hence proven.
+\end{proof}
+
+\subsection*{6}
+Show that if $\Im(z_0) < 0$, transformation (1), Sec. 102, maps the lower half plane
+$\Im(z) \leq 0$ onto the unit disk $|w| \leq 1$.
+
+\begin{proof}
+    We have the transformation
+    \begin{equation*}
+        w = e^{i\alpha}\left(\frac{z-z_0}{z-\overline{z_0}}\right),
+    \end{equation*}
+    taking norms
+    \begin{equation*}
+        |w| = \left|e^{i\alpha}\left(\frac{z-z_0}{z-\overline{z_0}}\right)\right|
+        =  \frac{|z-z_0|}{|z-\overline{z_0}|}
+    \end{equation*}
+    and we know that $\Im(z) < 0$. Now, thinking geometrically we know that if
+    $z$ is under the real axis, then both it and $z_0$
+    are under the real axis. Clearly then $|z - z_0| < |z - \overline{z_0}|$, meaning
+    that $|w| < 1$. Now, if $z$ is on the real axis, then $|z - z_0| = |z - \overline{z_0}|$
+    and thus $|w| = 1$. Hence, this transformation maps the lower half plane
+    $\Im(z) \leq 0$ onto the unit disk $|w| \leq 1$.
+\end{proof}
+
+\end{document}
