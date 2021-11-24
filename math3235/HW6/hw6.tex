@@ -209,17 +209,36 @@ having the bivariate normal distribution (6.76) with parameters
 $\mu_1, \mu_2, \sigma_1, \sigma_2, \rho$.
 
 \begin{proof}
-    We will start with the case where $X$ and $Y$ follow the standard bivariate
-    distribution. We can thus find
+    From exercise 7.60 we know that for $Z$ following a univariate distribution
+    \begin{equation*}
+        M_X(t) = \E{e^{tZ}} = \exp\left(\mu t + \frac{t^2\sigma^2}{2}\right).
+    \end{equation*}
+    We let $U \sim N_2(\mu, \Sigma)$ denote the multivariate distribution
+    of $X,Y$, where
+    \begin{equation*}
+        \Sigma = \begin{bmatrix}
+            \sigma_1^2 & \cov(X,Y)  \\
+            \cov(X,Y)  & \sigma_2^2
+        \end{bmatrix}.
+    \end{equation*}
+
+    Now, from page 102 in the textbook we know that a linear combination
+    of $X,Y$ follows a univariate normal distribution. That is,
+    $t^T U \sim N(t^T\mu, t^T\Sigma t)$ for any $t \in \R^2$. Knowing
+    this and using the mgf for a univariate distribution we have that
     \begin{align*}
-        M(s,t) & = \E{e^{sX + tY}},                                       \\
-               & = \int_{-\infty}^\infty\int_{-\infty}^\infty e^{sx+ty}
-        \frac{1}{2\pi\sqrt{1 - \rho^2}}
-        \exp\left(-\frac{1}{2(1-\rho^2)}(x^2-2\rho xy + y^2)\right) dxdy, \\
-               & =
+        M_X(t) & = \E{e^{t^T U}},                                     \\
+               & = M_{t^T U}X (1),                                    \\
+               & = \exp\left(\mu^T t + \frac{1}{2}t^T\Sigma t\right), \\
     \end{align*}
 
-    Now we will consideer the general case where $X$ and $Y$ are
+    Now, considering the standard bivariate normal distribution, we let
+    $\mu_1 = \mu_2 = 1$ and $\sigma_1^2 = \sigma_2^2 = 1$. Fro the equation
+    above we get
+    \begin{equation*}
+        M_X(t) = \exp\left(\frac{1}{2}(s^2 + 2\rho st + t^2)\right).
+    \end{equation*}
+
 \end{proof}
 
 \end{document}
