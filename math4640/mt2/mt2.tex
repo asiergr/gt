@@ -1,0 +1,201 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\O}[1]{\mathcal{O}(#1)}
+\DeclareMathOperator{\sign}{sign}
+
+\newenvironment{answer}{\textit{Answer:}}{}
+
+\title{Midterm 2}
+\author{Asier Garcia Ruiz }
+
+\begin{document}
+\maketitle
+
+1. (1 point) Explain the connection between finding roots and solving nonlinear
+systems.
+
+\begin{answer}
+    Solving a system of nonlinear equations
+    \begin{equation*}
+        \bm{f(x)} = \bm{g(x)}
+    \end{equation*}
+    is equivalent to solving
+    \begin{equation*}
+        \bm{h(x)} = 0,
+    \end{equation*}
+    where $\bm{h(x)} = \bm{f(x)} - \bm{g(x)}$.
+    Which is nothing but finding the roots (points at which all equations in
+    the system are zero) of $\bm{h(x)}$.
+\end{answer}
+
+2. (2 points) If $u(x) = f(x)/f'(x)$, where $f(x)$ has a root of multiplicity
+$k$ at $x = \alpha$. Show that $u(\alpha) = 0$ but $u'(\alpha) \neq 0$.
+
+\begin{answer}
+    Clearly, if $f(\alpha) = 0$ then
+    \begin{equation*}
+        u(\alpha) = \frac{f(\alpha)}{f'\alpha} = \frac{0}{f'(\alpha)} = 0
+    \end{equation*}
+    provided that $f$ is differenitable and non-zero at $\alpha$. Now, we calculate $u'(x)$ as
+    \begin{equation*}
+        u'(x) = \left[\frac{f(x)}{f'(x)}\right]' =
+        \frac{f'(x)^2 - f(x)f''(x)}{f'(x)^2}.
+    \end{equation*}
+    Evaluating at $x = \alpha$
+    \begin{equation*}
+        u'(\alpha) = \frac{f'(\alpha)^2 - f(\alpha)f''(\alpha)}{f'(\alpha)^2}
+        = \frac{f'(\alpha)^2}{f'(\alpha)^2} = 1
+    \end{equation*}
+    provided $f'(\alpha)$ and $f''(\alpha)$ exist and is not zero.
+\end{answer}
+
+3. (2 points) A modified Newton method for roots $\alpha$ with multiplicity
+$k > 1$ is
+\begin{equation*}
+    x_{n+1} = x_n - k \frac{f(x_n)}{f'(x_n)}.
+\end{equation*}
+Use both this method and regular Newton method to compute the root
+$\alpha = 1$ of the function
+\begin{equation*}
+    f(x) = 1 - xe^{1-x}
+\end{equation*}
+Write a code for this. At what rate does the iteration converge for both the
+modified and standard Newton method? What method is more accurate?
+
+\begin{answer}
+    The code listings are left in Appendix A. We must determine the multiplicity
+    of $\alpha = 1$ for use in the imporoved Newton method. We first note that
+    locally any function behaves like a polynomial. We also note that $f$ is
+    sufficiently smooth, thus in a neighborhood of
+    $\alpha = 1$ we can differentiate $f$. As with polynomials, the root has
+    multiplicity $k$ where $f^{(k)}(\alpha) \neq 0$. We see that
+    \begin{equation*}
+        f''(x) = -(x-2)e^{1-x}
+    \end{equation*}
+    and $f''(1) = 1 \neq 0$. Hence, $k = 1$ for $\alpha = 2$.
+
+    Given this, we now plot the graph for convergence to the root given
+    randomised starting points within a neighborhood of $\alpha$
+    for both methods.
+\end{answer}
+
+4. (1 point) Explain the connection between optimization and training neural
+networks.
+
+\begin{answer}
+    When training a neural network we want to optimise the weights such that the
+    prediction is closest to the real value. That is, we want to have a set of weights
+    $w_i$ such that the output (given an input) is closest to some true value.
+    This is an optimisation problem since we have to adjust these weights
+    according to some rule to reduce the error value.
+\end{answer}
+
+5. (2 points) Let $x$ represent a distance the $t$ represent time. Consider the
+data
+\begin{center}
+    \begin{tabular}{c c c c c c c}
+        x & \vline  \ 0 & 0.25 & 0.50 & 0.75 & 1.00 & 1.25  \\
+        t & \vline \ 0  & 25.0 & 49.4 & 73.0 & 96.4 & 119.4
+    \end{tabular}
+\end{center}
+(a) (1 point) Find the cubic polynomial that interpoles this data at
+$x = 0, 0.5, 0.75, 1.25$
+
+\begin{answer}
+    To do this we can simply solve the system
+    \begin{equation*}
+        \begin{bmatrix}
+            1 & t_1 & t_1^2 & t_1^3, \\
+            1 & t_2 & t_2^2 & t_2^3, \\
+            1 & t_3 & t_3^2 & t_3^3, \\
+            1 & t_4 & t_4^2 & t_4^3, \\
+        \end{bmatrix}\bm{x} =
+        \begin{bmatrix}
+            0 \\ 0.5 \\ 0.75 \\ 1.25
+        \end{bmatrix}
+    \end{equation*}
+    with $t_1 = 0, t_2 = 49.4, t_3 = 73.0, t_4 = 119.4$.
+
+    Solving this system results in the coefficients
+    $x_1 = 0, x_2 = 9.52*10^{-3}, x_3 = 1.5*10^{-5}, x_4=-5.95*10^{-8}$.
+    for the polynomial $p(t) = x_1 + x_2 t + x_3t^2 + x_4t^4$.
+\end{answer}
+
+(b) (1 point) Use the polynomial to estimate the speed $\frac{dx}{dt}$ at
+$x = 1.25$.
+
+\begin{answer}
+    First we find
+    \begin{equation*}
+        p'(t) = x_2 + x_3 t + x_4 t^2.
+    \end{equation*}
+    Then simply plugging in $t=119.4$, the point corresponding to $x=1.25$
+    we get that the approximate speed is
+    \begin{equation*}
+        p'(119.4) = 1.04*10^{-3}.
+    \end{equation*}
+\end{answer}
+
+6. (2 points) Construct a natural cubic spline that interpolates the gamma
+function $\Gamma(x)$ with knots $x = 1.0, 1.2, 1.4, 1.6, 1.8, 2.0$.
+Plot the actualy gamma function versus your spline on $x \in [1,2]$.
+Compute the difference (error) between your spline and the actual gamma
+function at $x = 1.1$.
+
+\begin{answer}
+    We have a series of of points $x_i$, $i = 0,...,5$. Hence, we have five
+    intervals $[x_i, x_j], i < j$ and thus five polynomials
+    \begin{equation*}
+        p_i(x) = \alpha_{i1} + \alpha_{i2} t + \alpha_{i3} t^2 + \alpha_{i4}t^4,
+        \quad i = 0,\dots,5.
+    \end{equation*}
+
+
+\end{answer}
+
+7. (2 points) The improved trapezoidal rule has the form
+\begin{equation*}
+    T_n^c(f) = T_n(f) - \frac{1}{12}h^2(f'(b) - f'(a))
+\end{equation*}
+Apply the improved and standard trapezoidal rules ot approximate the integral
+\begin{equation*}
+    I = \int_1^2 e^{-x^2} \ dx = 0.1353572580.
+\end{equation*}
+with different numbers of sub-divisions (i.e different node spacings $h$).
+Use at least 10 different $h$ values (including $h = 1/4$). Use these data to
+estimate the rate of convergence of both the standard and improved methods.
+
+\begin{answer}
+    The code listing is left in Appendix B. Give
+\end{answer}
+
+Now, using the improved trapezoidal method
+
+8. (1 point) Suggest a method for numerically approximating the derivative of
+a function whose value is given only at a discrete set of data points.
+For this problem, what would be the effect of noisy data, and how would you cope
+with it in your numerical method?
+
+\begin{answer}
+
+\end{answer}
+
+\section*{Appendix A}
+\begin{lstlisting}[language=Python]
+    
+\end{lstlisting}
+
+\end{document}
