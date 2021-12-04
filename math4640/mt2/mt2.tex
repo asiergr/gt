@@ -15,6 +15,7 @@
 \newcommand{\R}{\mathbb{R}}
 \renewcommand{\O}[1]{\mathcal{O}(#1)}
 \DeclareMathOperator{\sign}{sign}
+\setcounter{MaxMatrixCols}{20}
 
 \newenvironment{answer}{\textit{Answer:}}{}
 
@@ -25,7 +26,7 @@
 \maketitle
 
 1. (1 point) Explain the connection between finding roots and solving nonlinear
-systems.
+systems. % DONE
 
 \begin{answer}
     Solving a system of nonlinear equations
@@ -34,7 +35,7 @@ systems.
     \end{equation*}
     is equivalent to solving
     \begin{equation*}
-        \bm{h(x)} = 0,
+        \bm{h(x)} = \bm{0},
     \end{equation*}
     where $\bm{h(x)} = \bm{f(x)} - \bm{g(x)}$.
     Which is nothing but finding the roots (points at which all equations in
@@ -42,25 +43,35 @@ systems.
 \end{answer}
 
 2. (2 points) If $u(x) = f(x)/f'(x)$, where $f(x)$ has a root of multiplicity
-$k$ at $x = \alpha$. Show that $u(\alpha) = 0$ but $u'(\alpha) \neq 0$.
+$k$ at $x = \alpha$. Show that $u(\alpha) = 0$ but $u'(\alpha) \neq 0$. % DONE
 
 \begin{answer}
-    Clearly, if $f(\alpha) = 0$ then
+    If $f$ has a root of multiplicity $k$ at $\alpha$ we can rewrite
     \begin{equation*}
-        u(\alpha) = \frac{f(\alpha)}{f'\alpha} = \frac{0}{f'(\alpha)} = 0
+        f(x) = (x-\alpha)^k g(x)
     \end{equation*}
-    provided that $f$ is differenitable and non-zero at $\alpha$. Now, we calculate $u'(x)$ as
+    where $g(x)$ and all its derivatives are analytic everywhere in a
+    neighborhood of $\alpha$
+    Now,
     \begin{equation*}
-        u'(x) = \left[\frac{f(x)}{f'(x)}\right]' =
-        \frac{f'(x)^2 - f(x)f''(x)}{f'(x)^2}.
+        f'(x) = k(x-\alpha)^{k-1} g(x) + (x-\alpha)^k g'(x).
     \end{equation*}
-    Evaluating at $x = \alpha$
+    Thus we have that
+    \begin{align*}
+        u(x) & = \frac{(x-\alpha)^k g(x)}{k(x-\alpha)^{k-1} g(x) + (x-\alpha)^kg'(x)} \\
+             & = \frac{(x-\alpha) g(x)}{k g(x) + (x-\alpha)g'(x)}.
+    \end{align*}
+    Evidently $u(\alpha) = 0$ since the numerator is zero. Now we find
     \begin{equation*}
-        u'(\alpha) = \frac{f'(\alpha)^2 - f(\alpha)f''(\alpha)}{f'(\alpha)^2}
-        = \frac{f'(\alpha)^2}{f'(\alpha)^2} = 1
+        u'(x) = \frac{[g(x) + (x-\alpha)g'(x)][k g(x) + (x-\alpha)g'(x)]
+        - [(x-\alpha) g(x)][kg'(x) + g'(x)+(x-\alpha)g''(x)]}{[k g(x) + (x-\alpha)g'(x)]^2},
     \end{equation*}
-    provided $f'(\alpha)$ and $f''(\alpha)$ exist and is not zero.
+    evaluating at $x = \alpha$ this becomes
+    \begin{equation*}
+        \frac{g(\alpha)*kg(\alpha) - 0}{kg(\alpha)} = g(\alpha) \neq 0.
+    \end{equation*}
 \end{answer}
+
 
 3. (2 points) A modified Newton method for roots $\alpha$ with multiplicity
 $k > 1$ is
@@ -85,15 +96,22 @@ modified and standard Newton method? What method is more accurate?
     \begin{equation*}
         f''(x) = -(x-2)e^{1-x}
     \end{equation*}
-    and $f''(1) = 1 \neq 0$. Hence, $k = 1$ for $\alpha = 2$.
+    and $f''(1) = 1 \neq 0$. Hence, $k = 2$ for $\alpha = 1$.
 
     Given this, we now plot the graph for convergence to the root given
-    randomised starting points within a neighborhood of $\alpha$
-    for both methods.
+    linearly spaced points within a neighborhood of $\alpha$
+    for both methods. The resultant graph is
+
+    \includegraphics[scale=0.5]{q3}
+
+    Clearly we can see that the modified newton method converges faster
+    than the standard one. The standard method converge in $O(n^2)$ while
+    the modified method seems to converge faster, perhaps $O(n^3)$ or
+    $O(kn^2)$ $k\in\R$ since it is hard to differentiate if $k$ is large.
 \end{answer}
 
 4. (1 point) Explain the connection between optimization and training neural
-networks.
+networks. % DONE
 
 \begin{answer}
     When training a neural network we want to optimise the weights such that the
@@ -104,34 +122,34 @@ networks.
 \end{answer}
 
 5. (2 points) Let $x$ represent a distance the $t$ represent time. Consider the
-data
+data % DONE
 \begin{center}
     \begin{tabular}{c c c c c c c}
         x & \vline  \ 0 & 0.25 & 0.50 & 0.75 & 1.00 & 1.25  \\
         t & \vline \ 0  & 25.0 & 49.4 & 73.0 & 96.4 & 119.4
     \end{tabular}
 \end{center}
-(a) (1 point) Find the cubic polynomial that interpoles this data at
-$x = 0, 0.5, 0.75, 1.25$
+(a) (1 point) Find the cubic polynomial that interpoles this data at\\
+${x = 0, 0.5, 0.75, 1.25}$
 
 \begin{answer}
     To do this we can simply solve the system
     \begin{equation*}
         \begin{bmatrix}
-            1 & t_1 & t_1^2 & t_1^3, \\
-            1 & t_2 & t_2^2 & t_2^3, \\
-            1 & t_3 & t_3^2 & t_3^3, \\
-            1 & t_4 & t_4^2 & t_4^3, \\
+            1 & x_1 & x_1^2 & x_1^3, \\
+            1 & x_2 & x_2^2 & x_2^3, \\
+            1 & x_3 & x_3^2 & x_3^3, \\
+            1 & x_4 & x_4^2 & x_4^3, \\
         \end{bmatrix}\bm{x} =
         \begin{bmatrix}
-            0 \\ 0.5 \\ 0.75 \\ 1.25
+            0 \\ 49.4 \\ 73.0 \\ 119.4
         \end{bmatrix}
     \end{equation*}
-    with $t_1 = 0, t_2 = 49.4, t_3 = 73.0, t_4 = 119.4$.
+    with $x_1 = 0, x_2 = 0.5, x_3 = 0.75, x_4 = 1.25$.
 
     Solving this system results in the coefficients
-    $x_1 = 0, x_2 = 9.52*10^{-3}, x_3 = 1.5*10^{-5}, x_4=-5.95*10^{-8}$.
-    for the polynomial $p(t) = x_1 + x_2 t + x_3t^2 + x_4t^4$.
+    $t_1 = 0.0000, t_2 = 102.8533, t_3 = -9.6000, t_4=2.9867$.
+    for the polynomial $T(x) = t_1 + t_2 x + t_3x^2 + t_4x^4$.
 \end{answer}
 
 (b) (1 point) Use the polynomial to estimate the speed $\frac{dx}{dt}$ at
@@ -140,12 +158,12 @@ $x = 1.25$.
 \begin{answer}
     First we find
     \begin{equation*}
-        p'(t) = x_2 + x_3 t + x_4 t^2.
+        T'(x) = t_2 + t_3x + t_4x^2
     \end{equation*}
     Then simply plugging in $t=119.4$, the point corresponding to $x=1.25$
     we get that the approximate speed is
     \begin{equation*}
-        p'(119.4) = 1.04*10^{-3}.
+        T'(119.4) = 95.5200.
     \end{equation*}
 \end{answer}
 
@@ -162,7 +180,84 @@ function at $x = 1.1$.
         p_i(x) = \alpha_{i1} + \alpha_{i2} t + \alpha_{i3} t^2 + \alpha_{i4}t^4,
         \quad i = 0,\dots,5.
     \end{equation*}
+    We require 20 equations to solve for all 20 parameters. We require all
+    cubics to interpolate the data at the endpoints, that is
+    \begin{equation*}
+        p_i(x) = \Gamma(x_j)
+    \end{equation*}
+    for all the polynomials, where $x_j$ denotes the endpoints.
+    With this we have 10 equations. Now we require the first
+    derivative to be continuous at all points that form part of
+    two subsequent spline's intervals. That is
+    \begin{equation*}
+        p_i'(x_j) = p_k'(x_j)
+    \end{equation*}
+    where $i \neq k$ and $j \neq 0,5$. This gives us another 4 equations.
+    We also require the second derivative to be continuous in the same
+    manner, that is
+    \begin{equation*}
+        p_i''(x_j) = p_k''(x_j)
+    \end{equation*}
+    where $i \neq k$ and $j \neq 0,5$. Giving us another 4 equations.
+    Finally, we require that the second derivative at the end points be zero
+    by definition.
+    We can summarise this as the system $\bm{A}\bm{\alpha} = \bm{y}$ where
+    \begin{equation*}
+        \begin{bmatrix}
+            1 & t_0 & t_0^2 & t_0^3  & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            1 & t_1 & t_1^2 & t_1^3  & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 1 & t_1 & t_1^2 & t_1^3   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 1 & t_2 & t_2^2 & t_2^3   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 1 & t_2 & t_2^2 & t_2^3   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 1 & t_3 & t_3^2 & t_3^3   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 1 & t_3 & t_3^2 & t_3^3   & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 1 & t_4 & t_4^2 & t_4^3   & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 1 & t_4 & t_4^2 & t_4^3   \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 1 & t_5 & t_5^2 & t_5^3   \\
+            0 & 1   & 2t_1  & 3t_1^2 & 0 & -1  & -2t_1 & -3t_1^2 & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 1   & 2t_2  & 3t_2^2  & 0 & -1  & -2t_2 & -3t_2^2 & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 1   & 2t_3  & 3t_3^2  & 0 & -1  & -2t_3 & -3t_3^2 & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 1   & 2t_4  & 3t_4^2  & 0 & -1  & -2t_4 & -3t_4^2 \\
+            0 & 0   & 2     & 6t_1   & 0 & 0   & -2    & -6t_1   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 2     & 6t_2    & 0 & 0   & -2    & -6t_2   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 2     & 6t_3    & 0 & 0   & -2    & -6t_3   & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 2     & 6t_4    & 0 & 0   & -2    & -6t_4   \\
+            0 & 0   & 2     & 6t_1   & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+            0 & 0   & 0     & 0      & 0 & 0   & 2     & 6t_1    & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       & 0 & 0   & 0     & 0       \\
+        \end{bmatrix}
+    \end{equation*}
+    is the $\bm{A}$ matrix and
+    \begin{equation*}
+        \bm{\alpha} = \begin{bmatrix}
+            \alpha_0 \\ \vdots \\ \alpha_{19},
+        \end{bmatrix}
+    \end{equation*}
+    and
+    \begin{equation*}
+        \bm{y} = \begin{bmatrix}
+            \Gamma(x_0) \\ \Gamma(x_1)\\\Gamma(x_1)\\\Gamma(x_2)\\ \Gamma(x_2)\\
+            \Gamma(x_3) \\ \Gamma(x_3)\\ \Gamma(x_4)\\ \Gamma(x_4)\\ \Gamma(x_5)\\
+            0           \\ \vdots \\ 0
+        \end{bmatrix}
+    \end{equation*}
 
+    After solving this unwieldy looking system we get coefficients
+    \begin{equation*}
+        \bm{a} = \begin{bmatrix}
+            -0.32610957 & 0.8322449  & -0.56256089 & 1.         \\
+            -0.32610957 & 0.63657916 & -0.26879607 & 0.91816874 \\
+            -0.09068663 & 0.44091341 & -0.05329756 & 0.88726382 \\
+            -0.00358974 & 0.38650143 & 0.11218541  & 0.89351535 \\
+            -0.00358974 & 0.38434759 & 0.26635522  & 0.93138377
+        \end{bmatrix}
+    \end{equation*}
+    where $a_{ij}$ is the $j$th coefficient of the $i$th polynomial.
+
+    The graph is
+
+    \includegraphics[scale=0.5]{q6}
+
+    and the error at $x = 1.1$ is $0.000389$.
 
 \end{answer}
 
@@ -179,10 +274,18 @@ Use at least 10 different $h$ values (including $h = 1/4$). Use these data to
 estimate the rate of convergence of both the standard and improved methods.
 
 \begin{answer}
-    The code listing is left in Appendix B. Give
-\end{answer}
+    The code listing is left in Appendix B. The resulting graphs for the
+    starndard and improved methods are, respectively,
 
-Now, using the improved trapezoidal method
+    \includegraphics[scale=0.5]{q71}
+
+    and
+
+    \includegraphics[scale=0.5]{q72}
+
+    From the graphs we can estimate the rate of convergence as $O(h^2)$ and
+    $O(h^4)$ respectively.
+\end{answer}
 
 8. (1 point) Suggest a method for numerically approximating the derivative of
 a function whose value is given only at a discrete set of data points.
@@ -190,12 +293,87 @@ For this problem, what would be the effect of noisy data, and how would you cope
 with it in your numerical method?
 
 \begin{answer}
+    The best way to approximate the derivative of a function given discrete
+    points is to interpole it using either a polynomial or a spline. We can
+    use a polynomial if we do not care about the tail behaviour, otherwise
+    a spline will work better. If the data is noisy, we can either remove
+    the outliar points, or use a smoothing technique. Something like the
+    Savitzky-Golay equations can remove the majority of the noise in the
+    data leaving the signal mostly intact. With these equations we can
+    also find the first derivative directly.
 
+    In summary, if the data is noisy, a smoothing technique is most likely the
+    best option to get the derivative. If the outliars are very pronounced it
+    may be a better option to simply remove them.
 \end{answer}
 
 \section*{Appendix A}
 \begin{lstlisting}[language=Python]
+def newton_method(f :Callable, x_0 : int) -> np.array:
+    # Starting point
+    x = [x_0]
+    # tolerance i.e when to stop iterating
+    tol = 0.000001
+    # dummy value so first evaluation always happens
+    curr_tol = 1
+    while curr_tol > tol:
+        # keep track of values
+        x.append(x[-1] - f(x[-1]))
+        # update absolute difference
+        curr_tol = abs(x[-1] - x[-2])
+    # return np.array for ease of use later
+    return np.array(x)
+
+def modified_newton(f: Callable, x_0: int, k: int) -> np.array:
+    # starting point
+    x = [x_0]
+    # tolerance
+    tol = 0.000001
+    # dummy value
+    curr_tol = 1
+    while curr_tol > tol:
+        x.append(x[-1] - k * f(x[-1]))
+        curr_tol = abs(x[-1] - x[-2])
+    return np.array(x)
+
+# more numerically stable version of f(x) / f'(x)
+f = lambda x: 1/((x-1)*np.exp(1-x)) - x/(x-1)
+# we know k
+k = 2
+# root
+alpha = 1
+# neighborhood around the root
+starts = np.linspace(-1, 3, 5)
+out_newt = []
+out_mod = []
     
+    for x0 in starts:
+        # We append a vector of error to the root given an inital guess
+        out_newt.append(np.abs(newton_method(f,  x0) - alpha))
+        out_mod.append(np.abs(modified_newton(f,x0,k) - alpha)) 
+# The construction of the graph is left out
+# as it it not relevant to the question itself
+\end{lstlisting}
+
+\section*{Appendix B}
+\begin{lstlisting}[language=Python]
+def comp_trap(f: Callable, a: float, b: float, h: float) -> float:
+    x = np.arange(a + h, b, h)
+    return h*(sum([f(xi) for xi in x]) + 0.5*f(a) + 0.5*f(b))
+    
+def impr_trap(f: Callable, g: Callable, a: float, b: float, h: float) -> float:
+    return comp_trap(f, a, b, h) - (1/12)*(h**2)*(g(b)-g(a)) 
+    
+    hs = np.linspace(0.005, 1, 100)
+    out_trap = np.zeros(len(hs))
+    out_impr = np.zeros(len(hs))
+    f = lambda x: np.exp(-1*x**2)
+    g = lambda x: -2*x*np.exp(-1*x**2)
+    for i in range(len(hs)):
+        out_trap[i] = comp_trap(f, 1.0, 2.0, hs[i])
+        out_impr[i] = impr_trap(f, g, 1.0, 2.0, hs[i]) 
+# The construction of the graph is left out
+# as it it not relevant to the question itself
 \end{lstlisting}
 
 \end{document}
