@@ -58,10 +58,10 @@ class Perceptron(object):
             float
             The value of the sigmoid of the weighted input
         """
-        inActs.insert(0, 1)
-        return self.sigmoid(self.getWeightedSum(inActs))
+        temp = [1] + inActs
+        return self.sigmoid(self.getWeightedSum(temp))
 
-    def sigmoidDeriv(self, value):
+    def sigmoidDeriv(self, x):
         """
         Return the value of the derivative of a sigmoid function.
 
@@ -72,7 +72,7 @@ class Perceptron(object):
             The output of the derivative of a sigmoid function
             parametrized by the value.
         """
-        """YOUR CODE"""
+        return (1 - self.sigmoid(x)) * (self.sigmoid(x))
 
     def sigmoidActivationDeriv(self, inActs):
         """
@@ -86,7 +86,8 @@ class Perceptron(object):
             int
             The derivative of the sigmoid of the weighted input
         """
-        """YOUR CODE"""
+        temp = [1] + inActs
+        return self.sigmoidDeriv(self.getWeightedSum(temp))
 
     def updateWeights(self, inActs, alpha, delta):
         """
@@ -104,7 +105,11 @@ class Perceptron(object):
             Return the total modification of all the weights (sum of each abs(modification))
         """
         totalModification = 0
-        """YOUR CODE"""
+        temp = [1] + inActs
+        for i in range(len(self.weights)):
+            prevmod = totalModification
+            totalModification += abs(temp[i] * alpha * delta)
+            self.weights[i] += totalModification - prevmod
         return totalModification
 
     def setRandomWeights(self):
@@ -188,6 +193,14 @@ class NeuralNet(object):
             A list of lists. The first list is the input list, and the others are
             lists of the output values of all perceptrons in each layer.
         """
+        out = [inActs]
+        currlayer = inActs
+        for layer in self.layers:
+            out.append([])
+            for node in layer:
+                out[-1].append(node.sigmoidActivation(currlayer))
+            currlayer = out[-1]
+        return out
 
     def backPropLearning(self, examples, alpha):
         """

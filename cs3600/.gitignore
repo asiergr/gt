@@ -8,3 +8,4 @@ percep
 *.csv
 CONFIG
 *.lay
+*.json
