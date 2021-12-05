@@ -1,0 +1,312 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\usepackage{graphicx}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\partiald}[2]{\frac{\partial #1}{\partial #2}}
+
+\DeclareMathOperator*{\Log}{Log}
+\DeclareMathOperator*{\Arg}{Arg}
+\DeclareMathOperator*{\sech}{sech}
+\DeclareMathOperator*{\Res}{Res}
+
+\title{HW 14\&15}
+\author{Asier Garcia Ruiz }
+\begin{document}
+\maketitle
+
+\section*{103-106}
+\subsection*{2}
+By considering the images of \textit{horizontal} line segments, verify that the
+image of the rectangular region $a \leq x \leq b, c \leq y \leq d$ under the
+transformation $w = \exp z$ is the region
+$e^a \leq \rho \leq e^b$, $c\leq \phi \leq d$, as shown in Fig. 125 (Sec. 103).
+
+\begin{proof}
+    We consider $x = x + iy$, then
+    \begin{align*}
+        f(z) & = \exp(x + iy),   \\
+             & = e^xe^{iy},      \\
+             & = \rho e^{i\phi}.
+    \end{align*}
+    Now consider the horizontal line $x=a$, $c \leq y \leq d$. We can see that
+    this gets mapped to $e^a e^{i\phi}$ where $c \leq \phi \leq d$. Similarly
+    for the line $x=b$, $c \leq y \leq d$ we get
+    $e^b e^{i\phi}$ where $c \leq \phi \leq d$. Any other line between these
+    will get mapped in the same manner. Hence, the rectangular region
+    gets mapped to $e^a \leq \rho \leq e^b$, $c \leq \phi \leq d$.
+\end{proof}
+
+\subsection*{7}
+Verical half lines were used in the example in Sec. 104 to show that the
+transformation $w = \sin z$ is a one to one mapping of the open region
+$-\pi / 2 < x \pi / 2$, $y > 0$ onto the half plane $v > 0$.
+Verify that result by using, instead, the \textit{horizontal} line segments
+$y = c_2 (-\pi / 2 < x < \pi /2)$, where $c_2 > 0$.
+
+\begin{proof}
+    We know from the example that $\sin z = u + iv$ where
+    \begin{equation*}
+        u = \sin x \cosh y, \ v = \cos x \sinh y.
+    \end{equation*}
+    Now we consider the horizontal line $y = c_2$ where $(-\pi / 2 < x < \pi / 2)$.
+    This line gets mapped to $u + iv$ where
+    \begin{equation*}
+        u = \sin x \cosh c_2, \ v = \cos x \sinh c_2.
+    \end{equation*}
+    This is the right hand side of the elipse
+    \begin{equation*}
+        \frac{u^2}{\cosh^2 c_2} + \frac{v^2}{\sinh^2 c_2} = 1,
+    \end{equation*}
+    with focii at points
+    $\sqrt{\cosh^2 c_2 - \sinh^2 c_2} = \pm 1$.
+
+    Thus, we see that as the point $(x, c_2), (-\pi/2 < x < \pi/2)$ moves right
+    along the line, its image moves along the upper half of the elipse. Therefore,
+    the line $y = c_2 (-\pi / 2 < x < \pi /2)$, where $c_2 > 0$ gets mapped to
+    the upper half of the ellipse. Meaning that each one of these lines
+    corresponds to the upper part of a different ellipse with the same focii.
+    Therefore, there is a 1-to-1 mapping of the open region
+    $-\pi/2 < x < \pi/2$, $y> 0$ to the half plane $v>0$.
+\end{proof}
+
+\section*{107-108}
+\subsection*{4}
+Modify the discussion in Example 1, Sec. 107, to show that when $w = z^2$, the
+image of the closed traingular region formed by the lines $y = \pm x$ and $x = 1$
+is the closed parabolic region bounded on the left by the segment $-2\leq v\leq 2$
+of the $v$ axis and on the right by the portion of the parabola
+$v^2 = -4(u-1)$. Verify the corresponding points on the two boundaries shown in
+Fig. 137.
+
+\begin{proof}
+    We know that $w = u + iv$ where
+    \begin{equation*}
+        u = x^2 - y^2, \ v = 2xy.
+    \end{equation*}
+    We consider the lines $y = \pm x$ and get that $u = 0$ and $v = \pm 2x^2$.
+    For the points of the line from $x=0$ to $x=1$ we get the line segment
+    $-2 \leq v \leq 2$. We can see that $D$ at $z = 1 + i$ and
+    $B$ at $z = 1 - i$ then clearly get mapped to $(0,2)$ and $(0,-2)$ respectively.
+
+    Now we consider the vertical segment $x = 1$. We then have that
+    $u = 1 - y^2, \ v= 2y$. Substituting we then get $u = 1 - \frac{v^2}{4}$.
+    Finally rearranging again we get $v^2 = -4(u-1)$. Hence, this segment gets
+    mapped to the parabola. We can easily see that $C$ at $z = 1$ gets mapped
+    to $(1, 0)$.
+
+    Hence, we have verified all the points in Fig. 137 and shown that the
+    traingular region gets mapped to the closed parabolic region as required.
+\end{proof}
+
+\subsection*{7}
+According to Example 2, Sec. 102, the linear fractional transformation
+\begin{equation*}
+    Z = \frac{z-1}{z+1}
+\end{equation*}
+maps the $x$ axis onto the $X$ axis and the half planes $y > 0$ and $y<0$ onto the
+half planes $Y>0$ and $Y< 0$, respectively. Show that, in particular, it maps the
+segment $-1 \leq x \leq 1$ of the $x$ axis onto the segment $X\leq 0$ of the $X$
+axis. Then show that when the principal branch of the square root is used, the
+composite function
+\begin{equation*}
+    w = Z^{1/2} = \left(\frac{z-1}{z+1}\right)^{1/2}
+\end{equation*}
+maps the $z$ plane, except for the segment $-1 \leq x \leq 1$ of the $x$ axis,
+onto the right half plane $u > 0$.
+
+\begin{proof}
+    We consider the segment $-1\leq x \leq 1$. We consider first the real part
+    by letting $z = x$, then $Z = \frac{x-1}{x+1}$. Now if $Z + X+iY$ we have
+    \begin{gather*}
+        X + iY = \frac{x - 1}{x + 1},\\
+        X = \frac{x-1}{x+1}, Y = 0.
+    \end{gather*}
+    Now when $-1\leq x \leq 1$ we have $x -1 \leq 0$ and $x + 1 \geq 0$.
+    Therefore, $\frac{x-1}{x+1} \leq 0$. So $X \leq 0$ if $-1\leq x \leq 0$.
+    This is mapping on the segment.
+
+    We let $Z= re^{i\Theta}$ with $r > 0, -\pi < \Theta < \pi$. Now since the
+    segment $-1\leq x \leq 1$ is mapped to $X \leq 0$, the $Z$ we chose does
+    not include this segment $X \leq 0$ of the axis.
+
+    Now we will consider $Z^{1/2}$. We can write
+    \begin{align*}
+        Z^{1/2} & = \exp\left(\frac{1}{2}\log Z\right),            \\
+                & = \exp\left(\frac{1}{2}(\ln r + i\Theta)\right), \\
+                & = r^{1/2} \exp\left(i\frac{\Theta}{2}\right).
+    \end{align*}
+    Now if $w = \rho e^{i\phi}$ we have
+    \begin{equation*}
+        \rho e^{i\phi} = r^{1/2} e^{i\frac{\Theta}{2}}.
+    \end{equation*}
+    Thus we have that $-\frac{\pi}{2} < \phi < \frac{\pi}{2}$. That is, the image
+    lies in the third and fourth quadrants of the $w$-plane, i.e the right half
+    plane $u > 0$.
+
+\end{proof}
+
+\section*{112-114}
+\subsection*{2}
+What angle of rotation is produced by the transformation $w=1/z$ at the point
+
+(a) $z_0 = 1$;
+
+\begin{proof}
+    Considering the function $w = f(z) = \frac{1}{z}$ we know the angle of
+    rotation is given by $\arg f'(z) = \arg \left(-\frac{1}{z^2}\right)$. At
+    $z_0$ we have $f(z_0) = -1$, and $\arg -1 = \pi$. Hence the angle of rotation
+    is $\pi$.
+\end{proof}
+
+(b) $z_0 = i$
+
+\begin{proof}
+    Considering the function $w = f(z) = \frac{1}{z}$ we know the angle of
+    rotation is given by $\arg f'(z) = \arg \left(-\frac{1}{z^2}\right)$. At
+    $z_0$ we have $f(z_0) = 1$, and $\arg 1 = 0$. Hence the angle of rotation
+    is $0$.
+\end{proof}
+
+
+\subsection*{6}
+Find the local inverse of te transformation $w  = z^2$ at the point
+
+(a) $z_0 = 2$
+
+\begin{proof}
+    We start by noting that $w = 2^2 = 4 = 4e^{i2n\pi}$. Now if $w = f(z) = z^2$
+    then $z = g(w) = w^{1/2} = \rho^{1/2} e^{i\phi/2}$. However, points like
+    $w = 4$ can go to $z = -2$. Hence we restrict the domain to end with
+    $g(w) = w^{1/2} = \rho^{1/2} e^{i\phi/2}, -\pi < \phi < \pi$.
+\end{proof}
+
+(b) $z_0 = -2$
+
+\begin{proof}
+    We start by noting that $w = (-2)^2 = 4 = 4e^{i2n\pi}$. Now if
+    $w = f(z) = z^2$ then $z = g(w) = \rho^{1/2} e^{i\phi/2}$. However,
+    points like $w = 4$ can go to $z = 2$. Hence we restrict the domain to end with
+    $g(w) = w^{1/2} = \rho^{1/2} e^{i\phi/2}, \pi < \phi < 3\pi$.
+\end{proof}
+
+(c) $z_0 = -i$
+\begin{proof}
+    We start by noting that $w = (-i)^2 = -1 = e^{i(3\pi/2 + 2n\pi)}$. Now if
+    $w = f(z) = z^2$ then $z = g(w) = \rho^{1/2} e^{i\phi/2}$.
+    We restrict the domain to end with
+    $g(w) = w^{1/2} = \rho^{1/2} e^{i\phi/2}, 2\pi < \phi < 4\pi$ to have a
+    single branch.
+\end{proof}
+
+\section*{93-94}
+\subsection*{1}
+Let $C$ denote the unit circle $|z|=1$, described in the positive sense.
+Use the theorem in Sec. 93 to determine the value of $\Delta_C\arg f(z)$ when
+
+(a) $f(z) = z^2$;
+\begin{proof}
+    We see that $f(z)$ has one zero of multiplicity 2 at $z = 0$, and no poles
+    in $C$. Hence using the theorem
+    \begin{equation*}
+        \Delta_C\arg f(z) = 2\pi(2) = 4\pi.
+    \end{equation*}
+\end{proof}
+
+(b) $f(z) = \frac{1}{z^2}$;
+\begin{proof}
+    We see that $f(z)$ has no zeros on $C$, and it has a pole of multiplicity 2
+    at $z = 0$.
+    Hence
+    \begin{equation*}
+        \Delta_C \arg f(z) = 2\pi (0-2) = -4\pi.
+    \end{equation*}
+\end{proof}
+
+(c) $f(z) = (2z-1)^7 / z^3$;
+\begin{proof}
+    We see that $f(z)$ has a zero of multiplicity 7 at $z=1/2$ and a pole of multiplicity
+    3 at $z=0$. Hence
+    \begin{equation*}
+        \Delta_C \arg f(z) = 2\pi (7-3) = 8\pi
+    \end{equation*}
+\end{proof}
+
+\subsection*{3}
+Using the notation in Sec.93, suppose that $\Gamma$ does not enclose the origin
+$w=0$ and that there is a ray from that point which does not intersect $\Gamma$.
+By observing that the absolute value of $\delta_C f(z)$ must be less than $2\pi$
+when a point $z$ makes one cycle around C and recalling that $\delta_C f(z)$
+is an integral multiple of $2\pi$, point out why the winding number of $\Gamma$
+with respect to the origin $w=0$ must be zero.
+
+\begin{proof}
+    Becuase $\Gamma$ does not enclose the origin we have that
+    \begin{equation*}
+        0 \leq \Delta_C \arg f(z) < 2\pi.
+    \end{equation*}
+    By the argument principle,
+    \begin{equation*}
+        \Delta_C \arg f(z) = Z- P = 2n\pi.
+    \end{equation*}
+    Because $0 \leq \Delta_C \arg f(z) < 2\pi$. the only possibility is
+    \begin{equation*}
+        \Delta_C \arg f(z) = 0.
+    \end{equation*}
+    Which implies, $2n\pi =0$ and thus $n= 0$. That is, the winding number is zero.
+\end{proof}
+
+\subsection*{8}
+Determine the number of roots, counting multiplicities, of the equation
+\begin{equation*}
+    2z^5 - 6z^2 + z + 1 = 0
+\end{equation*}
+in the annulus $1 \leq |z| < 2$.
+
+\begin{proof}
+    We first let $f(z) = 2z^5$ and $g(z) = -6z^2 + z + 1$ and consider the curve
+    $C_1: |z| = 2$. We have that
+    \begin{equation*}
+        |f(z)| = 2|z^5| = 2|z|^5 = 2(2^5) = 64
+    \end{equation*}
+    and
+    \begin{equation*}
+        |g(z)| = |-6z^2 + z + 1| \leq 6|z|^2 + |z| + 1 = 27.
+    \end{equation*}
+    So $|f(z)| > |g(z)|$ on $C_1$. Also, $f(z)$ has one zero of multiplicity
+    5 in $C_1$. So by Rouche's theorem
+    $f(z) + g(z) + 2z^5 - 6z^2 + z + 1$ has 5 zeros in $C_1$.
+
+    Now consider $C_2: |z| = 1$. We let $f(z) = -6z^2$ and $g(z) = 2z^5 + z + 1$.
+    We find
+    \begin{equation*}
+        |f(z)| = |-6z^2| = 6,
+    \end{equation*}
+    and
+    \begin{equation*}
+        |g(z)| = |2z^5 + z + 1| \leq 2|z|^5 + |z| + 1 = 2 + 1 +1 = 4.
+    \end{equation*}
+    Hence, $|f(z)| > |g(z)|$ on $C_2$. Now $f(z)$ has one zero of multiplicity
+    3 in $C_1$. So by Rouche's theorem
+    $f(z) + g(z) + 2z^5 - 6z^2 + z + 1$ has 3 zeros in $C_2$.
+
+    Finally, we get that
+    \begin{equation*}
+        |f(z)| = 2|z^5| = 2|z|^5 = 2(2^5) = 64
+    \end{equation*}
+    has 3 zeros in the annular domain $1 \leq |z| < 2$
+
+\end{proof}
+
+\end{document}
