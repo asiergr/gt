@@ -346,15 +346,20 @@ def buildNeuralNet(
     """
     iteration = 0
     trainError = 0
-    weightMod = 0
+    weightMod = 1
 
     """
     Iterate for as long as it takes to reach weight modification threshold
     """
-    # if iteration%10==0:
-    #    print '! on iteration %d; training error %f and weight change %f'%(iteration,trainError,weightMod)
-    # else :
-    #    print '.',
+
+    while iteration < maxItr and weightMod > weightChangeThreshold:
+        iteration += 1
+        trainError, weightMod = nnet.backPropLearning(examplesTrain, alpha)
+
+        # if iteration%10==0:
+        #    print '! on iteration %d; training error %f and weight change %f'%(iteration,trainError,weightMod)
+        # else :
+        #    print '.',
 
     time = datetime.now().time()
     print(
@@ -371,12 +376,19 @@ def buildNeuralNet(
     testError = 0
     testCorrect = 0
 
-    testAccuracy = 0  # num correct/num total
+    for ex in examplesTest:
+        inLayer, outLayer = ex[0], ex[1]
+        finalOutput = nnet.feedForward(inLayer)[-1]
+        finalOutput = [round(n) for n in finalOutput]
+        testCorrect += int(finalOutput == outLayer)
+        testError += int(finalOutput != outLayer)
+
+    testAccuracy = testCorrect / (testCorrect + testError)  # num correct/num total
 
     print(
         "Feed Forward Test correctly classified %d, incorrectly classified %d, test accuracy %f\n"
         % (testCorrect, testError, testAccuracy)
     )
 
-    """return something"""
+    return nnet, testAccuracy
 
