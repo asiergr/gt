@@ -1,0 +1,252 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\P}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\var}[1]{\text{var}\left[#1\right]}
+\newcommand{\randsamp}{X_1,\dots,X_n}
+\newcommand{\mgf}{moment generating function }
+\newcommand{\clt}{central limit theorem}
+\DeclareMathOperator*{\Binomial}{Binomial}
+
+
+\title{HW1}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\section*{6.2}
+\subsection*{6}
+Suppose that $\randsamp$ form a random sample of size $n$ form a distribution for which the
+mean is 6.5 and the variance is 4. Determine how large the value of $n$ must be in order
+for the following relation to be satisfied:
+\begin{equation*}
+    \P{6 \leq \bar{X}_n \leq 7} \geq 0.8.
+\end{equation*}
+
+\begin{proof}
+    We can restate the relation as
+    \begin{equation*}
+        \P{|\bar{X}_n - 6.5| \leq 0.5} \geq 0.8.
+    \end{equation*}
+    Now we can write
+    \begin{gather*}
+        \P{|\bar{X}_n - 6.5| \leq 0.5} \geq 0.8 \\
+        \P{|\bar{X}_n - 6.5| \geq 0.5} \leq 0.2
+    \end{gather*}
+    Now by Chebyshev's inequality
+    \begin{align*}
+        \P{|\bar{X}_n - 6.5| \geq 0.5} & \leq \frac{\var(\bar{X}_n)}{0.5^2},   \\
+                                       & \leq \frac{\frac{4}{n}}{\frac{1}{4}}, \\
+                                       & \leq \frac{16}{n}
+    \end{align*}
+    Hence, we need at least $n = 80$ samples.
+\end{proof}
+
+\subsection*{15}
+Prove Theorem 6.2.5
+
+\begin{proof}
+    We want to show that if $Z_n \stackrel{p}{\to} b$ and $g(z)$ is a function that is
+    continuous at $z = b$, then $g(Z_n) \stackrel{p}{\to} g(b)$.
+
+    We know that $g(z)$ is continuous, that is, $\forall \epsilon > 0, \ \exists \delta >0$
+    such that $|x_n - x| < \delta$ implies $|g(x_n) - g(x)| < \epsilon$. Now we write
+    \begin{equation*}
+        \lim_{n\to\infty} \P{|Z_n - b| < \delta} = 1,
+    \end{equation*}
+    which is to say $Z_n \stackrel{p}{\to} b$. This implies
+    \begin{equation*}
+        \lim_{n\to\infty} \P{|g(Z_n) - g(b)| < \epsilon} = 1.
+    \end{equation*}
+    Therefore, $g(Z_n) \stackrel{p}{\to} g(b)$.
+\end{proof}
+
+\section*{6.3}
+\subsection*{10}
+A random sample of $n$ items is to be taken from a distribution with mean $\mu$ and
+standard deviation $\sigma$.
+
+(a) Use the Chebyshev inequality to determine the smallest
+number of items $n$ that must be taken in order to satisfy the following relation:
+\begin{equation*}
+    \P{|\bar{X}_n - \mu| \leq \frac{\sigma}{4}}\geq 0.99.
+\end{equation*}
+
+\begin{proof}
+    This relation is equivalent to
+    \begin{equation*}
+        \P{|\bar{X}_n - \mu| \geq \frac{\sigma}{4}} \leq 0.01.
+    \end{equation*}
+    Now we can write by Chebyshev's inequality
+    \begin{align*}
+        \P{|\bar{X}_n - \mu| \geq \frac{\sigma}{4}} & \leq \frac{\var(X)}{(\sigma/4)^2},                \\
+                                                    & = \frac{\frac{\sigma^2}{n}}{\frac{\sigma^2}{16}}, \\
+                                                    & = \frac{16}{n}.
+    \end{align*}
+    Now we require that $\frac{16}{n} = 0.01$ and thus $n = 1600$.
+\end{proof}
+
+(b) Use the central limit theorem to determine the smallest number of items $n$ that
+must be taken in order to satisfy the relation in part (a) approximately.
+
+\begin{proof}
+    Using the central limit theorem we know that
+    \begin{equation*}
+        \lim_{n\to \infty} \P{\frac{\bar{X}_n - \mu}{\sigma/n^{1/2}} \leq x} = \phi(x),
+    \end{equation*}
+    where $\phi(x)$ is the standard normal distribution. Hence, the distribution can
+    be approximated using $\phi(x)$.
+
+    Now we can write
+    \begin{align*}
+        \P{|X_n - \mu| \leq \frac{\sigma}{4}}
+         & = \P{\frac{|X_n - \mu|}{\sigma/n^{1/2}} \leq \frac{\frac{\sigma}{4}}{\frac{\sigma}{n^{1/2}}}}, \\
+         & = \P{-\frac{n^{1/2}}{4} \leq \frac{X_n - \mu}{\sigma/n^{1/2}} \leq \frac{n^{1/2}}{4}},         \\
+         & \approx \phi\left(\frac{n^{1/2}}{4}\right) - \phi\left(-\frac{n^{1/2}}{4}\right).
+    \end{align*}
+    Now we require that
+    \begin{equation*}
+        \phi\left(\frac{n^{1/2}}{4}\right) - \phi\left(-\frac{n^{1/2}}{4}\right) \geq 0.99.
+    \end{equation*}
+    We can get this with $n = 107$.
+\end{proof}
+
+\subsection*{Problem 4}
+Show that if $\randsamp$ is a random sample from $N(\mu, \sigma^2)$ then
+
+(a) $\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i$ has $N(\mu, \frac{\sigma^2}{n})$ distribution.
+
+(b) $Y = \sum_{i=1}^n \frac{(X_i - \mu)^2}{\sigma^2}$ has $\chi^2(n)$ distribution.
+
+(Hint: show that both have the same mgf)
+
+\begin{proof}
+    We will show part (a). We assume that all the $X_i \ i = 1,\dots,n$ are i.i.d.
+    We also know that the \mgf of $N(\mu, \sigma^2)$ is
+    $M_{X_i}(t) = e^{t\mu + \frac{1}{2}\sigma^2t^2}$. Now we can write
+    \begin{align*}
+        M_{\bar{X}}(t) & = M_{\frac{1}{n}(\randsamp)}(t)                                        \\
+                       & \stackrel{\text{i.i.d}}{=} \prod_{i=1}^n M_{\frac{1}{n}X_i}(t)         \\
+                       & \stackrel{\text{i.i.d}}{=} [M_{\frac{1}{n}X}(t)]^n                     \\
+                       & \stackrel{\text{Thm. 4.4.3}}{=} [M_X(\frac{1}{n}t)]^n                  \\
+                       & = \exp\left(t\frac{t}{n} + \frac{1}{2}\frac{\sigma^2}{n^2}t^2\right)^n \\
+                       & = \exp\left(t\mu + \frac{1}{2}\frac{\sigma^2}{n}t^2\right).            \\
+    \end{align*}
+    This is the \mgf for $N(\mu, \frac{\sigma^2}{n})$. Hence, by uniqueness (Thm 4.4.5) we
+    have that these distributions are equal.
+\end{proof}
+
+\begin{proof}
+    We will show part (b). We again assume that all $X_i, \ i = 1,\dots,n$ are i.i.d.
+    We also know that the \mgf of $N(\mu, \sigma^2)$ is
+    $M_{X_i}(t) = e^{t\mu + \frac{1}{2}\sigma^2t^2}$. Now we can write
+    \begin{align*}
+        M_Y(t) & = M_{\sum_{i=1}^n\frac{(X_i - \mu)^2}{\sigma^2}}(t), \\
+               & = \prod_{i=1}^n M_{Z^2}(t).                          \\
+    \end{align*}
+    Where $Z = \frac{X - \mu}{\sigma^2}$. We also note that $Z$ is standard normal.
+    Furthermore, we know that $Z^2 = \chi^2(1)$. Hence we can write
+    \begin{align*}
+        \prod_{i=1}^n M_{\chi^2(1)}(t) & =\prod_{i=1}^n (1-2t)^{\frac{-1}{2}},   \\
+                                       & = \left[(1-2t)^{\frac{-1}{2}}\right]^n, \\
+                                       & = (1-2t)^{\frac{-n}{2}},                \\
+                                       & = M_{\chi^2(n)}(t).
+    \end{align*}
+    Hence, by uniqueness of the \mgf we have that $Y$ has $\chi^2(n)$ distribution.
+\end{proof}
+
+\subsection*{14a}
+Suppose that $\randsamp$ form a random sample from a normal distribution with mean 0 and
+unknown variaince $\sigma^2$.
+
+(a) Determine the asymptotic distribution of the statistic
+\begin{equation*}
+    \left(\frac{1}{n}\sum_{i=1}^nX_i^2\right)^{-1}.
+\end{equation*}
+
+\begin{proof}
+    We start by assuming all the $X_i$ are i.i.d. Then we note $\var{X} = \E{X^2} - \mu^2$.
+    Now since $\mu = 0$ we get $\var{X} = \E{X^2} = \sigma^2$. Now to find $\var{X^2}$ we
+    use the \mgf for $N(0, \sigma^2)$.
+    \begin{align*}
+        M_X(t)       & = e^{\frac{1}{2}\sigma^2t^2},                                                                                                         \\
+        \vdots                                                                                                                                               \\
+        M_X^{(4)}(t) & = \sigma^2\left[e^{\frac{1}{2}\sigma^2t^2}s^6t^4 + 6e^{\frac{1}{2}\sigma^2t^2}\sigma^4t^2 +3e^{\frac{1}{2}\sigma^2t^2}\sigma^2\right]
+    \end{align*}
+    Hence, $M_X^{(4)}(0) = 3\sigma^4 = \E{X^4}$.
+    Now we can find \[\var{X^2} = \E{X^4} - \E{X^2}^2 = 3\sigma^4 - \sigma^4 = 2\sigma^4\].
+
+    We also note that $\frac{1}{n}\sum_{i=1}^n X_i^2$ is nothing but the sample mean of the
+    $X_i^2$, we will denote it as $\bar{Y}$. Now we also have that
+    $\alpha(\bar{Y}) = \frac{1}{\bar{Y}}$.
+
+    Finally, using the delta method we get that $\frac{1}{\bar{Y}}$ is asymptotically
+    normal with mean \[\mu = \frac{1}{\sigma^2}\] and variance
+    \[\frac{\sigma^2g'(\mu)}{n} = \frac{3\sigma^4}{n}\left(-\frac{1}{\sigma^4}\right)^2
+        = \frac{3}{n\sigma^4}\]
+\end{proof}
+
+\section*{6.4}
+\subsection*{2}
+Let $X$ denote the total number of successes in 15 Bernoulli trials, with probability of
+success $p = 0.3$ on each trial.
+
+(a) Determine approximately the value of $\P{X=4}$ by using the \clt with the correction
+for continuity.
+
+\begin{proof}
+    We have that $X \sim \text{Binomial}(n=15, p = 0.3)$. We let
+    $Y \sim N(\mu = 4.5, \sigma = 3.15^{1/2})$
+    We then approximate this quantity as
+    \begin{equation*}
+        \P{4 - \frac{1}{2} < Y < 4 + \frac{1}{2}} \approx 0.2134.
+    \end{equation*}
+\end{proof}
+
+(b) Compare the answer obtained in part (a) with the exact value of this probability.
+\begin{proof}
+    We have that
+    \begin{equation*}
+        \P{X=4} \approx 0.2186.
+    \end{equation*}
+    Which is quite close to the approximation we obtained in (a).
+\end{proof}
+
+\subsection*{7}
+Using the correction for continuity, determine the probability required in Exercise 7
+of Sec. 6.3.
+
+Exercise 7 of Sec. 6.3
+Suppose that 16 digits are chosen at random with replacement from the set
+$\{0,\dots,9\}$. What is the probability that their average will lie between 4 and 6?
+
+\begin{proof}
+    We have that each individual $X \sim \text{Uniform}(0,9)$.
+    Now, the 16 samples can be approximated
+    using a normal distribution with $\mu = 4.5$ and $\sigma = \sqrt{8.25/16}$.
+
+    Now we calculate
+    \begin{align*}
+        \P{4-\frac{1}{2} \leq Y \leq 6 + \frac{1}{2}}
+         & = \P{\frac{3.5 - 4.5}{\sqrt{8.25/16}} \leq \frac{Y - 4.5}{\sqrt{8.25/16}} \leq \frac{6.5 - 4.5}{\sqrt{8.25/16}}} \\
+         & = \phi(2.7852) - \phi(-1.3926)                                                                                   \\
+         & = \phi(2.79) - (1 -\phi(1.39))                                                                                   \\
+         & = 0.9973 - (1 - 0.9177)                                                                                          \\
+         & = 0.9973 - 0.0823 = 0.915
+    \end{align*}
+\end{proof}
+
+\end{document}
