@@ -43,13 +43,19 @@ Prove or disprove that the following are groups:
 \subsection*{(a)}
 Even integers under addition.
 \begin{proof}
-    (\textbf{Associative:}) Clearly since addition is associative, then so is addition of even
-    integers.
+    (\textbf{Closure:})
+    If we have two even integers $2n, 2m \in 2\Z$ then addition yields
+    $2n + 2m = 2(n + m) \in 2\Z$. Hence addition is a binary operation on the
+    even integers.
+
+    (\textbf{Associative:}) We have that $(2n + 2m) + 2s = 2n + (2m + 2s) \
+        \forall n,m,s \in \Z$, hence associativity is met integers.
 
     (\textbf{Identity:}) The identity element is $0\in 2\Z$ since
     $0+ x = x = x + 0 \ \forall x \in 2\Z$.
 
     (\textbf{Inverse:}) Every $x \in 2\Z$ has an inverse $-x \in 2\Z$ since clearly $x + (-x) = 0$.
+
     Hence, this is a group.
 \end{proof}
 
@@ -64,6 +70,10 @@ Odd integers under addition.
 \subsection*{(c)}
 $(3\Z, +)$ where $3\Z = \{3n: n\in\Z\}$.
 \begin{proof}
+    (\textbf{Closure:})
+    Given $3n, 3m \in 3\Z$ we have that $3n + 3m = 3(n + m) \in 3\Z$. Hence,
+    $+$ is a binary operator on $3\Z$
+
     (\textbf{Associative}) We can clearly see that $(3n + 3m) + 3n = 3n + (3m + 3x) \ \forall n,m,x \in Z$.
 
     (\textbf{Identity:}) We see that $0 \in 3\Z$ is the identity as $0 + 3n = 3n = 3n + 0, \ \forall n \in 3\Z$.
@@ -78,8 +88,15 @@ $(3\Z, +)$ where $3\Z = \{3n: n\in\Z\}$.
 \subsection*{(d)}
 $\{3^n: n \in \Z\}$ under multiplication.
 \begin{proof}
+    (\textbf{Closure:})
+    For any two $3^n, 3^m \in \{3^n: n \in \Z\}$ we have that
+    $3^n*3^m = 3^{n+m} \in \{3^n: n \in \Z\}$. Hence multiplication is a binary
+    operation on $\{3^n: n \in \Z\}$.
+
     (\textbf{Associative:})
-    We can write $3^x(3^y3^z) = (3^x3^y)3^z$ since multiplication is associative by definition.
+    We can write
+    \[3^x(3^y3^z) = 3^x3^{y+z} = 3^{x+y+z} = 3^{x+y}3^z =  (3^x3^y)3^z.\]
+    Thus, associativity is met.
 
     (\textbf{Identity:})
     We have that $3^0 = 1 \in \{3^n: n \in \Z\}$ is the identity since $3^n * 1 = 3^n = 1*3^n$
@@ -102,17 +119,35 @@ $2\times 2$ diagonal matrices under matrix addition.
             0      & a_{22}
         \end{bmatrix}$
 
+    (\textbf{Closure:})
+    For any two diagonal $2\times 2$ matrices $A,B$ we have that
+    \begin{align*}
+        A + B & = \begin{bmatrix}
+                      a_{11} + b_{11} & 0               \\
+                      0               & a_{22} + b_{22}
+                  \end{bmatrix}
+    \end{align*}
+    which is also a diagonal $2\times 2$ matrix.
+    Therefore addition is a binary operator on diagonal $2\times 2$ matrices.
+
+
     (\textbf{Associative:})
-    We have that $(A + B) + C = \begin{bmatrix}
-            a_{11} + b_{11} & 0               \\
-            0               & a_{22} + b_{22}
-        \end{bmatrix} + C = \begin{bmatrix}
-            a_{11} + b_{11} + c_{11} & 0                        \\
-            0                        & a_{22} + b_{22} + c_{22}
-        \end{bmatrix} = A + \begin{bmatrix}
-            b_{11} + c_{11} & 0               \\
-            0               & b_{22} + c_{22}
-        \end{bmatrix} = A + (B+C).$ Hence, it is associative.
+    We have that
+    \begin{align*}
+        (A + B) + C & = \begin{bmatrix}
+                            a_{11} + b_{11} & 0               \\
+                            0               & a_{22} + b_{22}
+                        \end{bmatrix} + C                   \\
+                    & = \begin{bmatrix}
+                            a_{11} + b_{11} + c_{11} & 0                        \\
+                            0                        & a_{22} + b_{22} + c_{22}
+                        \end{bmatrix} \\
+                    & = A + \begin{bmatrix}
+                                b_{11} + c_{11} & 0               \\
+                                0               & b_{22} + c_{22}
+                            \end{bmatrix} = A + (B+C).
+    \end{align*}
+    Hence, it is associative.
 
     (\textbf{Identity}) We have that the identity is the zero matrix $\bm{0}$ since
     $A + \bm{0} = A = \bm{0} + A$.
@@ -138,6 +173,12 @@ $2\times 2$ matrices with determinant 1 under matrix addition.
 $2\times 2$ matrices with determinant 1 under matrix multiplication.
 
 \begin{proof}
+    (\textbf{Closure:})
+    We have that for any $2\times 2$ matrices with determinant 1. We know by linear
+    algebra that $\det(A\times B) = \det(A)\det(B)$. Hence, $\det(AB) = 1*1 = 1$
+    and multiplication is a binary operation on $2\times 2$ matrices with determinant
+    one.
+
     (\textbf{Associative:}) Since matrix multiplicaiton is associative in general, then this
     condition is met.
 
@@ -193,6 +234,12 @@ $2\times 2$ symmetric matrices with nonzero determinant under matrix multiplicat
             a_2    & a_{22}
         \end{bmatrix}$
 
+    (\textbf{Closure:})
+    From linear algebra we know that $\det(A\times B) = \det(A)\det(B)$. Thus,
+    if $\det(A) \neq 0$ and $\det(B) \neq 0$ then $\det(A\times B) \neq 0$.
+    Therefore, matrix multiplication is a binary operation on matrices with
+    nonzero determinant.
+
     (\textbf{Associative:}) Since matrix multiplication is associative by definition, so is
     matrix multiplication of this specific kind of matrix.
 
@@ -210,6 +257,14 @@ $2\times 2$ symmetric matrices with nonzero determinant under matrix multiplicat
 $2 \times 2$ orthogonal matrices under matrix multiplication.
 
 \begin{proof}
+
+    (\textbf{Closure:})
+    For any two orthogonal matrices $A,B$ we have that
+    \begin{equation*}
+        AB(AB)^T = ABB^TA^T = AIA^T = AA^T = A.
+    \end{equation*}
+    Therefore matrix multiplication is a binary operation on orthogonal matrices.
+
     (\textbf{Associative:}) Since matrix multiplication is associative by definition, so is
     matrix multiplication of this specific kind of matrix.
 
@@ -227,6 +282,18 @@ $2 \times 2$ orthogonal matrices under matrix multiplication.
 
 \section*{3}
 \begin{proof}
+
+    (\textbf{Closure:})
+    We can write
+    \begin{align*}
+        z_k * z_s & = e^{\frac{2ki\pi}{n}}e^{\frac{2si\pi}{n}}, \\
+                  & = e^{\frac{2(k + s)i\pi}{n}}.
+    \end{align*}
+    In the case where $0 \leq k + s < n$ we are done. If we have that
+    $k + s > n$ then this is simply a repeated root and we can calculate
+    $j = k + s \mod n$ to get a value lesser than $n$. Therefore,
+    multiplication is closed on the $n$th roots of unity.
+
     (\textbf{Associative:}) We can write
     \begin{align*}
         (z_k * z_s) * z_l & = (e^{\frac{2ki\pi }{n_1}} * e^{\frac{2si\pi }{n_2}})
