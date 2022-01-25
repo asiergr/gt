@@ -48,7 +48,7 @@ for the following relation to be satisfied:
     \end{gather*}
     Now by Chebyshev's inequality
     \begin{align*}
-        \P{|\bar{X}_n - 6.5| \geq 0.5} & \leq \frac{\var(\bar{X}_n)}{0.5^2},   \\
+        \P{|\bar{X}_n - 6.5| \geq 0.5} & \leq \frac{\var{\bar{X}_n}}{0.5^2},   \\
                                        & \leq \frac{\frac{4}{n}}{\frac{1}{4}}, \\
                                        & \leq \frac{16}{n}
     \end{align*}
@@ -62,12 +62,25 @@ Prove Theorem 6.2.5
     We want to show that if $Z_n \stackrel{p}{\to} b$ and $g(z)$ is a function that is
     continuous at $z = b$, then $g(Z_n) \stackrel{p}{\to} g(b)$.
 
-    We know that $g(z)$ is continuous, that is, $\forall \epsilon > 0, \ \exists \delta >0$
-    such that $|x_n - x| < \delta$ implies $|g(x_n) - g(x)| < \epsilon$. Now we write
+    Let $\epsilon > 0$. We have that
     \begin{equation*}
-        \lim_{n\to\infty} \P{|Z_n - b| < \delta} = 1,
+        \lim_{n\to\infty} \P{|Z_n - b| < \delta} = 1.
     \end{equation*}
-    which is to say $Z_n \stackrel{p}{\to} b$. This implies
+    Now we pick $\delta > 0$ such that
+    \begin{equation*}
+        |x - b| \leq \delta \Rightarrow |g(x) - g(b)| \leq \epsilon.
+    \end{equation*}
+
+    Hence, we have that
+    \begin{equation*}
+        \{s: |Z_n(s) - b| < \delta|\} \subseteq \{s: |g(Z_n(s)) - g(b)| < \epsilon\}
+    \end{equation*}
+    and thus
+    \begin{equation*}
+        \P{|Z_n - b| < \delta} \leq \P{|g(Z_n(s)) - g(b)| < \epsilon}.
+    \end{equation*}
+    Now, since $\mathbb{P}$ is a mapping to the interval $[0,1]$, by the Squeeze Theorem
+    we have that
     \begin{equation*}
         \lim_{n\to\infty} \P{|g(Z_n) - g(b)| < \epsilon} = 1.
     \end{equation*}
@@ -92,7 +105,7 @@ number of items $n$ that must be taken in order to satisfy the following relatio
     \end{equation*}
     Now we can write by Chebyshev's inequality
     \begin{align*}
-        \P{|\bar{X}_n - \mu| \geq \frac{\sigma}{4}} & \leq \frac{\var(X)}{(\sigma/4)^2},                \\
+        \P{|\bar{X}_n - \mu| \geq \frac{\sigma}{4}} & \leq \frac{\var{X}}{(\sigma/4)^2},                \\
                                                     & = \frac{\frac{\sigma^2}{n}}{\frac{\sigma^2}{16}}, \\
                                                     & = \frac{16}{n}.
     \end{align*}
@@ -134,9 +147,9 @@ Show that if $\randsamp$ is a random sample from $N(\mu, \sigma^2)$ then
 (Hint: show that both have the same mgf)
 
 \begin{proof}
-    We will show part (a). We assume that all the $X_i \ i = 1,\dots,n$ are i.i.d.
+    We will show part (a). We assume that all the $X_i, \ i = 1,\dots,n$ are i.i.d.
     We also know that the \mgf of $N(\mu, \sigma^2)$ is
-    $M_{X_i}(t) = e^{t\mu + \frac{1}{2}\sigma^2t^2}$. Now we can write
+    \[M_{X_i}(t) = e^{t\mu + \frac{1}{2}\sigma^2t^2}.\] Now we can write
     \begin{align*}
         M_{\bar{X}}(t) & = M_{\frac{1}{n}(\randsamp)}(t)                                        \\
                        & \stackrel{\text{i.i.d}}{=} \prod_{i=1}^n M_{\frac{1}{n}X_i}(t)         \\
@@ -190,11 +203,11 @@ unknown variaince $\sigma^2$.
     Now we can find \[\var{X^2} = \E{X^4} - \E{X^2}^2 = 3\sigma^4 - \sigma^4 = 2\sigma^4\].
 
     We also note that $\frac{1}{n}\sum_{i=1}^n X_i^2$ is nothing but the sample mean of the
-    $X_i^2$, we will denote it as $\bar{Y}$. Now we also have that
+    $X_i^2$, we will denote it as $\bar{Y}$. We also have that
     $\alpha(\bar{Y}) = \frac{1}{\bar{Y}}$.
 
     Finally, using the delta method we get that $\frac{1}{\bar{Y}}$ is asymptotically
-    normal with mean \[\mu = \frac{1}{\sigma^2}\] and variance
+    normal with mean \[\frac{1}{\sigma^2}\] and variance
     \[\frac{\sigma^2g'(\mu)}{n} = \frac{3\sigma^4}{n}\left(-\frac{1}{\sigma^4}\right)^2
         = \frac{3}{n\sigma^4}\]
 \end{proof}
