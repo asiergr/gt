@@ -1,0 +1,272 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+\usepackage{graphicx}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\DeclareMathOperator*{\tr}{tr}
+
+
+\title{HW3}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\section*{Chapter 2}
+\subsection*{2}
+Using subsection 2.1.6 construct the possible composition tables for a group with
+four elements
+
+\begin{proof}
+    Table 1
+    \begin{center}
+        \begin{tabular}{ c | c c c c}
+            $\circ$ & e & a & b & c \\
+            \hline
+            e       & e & a & b & c \\
+            a       & a & b & c & e \\
+            b       & b & c & e & a \\
+            c       & c & e & a & b
+        \end{tabular}
+    \end{center}
+
+    Table 2
+    \begin{center}
+        \begin{tabular}{ c | c c c c}
+            $\circ$ & e & a & b & c \\
+            \hline
+            e       & e & a & b & c \\
+            a       & a & c & e & b \\
+            b       & b & e & c & a \\
+            c       & c & b & a & e
+        \end{tabular}
+    \end{center}
+    Table 3
+    \begin{center}
+        \begin{tabular}{ c | c c c c}
+            $\circ$ & e & a & b & c \\
+            \hline
+            e       & e & a & b & c \\
+            a       & a & e & c & b \\
+            b       & b & c & e & a \\
+            c       & c & b & a & e
+        \end{tabular}
+    \end{center}
+    Table 4
+    \begin{center}
+        \begin{tabular}{ c | c c c c}
+            $\circ$ & e & a & b & c \\
+            \hline
+            e       & e & a & b & c \\
+            a       & a & e & c & b \\
+            b       & b & c & a & e \\
+            c       & c & b & e & a
+        \end{tabular}
+    \end{center}
+\end{proof}
+
+\subsection*{4}
+Let $G$ be a group and $H \subseteq G$ a non-empty subset. Prove that $H$ is a
+subgroup if and only if $xy^{-1} \in H$ for all $x,y \in H$.
+
+\begin{proof}
+    ($\Rightarrow$) We assume that $H \subseteq G$ is a subgroup of the group $G$.
+    Now consider any two $x, y \in H$, because $H$ is a group we have that $y$ has
+    an inverse $y^{-1} \in H$. Now, by closure we have that $xy^{-1} \in H$.
+
+    ($\Leftarrow$) We assume that $xy^{-1} \in H$ for all $x,y \in H$. Now we
+    have to show that $H$ is a group. We have associativity that comes from $G$.
+
+    (\textbf{Identity:}) We need to show $e\in H$. We know that
+    $xy^{-1} \in H$ for all $x,y \in H$. For any given $x \in H$
+    we let $y = x$ and it follows that $xx^{-1} = e \in H$.
+
+    (\textbf{Inverse:}) Now, consider $e, x \in H$. We thus have that
+    $ex^{-1} = x^{-1} \in H$. Therefore, every $x \in H$ has an inverse
+    $x^{-1} \in H$.
+
+    (\textbf{Closure:}) Consider $x,y \in H$. We know every element has an
+    inverse in $H$. So we consider $x, y^{-1} \in H$, thus we can write
+    \begin{equation*}
+        x(y^{-1})^{-1} = xy \in H
+    \end{equation*}
+    for all $x, y \in H$.
+
+    Hence, we have that $H$ is a subgroup of $G$ $\iff$ $xy^{-1} \in H$
+    for all $x,y\in H$.
+
+\end{proof}
+
+\subsection*{5}
+Let $H$ be a non-empty finite subset of a group $G$. Prove that $H$ is a subgroup
+if $xy \in H$ for every $x,y \in H$. Give an example where this breaks down
+if $H$ is infinite. (Hint: consider $e,x, x^2,\dots$ or use the fact that
+multiplication by $x \in H$ is bijective.)
+
+\begin{proof}
+    (\textbf{Closure:}) We have that $xy \in H$ for all $x,y\in H$. Thus, closure
+    is met.
+
+    (\textbf{Identity:}) Consider $h \in H$. Then we know that
+    $h, h^2, h^3, \dots,h^n,... \in H$. Now, $H$ is a finite set, so
+    $h^n = h^m$ for some integers $n,m$ such that $0 \leq n < m$.
+    Therefore we have that $e = h^{m-n} \in H$.
+
+    % https://www.quora.com/Let-G-be-a-group-and-H-be-a-non-empty-finite-subset-of-G-If-ab-in-H-for-all-a-b-in-H-prove-that-H-is-a-subgroup-of-G-Will-the-result-be-true-if-H-is-not-finite?share=1
+    (\textbf{Inverse:}) We know $1 \leq m - n$, we can thus write
+    $e = hh^{m - n - 1}$ which tells us $h^{-1} = h^{m - n - 1} \in H$.
+
+    Hence, this is a group as required
+
+    This breaks down if $H$ is not finite. Consider the integers under addition
+    and the subset $H = \{1,2,\dots\}$. Clearly this is not a group as it is
+    lacking the additive identity 0.
+\end{proof}
+
+\subsection*{9}
+Let $L$ denote the group of linear isometries (rotations and reflections) of
+$\R^2$ (see Example 2.1.12). Consider the square $K \subseteq \R^2$.
+
+(i) List the elements of the group $G = \{\varphi \in L | \varphi(K) = K\}$.
+\begin{proof}
+    We have that
+    \begin{equation*}
+        G = \{e, r_1, r_2, r_3, s_1, s_2, s_3, s_4\}
+    \end{equation*}
+    where $r_i, i = 1,2,3$ are rotations about $\pi/2, \pi, 3\pi/2$ and
+    $s_i, i = 1,2,3,4$ are reflections across the x-axis, y-axis, and the
+    lines $y = x$ and $y = -x$.
+\end{proof}
+
+(ii) Write down the composition table for $G$.
+
+\begin{center}
+    \begin{tabular}{c | c c c c c c c c}
+        $\circ$ & $e$   & $r_1$ & $r_2$ & $r_3$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ \\
+        \hline
+        $e$     & $e$   & $r_1$ & $r_2$ & $r_3$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ \\
+        $r_1$   & $r_1$ & $r_2$ & $r_3$ & $e$   & $s_4$ & $s_3$ & $s_1$ & $s_2$ \\
+        $r_2$   & $r_2$ & $r_3$ & $e$   & $r_1$ & $s_2$ & $s_1$ & $s_4$ & $s_3$ \\
+        $r_3$   & $r_3$ & $e$   & $r_1$ & $r_2$ & $s_3$ & $s_4$ & $s_2$ & $s_1$ \\
+        $s_1$   & $s_1$ & $s_3$ & $s_2$ & $s_4$ & $e$   & $r_2$ & $r_1$ & $r_3$ \\
+        $s_2$   & $s_2$ & $s_4$ & $s_1$ & $s_3$ & $r_2$ & $e$   & $r_3$ & $r_1$ \\
+        $s_3$   & $s_3$ & $s_2$ & $s_4$ & $s_1$ & $r_3$ & $r_1$ & $e$   & $r_2$ \\
+        $s_4$   & $s_4$ & $s_3$ & $s_2$ & $s_1$ & $r_1$ & $r_3$ & $r_2$ & $e$   \\
+    \end{tabular}
+\end{center}
+
+\subsection*{10}
+Write down the subgroups of $\Z/6\Z$
+
+\begin{proof}
+    We have that
+    \begin{equation*}
+        \Z / 6\Z = \{6\Z, 6\Z + 1, 6\Z + 2, 6\Z + 3, 6\Z + 4, 6\Z + 5\}.
+    \end{equation*}
+    Thus, $|\Z / 6\Z | = 6$. Now by Lagrange's Theorem we know that the order
+    of any subgroups must divide 6. Clearly $\{[0]\}$ and $\Z / 6\Z$ are
+    subgroups. We also have that $\{[0], [2], [4]\}$ and $\{[0], [3]\}$ are subgroups.
+    % https://www.physicsforums.com/threads/subgroups-of-z6.386552/
+\end{proof}
+
+\subsection*{11}
+Why are $\{[0]\}$ and $\Z / 7\Z$ the only subgroups of $\Z / 7\Z$?
+\begin{proof}
+    We can clearly see that the identity element $\{[0]\}$ forms a subgroup since
+    it includes the identity, is closed and has inverses since
+    $[0] + [0] = [0] \in \{[0]\}$.
+
+    We know that
+    \begin{equation*}
+        \Z / 7\Z = \{7\Z, 7\Z + 1, 7\Z + 2, 7\Z + 3, 7\Z + 4, 7\Z + 5, 7\Z + 6\}.
+    \end{equation*}
+    We can see that $|\Z / 7\Z| = 7$ and by Lagrange's theorem we know that the
+    order of any subgroup must divide 7. Since 7 is prime the subgroups must be
+    of order 1 or 7. The only subgroup of order 1 must be the one containing
+    the identity (since any subgroup must contain the identity). To construct
+    a subgroup $H \subseteq \Z / 7\Z$ such that $|H| = 7$ we must have that
+    $H = \Z / 7\Z$.
+\end{proof}
+
+\subsection*{12}
+Show that a group $G$ is not the union of the two proper subgroups
+$H_1, H_2 \not \subseteq G$. Can a group be the union of three proper subgroups?
+
+\begin{proof}
+    Because $H_1, H_2$ are proper subgroups we have that $H_1 \neq G$ and $H_2 \neq G$.
+    Assume, for the sake of contradiction that $H_1 \cup H_2 = G$.
+    We also know that, without loss of generality, $H_1 \not \subseteq H_2$ since
+    that would imply $H_1 \cup H_2 = H_2 \neq G$.
+
+    Now, consider $h_1 \in H_1$ and $h_2 \in H_2$. We consider the element
+    $h_1h_2 = h_3$. Without loss of generality, if $h_3 \in H_1$ then
+    $h_1^{-1}h_1h_2 = h_1^{-1}h_3$
+    and $h_2 = h_1^{-1}h_3$. By closure of $H_1$ this means that $h_2 \in H_1$, which is
+    a contradiction.
+\end{proof}
+
+A group can be the union of three proper subgroups. Consider the Klein-4 group $K_4$ which
+corresponds to Table 3 in Exercise 2. This group has 3 proper subgroups $H_1, H_2, H_3$
+such that
+\begin{equation*}
+    H_1 = \{e, a\}, \ H_2 = \{e,b\}, \ H_3 = \{e,c\}.
+\end{equation*}
+We clearly have that $K_4 = H_1 \cup H_2 \cup H_3$.
+
+
+\subsection*{16}
+\begin{center}
+    \begin{tabular}{c | c c c c c c c c}
+        $\times$  & $\bm{1}$  & $\bm{-1}$ & $\bm{i}$  & $\bm{-i}$ & $\bm{j}$  & $\bm{-j}$ & $\bm{k}$  & $\bm{-k}$ \\
+        \hline
+        $\bm{1}$  & $\bm{1}$  & $\bm{-1}$ & $\bm{i}$  & $\bm{-i}$ & $\bm{j}$  & $\bm{-j}$ & $\bm{k}$  & $\bm{-k}$ \\
+        $\bm{-1}$ & $\bm{-1}$ & $\bm{1}$  & $\bm{-i}$ & $\bm{i}$  & $\bm{-j}$ & $\bm{j}$  & $\bm{-k}$ & $\bm{k}$  \\
+        $\bm{i}$  & $\bm{i}$  & $\bm{-i}$ & $\bm{-1}$ & $\bm{1}$  & $\bm{k}$  & $\bm{-k}$ & $\bm{-j}$ & $\bm{j}$  \\
+        $\bm{-i}$ & $\bm{-i}$ & $\bm{i}$  & $\bm{1}$  & $\bm{-1}$ & $\bm{-k}$ & $\bm{k}$  & $\bm{j}$  & $\bm{-j}$ \\
+        $\bm{j}$  & $\bm{j}$  & $\bm{-j}$ & $\bm{-k}$ & $\bm{k}$  & $\bm{-1}$ & $\bm{1}$  & $\bm{i}$  & $\bm{-i}$ \\
+        $\bm{-j}$ & $\bm{-j}$ & $\bm{j}$  & $\bm{k}$  & $\bm{-k}$ & $\bm{1}$  & $\bm{-1}$ & $\bm{-i}$ & $\bm{i}$  \\
+        $\bm{k}$  & $\bm{k}$  & $\bm{-k}$ & $\bm{j}$  & $\bm{-j}$ & $\bm{-i}$ & $\bm{i}$  & $\bm{-1}$ & $\bm{1}$  \\
+        $\bm{-k}$ & $\bm{-k}$ & $\bm{k}$  & $\bm{-j}$ & $\bm{j}$  & $\bm{i}$  & $\bm{-i}$ & $\bm{1}$  & $\bm{-1}$ \\
+    \end{tabular}
+\end{center}
+
+
+\subsection*{18}
+Let $G$ be a finite group and $H \supseteq K$ subgroups of $G$. Prove that
+$|G / K| = |G / H||H/K|$
+
+\begin{proof}
+    From Lagrange's theorem we have that
+    \begin{equation*}
+        |G| = |G / H||H| = |G / K||K|.
+    \end{equation*}
+    Rearranging we have
+    \begin{equation}
+        |G / K| = |G / H| \frac{|H|}{|K|}
+    \end{equation}
+
+    Now, Since $H$ and $K$ are subgroups of $G$, we know that they contain the
+    identity, are closed, and every elements has an inverse. Thus, since
+    $H \supseteq K$ we know that $K$ is a subgroup of $H$. Therefore we also have
+    \begin{equation*}
+        |H| = |H / K||K|.
+    \end{equation*}
+
+    Plugging this equation into (1) we get
+    \begin{equation*}
+        |G / K| = |G / H| \frac{|H / K||K|}{|K|} = |G / H||H/K|.
+    \end{equation*}
+\end{proof}
+
+\end{document}
