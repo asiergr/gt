@@ -1,0 +1,231 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{listings}
+\usepackage{graphicx}
+
+
+\title{HW1}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\section*{Question 1}
+
+\begin{lstlisting}
+#start_function
+void main():
+int-list: i, c[101], a[101], b[101], x, y, d[101],
+         t0, t1, t2, t3, t4, t5, t6, t8
+float-list: t7
+    assign, i, 0
+    while_loop:
+    brgt, if_label_0, i, 100
+    array_load t0, c, i
+    brneq if_label_1, t0, 0
+    array_load, t1, a, i
+    array_load, t2, b, i
+    add t3, t1, t2
+    sub, t4, x, y
+    add, t4, t4, 2
+    mult, t5, t3, t4
+    array_store, t5, c, i 
+    goto end_cond
+    
+    if_label_1:
+    sub, t7, x, y
+    div, t7, t7, t0
+    array_store, t8, d, i
+
+    end_cond
+    add, i, i, 1
+    goto while_loop
+
+if_label_0:
+#end-function
+\end{lstlisting}
+
+The code starts and assigns the value of 0 to the variable $i$. Then
+the while loop starts and we evaluate the condition $i \leq 100$. If
+it is met we go to the end of the program (if\_label\_0), otherwise we continue.
+Then we check $c[i] == 0$ and do the arithmetic corresponding to each
+branch of the if statement. Finally, we increment $i$ and go to the
+beginning of the for loop.
+
+\section*{Question 2}
+
+\includegraphics[scale=0.5]{graphs}
+
+c)
+\begin{center}
+    \begin{tabular}{| l | l |}
+        \hline
+        Def                & Uses it reaches \\
+        \hline
+        1. callr, t0, geti & 9, 14           \\
+        \hline
+        2. assign, t1, 0   & 5, 7            \\
+        \hline
+        3. assign, t2, 0   & 12              \\
+        \hline
+        4. assign t3, 0    &                 \\
+        \hline
+        8. callr, t2, geti & 12              \\
+        \hline
+        9. sub, t0, t0, 2  & 14              \\
+        \hline
+        13. assign, t3, 0  &                 \\
+        \hline
+        15. assign, t3, 0  &                 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+The end result after the dead code elimination using reaching definitions is
+
+\begin{lstlisting}
+    1. callr, t0, geti
+    2. assign, t1, 0
+    3. assign, t2, 0
+    5. call, puti, t1
+    6. loop0:
+    7. brleq, pool0, t1, 0
+    8. callr, t2, geti
+    9. sub, t0, t0, 2
+    10. goto, loop0
+    11. pool0:
+    12. call, puti, t2
+    14. brleq, else1, t0, 0
+    16. else1:
+\end{lstlisting}
+
+With this method we have eliminated lines 4, 13, 15 wich assigned a value to
+t3 which was never used. The critical instructions form the start and basis of
+the analysis, any variable used in a critical instruction is necessary for the
+program, and thus anything that reaches those variables also is.
+
+d) There is an additional dead instruction in the code, and that is line 14.
+This is because this instruction is a break to nothing and can thus be
+eliminated. The reason it is not eliminated is because it is marked as a
+critical instruction.
+
+\section*{Question 3}
+a)
+For Block0 we get the value numbers
+\begin{align*}
+    1. \  & x^2 = a^0 * b^1     \\
+    2. \  & a^3 = z^3           \\
+    3. \  & y^4 = a^3 * b^1     \\
+    4. \  & z^6 = b^1 + c^5     \\
+    5. \  & brgt, label\_0,z,20 \\
+\end{align*}
+There are no optimisations that can be done with LVN here.
+
+For Block1 we get value numbers
+\begin{align*}
+    6.\  & a^2 = a^0 + b^1 \\
+    7.\  & x^3 = b^1 + c^2 \\
+    8.\  & goto, after\_if \\
+\end{align*}
+
+There are no optimisations that can be done by LVN here.
+
+For Block2 we get value numbers
+\begin{align*}
+    9.\   & label\_0        \\
+    10.\  & y^2 = b^0 + c^1 \\
+\end{align*}
+There are no optimisations that can be done by LVN here.
+
+For Block3 we get value numbers
+\begin{align*}
+    11.\  & after\_if       \\
+    12.\  & call, puti, x   \\
+    13.\  & call, puti, y   \\
+    14.\  & z^2 = a^0 * b^1 \\
+    15.\  & b^4 = b^1 + c^3 \\
+\end{align*}
+There are no optimisations that can be done by LVN here.
+
+b)
+Using Extended Basic Blocks we can combine Block0, Block1, and Block2.
+For this EBB we get value numbers
+\begin{align*}
+    (1)\   & x^2 = a^0 * b^1       \\
+    (2)\   & a^3 = z^3             \\
+    (3)\   & y^4 = a^3 * b^1       \\
+    (4)\   & z^6 = b^1 + c^5       \\
+    (5)\   & brgt, label\_0, z, 20 \\
+    (6)\   & a^4 = a^3 * b^1       \\
+    (7)\   & x^6 = b^1 + c^5       \\
+    (8)\   & goto, after\_if       \\
+    (9)\   & label\_0              \\
+    (10)\  & y^6 = b^1 + c^5       \\
+\end{align*}
+
+Since BLOCK3 forms an EBB of its own, we have already concluded that there
+are no possible optmisations in BLOCK3 in part (b).
+
+After optimising we get
+\begin{align*}
+    (1)\   & x = a * b             \\
+    (2)\   & a = z                 \\
+    (3)\   & t1 = a * b            \\
+    (4)\   & y = t1                \\
+    (5)\   & t2 = b + c            \\
+    (6)\   & z = t2                \\
+    (7)\   & brgt, label\_0, z, 20 \\
+    (8)\   & a = t1                \\
+    (9)\   & x = t2                \\
+    (10)\  & goto, after\_if       \\
+    (11)\  & label_0               \\
+    (12)\  & y = t2                \\
+    (11)\  & after\_if             \\
+    (12)\  & call, puti, x         \\
+    (13)\  & call, puti, y         \\
+    (14)\  & z = a * b             \\
+    (15)\  & b = b + c             \\
+\end{align*}
+
+There are 3 more redundant expressions compared to part (a), these are in
+lines 8, 9, 12 on the above code segement.
+The one in line 8 is due to the reuse of the expression $a * b$ which
+is already calculated in line 3 in the code segment above.
+The one in lines 9, 12 is due to the reuse of the expression $b + c$ which
+These opportunities appear
+because in the EBB's there are more a lot of the variables in BLOCK1
+and BLOCK2 have the same value number as variables in BLOCK0.
+
+c) There is a missing optimisation in line (15). Since the value of
+$b + c$ does not change from line (5) to line (15) because $b$ and $c$
+themselves are not changed, we could replace this line
+with $b = t2$. The result would look as such
+
+\begin{align*}
+    (1)\   & x = a * b             \\
+    (2)\   & a = z                 \\
+    (3)\   & t1 = a * b            \\
+    (4)\   & y = t1                \\
+    (5)\   & t2 = b + c            \\
+    (6)\   & z = t2                \\
+    (7)\   & brgt, label\_0, z, 20 \\
+    (8)\   & a = t1                \\
+    (9)\   & x = t2                \\
+    (10)\  & goto, after\_if       \\
+    (11)\  & label_0               \\
+    (12)\  & y = t2                \\
+    (11)\  & after\_if             \\
+    (12)\  & call, puti, x         \\
+    (13)\  & call, puti, y         \\
+    (14)\  & z = a * b             \\
+    (15)\  & b = t2                \\
+\end{align*}
+
+
+
+\end{document}
