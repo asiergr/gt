@@ -14,6 +14,7 @@
 
 \renewcommand{\P}[1]{\mathbb{P}\left(#1\right)}
 \newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\normal}{\mathcal{N}}
 \newcommand{\var}[1]{\text{var}\left[#1\right]}
 \newcommand{\randsamp}{X_1,\dots,X_n}
 \newcommand{\mgf}{moment generating function }
@@ -83,20 +84,241 @@
 \end{proof}
 
 \subsection*{Problem 7}
+Suppose that $\randsamp$ form $n$ Bernoulli trials for which the parameter $p$
+is unknown $(0 \leq p \leq 1)$. Show that the expectation of every function
+$\delta(\randsamp)$ is a polynomial in $p$ whose degree does not exceed $n$.
+
 Additionally, use this problem to show that there is no unbiased estimator
 of $p^{\frac{1}{2}}$.
 
+\begin{proof}
+    We have that $X_i \sim \text{Bernoulli}(p)$ for all $i$. Using the
+    Law of the Subconscious Statistician We note that
+    \begin{equation*}
+        \E{\delta(\randsamp)} =
+        \sum_{x_1 \in \Omega_{X_1}}\dots \sum_{x_n \in \Omega_{X_n}}
+        \delta(x_1,\dots,x_n)f_{X_1,\dots,X_n}(x_1,\dots,x_n).
+    \end{equation*}
+    Now if we assume the the random variables are i.i.d. we know that
+    \begin{equation*}
+        f_{X_1,\dots,X_n}(x_1,\dots,x_n) = f_{X_1}(x_1)\dots f_{X_n}(x_n).
+    \end{equation*}
+    Now, since
+    \begin{equation*}
+        f(x_i) = \begin{cases}
+            p     & \text{if } x_i = 0, \\
+            1 - p & \text{if } x_i = 1.
+        \end{cases}
+    \end{equation*}
+    we can see that
+    \begin{equation*}
+        \E{\delta(\randsamp)} =
+        \sum_{x_1 \in \Omega_{X_1}}\dots \sum_{x_n \in \Omega_{X_n}}
+        \delta(x_1,\dots,x_n)f_{X_1}(x_1)\dots f_{X_n}(x_n).
+    \end{equation*}
+    is always a polynomial in $p$ with degree of at most $n$.
+\end{proof}
+
 \section*{7.5}
 \subsection*{Problem 8}
+Suppose that $\randsamp$ form a random sample from a distribution for which
+the p.d.f. $f(x|\theta)$ is as follows
+\begin{equation*}
+    f(x|\theta) = \begin{cases}
+        e^{\theta - x} & \text{for } x > \theta,    \\
+        0              & \text{for } x \leq \theta.
+    \end{cases}
+\end{equation*}
+Also suppose that the value of $\theta$ is unknown $(-\infty < \theta < \infty)$.
+
+\textbf{a.} Show thaat the M.L.E of $\theta$ does not exist.
+
+\begin{proof}
+    We begin by taking the likelihood function
+    \begin{equation*}
+        L_n(\theta) = f(x_1|\theta)\dots f(x_n|\theta)
+        = \prod_{i=1}^n f(x_i)|\theta) = \prod_{i=1}^n e^{\theta - x} \
+        \min_{i = 1\dots n} x_i > \theta.
+    \end{equation*}
+    Clearly $L_n = 0$ when $x \leq \theta$.
+
+    Now we take logs
+    \begin{align*}
+        LL_n(\theta) & = \sum_{i=1}^n\ln(e^{\theta - x_i}) & \min_{i=0\dots n} x_i > \theta, \\
+                     & = \sum_{i=1}^n (\theta - x_i)       & \min_{i=0\dots n} x_i > \theta, \\
+                     & = n\theta - \sum_{i=1}^n x_i        & \min_{i=0\dots n} x_i > \theta. \\
+    \end{align*}
+    We want to choose a value of $\theta$ that maximises this equation. However, because
+    $\theta < \min_{i=1\dots n} x_i$ we can always pick a value of that $\theta$
+    that is closer to $\min{i=1\dots n} x_i$ but not equal to this value.
+    It follows that the M.L.E. does not exist.
+\end{proof}
+
+\textbf{b.} Determine another version of the p.d.f. of this same distribution
+for which the M.L.E. of $\theta$ will exist, and find this estimator.
+
+\begin{proof}
+    If we change the p.d.f to be
+    \begin{equation*}
+        f(x|\theta) = \begin{cases}
+            e^{\theta - x} & \text{for } x \geq \theta, \\
+            0              & \text{for } x < \theta,
+        \end{cases}
+    \end{equation*}
+    then we get
+    \begin{equation*}
+        LL_n(\theta) = n\theta - \sum_{i=1}^n x_i  \qquad \min_{i=0\dots n} x_i \geq \theta. \\
+    \end{equation*}
+    Now we can see that to maximise this value we need to pick the highest value
+    of $\theta$ available given $\min_{i=0\dots n} x_i \geq \theta$. Thus,
+    the M.L.E. is $\hat{\theta} = \min_{i=0\dots n} x_i$.
+\end{proof}
+
 \subsection*{Problem 11}
+Suppose that $\randsamp$ for a random sample from the uniform distribution.
+the uniform distribution on the interval $[\theta_1, \theta_2]$, where both
+$\theta_1$ and $\theta_2$ are unknown $(-\infty < \theta_1 < \theta_2 < \infty)$.
+Find the M.L.E.'s of $\theta_1$ and $\theta_2$.
+
+\begin{proof}
+    We know that $X_i \sim \text{Uniform}(\theta_1, \theta_2) \ i=1\dots n$.
+    We have a p.d.f.
+    \begin{equation*}
+        f(x_i; \theta) = \begin{cases}
+            \frac{1}{\theta} & x \in [\theta_1, \theta_2], \\
+            0                & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
+    Now we find the likelihood function to be
+    \begin{equation*}
+        L_n(\theta_1, \theta_2) = \frac{1}{(\theta_2 - \theta_1)^n}
+        \qquad \theta_1 \leq x_i \leq \theta_2, \ i = 1\dots n.
+    \end{equation*}
+    Clearly, this is minimised when $\theta_2 - \theta_1$ is as small as possible.
+    Given the bounds on these values we can see that
+    \begin{equation*}
+        \hat{\theta_1} = \min_{i=1\dots n} x_i \text{ and }
+        \hat{\theta_2} = \max_{i=1\dots n} x_i.
+    \end{equation*}
+\end{proof}
 
 \section*{7.6}
 \subsection*{Problem 6}
+Suppose that $\randsamp$ form a random sample from a normal distribution for which
+both the mean and the variance are unknown. Find the M.L.E. of the 0.95
+quantile of the distribution, that is, of the point $\theta$ such that
+$\P{X < \theta} = 0.95$.
+
+\begin{proof}
+    We begin by taking the normalising to a standard normal distribution. We write
+    \begin{equation*}
+        \P{Z < \frac{\theta - \mu}{\sigma}} =
+        \phi\left(\frac{\theta - \mu}{\sigma}\right) = 0.95.
+    \end{equation*}
+    Now we know that for this to be true we must have
+    $\frac{\theta - \mu}{\sigma} = 1.65$. Thus we are left with
+    $\theta = 1.65\sigma - \mu$. We know that
+    \begin{equation*}
+        \hat{\mu} = \bar{X} = \frac{1}{n}\sum_n X_i
+        \text{ and }
+        \hat{\sigma}^2 = \frac{1}{n}\sum_n(X_i - \hat{\mu})^2
+    \end{equation*}
+    are the M.L.E.s for mean and variance respectively. Hence
+    $\hat{\theta} = 1.65\hat{\sigma} - \hat{\mu}$ is the M.L.E of the 0.95 quantile
+    of the distribution.
+\end{proof}
+
 \subsection*{Problem 23}
+Suppose that $\randsamp$ form a random sample from the beta distribution
+with parameters $\alpha$ and $\beta$. Let $\theta = (\alpha, \beta)$ be the
+vector parameter.
+
+\textbf{a.} Find the method of moments estimator of $\theta$.
+
+\begin{proof}
+    We begin by writting the first two moments of the beta distribution.
+    We know that $\mu_1 = \mu$ and $\mu_2 = \sigma^2 + \mu^2$. Thus, we can write
+    \begin{equation*}
+        \mu_1 = \frac{\alpha}{\alpha + \beta}
+    \end{equation*}
+    and
+    \begin{align*}
+        \mu_2 & = \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}
+        + \left(\frac{\alpha}{\alpha + \beta}\right)^2,                                                      \\
+              & = \frac{\alpha\beta + \alpha^2(\alpha + \beta + 1)}{(\alpha + \beta)^2(\alpha + \beta + 1)}, \\
+              & = \frac{\alpha^3 + 2\alpha^2\beta + \alpha^2}{(\alpha + \beta)^2(\alpha + \beta + 1)},       \\
+              & = \frac{\alpha(\alpha^2 + 2\alpha\beta + \alpha)}{(\alpha + \beta)^2(\alpha + \beta + 1)},   \\
+              & = \frac{\alpha(\alpha + \beta)(\alpha + 1)}{(\alpha + \beta)^2(\alpha + \beta + 1)},         \\
+              & = \frac{\alpha(\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)},                           \\
+    \end{align*}
+
+    Now we can use the method of moments for $\alpha$ and $\beta$. We let
+    \begin{equation*}
+        m_1 = \frac{\alpha}{\alpha + \beta}
+        \text{ and }
+        m_2 = \frac{\alpha(\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)}.
+    \end{equation*}
+    Now we must solve for $\alpha, \beta$ in these equations. Start by writting
+    \begin{gather*}
+        m_1 = \frac{\alpha}{\alpha + \beta}, \\
+        m_1\alpha + m_1\beta = \alpha, \\
+        m_1\beta = \alpha - m_1\alpha,\\
+        \beta = \frac{\alpha - m_1\alpha}{m_1}.
+    \end{gather*}
+
+    We can rearrage the equation for $m_2$ as
+    \begin{equation*}
+        m_2(\alpha + \beta)(\alpha +\beta + 1) = \alpha(\alpha + 1).
+    \end{equation*}
+
+    Now we plug this into the equation for $m_2$.
+    \begin{gather*}
+        m_2\left(\alpha + \frac{\alpha}{m_1} - \alpha + 1\right)(\alpha \frac{\alpha}{m_1} -\alpha)
+        = \alpha(\alpha + 1), \\
+        m_2\left(\frac{\alpha}{m_1} + 1\right)\frac{\alpha}{m_1}
+        = \alpha(\alpha + 1), \\
+        \alpha\left(\frac{m_2 - m_1^2}{m_1^2}\right) = \frac{m_1 - m_2}{m_1}
+        \alpha = \frac{m_1(m_2 - m_1)}{m_1^2 - m_2}
+    \end{gather*}
+
+    Now, solving for $\beta$
+    \begin{align*}
+        \beta & = \alpha\left(\frac{1}{m_1} - 1\right),                             \\
+              & = \frac{m_1(m_2 - m_1)}{m_1^2 - m_2}\left(\frac{1}{m_1} - 1\right), \\
+              & = \frac{m_2 - m_1 - m_1(m_2 - m_1)}{m_1^2 - m_2},                   \\
+              & = \frac{(m_1 - 1)(m_1 - m_2)}{m_1^2 - m_2}.
+    \end{align*}
+
+    And thus
+    \begin{equation*}
+        \hat{\alpha}  = \frac{m_1(m_2 - m_1)}{m_1^2 - m_2}
+        \text{ and }
+        \hat{\beta} = \frac{(m_1 - 1)(m_1 - m_2)}{m_1^2 - m_2}.
+    \end{equation*}
+\end{proof}
+
+\textbf{b.}
+Show that the method of moments estimator is not the M.L.E.
+
+\begin{proof}
+    The M.L.E. for the Beta distribution requires taking derivatives of the gamma
+    function, the M.L.E. does not have a closed form in this case and thus cannot
+    equal the method of moments result.
+\end{proof}
 
 \section*{Problem 7}
-Assuming the inverse iin the method of moments exists, and is a continuously
+Assuming the inverse in the method of moments exists, and is a continuously
 differentiable function, show that the method of moments estimators are
 asymptotically normal.
+
+\begin{proof}
+    We will deal only with the single variable case.
+    We know that $\hat{\theta} = g(\mu_1)$ and that $\mu_1$ is simply the
+    sample mean. Furthermore, we know the sample mean converges asymptotically
+    to the mean $\mu$. Now, we know from Corollary 6.3.1 that, since $g$
+    is smooth, the distribution
+    of $g(\bar{X})$ is asymptotically normal. Hence, the MoM estimator is
+    asymptotically normal.
+\end{proof}
 
 \end{document}
