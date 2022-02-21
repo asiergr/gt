@@ -1,0 +1,158 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+\usepackage{graphicx}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gen}[1]{\left\langle #1 \right\rangle}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{HW6}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+%Lauritzen Chapter 2: 26, 31, 32, 33, 35, 39 
+\section*{Chapter 2}
+\subsection*{26}
+\begin{hwproof}
+    {
+        Let $G$ be an abelian group, $K$ a group, and $f: G \to K$ a group homomorphism.
+        Prove that $f(G) \subseteq K$ is an abelian subgroup of $K$.
+    }
+
+    Proposition 2.4.9 tells us that $f(G)$ is a subgroup of $K$. We must only
+    prove that $K$ is abelian.
+
+    We know $G$ is abelian and $f$ is a homomorphism. Thus we have that
+    \begin{equation*}
+        f(ab) = f(ba),
+    \end{equation*}
+    and
+    \begin{equation*}
+        f(ab) = f(a)f(b).
+    \end{equation*}
+    combining these two facts
+    \begin{equation*}
+        f(ab) = f(a)f(b) = f(ba) = f(b)f(a).
+    \end{equation*}
+    Therefore
+    \begin{equation*}
+        f(a)f(b) = f(b)f(a)
+    \end{equation*}
+    and $f(G) \subseteq K$ is abelian as required.
+\end{hwproof}
+
+\subsection*{31}
+\begin{hwproof}
+    {
+        (i) Write down all the elements of order 7 in $\Z / 28\Z$.
+
+        (ii) How many subgroups are there of order 7 in $\Z / 28\Z$?
+    }
+    (i) The elements of order 7 in $\Z / 28\Z$ are
+    $\{[4], [8], [12], [16], [20], [24]\}$
+
+    (ii) By Proposition 2.7.4 we have that since $7|28$ then there exists
+    one unique subgroup of order 7.
+\end{hwproof}
+
+\subsection*{32}
+\begin{hwproof}
+    {
+        (i) Prove that the cyclic group $\Z / 15\Z$ is isomorphic to the
+        product group $\Z / 3\Z \times \Z / 5\Z$.
+
+        (ii) Prove that the group $(\Z / 15\Z)*$ is isomorphic to the product group
+        $\Z / 2 \times \Z / 4\Z$. Conclude that $(\Z / 15/Z)*$ is not cyclic.
+    }
+    (i) We see that $\gcd(3,5) = 1$, so they are relatively prime, and $15=3*5$.
+    Thus, by Proposition 2.8.2 we have that
+    \begin{equation*}
+        \tilde{\varphi}: \Z / 15\Z \to \Z / 3\Z \times \Z / 5\Z
+    \end{equation*}
+    given by $\varphi(x + N\Z) = (\varphi_1(x), \varphi_2(x))$ is a group isomorphism.
+    This implies that $\Z / 15/Z \cong \Z / 3\Z \times \Z / 15/Z$.
+
+    (ii)
+\end{hwproof}
+
+\subsection*{33}
+\begin{hwproof}
+    {
+        Consider $\Z \subset \Q$ as abelian groups with $+$ as composition.
+        Let $[q] = q + \Z \in \Q / \Z$, where $q \in \Q$.
+
+        (i) Show that $\left[\frac{9}{4}\right]$ has order 4 in $\Q / \Z$.
+
+        (ii) Determine the order of $\left[\frac{a}{b}\right]$ in $\Q / \Z$,
+        where $a \in \Z, b \in \N / \{0\}$ and $\gcd(a,b) = 1$. Conclude that
+        every element in $\Q / \Z$ has finite order and that there are elements
+        in $\Q / \Z$ of arbitrary large order.
+
+        (iii) Show that $\Q / \Z$ is an infinite grou pthat is not cyclic.
+    }
+    (i) Doing the computations we can see that
+    \begin{equation*}
+        \frac{9}{4} + \frac{9}{4} + \frac{9}{4} + \frac{9}{4} = 9.
+    \end{equation*}
+
+
+\end{hwproof}
+
+\subsection*{35}
+\begin{hwproof}
+    {
+        Give an example of a non-cyclic group of order 8.
+    }
+    The quaternion group $Q_4$ is an example of a non-cyclic group of order
+    8.
+\end{hwproof}
+
+\subsection*{39}
+\begin{hwproof}
+    {
+        Let $\tau \in S_3$ denote the 3-cycle
+        \begin{equation*}
+            \begin{pmatrix}
+                1 & 2 & 3
+            \end{pmatrix}
+            = \begin{pmatrix}
+                1 & 2 & 3 \\
+                2 & 3 & 1
+            \end{pmatrix}
+            .
+        \end{equation*}
+        Show that the subgroup $\gen{\tau} = \{\tau^n : n \in \Z\}$ is normal
+        in $S_3$.
+    }
+
+    We start by asserting that
+    \begin{equation*}
+        \gen{\tau} = \{(), (1 \ 2 \ 3), (3 \ 1 \ 2), (2 \ 3 \ 1)\}.
+    \end{equation*}
+
+    We want to show that for any $g \in S_3$
+    \begin{equation*}
+        gng^{-1} =
+    \end{equation*}
+\end{hwproof}
+
+\end{document}

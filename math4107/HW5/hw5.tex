@@ -1,0 +1,199 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+\usepackage{graphicx}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gen}[1]{\left\langle #1 \right\rangle}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{HW5}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+% Lauritzen Chapter 2, Exercises 13, 17, 19, 20, 21, 27, 28
+\section*{Chapter 2}
+\subsection*{13}
+\begin{hwproof}
+    {
+        Let $N$ be a normal subgroup of a group $G$. Prove that $gN = Ng$ for every
+        $g \in G$.
+    }
+
+    Consider $g \in G$, we know that $N$ is a normal subgroup and thus
+    \begin{equation*}
+        gNg^{-1} = \{gng^{-1}: n \in N\} = N.
+    \end{equation*}
+
+    $(\subseteq)$ Consider $gn \in gN$ for some $n \in N$. We know that
+    $gng^{-1} \in N$, so there exists $n'$ such that $gng^{-1} = n'$ and thus
+    $gn = n'g \in Ng$.
+
+    $(\supseteq)$ Consider $ng \in Ng$ for some $n \in N$. Then using what we
+    just proved we have that $g^{-1}n \in g^{-1}N \subseteq Ng^{-1}$ so there exists
+    some $n' \in N$ such that $g^{-1}n = n'g^{-1}$. Multiplying by $g$ from both
+    sides we get $ng = gn' \in gN$ and thus $Ng \subseteq gN$.
+
+    Therefore, we have that $gN = Ng$ when $N$ is a normal subgroup.
+\end{hwproof}
+
+\subsection*{17}
+%https://math.stackexchange.com/questions/1679174/every-subgroup-of-the-quaternion-group-is-normal 
+\begin{hwproof}
+    {
+        Prove that the quaternion group $H$ from Exercise 2.16 is not abelian, but
+        that all its subgroups are normal.
+    }
+
+    We can easily show that it is not abelian since $ij = k$ but $ji = -k$.
+    Therefore $ij \neq ji$ and the group is not abelian.
+
+    We see the subgroups of the quaternion group $Q_8$ are
+    $\gen{i} = \{1,i,-1,-i\}$, $\gen{j}=\{1,j,-1,-j\}$, $\gen{k} = \{1,k,-1,-k\}$,
+    $\gen{-1} = \{1,-1\}$, and the trivial subgroup $\{1\}$. Trivially,
+    $\{1\}$ is normal. It is also easy to see that $\gen{-1}$ is normal
+    because $-1, 1$ commute with every element in $Q_8$. Also,
+    $g(-i)g^{-1} = -gig^{-1}$ so $g(-i)g^{-1} \in \gen{i}$ as soon as
+    $gig^{-1} \in \gen{i}$.
+
+    This is easy to see when $g = 1,-1,i,-i$. Doing the computations for $j$
+    \begin{equation*}
+        jij^{-1} = ji(-j) = -j(ij) = -jk = -i,
+    \end{equation*}
+    and for $g = k$
+    \begin{equation*}
+        kik^{-1} ki(-k) = -(ki)k = -jk = -i.
+    \end{equation*}
+    Thus, $\gen{i}$ is normal
+
+    The pattern is the same for $\gen{j}$ and $\gen{k}$ and so all subgroups
+    of $Q_8$ are normal.
+\end{hwproof}
+
+\subsection*{19}
+\begin{hwproof}
+    {
+        (i) Compute the inverse of [3] in $(\Z / 8\Z)*$.
+
+        (ii) Compute the inverse of [5] in $(\Z / 13\Z)*$.
+    }
+
+    (i) Using the extended Euclidean algorithm we get that
+    $8*2 - 3*5 = 1$ and thus $[3]^{-1} = [3]$. We can verify by checking
+    that $[3][3] = [9] = [1]$.
+
+    (ii) Using the extended Euclidean algorithm we get that
+    $13 * 2 - 5 * 5 = 1$ and thus $[5]^{-1} = [8]$. We can verify this by checking
+    $[5][8] = [40] = [1]$.
+\end{hwproof}
+
+\subsection*{20}
+\begin{hwproof}
+    {
+        Prove that the inverse map of group isomorphism is also a group
+        homomorphism.
+    }
+    Consider a group isomorphism $f: G \to H$. We know that it is also a
+    bijective homomorphism and so we consider the inverse mapping
+    $h: H \to G$ such that $f\circ h = \text{id}_H$ and
+    $h\circ f = \text{id}_G$. Consider $a,b \in H$, we write
+    \begin{align*}
+        f(h(a)h(b)) & = f(h(a))f(h(b)), \qquad (\text{by homomorphism}) \\
+                    & = ab,                                             \\
+                    & = f(h(ab)).
+    \end{align*}
+    Now, since we know $f$ is injective, we have that $h(a)h(b) = h(ab)$ and thus
+    $h$ is a group homomorphism.
+\end{hwproof}
+
+\subsection*{21}
+\begin{hwproof}
+    {
+        Prove that $G$ is abelian if and only if the map $f: G \to G$ given by
+        $f(g) = g^2$ is a group homomorphism.
+    }
+    $(\Rightarrow)$ We assume that $G$ is abelian, that is $gh = hg$ for all
+    $g,h \in G$. Now consider the map $f: G \to G$ such that $f(g) = g^2$. We
+    have that
+    \begin{align*}
+        f(gh) & = (gh)^2,                          \\
+              & = ghgh,                            \\
+              & \stackrel{\text{abelian}}{=} gghh, \\
+              & = g^2h^2,                          \\
+              & = f(g)f(h).                        \\
+    \end{align*}
+
+    $(\Leftarrow)$ We assume that $f: G \to G$ given by $f(g) = g^2$ is a
+    homomorphism. Then we have that $f(gh) = f(g)f(h)$ for all $g,h \in G$.
+    Now we can write
+    \begin{gather*}
+        f(gh) = f(g)f(h),\\
+        (gh)^2 = g^2h^2,\\
+        ghgh = gghh,\\
+        g^{-1}ghghh^{-1} = g^{-1}gghhh^{-1},\\
+        ehge = eghe,\\
+        hg = gh.
+    \end{gather*}
+    Therefore, we have that $G$ is abelian.
+
+\end{hwproof}
+
+\subsection*{27}
+\begin{hwproof}
+    {
+        Let $\text{SL}_2(\R)$ be the subset of $\text{GL}_2(\R)$ (see Example 2.1.10)
+        consisting of matrices with determinant 1. Show that $\text{SL}_2(\R)$ is a
+        normal subgroup of $\text{GL}_2(\R)$. Use the isomorphism theorem to determine
+        the group
+        \begin{equation*}
+            \text{GL}_2(\R) / \text{SL}_2(\R).
+        \end{equation*}
+    }
+
+    Consider the function $\det: \text{GL}_2(\R) \to \R^*$. We can clearly see that it is a
+    group homomorphism since $\det(AB) = \det(A)\det(B)$. Now, we have that
+    \begin{equation*}
+        \ker f = \{A \in \text{SL}_2(\R) : \det(A) = 1\} = \text{SL}_2(\R).
+    \end{equation*}
+    Since the kernel of a function is always a normal subgroup of the domain we
+    have that $\text{SL}_2(\R) \triangleleft \text{GL}_2(\R)$.
+
+    By the isomorphism theorem $\text{GL}_2(\R) / \text{SL}_2(\R)$ is isomorphic to
+    $\R^*$.
+\end{hwproof}
+
+\subsection*{28}
+\begin{hwproof}
+    {
+        Prove that $(\Z / 13\Z)^*$ is a cyclic group by finding a generator.
+    }
+
+    We have that
+    \begin{equation*}
+        (\Z / 13\Z)^* = \{[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12]\}.
+    \end{equation*}
+    Now we see that $[2]^1 = [2]$, $[2]^2 = [4]$, $[2]^3 = [8]$, $[2]^4 = [3]$,
+    $[2]^5 = [6]$, $[2]^6 = [12]$, $[2]^7 = [11]$, $[2]^8 = [9]$,
+    $[2]^9 = [5]$, $[2]^{10} = [10]$, $[2]^{11} = [7]$, $[2]^{12} = [1]$.
+    So clearly $\gen{[2]} = (\Z / 13\Z)^*$ and thus $(\Z / 13\Z)^*$ is a cyclic
+    group.
+\end{hwproof}
+\end{document}

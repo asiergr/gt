@@ -1,0 +1,384 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\P}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\var}[1]{\text{var}\left[#1\right]}
+\newcommand{\randsamp}{X_1,\dots,X_n}
+\newcommand{\mgf}{moment generating function }
+\newcommand{\pdf}{p.d.f. }
+\newcommand{\pmf}{p.m.f. }
+\newcommand{\clt}{central limit theorem}
+\newcommand{\mle}{M.L.E.}
+\DeclareMathOperator*{\Binomial}{Binomial}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{HW3}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\section{Sec 7.2, problem 8}
+\begin{hwproof}
+    {
+        Suppose that $\randsamp$ form a random sample from a distribution for which
+        the p.d.f. is $f(x | \theta)$, the value of $\theta$ is unknown, and the
+        prior p.d.f. of $\theta$ is $\xi(\theta)$. Show that the posterior p.d.f.
+        $\xi(\theta)$ si the same regardless of whether it is calculated directly
+        by using Eq. (7.2.7) or sequentially by using Eqs, (7.2.14), (7.2.15),
+        (7.2.16).
+    }
+
+    Using Eq. (7.2.7) we get
+    \begin{equation*}
+        \xi(\theta | \bm{x}) = \frac{f_n(\bm{x}|\theta) \xi(\theta)}{g_n(\bm{x})}.
+    \end{equation*}
+    where $g(x) = \int_\Omega f(\bm{x} | \theta) \xi(\theta) \ d\theta$.
+
+    Now using Eq. (7.2.14) we have that
+    \begin{equation*}
+        \xi(\theta | x_1) \propto f(x_1 | \theta)\xi(\theta).
+    \end{equation*}
+    Then using Eq. (7.2.15)
+    \begin{equation*}
+        \xi(\theta | x_1, x_2) \propto f(x_2) \xi(\theta | x_1),
+    \end{equation*}
+    when we keep updating our priors we end up with Eq. (7.2.16) that says
+    \begin{equation*}
+        \xi(\theta | \bm{x}) \propto f(x_n | \theta) \xi(\theta | x_1, \dots , x_{n-1}),
+    \end{equation*}
+    which can be rewritten in vector notation as
+    \begin{equation*}
+        \xi(\theta | \bm{x}) \propto f_n(\bm{x} | \theta) \xi(\theta).
+    \end{equation*}
+    Now, we know that the right side of the proportion has to integrate to 1.
+    We can achive this by adding the appropriate constant
+    $\int_\Omega f(\bm{x} | \theta) \xi(\theta) \ d\theta$ to get
+    Eq. (7.2.7).
+\end{hwproof}
+
+\section{Sec. 7.2, problem 9.}
+\begin{hwproof}
+    {
+        Consider again the problem described in Exercise 6, and assume the same
+        prior distribution of $\theta$. Suppose now, however, that instead of
+        selecting a random sample of eight items from the lot, we perform the
+        following experiment: Items from the lot are selected at random one by
+        one until exactly three defectives have been found. If we find that we
+        must select a total of eight items in this experiment, what is the posterior
+        distribution of $\theta$ at the end of the experiment?
+    }
+    We start by noting that the distribution of each observation and the prior
+    are the same as from Ex. 6. The order in which we select the eight items,
+    where 3 are defective, does not change the posterior distribution. We
+    further confirm this from Problem 8. which we solved above.
+
+    We know that each lamp is either defective or not, and hence each observation
+    follows a Bernoulli distribution with an unknown parameter $\theta$. The
+    experiment is nothing but $n$ Bernoulli trials with this unknown parameter.
+    Thus, each observaton has \pdf
+    \begin{equation*}
+        f(x; \theta) = \begin{cases}
+            \theta^x(1-\theta)^{1-x} & x = 0,1,         \\
+            0                        & \text{otherwise}
+        \end{cases}
+    \end{equation*}
+    Since we assume the observations are i.i.d. we get that the joint \pdf is
+    \begin{equation*}
+        f_n(\bm{x} | \theta) = \theta^y(1-\theta)^{n-y},
+    \end{equation*}
+    where $y = \sum_{i = 1}^n x_i$ and each $x_i = 0,1$.
+
+    We know the prior distribution is uniform on $[0,1]$ and has \pdf
+    \begin{equation*}
+        \xi(\theta) = \begin{cases}
+            1 & \theta \in [0,1], \\
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
+    It follows that when $\theta \in [0,1]$
+    \begin{equation*}
+        f_n(\bm{x} | \theta)\xi(\theta) = \theta^y(1-\theta)^{n-y}
+    \end{equation*}
+    which is a bet distribution with parameters $\alpha = y+ 1$ and
+    $\beta = n - y - 1$. This implies that for $\theta \in [0,1]$,
+    \begin{equation*}
+        \xi(\theta | \bm{x}) = \frac{\Gamma(n + 2)}{\Gamma(y + 1)\Gamma(n-y+1)}
+        \theta^y(1-\theta)^{n-y}.
+    \end{equation*}
+
+    We are given that $n=8$ and $y = 3$ so the posterior distribution of $\theta$
+    is
+    \begin{equation*}
+        \xi(\theta | \bm{x}) = \frac{\Gamma(10)}{\Gamma(4)\Gamma(6)}
+        \theta^3(1-\theta)^{5}.
+    \end{equation*}
+\end{hwproof}
+
+\section{Sec. 7.3, problem 10.}
+\begin{hwproof}
+    {
+        Suppose that a random sample is to be taken from a normal distribution
+        for which the value of the mean $\theta$ is unknown and the standard deviation
+        is 2, and the prior distribution of $\theta$ is a normal distribution for
+        which the standard deviation is 1. What is the smallest number of observations
+        that must be included in the sample in order to reduce the standard deviation
+        of the posterior distribution of $\theta$ to the value 0.1?
+    }
+
+    We know that $\randsamp$ is a random sample from a
+    normal distribution for which the mean $\theta$ is unknown and the variance
+    is $\sigma^2 = 4$. Furthermore, the prior distribution is normal with mean $\mu_0$ and
+    variance $v_0^2 = 1$. Thus, from Theorem 7.3.3 we know the posterior
+    distribution of $\theta$ given the observations is
+    \begin{equation*}
+        v_1^2 = \frac{\sigma^2v_0^2}{\sigma^2  + nv_0^2} = \frac{4}{4 + n}.
+    \end{equation*}
+    and thus we get that $v_1 = \sqrt{\frac{4}{4 + n}}$. Now we require that
+    $v_1 \leq 0.1$ and thus $n \geq 396$.
+
+\end{hwproof}
+
+\section{Sec. 7.3, problem 21.}
+\begin{hwproof}
+    {
+        Suppose that $\randsamp$ form a random sample from the exponential
+        distribution with parameter $\theta$. Let the prior distribution of $\theta$
+        be improper with “p.d.f.” $\frac{1}{\theta}$ for $\theta > 0$. Find
+        the posterior distribution of $\theta$ and show that the posterior mean
+        of $\theta$ is $\frac{1}{\bar{x}_n}$.
+    }
+
+    We know that each $X_i$ follows an exponential distribution, and thus the \pdf
+    is,
+    \begin{equation*}
+        f(x ;\theta) = \begin{cases}
+            \theta e^{-\theta x} & x \geq 0,         \\
+            0                    & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
+    Assuming i.i.d. of the observations, likelihood function is thus,
+    \begin{equation*}
+        \theta^n e^{-\theta y},
+    \end{equation*}
+    where $y = \sum_n x_i$
+
+    We have that the prior distribution is $\frac{1}{\theta}$ and so,
+    \begin{equation*}
+        f_n(\bm{x};\theta)\xi(\theta) = \theta^{n-1}e^{-\theta n\bar{x}}.
+    \end{equation*}
+    We observe that this is a case of the Gamma distribution with parameters
+    $\alpha = n$ and $\beta = n \bar{x}$. This implies that that mean of the
+    posterior of $\theta$ is
+    \begin{equation*}
+        \frac{\alpha}{\beta} = \frac{n}{n\bar{x}} = \frac{1}{\bar{x}}.
+    \end{equation*}
+\end{hwproof}
+
+\section{Sec. 7.3, problem 23.}
+\begin{hwproof}
+    {
+        Too long to type lol.
+    }
+    (a)
+
+    We have that
+    \begin{equation*}
+        f(x; \theta) = a(\theta)b(x)\exp[c(\theta)d(x)],
+    \end{equation*}
+    and thus the likelihood function has the form
+    \begin{equation*}
+        f_n(\bm{x}; \theta) = [a(\theta)]^n[b(\bm{x})]^n
+        \exp\left[\sum_{i=1}^n c(\theta)d(\bm{x})\right].
+    \end{equation*}
+    Also, the prior \pdf $\xi(\theta)$ has the form
+    \begin{equation*}
+        \xi_{\alpha, \beta} (\theta) =
+        \frac{a(\theta)^\alpha \exp[c(\theta)\beta]}{\int_\Omega a(\eta)^\alpha \exp[c(\eta)\beta] \ d\eta}
+    \end{equation*}
+    It follows that the posterior \pdf has the form
+    \begin{align*}
+        \xi(\theta | \bm{x}) & \propto
+        [a(\theta)]^{n+\alpha}[b(\bm{x})]^n \exp\left[c(\theta)\beta + \sum_n c(\theta)d(\bm{x})\right],                                   \\
+                             & \propto [a(\theta)]^{n+\alpha}[b(\bm{x})]^n \exp\left[c(\theta)\left(\beta + \sum_n d(\bm{x})\right)\right]
+    \end{align*}
+    It is fairly straightforward to see that this is, up to a constant factor, the same
+    form as $\xi(\theta)$ with $\alpha' = \alpha + n$ and $\beta' = \beta + \sum_n d(x)$.
+    Thus, $\Psi$ is a conjugate family of prior distributions
+    for samples from $f(x; \theta)$.
+
+    (b)
+
+    This calculation is already done in part (a).
+
+\end{hwproof}
+\section{Sec. 7.3, problem 24.}
+\begin{hwproof}
+    {
+        too long to type lol
+    }
+    \textbf{(a)}
+    We can write the \pdf of Bernoilli distributions as
+    \begin{equation*}
+        f(x;\theta) = \theta^x (1-\theta)^{1-x} =
+        (1-\theta)\left(\frac{\theta}{1 - \theta}\right)^x.
+    \end{equation*}
+    Thus, if we let $a(\theta) = 1-\theta$, $b(x) = 1$,
+    $c(\theta) = \ln\left(\frac{\theta}{1 - \theta}\right)$, and $d(x) = x$ we can see the \pdf
+    as part of the exponential family.
+    \\
+    \\
+    \textbf{(b)}
+    We can write the \pmf for a Poisson distribution with unknown mean as
+    \begin{equation*}
+        f(x;\theta) = \frac{\theta^xe^{-\theta}}{x!}.
+    \end{equation*}
+    If we let $a(\theta) = e^{-\theta}$, $b(x) = \frac{1}{x!}$,
+    $c(\theta) = \ln(\theta)$, and $d(x) = x$ we can see the \pmf is part
+    of the exponential family.
+    \\
+    \\
+    \textbf{(c)}
+    We can write the \pmf for the negative binomial distribution with known $r$ and
+    unknown $\theta$ as
+    \begin{equation*}
+        f(x;\theta) = \binom{x + r - 1}{x}(1-\theta)^r \theta^x.
+    \end{equation*}
+    If we let $a(\theta) = (1-\theta)^r$, $b(x) = \binom{x+r-1}{x}$,
+    $c(\theta) = \ln(\theta)$, and $d(x) = x$ we can see the \pmf is part
+    of the exponential family.
+    \\
+    \\
+    \textbf{(d)}
+    We can write the \pdf for the normal distribution with known $\sigma^2$ and
+    unknown $\mu$ as
+    \begin{align*}
+        f(x;\theta) & = \frac{1}{\sigma\sqrt{2\pi}}\exp\left[-\frac{1}{2}\left(\frac{x - \theta}{\sigma}\right)^2\right],                       \\
+                    & = \frac{1}{\sigma\sqrt{2\pi}}\exp\left[-\frac{1}{2}\left(\frac{x^2 - 2x\theta + \theta^2}{\sigma^2}\right)\right],        \\
+                    & = \frac{1}{\sigma\sqrt{2\pi}}\exp\left[\frac{-x^2}{2\sigma^2}+\frac{x\theta}{\sigma^2}+\frac{-\theta^2}{2\sigma^2}\right]
+    \end{align*}
+    If we let $a(\theta) = \frac{1}{\sigma\sqrt{2\pi}}e^{\frac{-\theta^2}{2\sigma}}$,
+    $b(x) = e^{\frac{-x^2}{\sigma^2}}$,
+    $c(\theta) = \frac{\theta}{\sigma^2}$, and $d(x) = x$ we can see the \pmf is part
+    of the exponential family.
+    \\
+    \\
+    \textbf{(e)}
+    We can write the \pdf for the normal distribution with unknown $\sigma^2$ and
+    known $\mu$ as
+    \begin{equation*}
+        f(x;\theta) = \frac{1}{\theta\sqrt{2\pi}}\exp\left[-\frac{1}{2}\left(\frac{x - \mu}{\theta}\right)^2\right]
+        = \frac{1}{\theta\sqrt{2\pi}}\exp\left[-\frac{1}{2\theta^2}(x - \mu)^2\right]
+    \end{equation*}
+    If we let $a(\theta) = \frac{1}{\theta\sqrt{2\pi}}$, $b(x) = 1$,
+    $c(\theta) = -\frac{1}{2\theta^2}$, and $d(x) = (x-\mu)^2$ we can see the \pdf is part
+    of the exponential family.
+    \\
+    \\
+    \textbf{(f)}
+    We can write the \pdf for the gamma distribution with unknown $\alpha$ and
+    known $\beta$ as
+    \begin{equation*}
+        f(x;\theta) = \frac{\beta^\theta}{\Gamma(\theta)}x^{\theta - 1}e^{-\beta x}
+    \end{equation*}
+    If we let $a(\theta) = \frac{\beta^\theta}{\Gamma(\theta)}$, $b(x) = e^{-\beta x}$,
+    $c(\theta) = \theta - 1$, and $d(x) = \ln(x)$ we can see the \pdf is
+    part of the exponential family.
+    \\
+    \\
+    \textbf{(g)}
+    We can write the \pdf for the gamma distribution with unknown $\beta$ and
+    known $\alpha$ as
+    \begin{equation*}
+        f(x;\theta) = \frac{\theta^\alpha}{\Gamma(\alpha)}x^{\alpha - 1}e^{-\theta x}
+    \end{equation*}
+    If we let $a(\theta) = \frac{\theta^\alpha}{\Gamma(\alpha)}$, $b(x) = x^{\alpha-1}$,
+    $c(\theta) = -\theta$, and $d(x) = x$ we can see the \pdf is
+    part of the exponential family.
+    \\
+    \\
+    \textbf{(h)}
+    We can write the \pdf for the beta distribution with unknown $\alpha$ and
+    known $\beta$ as
+    \begin{equation*}
+        f(x;\theta) = \frac{\Gamma(\theta + \beta)}{\Gamma(\theta)\Gamma(\beta)}x^{\theta - 1}(1-x)^{\beta -1}
+    \end{equation*}
+    If we let $a(\theta) = \frac{\Gamma(\theta + \beta)}{\Gamma(\theta)\Gamma(\beta)}$,
+    $b(x) = (1-x)^{\beta - 1}$,
+    $c(\theta) = \theta - 1$, and $d(x) = \ln(x)$ we can see the \pdf is
+    part of the exponential family.
+    \\
+    \\
+    \textbf{(i)}
+    We can write the \pdf for the beta distribution with unknown $\beta$ and
+    known $\alpha$ as
+    \begin{equation*}
+        f(x;\theta) = \frac{\Gamma(\alpha + \theta)}{\Gamma(\alpha)\Gamma(\theta)}x^{\alpha - 1}(1-x)^{\theta -1}
+    \end{equation*}
+    If we let $a(\theta) = \frac{\Gamma(\alpha + \theta)}{\Gamma(\alpha)\Gamma(\theta)}$,
+    $b(x) = x^{\alpha - 1}$,
+    $c(\theta) = \theta - 1$, and $d(x) = \ln(1 - x)$ we can see the \pdf is
+    part of the exponential family.
+    \\
+\end{hwproof}
+\section{Sec. 7.4, problem 10.}
+\begin{hwproof}
+    {
+        Suppose that the time in minutes required to serve a customer at a certain
+        facility has an exponential distribution for which the value of the
+        parameter $\theta$ in unknown, the prior distribution of $\theta$
+        is a gamma distribution for which the mean is 0.2 and the standard
+        deviation is 1, and the average time required to serve a random sample
+        of 20 customers is observed to be 3.8 minutes. If the squared error loss
+        function is used, what is the Bayes estimate of $\theta$?
+        (See Exercise 12 of Sec. 7.3.)
+    }
+
+    We have that the time to serve a customer follows a \pdf of
+    \begin{equation*}
+        f(x;\theta) = \theta e^{-\theta x}.
+    \end{equation*}
+    Also, the prior follows a Gamma distribution with mean 0.2 and standard
+    deviation 1. Thus, $\alpha = 0.04$ and $\beta = 0.2$, we have now,
+    \begin{equation*}
+        \xi(\theta) = \frac{0.2^{0.04}}{\Gamma(0.04)}\theta^{0.96} e^{-0.2\theta}.
+    \end{equation*}
+    We are also using the squared error loss function
+    \begin{equation*}
+        L(\theta, a) = (\theta - a)^2.
+    \end{equation*}
+
+    Now, we know that the posterior distribution is going to be Gamma with
+    parameters $\alpha' = \alpha + n$ and $\beta'= \beta + n\bar{x}$.
+    We know that we have $n=20$ observations with $\bar{x} = 3.8$, thus
+    $\alpha' = 20.04$ and $\beta'=76.2$. Now, the Bayes estimate $\delta(\bm{x})$
+    will be equal to this value for each observation. Therefore the Bayes estimate
+    is, by Thm 4.7.3, the mean of the posterior which is,
+    \begin{equation*}
+        \frac{\alpha}{\beta} = \frac{20.04}{76.2} \approx 0.262
+    \end{equation*}
+\end{hwproof}
+\section{notebook}
+
+\end{document}
