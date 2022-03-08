@@ -58,7 +58,7 @@
     the \cdf of the sampling distribution $F(\cdot)$ as
     \begin{equation*}
         H(t) = \P{\hat{\theta} \leq t} = \P{\frac{n}{T} \leq t}
-        = \P{T \geq \frac{n}{t} } = 1 - G\left(\frac{n}{t}\right).
+        = 1 - \P{T \geq \frac{n}{t} } = 1 - G\left(\frac{n}{t}\right).
     \end{equation*}
 \end{hwproof}
 
@@ -102,7 +102,7 @@
     $Y_i = e^{-Z_i}$, $\frac{dt}{dz} = - e^{-Z_i}$. Thus, using a change of
     variable we find that the \pdf for $T_i$ is
     \begin{equation*}
-        g(z) - f(e^{-z}) |\frac{dt}{dz}| = e^{-z}.
+        g(z) = f(e^{-z}) |\frac{dt}{dz}| = e^{-z}.
     \end{equation*}
     We observe that each $Z_i$ has the exponential distribution with parameter
     $\lambda = 1$, which is the same as saying that it has the gamma distribution
