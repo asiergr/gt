@@ -1,0 +1,278 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\usepackage{permute}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gen}[1]{\left\langle #1 \right\rangle}
+\DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator*{\ord}{ord}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+% 
+\title{HW8}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+I worked on this homework with Daniel Yankin and Armaan Lala.
+\section*{Chapter 2}
+\subsection*{Ex. 49}
+Consider the permutations $\sigma_1 = (1)(2)(345), \sigma_2 = (3)(4)(152)$ and
+$\tau = (13)(245)$ in $S_5$.
+
+\begin{hwproof}
+    {
+        \textbf{(i)} What is the minimal number of simple transpositions needed in
+        writing $\tau$ as a product of simple transpositions?
+    }
+    We can rewrite $\tau$ in two-line notation as
+    \begin{equation*}
+        \tau = \begin{pmatrix}
+            1 & 2 & 3 & 4 & 5 \\
+            3 & 4 & 1 & 5 & 2
+        \end{pmatrix}.
+    \end{equation*}
+
+    We can see that $I_\tau = \{(1,3), (1,5) (2,3), (2,5), (4,5))\}$
+    thus $|I_\tau | = 5$ and it takes 5 simple transpositions to write $\tau$ as
+    as product of simple transpositions.
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{(ii)} Show that $\tau \not \in A_5$ and that
+        \begin{equation*}
+            \tau \sigma_1 \tau^{-1} = \sigma_2.
+        \end{equation*}
+    }
+    Since $|I_\tau | = 5$ then $\sgn(\tau) = (-1)^5 = -1$. Thus, $\tau$
+    is odd and $\tau \not \in A_5$.
+
+    We have that
+    \begin{equation*}
+        \tau^{-1} = (13)(254)
+    \end{equation*}
+    \begin{align*}
+        (13)(245)(345)(13)(254) & = \pmt{(13)(245)(345)}(13)(254), \\
+                                & = \pmt{(135)(24)(13)}(254),      \\
+                                & = \pmt{(15)(24)(254)},           \\
+                                & = \sigma_2.
+    \end{align*}
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{(iii)} Show that $\sigma_1, \sigma_2 \in A_5, \tau_1 = (34)\tau \in A_5$ and
+        $\tau_1 \sigma_1 \tau^{-1} = \sigma_2$.
+    }
+    We have that $I_{\sigma_1} = \{(3,5),(4,5)\}$ and
+    $I_{\sigma_2} = \{(1,2)(1,3),(1,4),(1,5), (3,5),(4,5)\}$. Thus,
+    $| I_{\sigma_1} | = 2$ and $| I_{\sigma_2} | = 6$ so $\sgn(\sigma_1) = 1$
+    and $\sgn(\sigma_2) = 1$. Therfore $\sigma_1, \sigma_2 \in A_5$.
+
+    Since $\sgn$ is a homomorphism and $\sgn(34) = -1$ then
+    \begin{equation*}
+        \sgn(\tau_1) = \sgn((34)\tau) = \sgn(34)\sgn(\tau) = 1.
+    \end{equation*}
+
+    We have that
+    \begin{equation*}
+        \tau_1^{-1} = \pmt{(34)(13)(245)(13254)}.
+    \end{equation*}
+    Thus,
+    \begin{align*}
+        (34)(13)(245)(345)(13254) & = \pmt{(34)(13)(245)}(345)(13254), \\
+                                  & = \pmt{(14523)(345)}(13254),       \\
+                                  & = \pmt{(14235)(13254)},            \\
+                                  & = \sigma_2.
+    \end{align*}
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{(iv)} Now we know that $\sigma_1, \sigma_2$ are conjugate via
+        permutation $\tau_1$ in $A_5$. Show that a permutation cycle type
+        (a) $1 \leq 1 \leq 1 \leq 1 \leq 1$,
+        (b) $1 \leq 2 \leq 2$, (c) $1 \leq 1 \leq 3$ or (d) 5 is even. We know that
+        permutations of the same cycle type are conjugate via a permutation
+        in $S_5$. Show that two permutations with the same cycle type, (a), (b)
+        or (c), are conjugate via a permutation in $A_5$.
+    }
+    Clearly we see that a permutation cycle type (a) is simply the identity, and
+    thus even.
+
+    We know, generally, that the order of a permuation is the least common
+    multiple of the the cycle type orders. Therefore we have that the cycle types
+    of (b), (c) and (d) are even.
+
+    By Lemma 2.9.8 we can see that two permutations with the same cycle are
+    conjugate bia a permuation in $A_5$.
+
+
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        Give an example of two 5-cycles that cannot be conjugate via a
+        permutation in $A_5$.
+    }
+    Two 5-cycles that cannot be conjugate via a permutations in $A_5$ are
+    $(12345), (13452)$.
+\end{hwproof}
+
+
+\subsection*{Ex. 50}
+\begin{hwproof}
+    {
+        Let $G$ be a group. Prove that the center $Z(G)$ of the group is an abelian
+        normal subgroup of $G$.
+    }
+    We will first prove that $Z(G)$ is a subgroup. We have that
+    \begin{equation*}
+        Z(G) = \{z \in G : zg = gz, \forall g \in G\}.
+    \end{equation*}
+
+    \textbf{(Identity)} We have that $eg = ge \ \forall g \in G$ so $e \in Z(G)$.
+
+    \textbf{(Inverse)} Let $z \in Z(G)$, we can write
+    \begin{gather*}
+        zg = gz,\\
+        z^{-1}zgz^{-1} = z^{-1}gzz^{-1}, \\
+        gz^{-1} = z^{-1}g.
+    \end{gather*}
+    Thus, $z^{-1} \in Z(G)$.
+
+    \textbf{(Closure)} Consider $z_1, z_2 \in Z(G)$. Then fixing a $g\in G$
+    \begin{align*}
+        z_1 z_2 & = gz_1 g^{-1}gz_2 g^{-1}, \\
+                & = gz_1z_2 g^{-1}.         \\
+    \end{align*}
+    Therefore, $z_1z_2 \in Z(G)$.
+
+    We have shown that $Z(G)$ is a subgroup, now we will show it is abelian.
+    This is easy since $Z(G)$ is simply the set of elements in $G$ that
+    commute with every element in $G$. Since any $z\in Z(G)$ is also an
+    element of $G$, then they must commute. Therefore, $Z(G)$ is abelian.
+
+    Furthermore, we know any abelian subgroup is normal. Therefore we have that
+    $Z(G)$ is a normal subgroup of $G$ as required.
+
+\end{hwproof}
+
+\section*{Out of textbook}
+\subsection*{1.}
+\begin{hwproof}
+    {
+        Prove that $S_4$ can be generated by the two 4-cycles $(1234)$ and $(1243)$,
+        i.e., that $S_4 = \gen{(1234)(1243)}$.
+    }
+    We know all 4-cycles are odd with order 3. Thus,
+    \begin{equation*}
+        |\gen{(1 2 3 4)}| = |\gen{(1 2 4 3)}| = 4.
+    \end{equation*}
+    Let $\gen{\gen{(1234)} \cup \gen{(1243)}}$
+    By simple computation we can further find that
+    \begin{equation*}
+        |H| \geq 7.
+    \end{equation*}
+
+    We know that $|S_4| = 24$ and thus by Lagrange's Thm. any subgroup must
+    divide 24. Now we observe that
+    \begin{equation*}
+        (1234)(1243) = (132)
+    \end{equation*}
+    and
+    \begin{equation*}
+        (1243)(1234) = (142).
+    \end{equation*}
+    Both of these are 3-cycles not included in $\gen{(1234)}$ or
+    $\gen{(1243)}$. Therefore, we have that $H\geq 9$. Furthermore, we know that
+    $A_4$ is the only subgroup of order 12 of $S_4$. Clearly $H\neq A_4$
+    (since it contains odd elements). Therefore, $|H| = 24$ and $H = S_4$.
+\end{hwproof}
+
+\subsection*{2.}
+\begin{hwproof}
+    {
+        Prove or disprove : $S_4$ can be generated by two 3-cycles.
+    }
+    We know all 3-cycles are even.
+    Consider two 3-cycles $\sigma, \tau$. Then any permutation generated by these
+    will be of the form
+    \begin{equation*}
+        \sigma^n\tau^m \ \text{or} \ \tau^m\sigma^n,
+    \end{equation*}
+    where $m,n \in \Z$. Now, we know that $\sgn$ is a homomorphism so WLOG
+    \begin{align*}
+        \sgn(\sigma^n\tau^m) & = \sgn(\sigma^n)\sgn(\tau^m),                                                                                         \\
+                             & = \underbrace{\sgn(\sigma)\dots\sgn(\sigma)}_{n \text{times}}\underbrace{\sgn(\tau)\dots\sgn(\tau)}_{m \text{times}}, \\
+                             & = 1^n*1^m = 1.
+    \end{align*}
+    Therefore, any permutation generated by two 3-cycles will be even, and thus
+    two 3-cycles cannot generate $S_4$ (since it contains odd permutations).
+
+\end{hwproof}
+
+\subsection*{3.}
+\begin{hwproof}
+    {
+        Consider the group action of $G=S_4$ on $M_4 = \{1,2,3,4\}$.
+        \textbf{(a)} Find $G_4$, the stabilizer of 4. What familiar group is this
+        isomorphic to?
+    }
+    We can find
+    \begin{equation*}
+        G_4 = \{g \in G : gX = X\} = \{(n_1 n_2 n_3) : n_1, n_2, n_3 \neq 4\}.
+    \end{equation*}
+    We can see by inspection that this group is isomorphic to $S_3$.
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{(b)}. Find $G*4$, the orbit of 4.
+    }
+    We find that
+    \begin{equation*}
+        G*4 = \{\sigma 4 : g \in G\} = \{1,2,3,4\}.
+    \end{equation*}
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{(c)} Write out the bijection $\tilde{f}: G / G_4 \to G*4$ given
+        by Proposition 2.10.5 (3) (the orbit-stabilizer lemma).
+    }
+    The orbit-stabilizer theorem tells us there is an isomorphism
+    \begin{equation*}
+        \hat{f}(gG_4) = g*4.
+    \end{equation*}
+    We can explicitly write the isomorphism as
+    \begin{gather*}
+        \hat{f}((1 4)G_4) = 1,\\
+        \hat{f}((2 4)G_4) = 2,\\
+        \hat{f}((3 4)G_4) = 3,\\
+        \hat{f}(idG_4) = 4.
+    \end{gather*}
+
+\end{hwproof}
+
+\end{document}
