@@ -1,0 +1,251 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\usepackage{permute}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gen}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ZmodnZ}[1]{\Z / #1 \Z}
+\DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator*{\ord}{ord}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+% Lauritzen
+% Chapter 2: 52, 53, 55
+% Chapter 3: 3, 4, 5, 8 
+\title{HW9}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+I worked on this homework with Daniel Yankin and Armaan Lala.
+\section*{2}
+\subsection*{52}
+% Cauchy's thm
+\begin{hwproof}
+    {
+        Let $G$ be a finite group and $p$ a prime number. Prove that $G$ contains
+        an element of order $p$ if $p$ divides $|G|$. (Hint: reduce to the
+        situation where $G$ is cyclic and of order $p^r$).
+    }
+    Consider a prime $p$ which divides the order of a group $G$. By the First Sylow
+    Theorem we know that $G$ has a subgroup $H$ of order $p$. Now, by Proposition
+    2.7.2 this group is isomorphic to the cyclic group $\ZmodnZ{p}$. Therefore,
+    the generator of $H$ is an element of order $p$.
+\end{hwproof}
+
+\subsection*{53}
+\begin{hwproof}
+    {
+        Prove that a group of order 15 is cyclic.
+    }
+    Clearly we see that $15=3*5$. Now, by the First Sylow Theorem we know
+    that there are Sylow p-subgroups of orders 4 and 5. The Third Sylow Theorem
+    tells us that
+    \begin{gather*}
+        |Syl_3(G)| \in \{1, 5\},
+        |Syl_5(G)| \in \{1, 3\}
+    \end{gather*}
+    and
+    \begin{gather*}
+        |Syl_3(G)| \equiv 1 \mod 3,
+        |Syl_5(G)| \equiv 1 \mod 5.
+    \end{gather*}
+    Let $P = Syl_3(G)$ and $Q = Syl_5(G)|$.
+    We can conclude that $|P| = 1$ and $|Q| = 1$. Since there is
+    only one subgroup for each $p$, then by the Second Sylow Theorem they are
+    normal subgroups of $G$. Therefore, the product $PQ$ is a subgroup of
+    $G$ containing $P$ and $Q$ (Lemma 2.3.6). This implies that
+    $PQ = G$ since $|P|$ and $|Q|$ divide 15. Since $P \cap Q$ is a proper
+    subgroup of $Q$, ir follows by Thm. 2.2.8 that $P\cap Q = \{e\}$.
+    Now, by Lemma 2.8.1 we have an isomorphism from $PQ$ to $G$.
+    Therefore, $G \cong \ZmodnZ{5} \times \ZmodnZ{3}$. By the Chinese Remainder
+    Thm we finally get that $G \cong \ZmodnZ{15}$. Therefore, $G$ is a
+    cyclic group.
+
+\end{hwproof}
+
+\subsection*{55}
+\begin{hwproof}
+    {
+        Compute the number of elements of order 5 in a group of order 20.
+    }
+    Since $20 = 2^2*5$ we have Sylow p-subgroups of orders 4 and 5. By the
+    Third Sylow Theorem we have
+    \begin{gather*}
+        |Syl_5(G)| \in \{1, 2, 4\},\\
+        |Syl_5(G))| \equiv 1 \mod 5.\\
+    \end{gather*}
+    Therefore, $|Syl_5(G)| =1$. This implies that there are 4 elements of order
+    5 in this unique subgroup of order 5.
+\end{hwproof}
+
+\section*{3}
+\subsection*{3}
+\begin{hwproof}
+    {
+        Let $R$ be a ring. Prove that $0\cdot x = 0$ and $-x = (-1)\cdot x$
+        for every $x \in R$.
+    }
+    Since 0 is the neutral element in the abelian group $(R, +)$ we have that
+    \begin{gather*}
+        0 + 0 = 0,
+        \intertext{Multiply by $x$ on both sides,}
+        x(0 + 0) = x\cdot 0,\\
+        x\cdot 0 + x\cdot 0 = x\cdot 0,
+        \intertext{subtract $x \cdot 0$ on both sides, since every element has
+            an additive inverse,}
+        x \cdot 0 = 0
+    \end{gather*}
+    as required.
+
+    Now consider again $x \in R$ and write
+    \begin{gather*}
+        x - x = 0,\\
+        -1(x - x) = 0,\\
+        -1\cdot x + (-1)(-x) = 0,\\
+        -1 \cdot x = (-1)(-1)(-x),\\
+        -1 \cdot x = -x,
+    \end{gather*}
+    as required.
+
+\end{hwproof}
+
+\subsection*{4}
+\begin{hwproof}
+    {
+        Prove that an ideal $I$ in a ring $R$ is the whole ring if and only
+        if $1 \in I$.
+    }
+    $(\Rightarrow)$
+    Consider an ideal $I$ such that $I = R$. Then, $|I| = |R|$ and it must be
+    true that $1 \in I$.
+
+    $(\Leftarrow)$.
+    Consider an ideal $I$ such that $1 \in I$. Since it is an ideal we have that
+    $\lambda x \in I$ for all $\lambda \in R$ and $x \in I$. Since $1 \in I$ then it is true
+    that $\lambda \cdot 1 = \lambda \in I$ for all $\lambda \in R$. Therefore,
+    all elements of $R$ are contained in $I$. Since $I$ is a subgroup of $R$
+    we get that $I = R$.
+\end{hwproof}
+
+\subsection*{5}
+\begin{hwproof}
+    {
+        Let $R$ be a ring and $r_1,\dots, r_n \in R$. Prove that the subset
+        $\gen{r_1,\dots,r_n} = \{\lambda_1r_1 + \dots + \lambda_nr_n :
+            \lambda_1,\dots,\lambda_n \in R\}$ is an ideal in $R$.
+    }
+    Consider a subset $I = \gen{r_1,\dots, r_n}$, we want to show this subset is
+    ideal in $R$. That is, we will show that $\lambda r \in I$ for all
+    $\lambda \in R$ and $r \in I$. We can see that
+    \begin{align*}
+        \lambda r & = \lambda(\lambda_1r_1 + \dots + \lambda_nr_n)      &
+        \lambda_1, \dots, \lambda_n \in R.
+        \intertext{Now, since multiplication is distributive this yields}
+        \lambda r & = \lambda\lambda_1r_1 + \dots + \lambda\lambda_nr_n &
+        \lambda_1, \dots, \lambda_n \in R.
+    \end{align*}
+    Given the closure of the multiplication operation we know
+    $\lambda \lambda_i \in R$ for $i = 1,\dots,n$. Therefore, the resulting
+    product of $\lambda r \in \gen{r_1,\dots,r_n} = I$ as required.
+\end{hwproof}
+
+\subsection*{8}
+\begin{hwproof}
+    {
+        Let $I$ and $J$ be ideals in the ring $R$.\\
+        (i) Prove that
+        \begin{equation*}
+            I\cap J
+        \end{equation*}
+        is an ideal in $R$.
+    }
+    Consider $x \in I \cap J$. Since $I$ and $J$ are ideal we have that
+    $\lambda x \in I, J$ for all $\lambda \in R$. Therefore,
+    $\lambda x \in I \cap J \ \forall \lambda \in R$ and $I \cap J$ is ideal
+    as required.
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (ii) Prove that
+        \begin{equation*}
+            I + J = \{a + b : a \in I, b \in J\}
+        \end{equation*}
+        is an ideal in $R$.
+    }
+    Consider $x \in I + J$, then $x = i + j$ for some $i \in I, j \in J$ where
+    $I, J$ are ideal.
+    Now, using the distributive property we can write
+    \[\lambda x = \lambda(i + j) = \lambda i + \lambda j \in I + J\]
+    Since $\lambda i \in I$ and $\lambda j \in J$ for all $\lambda \in R$.
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (iii) Prove that
+        \begin{equation*}
+            IJ = \left\{\sum_{i=1}^n a_ib_i : n \geq 1, a_i \in I, b_i \in J\right\}
+        \end{equation*}
+        is ideal in $R$.
+    }
+    Consider $x \in IJ$, then we can write $x$ as
+    \begin{equation*}
+        x = \sum_{i=1}^n a_ib_i : n \geq 1, a_i \in I, b_i \in J.
+    \end{equation*}
+    We note that since $I, J$ are ideal in $R$ then $\lambda a_i \in I$ and
+    $\lambda b_i \in J$ for all $\lambda \in R$. Therefore multiiplying $\lambda x$
+    we get
+    \begin{equation*}
+        \lambda x = \lambda \sum_{i=1}^n a_ib_i =
+        \sum_{i=1}^n \lambda a_ib_i =
+        \sum_{i=1}^n a_i\lambda b_i   : n \geq 1, a_i \in I, b_i \in J.
+    \end{equation*}
+    In all of these scenarios we have that $\lambda x \in IJ$ as required.
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (iv) Prove that $IJ \subseteq I \cap J$. Give an example where
+        $IJ \subsetneq I \cap J$.
+    }
+    Since $I$ is ideal $IJ \subseteq IR \subseteq I$, and since $J$ is ideal
+    $IJ \subseteq RJ \subseteq J$. Therefore $IJ \subseteq I \cap J$.
+
+    Unsure of example
+    %https://math.stackexchange.com/questions/2489208/products-of-ideals-being-a-subset-of-their-intersection
+
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (v) Is $\{ab : a \in I, b \in J\}$ an ideal in $R$?
+    }
+    Consider $(x,y) \subseteq \R[x,y]$. Now we see that
+    $x^2, y^2 \in \{ab : a \in I, b \in J\}$ but
+    $x^2 + y^2 \notin \{ab : a \in I, b \in J\}$.
+
+    Therefore, $\{ab : a \in I, b \in J\}$ is not ideal in $R$.
+
+\end{hwproof}
+
+\end{document}
