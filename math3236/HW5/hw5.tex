@@ -1,0 +1,346 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\P}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\var}[1]{\text{var}\left[#1\right]}
+\newcommand{\gammafn}[1]{\Gamma\left(#1\right)}
+\newcommand{\randsamp}{X_1,\dots,X_n}
+\newcommand{\mgf}{moment generating function }
+\newcommand{\pdf}{p.d.f. }
+\newcommand{\pmf}{p.m.f. }
+\newcommand{\cdf}{c.d.f. }
+\newcommand{\clt}{central limit theorem}
+\newcommand{\mle}{M.L.E. }
+\DeclareMathOperator*{\Binomial}{Binomial}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{HW4}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+I worked on this homework with Daniel Yankin and Armaan Lala.
+
+\section{Section 9.2, problem 7.}
+\begin{hwproof}
+    {Suppose that $\randsamp$ form a random sample from the normal distribution
+        with known mean $\mu$ and unknown variance $\sigma^2$, and the following
+        simple hypotheses are to be tested:
+        \begin{align*}
+            H_0: & \ \sigma^2 = 2, \\
+            H_1: & \ \sigma^2 = 3, \\
+        \end{align*}
+
+        \textbf{a.} Show that among all the test procedures for which $\alpha(\delta) \leq 0.05$,
+        the value of $\beta(\delta)$ is minimised by a procedure that rejects $H_0$ when
+        $\sum_{i=1}^n (X_i - \mu)^2 > c$.
+    }
+    Let $f_i(\bm{x})$ be the \pdf when $H_i$ is true. Then we have
+    \begin{align*}
+        f_0(\bm{x}) & = \frac{1}{(4\pi)^{n/2}}\exp\left(-\frac{1}{4}\sum_{i=1}^n(x_i-\mu)^2\right), \\
+        f_1(\bm{x}) & = \frac{1}{(6\pi)^{n/2}}\exp\left(-\frac{1}{6}\sum_{i=1}^n(x_i-\mu)^2\right).
+    \end{align*}
+    Now we see that the likelihood ration $f_1(\bm{x}) / f_0(\bm{x})$ is
+    \begin{equation*}
+        \frac{f_1(\bm{x})}{f_0(\bm{x})} =
+        \frac{2}{3}^{n/2} \exp\left(\frac{1}{12}\sum_{i=1}^n(x_i - \mu)^2\right).
+    \end{equation*}
+    and thus
+    \begin{equation*}
+        \log\frac{f_1(\bm{x})}{f_0(\bm{x})} =
+        \frac{1}{12}\sum_{i=1}^n(x_i - \mu)^2 + \frac{n}{2} \log\frac{2}{3}.
+    \end{equation*}
+    By the Neymann-Pearson lemma, we reject $H_0$ if $\frac{f_1(\bm{x})}{f_0(\bm{x})} > c$.
+    We let
+    \begin{equation*}
+        k = 12(c - \frac{n}{2} \log\frac{2}{3}).
+    \end{equation*}
+    Now we have that we will reject $H_0$ if the likelihood ratio is larger than $k$. So,
+    we pick $c$ such that
+    \begin{equation*}
+        \P{\sum_{i=1}^n(X_i - \mu) > k | H_0} = 0.05.
+    \end{equation*}
+
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{b.} For $n=8$, find the value of the constant $c$ that appears in part
+        (a).
+    }
+    When $H_0$ is true then $Y = \sum_{i=1}^n(X_i - \mu) / 2$ has the $\chi^2(n)$ distribution.
+    Thus, we have that
+    \begin{equation*}
+        \P{\sum_{i=1}^n(X_i - \mu) > k | H_0} = \P{Y > \frac{k}{2}}.
+    \end{equation*}
+    We have that $n=8$ and want $\P{Y > \frac{k}{2}} = 0.05$. Consulting the table at the back
+    of the book we find that $k/2 = 15.51$ and thus $k = 31.02$.
+\end{hwproof}
+
+\section{Section 9.2, problem 12.}
+\begin{hwproof}
+    {
+        Let $\randsamp$ be a random sample from the exponential distribution
+        with unknown parameter $\theta$. Let $0 < \theta_0 < \theta_1$ be two
+        possible values of the parameter. Suppose that we wish to test the
+        following hypotheses:
+        \begin{align*}
+            H_0: & \ \theta = \theta_0, \\
+            H_1: & \ \theta = \theta_1.
+        \end{align*}
+        For each $\alpha \in (0,1)$, show that among all tests $\delta$
+        satisfying $\alpha(\delta) \leq \alpha_0$, the test with the
+        smallest probability of type II error will reject $H_0$ if
+        $\sum_{i=1}^n X_i < c$, where $c$ is the $\alpha_0$
+        quantile of the gamma distribution with parameters
+        $n$ and $\theta_0$
+    }
+    Let $f_i(\bm{x})$ be the \pdf when $H_i$ is true. Then we have
+    \begin{align*}
+        f_0(\bm{x}) & = \theta_0^n\exp\left(-\theta_0 \sum_{i=1}^n x_i\right), \\
+        f_1(\bm{x}) & = \theta_1^n\exp\left(-\theta_1 \sum_{i=1}^n x_i\right), \\
+    \end{align*}
+    Now we see that the likelihood ration $f_1(\bm{x}) / f_0(\bm{x})$ is
+    \begin{equation*}
+        \frac{f_1(\bm{x})}{f_0(\bm{x})} =
+        \frac{\theta_1}{\theta_0} \exp\left((\theta_0 - \theta_1) \sum_{i=1}^n x_i\right).
+    \end{equation*}
+    and thus
+    \begin{equation*}
+        \log\frac{f_1(\bm{x})}{f_0(\bm{x})} =
+        (\theta_0 - \theta_1) \sum_{i=1}^n x_i + \log\frac{\theta_1}{\theta_0}.
+    \end{equation*}
+    By the Neymann-Pearson lemma, we reject $H_0$ if $\frac{f_1(\bm{x})}{f_0(\bm{x})} > c$.
+    We let
+    \begin{equation*}
+        k = (\theta_0 - \theta_1)(c - \log\frac{\theta_1}{\theta_0}).
+    \end{equation*}
+    Now we have that we will reject $H_0$ if the likelihood ratio is larger than $k$. So,
+    we pick $c$ such that
+    \begin{equation*}
+        \P{\sum_{i=1}^n X_i > k | H_0} = \alpha_0.
+    \end{equation*}
+    We can see that $\sum_{i=1}^n X_i$ is nothing but a Gamma distribution with parameters $n$
+    and $\theta_0$ (property of the sum of exponential distributions). Therefore, $k$
+    must be the $\alpha_0$ quantile of this distribution.
+
+\end{hwproof}
+\section{Section 9.3, problem 5.}
+\begin{hwproof}
+    {
+        Suppose that $\randsamp$ form a random sample from a distribution that belongs to an
+        exponential family, as defined in Exercise 23 of Sec. 7.3, and the \pdf or the
+        p.f. of this distribution is $f(\bm{x}|\theta)$, as given in that exercise. Suppose also
+        that $c(\theta)$ is a strictly increasing function of $\theta$. Show that the joint \pdf
+        or the joint p.f. of $\randsamp$ has a montone likelihood ratio in the statistic
+        $\sum_{i=1}^n d(X_i)$.
+    }
+    A distribution $f(x|\theta)$ belong to an exponential family if it can be written as
+    $f(x|\theta) = a(\theta)b(x)\exp[c(\theta)d(x)]$ for $\theta \in \Omega$ and
+    all values of $x$.
+
+    Let $\theta_1, \theta_2 \in \Omega$ such that $\theta_1 < \theta_2$. Now
+    consider the likelihood ratio
+    \begin{align*}
+        \frac{f_n(\bm{x}|\theta_2)}{f_n(\bm{x}|\theta_1)} & =
+        \frac{a^n(\theta_2)b^n(\bm{x})\exp\left[\sum_{i=1}^n c(\theta_2)d(\bm{x}_i)\right]}{a^n(\theta_1)b^n(\bm{x})\exp\left[\sum_{i=1}^n c(\theta_1)d(\bm{x}_i)\right]}, \\
+                                                          & =
+        \left(\frac{a(\theta_2)}{a(\theta_1)}\right)\exp\left[(c(\theta_2) - c(\theta_1)) \sum_{i=1}^n d(\bm{x}_i)\right].
+    \end{align*}
+    Clearly we see that the likelihood ration depends only on $\bm{x}$ through the function
+    $\sum_{i=1}^n d(X_i)$. Now, since $c(\theta)$ is strictly increasing in terms of $\theta$
+    and $\theta_2 > \theta_1$, we have that $c(\theta_2) > c(\theta_1)$. Therefore,
+    $c(\theta_2) - c(\theta_1) > 0$ and the ratio is an increasing monotone ratio of
+    $\sum_{i=1}^n d(X_i)$. Thus, the \pdf or p.f. is has a monotone likelihood ratio in this
+    statistic.
+\end{hwproof}
+
+\section{Section 9.3, problem 8.}
+\begin{hwproof}
+    {
+        Suppose that $\randsamp$ form a random sample from the normal distribution with known
+        mean $\theta$ and unknown variance $\sigma^2$, and suppose that it is desired to test
+        the following hypotheses:
+        \begin{align*}
+            H_0 : & \ \sigma^2 \leq 2, \\
+            H_1 : & \ \sigma^2 > 2.
+        \end{align*}
+        Show that there exists a UMP test of these hypotheses at every significance
+        $\alpha_0 (0 < \alpha_0 < 1)$.
+    }
+    First we need to calculate the likelihood ratio. Consider $\sigma_1^2, \sigma_2^2 \in \Omega$
+    such that $\sigma_2^2 > \sigma_1^2$. We let $y = \sum_{i=1}^n (x_i - \mu)^2$, now we can compute
+    \begin{align*}
+        \frac{f_n(\bm{x}|\sigma_2^2)}{f_n(\bm{x}|\sigma_1^2)} & =
+        \frac{\frac{1}{(2\pi)^{n/2}\sigma_2^n}\exp(-\frac{y}{2\sigma_2^2})}{\frac{1}{(2\pi)^{n/2}\sigma_1^n}\exp(-\frac{y}{2\sigma_1^2})},                                            \\
+                                                              & = \frac{\sigma_1^n}{\sigma_2^n}\exp\left(\frac{1}{2}\left(\frac{1}{\sigma_1^2} - \frac{1}{\sigma_2^2}\right)y\right).
+    \end{align*}
+    When $0 < \sigma_1^2 < \sigma_2^2$ this is clearly an increasing function of $y$.
+    Thus, the joint \pdf has a monotone likelihood ratio in the statistic
+    $y = (\sum_{i=1}^nx_i - \mu)^2$. Now, using Thm. 9.3.1 we know the test procedure
+    that rejects $H_0$ if $y \geq c$, for some constant $c$, is a UMP test of this
+    hypothesis at a significance level $\alpha_0$.
+\end{hwproof}
+
+\section{Section 9.5, problem 18.}
+\begin{hwproof}
+    {
+        Suppose that $\randsamp$ form a random sample from a normal distribution with unknown
+        mean $\mu$ and known variance 1. Suppose also that the following hypotheses are to be
+        tested:
+        \begin{align*}
+            H_0 : & \ \mu \leq 0, \\
+            H_1 : & \ \mu > 0.
+        \end{align*}
+        Let $\delta^*$ denote the UMP test of these hypotheses at the level of significance
+        $\alpha_0 = 0.025$, and let $\pi(\mu | \delta^*)$ denote the power function of $\delta^*$.
+
+        \textbf{a.} Determine the smallest value of the sample size $n$ for which
+        $\pi(\mu | \delta^*) \geq 0.9$ for $\mu \geq 0.5$.
+    }
+    From Example 9.3.8 we know that $\delta^*$ is the UMP procedure that rejects
+    $H_0$ when $\bar{X}_n \geq c$. Furthermore, we know the size of the test is
+    $\alpha_0 = \P{\bar{X}_n \geq c | \mu = 0}$. Now, we must have
+    \begin{equation*}
+        \P{\bar{X}_n \geq c | \mu = 0} = \P{\sqrt{n}\bar{X}_n \geq \sqrt{n}c} = 0.025.
+    \end{equation*}
+    But, if $\mu = 0$ then $\sqrt{n}\bar{X}_n$ follows the standard normal distribution.
+    Thus, $\P{\sqrt{n}\bar{X}_n \geq 1.96 | \mu = 0} = 0.025$. Then we clearly have
+    that $\sqrt{n}c = 0.025$.
+
+    Now, when $\mu = 0.5$ the random variable $Y = \sqrt{n}(\bar{X}_n - 0.5)$ is
+    standard normal. So we have that
+    \begin{align*}
+        \pi(0.5 | \delta^*) & = \P{Y \geq 1.96 - 0.5n^{1/2}},                            \\
+                            & =  \P{Y \leq 0.5n^{1/2} - 1.96} = \phi(0.5n^{1/2} - 1.96).
+    \end{align*}
+    Therefore, to get $\pi(0.5 | \delta^*) \geq 0.9$ we need
+    $0.5n^{1/2} - 1.96 \geq 1.282$, or equivalently $n \geq 42.04$.
+    Thus, we need $n=43$. Since the power function is increasing on $\mu$ then
+    we also have that $\pi(0.5 | \delta^*) \geq 0.9$ for $\mu > 0.5$.
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{b.} Determine the smallest value of $n$ for which
+        $\pi(\mu | \delta^*) \leq 0.001$ for $\mu \leq -0.1$.
+    }
+    Similarly, when $\mu = -0.1$ the random variable $Z = \sqrt{n}(\bar{X}_n + 0.1)$
+    has standard normal distribution. Therefore
+    \begin{equation*}
+        \pi(-0.1 | \delta^*) = \P{Z \geq 1.96 + 0.1n^{1/2}}
+        = 1 - \phi(1.96 + 0.1n^{1/2}).
+    \end{equation*}
+    We know that $\phi(3.10) = 0.999$. Therefore we need $1.96 + 0.1n^{1/2} \geq 3.10$
+    or equivalently $n \geq 129.96$. Therefore we need a sample size of $n=130$ in
+    order to have $\pi(-0.1 | \delta^*) \leq 0.001$. Since the power function is also
+    strictly increasing in terms of $\mu$ it is also true that
+    $\pi(-0.1 | \delta^*) \leq 0.001$ for $\mu < -0.1$.
+\end{hwproof}
+
+\section{Section 9.6, problem 2.}
+\begin{hwproof}
+    {
+        Suppose that a certain drug A was administered to eight patients selected at random,
+        and after a fixed time period, the concentration of the drug in certain body
+        cells of each patient was measured in appropriate units. Suppose that these
+        concentrations for the eight patients were found to be as follows:
+        \begin{gather*}
+            1.23, 1.42, 1.41, 1.62, 1.55, 1.51, 1.60, \text{ and } 1.76.
+        \end{gather*}
+        Suppose also that a second drug B was administered to six different patients
+        selected at random, and when the concentration of drug B was measured in a
+        similar way for these six patients, the results were as follows:
+        \begin{gather*}
+            1.76, 1.41, 1.87, 1.49, 1.67, \text{ and } 1.81.
+        \end{gather*}
+        Assuming that all the observations have a normal distribution with a common
+        unknown variance, test the following hypotheses at the level of significance
+        0.10: The null hypothesis is that the mean concentration of drug A among
+        all patients is at least as large as the mean concentration of drug B.
+        The alternative hypothesis is that the mean concentration of drug B is larger
+        than that of drug A.
+    }
+    Let $\mu_1, \mu_2$ represent the means of samples A and B respectively. Then
+    we are testing the hypothesis.
+    \begin{align*}
+        H_0: & \ \mu_1 \geq \mu_2, \\
+        H_1: & \ \mu_1 < \mu_2.
+    \end{align*}
+    Now, using Thm. 9.6.1 we define a two-sample t statistic $U$ defined by
+    Eq. 9.6.2 in the book. In these samples we have that for drug A the sample size
+    is $m = 8$ so $\bar{x}_m = 1.51$ and $S_X^2 = 0.1808$. For drug B we have a
+    sample size of $n=6$ so $\bar{y}_n = 1.67$ and $S_Y^2 = 0.1677$. The
+    statistic $U$ has the t distribution with $m + n -2 = 12$ degrees of freedom
+    when $\mu_1 = \mu_2$. Now, we will reject $H_0$ when $U \leq -T^{-1}(1 - \alpha_0)$.
+    We calculate $U = -1.69$ and since $\alpha_0 = 0.10$ we get
+    $-T_{12}^{-1}(0.9) = -1.356$. Therefore, we clearly reject $H_0$.
+\end{hwproof}
+
+\section{Section 9.6, problem 5.}
+\begin{hwproof}
+    {
+        Consider again the conditions and observed values of Exercise 2. However,
+        suppose now that each observation for drug A has an unknown variance
+        $\sigma_1^2$, and each observation for drug B has an unknow variance
+        $\sigma_2^2$, but it is known that $\sigma_2^2 = (6/5)\sigma_1^2$. Test the
+        hypotheses described in Exercise 2 a the level of significance 0.10.
+    }
+    The variance of the distribution plays no role in the hypothesis test. Given that the
+    statistic $U$ depends only on the sample variances and means, we have no need
+    to change the procedure. Therefore, we have again that $U = -1.672$ and
+    we should reject $U$ if it is less than -1.356. Therefore, we reject $H_0$.
+\end{hwproof}
+
+\section{Section 9.6, problem 10.}
+\begin{hwproof}
+    {
+        Lyle et al. (1987) ran an experiment to study the effect of a calcium supplement
+        on the blood pressure of African American males. A group of 10 men received a
+        calcium supplement, and another group of 11 men received a placebo. The
+        experiment lasted 12 weeks. Both before and after the 12-week period, each man had
+        his systolic blood pressure measured while at rest. The changes (after minus
+        before) are given in Table 9.2. Test the null hypothesis that the mean change
+        in blood pressure for the calcium supplement group is lower than the mean change
+        in blood pressure for the placebo group. Use level $\alpha_0 = 0.1$.
+    }
+    Let $\mu_1$ be the average blood pressure for the calcium supplement group
+    and $\mu_2$ the average blood pressure for the placebo group.
+    We have testing the hypothesis
+    \begin{align*}
+        H_0: & \ \mu_1 < \mu_2,    \\
+        H_1: & \ \mu_1 \geq \mu_2.
+    \end{align*}
+    Now, using Thm. 9.6.1 we define a two-sample t statistic $U$ defined by
+    Eq. 9.6.2 in the book. In these samples we have that for the calcium supplement group
+    the sample size is $m = 10$ so $\bar{x}_m = 109.9$ and $S_X^2 = 546.9$.
+    For the placebo group we have a sample size of $n=11$ so $\bar{y}_n = 113.9$ and
+    $S_Y^2 = 1282.9$. The
+    statistic $U$ has the t distribution with $m + n -2 = 19$ degrees of freedom
+    when $\mu_1 = \mu_2$. Now, we will reject $H_0$ when $U > T^{-1}(1 - \alpha_0)$.
+    We calculate $U = 0.9350$ and since $\alpha_0 = 0.10$ we get
+    $T_{12}^{-1}(0.9) = 1.328$. Therefore, since $U < 1.328$ we do not reject $H_0$.
+\end{hwproof}
+
+\end{document}
