@@ -46,10 +46,16 @@ I worked on this homework with Daniel Yankin and Armaan Lala.
         an element of order $p$ if $p$ divides $|G|$. (Hint: reduce to the
         situation where $G$ is cyclic and of order $p^r$).
     }
-    Consider a prime $p$ which divides the order of a group $G$. By the First Sylow
-    Theorem we know that $G$ has a subgroup $H$ of order $p$. Now, by Proposition
-    2.7.2 this group is isomorphic to the cyclic group $\ZmodnZ{p}$. Therefore,
-    the generator of $H$ is an element of order $p$.
+    Consider a prime $p$ which divides the order of a finite group $G$. By the 
+    First Sylow Thm. we know that $G$ has a subgroup $H$ of order $p^r$.
+    Take an element $h \in H$. By Lagrange's Theorem we know the order of $h$
+    must divide the order of $H$. Thus, $h = p^m$ for some $0 < m \leq r$.
+    If $m = 1$, we have found our element. Otherwise, consider another 
+    element $h_2 = h^{p^{m-1}} \in H$. We have that 
+    \begin{equation*}
+        h_2^p = (h^{p^{m-1}})^p = h^{p^{m-1}p} = h^m = e.
+    \end{equation*}
+    Hence, $G$ contains an element of order $p$.
 \end{hwproof}
 
 \subsection*{53}
@@ -94,8 +100,10 @@ I worked on this homework with Daniel Yankin and Armaan Lala.
         |Syl_5(G)| \in \{1, 2, 4\},\\
         |Syl_5(G))| \equiv 1 \mod 5.\\
     \end{gather*}
-    Therefore, $|Syl_5(G)| =1$. This implies that there are 4 elements of order
-    5 in this unique subgroup of order 5.
+    Therefore, $|Syl_5(G)| = 1$. Now, consider $g \in G$ such that $|g| = 5$.
+    Since $|\gen{g}| = 5$, it is conjugate to $Syl_5(G)$. However, $|Syl_5(G)| = 1$
+    therefore $Syl_5(G) = \gen{g}$. 
+    This implies that there are 4 elements of order 5 in $G$.
 \end{hwproof}
 
 \section*{3}
@@ -155,7 +163,43 @@ I worked on this homework with Daniel Yankin and Armaan Lala.
             \lambda_1,\dots,\lambda_n \in R\}$ is an ideal in $R$.
     }
     Consider a subset $I = \gen{r_1,\dots, r_n}$, we want to show this subset is
-    ideal in $R$. That is, we will show that $\lambda r \in I$ for all
+    ideal in $R$. First, we will show that $(I, +) \leq (R, +)$.
+
+    (\textbf{Identity.}) Consider $r \in I$ and $\lambda_i \in R$ such that
+    $\lambda_i = 0 \ \forall 0\leq i \leq n$. Then clearly 
+    \begin{equation*}
+        \lambda r = \lambda_1 r_1 + \dots + \lambda_n r_n =
+        0 r_1 + \dots + 0 r_n = 0.
+    \end{equation*}
+    Therefore, $0 \in I$ as required.
+
+    (\textbf{Closure.})
+    Consider $r, s \in I$. Then we have
+    \begin{align*}
+        r &=  \lambda_1 r_1 + \dots + \lambda_n r_n, \\
+        s &=  \lambda_1' r_1 + \dots + \lambda_n' r_n.
+    \end{align*}
+    Now adding both
+    \begin{align*}
+        r + s &= \lambda_1 r_1 + \dots + \lambda_n r_n +  \lambda_1' r_1 + \dots + \lambda_n' r_n, \\
+        &= (\lambda_1 + \lambda_1')r_1 + \dots + (\lambda_n + \lambda_n')r_n.
+    \end{align*}
+    Since, $\lambda_i + \lambda_i' \in R$ by closure in $R$ for all $i$, then 
+    we have closure in $I$.
+    
+    (\textbf{Inverse.})
+    Consider $r \in I$, then
+    \begin{equation*}
+        r =  \lambda_1 r_1 + \dots + \lambda_n r_n.
+    \end{equation*}
+    Now we let
+    \begin{equation*}
+        -r =   (-\lambda_1) r_1 + \dots + (-\lambda_n) r_n \in I.
+    \end{equation*}
+    Clearly, $-\lambda_i$ exists for all $i$ because $R$ is a group. Then it 
+    follows that $r + (-r) = 0$ as required.
+    
+    Now, we will show that $\lambda r \in I$ for all
     $\lambda \in R$ and $r \in I$. We can see that
     \begin{align*}
         \lambda r & = \lambda(\lambda_1r_1 + \dots + \lambda_nr_n)      &
@@ -231,8 +275,8 @@ I worked on this homework with Daniel Yankin and Armaan Lala.
     Since $I$ is ideal $IJ \subseteq IR \subseteq I$, and since $J$ is ideal
     $IJ \subseteq RJ \subseteq J$. Therefore $IJ \subseteq I \cap J$.
 
-    Unsure of example
-    %https://math.stackexchange.com/questions/2489208/products-of-ideals-being-a-subset-of-their-intersection
+    Let $I = J = 2\Z$, then $I, J$ are ideals in $\Z$. Then $I\cap J = 2\Z$ but
+    $IJ = 4\Z$. We now clearly have that $IJ \subset I\cap J$
 
 \end{hwproof}
 
