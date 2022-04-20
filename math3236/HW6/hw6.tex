@@ -1,0 +1,171 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\P}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\var}[1]{\text{var}\left[#1\right]}
+\newcommand{\gammafn}[1]{\Gamma\left(#1\right)}
+\newcommand{\randsamp}{X_1,\dots,X_n}
+\newcommand{\mgf}{moment generating function }
+\newcommand{\pdf}{p.d.f. }
+\newcommand{\pmf}{p.m.f. }
+\newcommand{\cdf}{c.d.f. }
+\newcommand{\clt}{central limit theorem}
+\newcommand{\mle}{M.L.E. }
+\DeclareMathOperator*{\Binomial}{Binomial}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{HW5}
+\author{Asier Garcia Ruiz}
+
+
+\begin{document}
+\maketitle
+\section*{Problem 1. Section 9.7, problem 9.}
+\begin{hwproof}
+    {
+        Consider again the conditions of Exercise 7, but suppose now that it is
+        desired to test the following hypotheses:
+        \begin{align*}
+            H_0 & :\ \sigma_1^2 = \sigma_2^2,    \\
+            H_1 & :\ \sigma_1^2 \neq \sigma_2^2, \\
+        \end{align*}
+        Suppose also that the statistic $V$ is defined by Eq. (9.7.4), and it is
+        desired to reject $H_0$ if either $V \leq c_1$ or $V \geq c_2$, where
+        the constants $c_1$ and $c_2$ are chosen so that when $H_0$ is true,
+        $\P{V \leq c_1} = \P{V \geq c_2} = 0.025$. Determine the values of $c_1$
+        and $c_2$ when $m=16$ and $n=10$, as in Exercise 7.
+    }
+\end{hwproof}
+
+\section{Problem 2. Section 9.7, problem 15.}
+\begin{hwproof}
+    {
+        Prove Theorem 9.7.5. Also, compute the p-value for Example 9.7.4 using the
+        formula in Eq. (9.7.8).
+    }
+\end{hwproof}
+
+\section{Problem 3. Section 10.1, problem 3.}
+\begin{hwproof}
+    {
+        Investigate the “randomness” of your favorite pseudorandom number generator
+        as follows. Simulate 200 pseudo-random numbers between 0 and 1 and divide
+        the unit interval into $k = 10$ intervals of length 0.1 each. Apply the
+        $\chi^2$ test of the hypothesis that each of the 10 intervals has the
+        same probability of containing a pseudo-random number.
+    }
+\end{hwproof}
+
+\section*{Problem 4. Section 10.1, problem 9.}
+\begin{hwproof}
+    {
+        The 50 values in Table 10.5 are intended to be a random sample from the
+        standard normal distribution.
+
+        \textbf{a.}
+        Carry out a $\chi^2$ test of goodness-of-fit by dividing the real line
+        into five intervals, each of which has probability 0.2 under the standard
+        normal distribution.
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        \textbf{b.}
+        Carry out a $\chi^2$ test of goodness-of-fit by dividing the real line
+        into 10 intervals, each of which has probability 0.1 under the standard
+        normal distribution.
+    }
+\end{hwproof}
+
+\section*{Problem 5. Section 10.2, problem 4.}
+\begin{hwproof}
+    {
+        Consider again the sample consisting of the heights of 500 men given in
+        Exercise 8 of Sec. 10.1. Suppose that before these heights were grouped
+        into the intervals given in that exercise, it was found that for the
+        500 observed heights in the original sample, the sample mean was
+        $\bar{X}_n = 67.6$ and the sample variance was $S^n_2/n = 1.00$.
+        Test the hypothesis that these observed heights form a random sample from
+        a normal distribution.
+    }
+\end{hwproof}
+\section*{Problem 6. Section 10.2, problem 6.}
+\begin{hwproof}
+    {
+        Rutherford and Geiger (1910) counted the numbers of alpha particles
+        emitted by a certain mass of polonium during 2608 disjoint time periods,
+        each of which lasted 7.5 seconds. The results are given in Table 10.9.
+        Test the hypothesis that these 2608 observations form a random
+        sample from a Poisson distribution.
+    }
+\end{hwproof}
+\section*{Problem 7. Section 10.3, problem 6.}
+\begin{hwproof}
+    {
+        Suppose that a store carries two different brands, A and B, of a certain
+        type of breakfast cereal. Suppose that during a one-week period the
+        store noted whether each package of this type of cereal that was purchased
+        was brand A or brand B and also noted whether the purchaser was a man or
+        a woman. (A purchase made by a child or by a man and a woman together was
+        not counted.) Suppose that 44 packages were purchased, and that the results
+        were as shown in Table 10.19. Test the hypothesis
+        that the brand purchased and the sex of the purchaser are independent.
+    }
+\end{hwproof}
+\section*{Problem 8. Section 10.4, problem 4.}
+\begin{hwproof}
+    {
+        Suppose that five persons shoot at a target. Suppose also that for
+        $i=1,\dots,5$, person $i$ shoots $n_i$ times and hits the target $y_i$ times,
+        and that the values of $n_i$ and $y_i$ are as given in Table 10.27. Test the
+        hypothesis that the five persons are equally good marksmen.
+    }
+\end{hwproof}
+\section*{Problem 9. Section 10.4, problem 6.}
+\begin{hwproof}
+    {
+        Suppose that 100 students in a physical education class shoot at a target with a
+        bow and arrow, and 27 students hit the target. These 100 students are then given
+        a demonstration on the proper technique for shooting with the bow and arrow. After
+        the demonstration, they again shoot at the target. This time 35 students hit
+        the target. What additional information, if any, is needed in order to investigate
+        the hypothesis that the demonstration was helpful?
+    }
+\end{hwproof}
+\section*{Problem 10. Section 10.5, problem 6}
+\begin{hwproof}
+    {
+        It was believed that a certain university was discriminating against women in
+        its admissions policy because 30 percent of all the male applicants to the
+        university were admitted, whereas only 20 percent of all the female applicants
+        were admitted. In order to determine which of the five colleges in the
+        university were most responsible for this discrimination, the admissions
+        rates for each college were analyzed separately. Surprisingly, it was found
+        that in each college the proportion of female applicants who were admitted
+        to the college was actually larger than the proportion of male applicants who
+        were admitted. Discuss and explain this result.
+    }
+\end{hwproof}
+\end{document}

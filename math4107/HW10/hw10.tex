@@ -1,0 +1,247 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\usepackage{permute}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gen}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ZmodnZ}[1]{\Z / #1 \Z}
+\DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator*{\ord}{ord}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+% Lauritzen Chapter 3: 11, 15, 16, 18, 20, 22
+\title{HW10}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\section*{Chapter 3.}
+\subsection*{11}
+\begin{hwproof}
+    {
+        Prove that the kernel $\ker f = \{r \in R : f(r) = 0\} \subseteq R$ of
+        a ring homomorphism $f: R \to S$ is an ideal of $R$ and that the image
+        $f(R)$ is a subring of $S$.
+    }
+    We want to show that $\ker f$ is ideal in $R$. That is, $\lambda r \in I$ for
+    all $\lambda \in R$ and $r \in \ker f$. We can now see that
+    \begin{equation*}
+        f(\lambda r) = f(\lambda)f(r) = f(\lambda)*0_S = 0_S,
+    \end{equation*}
+    and similarly
+    \begin{equation*}
+        f(r\lambda) = f(r)f(\lambda) = 0_S f(\lambda) = 0_S.
+    \end{equation*}
+    Hence, it is ideal in $R$.
+
+    We know that $f(R)$ is a subgroup of $S$. By definiton we have that
+    $f(1_R) = 1_S$ and thus $1_S \in f(R)$. Now, consider $x,y \in f(R)$
+    then we have that
+    \begin{equation*}
+        xy = f(a)f(b) = f(ab) \in S.
+    \end{equation*}
+    Therefore, $f(R)$ is a subring as required.
+\end{hwproof}
+
+\subsection*{15}
+\begin{hwproof}
+    {
+        (i) Show that $\Z[\sqrt{2}] = \{a + b\sqrt{2} : a,b \in \Z\}$ is a
+        subring of $\R$.
+    }
+    First we must show that $(\Z[\sqrt{2}], +)$ is a subgroup of $R$.
+
+    \textbf{Identity.}
+    Clealry if we let $a=0, b = 0$ then $0 \in \Z[\sqrt{2}]$. Thus, the identity
+    is contained.
+
+    \textbf{Closure.}
+    Consider two elements in $\Z[\sqrt{2}]$, then we can write
+    \begin{equation*}
+        a + b\sqrt{2} + c + d\sqrt{2} = (a + c) + (b + d)\sqrt{2}.
+    \end{equation*}
+    Since $a + b, c+ d \in \Z$, then closure is met.
+
+    \textbf{Inverses.}
+    Consider an element $a + b\sqrt{2} \in \Z[\sqrt{2}]$. The inverse is simply
+    $-a + (-b\sqrt{2})$ since clearly
+    \begin{equation*}
+        a + b\sqrt{2} \in \Z[\sqrt{2}] + -a + (-b\sqrt{2}) = 0.
+    \end{equation*}
+
+    Now we show that it is a subring.
+
+    \textbf{Multiplicative identity.}
+    Consider $a + b\sqrt{2} \in \Z[\sqrt{2}]$, let $a = 1, b = 0$, then
+    we can see that $1 \in \Z[\sqrt{2}]$.
+
+    \textbf{Multiplicative closure.}
+    Consider two elements in $\Z[\sqrt{2}]$. Then we have that
+    \begin{equation*}
+        (a + b\sqrt{2})(c + d\sqrt{2}) = ac + 2bd + (bc + ad)\sqrt{2}.
+    \end{equation*}
+    Since $ac + 2bd, bc + ad \in \Z$ we have closure.
+
+    Therefore this is a subring as required.
+\end{hwproof}
+\begin{hwproof}
+    {
+        (ii) Show that $\Z[\sqrt{2}]^*$ is infinite (hint: consider powers of
+        $1 + \sqrt{2})$.
+    }
+    Consider $1 + \sqrt{2} \in \Z[\sqrt{2}]$. We have that this is a unit since
+    \begin{equation*}
+        (1 + \sqrt{2})(-1 + \sqrt{2}) = (-1 + 2) = 1.
+    \end{equation*}
+    Now consider powers of $1 + \sqrt{2}$.
+    \begin{align*}
+        (1 + \sqrt{2})^2(-1 + \sqrt{2})^2 & = 1  \\
+        (1 + \sqrt{2})^3(-1 + \sqrt{2})^3 & = 1  \\
+        \vdots                                   \\
+        (1 + \sqrt{2})^n(-1 + \sqrt{2})^n & = 1.
+    \end{align*}
+    Therefore we can see that as $n \to \infty$, $\Z[\sqrt{2}]$ is infinite.
+\end{hwproof}
+
+\subsection*{16}
+\begin{hwproof}
+    {
+        Let $R$ denote the ring $\Z[i] / \gen{1 + 3i}$.
+
+        (i) Show that $i - 3 \in \gen{1 + 3i}$ and that $[i] = [3]$ in $R$.
+        Use this to prove that $[10] = [0]$ in $R$ and that
+        $[a + bi] = [a + 3b]$, where $a,b \in \Z$.
+    }
+    We see that $i - 3 = (1 + 3i)i$ where $i \in R$, so
+    $i - 3 \in \gen{1 + 3i}$. We know that $[i] = [3] \iff i - 3 \in \gen{1 + 3i}$,
+    which we just proved. Therefore, $[i] = [3]$.
+
+    Using this and the fact that $[x][y]=[xy]$ and $[x] + [y] = [x+y]$ we
+    have that
+    \begin{gather*}
+        [i] = [3],\\
+        [i][i] = [3][3], \\
+        [-1] = [9],\\
+        [0] = [10].
+    \end{gather*}
+
+    Finally, since $[i] = [3]$ we have that
+    \begin{equation*}
+        [a + bi] = [a] + [b][i] = [a] + [b][3] = [a + 3b].
+    \end{equation*}
+
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        Show that the unique ring homomorphism
+        \begin{equation*}
+            \varphi : \Z \to R
+        \end{equation*}
+        is surjective.
+    }
+    We want to show that $\varphi(\Z) = R$. First, we define for any $n \in \Z$
+    \begin{equation*}
+        \varphi(n) = n + \gen{1 + 3i}.
+    \end{equation*}
+    By the Ring Isomorphism Thm. we know that $\Z / \ker \varphi \cong \varphi(\Z)$.
+
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (iii) Show that $1 + 3i$ is not a unit and that $1 + 3i$ does not divide
+        2 and 5 in $Z[i]$. Conclude that $\ker f = 10\Z$.
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (iv) Show that $R \cong \ZmodnZ{10}$.
+    }
+\end{hwproof}
+
+\subsection*{18}
+\begin{hwproof}
+    {
+        Prove that a ring having characteristic zero contains a subring
+        isomorphic to $\Z$.
+    }
+    Let $\varphi : \Z \to R$ be defined as $\varphi(n) = n$ for all $n \in \Z$.
+    It is obvious that $\varphi$ is a homomorphism. Furthermore,
+    it is easy to see that that $\ker f = \{0\}$. Thus, we have a homomorphism
+    $\varphi(n): \Z / \{0\} \to \Z$. Now, since $\Z / \{0\} = \Z$ then there is
+    a homomorphism $\varphi(n): \Z \to R$.
+
+    Now, pick a subring $S$ of $R$ such that $\varphi(\Z) = S$. Clearly $\varphi$
+    is surjective, it is also clearly injective. Thus, we have an isomorphism
+    from $\Z to S$, a subring of $R$.
+\end{hwproof}
+
+\subsection*{20}
+\begin{hwproof}
+    {
+        Let $I$ be an ideal in the ring $R$ and let $\pi : R \to R / I$ denote the
+        canonical ring homomorphism.
+
+        (i) Let $J \subseteq R / I$ be an ideal. Prove that $\pi^{-1}(J)$ is an
+        ideal containing $I$.
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (ii) let $I' \supseteq I$ be an ideal containing $I$. Prove that $\pi(I')$
+        is an ideal in $R / I$
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (iii) Prove that $\pi$ and $\pi^{-1}$ give a one to one correspondence,
+        preseerving $\subseteq$, between ideals in $R$ containing $I$ and ideals
+        in $R / I$. Use this to prove that $R / I$ is a field if and only if
+        $I$ is a maximal ideal.
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {
+        (iv) List the (finitely many) ideals in $\ZmodnZ{24}$.
+    }
+\end{hwproof}
+
+\subsection*{22}
+\begin{hwproof}
+    {
+        Let $I$ and $J$ be ideals and $P$ a prime ideal of $R$. Prove that if
+        $IJ \subseteq P$ then $I \subseteq P$ or $J \subseteq P$.
+    }
+    Without loss of generalit, suppose that $IJ \subseteq P$ and that
+    $I \subsetneq P$. Now fix $j \in J$
+    and $i \in I \backslash P$. We note that $ij \in IJ$. We have that $ij \in P$ since
+    $IJ \subseteq P$, but $P$ is prime, so either $i \in P$ or $j \in P$.
+    Since $i \notin P$, we have that $J \subseteq P$.
+\end{hwproof}
+
+
+\end{document}

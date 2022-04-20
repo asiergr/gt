@@ -1,0 +1,149 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\usepackage{permute}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\gen}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ZmodnZ}[1]{\Z / #1 \Z}
+\DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator*{\ord}{ord}
+\DeclareMathOperator*{\rchar}{char}
+
+\newenvironment{hwproof}[1]
+{
+    #1
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+% Lauritzen Chapter 3: 24, 25, 26, 27, 31
+\title{HW11}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+\section*{Chapter 3}
+\subsection*{24}
+\begin{hwproof}
+    {
+        What is the fraction field of a field?
+    }
+    The fraction field of a field is the field itself.
+\end{hwproof}
+
+\subsection*{25}
+\begin{hwproof}
+    {
+        Prove that every ideal in the quotient ring $R/I$ of a principal ideal
+        domain $R$ is principal. Give an example of a ring which is not a
+        domain but for which every ideal is a principal ideal.
+    }
+    We know $R$ is a principal ideal domain. Therefore, for any ideal $I$ in $R$
+    there exists $d \in R$ such that $I = <d>$. Now, let $I$ be an ideal of $R$, 
+    and let $H$ be an ideal in $R/I$. Now, consider the set
+    $J = \{a \in R : a + I \in H\}$. Because $H$ is nonempty we have that
+    $0 + I \in H$, so $0 \in J$. Now consider $a,b \in J$, then
+    $a + I, b + I \in H$. Therefore $a - b + I = (a + I) - (b + I) \in H$ and 
+    $a - b \in J$. Now consider $r \in R$, then we already know that $a + I \in H$,
+    so $ra + I = (r + I)(a + I) \in H$, so $ra, ar \in J$. Therefore, $J$ is ideal
+    in $R$.
+
+    Now, we will show that $H = \gen{j + I}$ for some $j \in R$ such that 
+    $J = \gen{j}$ (since $R$ is a PID). Clearly, $(j + I) \subseteq H$.
+    Now, if $a + I \in H$, then $a \in J$, so $a = rj$ for some $r \in R$.
+    Therefore, $a + I = (r + I)(j + I)$, so $a | + I \in \gen{j + I}$.
+    Therefore, $H$ is principal and $R/I$ is a PID.
+\end{hwproof}
+
+\subsection*{26}
+\begin{hwproof}
+    {
+        What are the units in $\ZmodnZ{8}$? Give an example of a ring $R$ with
+        and element $x \neq 0,1$ such that $x^2 = x$. Is $R$ a domain? Suppose
+        that every $x \in R$ satisfies $x^2 = x$. Show that $\rchar R = 2$.
+    }
+    We start by finding that the ideals in $\ZmodnZ{8}$ are
+    \begin{equation*}
+        \{[1], [3], [5], [7]\}.
+    \end{equation*}
+
+    A ring $R$ with an element $x \neq 0,1$ such that $x^2 = x$ is the ring
+    $\ZmodnZ{2} \times \ZmodnZ{2}$ since $([0],[1])^2 = ([0],[1])$ and in this
+    ring $0 = ([0],[0])$ and $1 = ([1],[1])$.
+
+    Now suppose that every $x\in R$ satisfies the property $x^2 = x$. Then, we
+    have that
+    \begin{align*}
+        1 + 1 & = (1 + 1)^2,             \\
+              & = 1^2 + 1^2 + 1^2 + 1^2, \\
+              & = 1 + 1 + 1 + 1,
+    \end{align*}
+    and thus $1 + 1 = 0$ and $\rchar R = 2$.
+\end{hwproof}
+
+\subsection*{27}
+\begin{hwproof}
+    {
+        Let $f(z) = \bar{z}$ denote the conjugation map for a complex number
+        $z \in \C$. Prove that $f$ is a ring homomorphism $\Z[i] \to \Z[i]$
+        and that $f(\pi)$ is a prime element if $\pi \in \Z[i]$ is a prime
+        element.
+    }
+    For $f$ to be a ring homomorphism we must show three things
+
+    \textbf{Group homomorphism.}
+    To show that $f$ is a ring homomorphism we must first show it is a group
+    homomorphism. Consider $x, y \in \Z[i]$ then we have that
+    \begin{equation*}
+        f(x + y) = \overline{x + y} = \overline{x} + \overline{y} = f(x) + f(y).
+    \end{equation*}
+
+    \textbf{Property 2}
+    We must now show that $f(xy) = f(x)f(y), \ \forall x,y \in \Z[i]$. So
+    we consider $x, y \in \Z[i]$ and we can see that
+    \begin{equation*}
+        f(xy) = \overline{xy} = \bar{x}\bar{y}.
+    \end{equation*}
+
+    \textbf{Multiplicative identities match up.}
+    We can clearly see that $f(1) = \overline{1} = 1$.
+
+    Therefore, this is ring homomorphism as required.
+    
+    Now consider a prime $\pi$ in $\Z[i]$, then $\pi$ is also irreducible.
+    Assume that $\pi = ab$, then $f(\pi) = f(a)f(b)$. This means that
+    $f(a) = p$ or $f(b) = p$. So $\pi$ is irreducible.
+    We also know that in $\Z[i]$ every irreducible is prime (since it is a
+    Euclidean field). Therefore $p$ is prime.
+
+\end{hwproof}
+
+\subsection*{31}
+\begin{hwproof}
+    {
+        Is $\Z[\sqrt{-3}] = \{x + y\sqrt{-3}: x,y \in \Z\}$ a euclidean ring?
+    }
+    Assume, for the sake of contradiction, that $\Z[\sqrt{-3}]$ is a euclidean
+    ring. Then, it is also a UFD. However, we have that
+    \begin{equation*}
+        4 = (2)(2) = (1 - \sqrt{-3})(1 + \sqrt{-3}).
+    \end{equation*}
+
+    We can also see that 2 and $1 \pm \sqrt{-3}$ are irreducible and not
+    associated. This leads to a contradiction, and thus $\Z[\sqrt{-3}]$ is
+    not a Euclidean ring.
+\end{hwproof}
+
+\end{document}
