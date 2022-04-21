@@ -52,18 +52,20 @@
     }
     We know $R$ is a principal ideal domain. Therefore, for any ideal $I$ in $R$
     there exists $d \in R$ such that $I = <d>$. Now, let $I$ be an ideal of $R$, 
-    and let $H$ be an ideal in $R/I$. Now, consider the set
-    $J = \{a \in R : a + I \in H\}$. Because $H$ is nonempty we have that
-    $0 + I \in H$, so $0 \in J$. Now consider $a,b \in J$, then
-    $a + I, b + I \in H$. Therefore $a - b + I = (a + I) - (b + I) \in H$ and 
-    $a - b \in J$. Now consider $r \in R$, then we already know that $a + I \in H$,
-    so $ra + I = (r + I)(a + I) \in H$, so $ra, ar \in J$. Therefore, $J$ is ideal
-    in $R$.
+    and let $H$ be an ideal in $R/I$. 
+    
+    Consider the set $J = \{a \in R : [a] \in H\}$. Because $H$ is an ideal
+    we have that $[0] \in H$, so $0 \in J$. Now consider $a,b \in J$, then
+    $[a], [b] \in H$. Since $H$ is an ideal we must have that
+    $[a]+[b] = [a+b] \in J$, so $a + b \in J$. Finally, Consider $a \in J$,
+    then $[a] \in H$. Then, since $a - a = 0 \in I$, we have that
+    $[a] = [-a]$, so $[-a] \in H$ and thus $-a \in J$. Therefore,
+    $J$ is a subgroup of $R$.
 
-    Now, we will show that $H = \gen{j + I}$ for some $j \in R$ such that 
-    $J = \gen{j}$ (since $R$ is a PID). Clearly, $(j + I) \subseteq H$.
-    Now, if $a + I \in H$, then $a \in J$, so $a = rj$ for some $r \in R$.
-    Therefore, $a + I = (r + I)(j + I)$, so $a | + I \in \gen{j + I}$.
+    Now, we will show that $H = \gen{[j]}$ for some $j \in R$ such that 
+    $J = \gen{j}$ (since $R$ is a PID). Clearly, $[j] \subseteq H$.
+    Now, if $[a] \in H$, then $a \in J$, so $a = rj$ for some $r \in R$.
+    Therefore, $[a] = [r][j]$, so $[a]\in \gen{[j]}$.
     Therefore, $H$ is principal and $R/I$ is a PID.
 \end{hwproof}
 

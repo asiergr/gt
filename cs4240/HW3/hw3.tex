@@ -6,6 +6,10 @@
 \usepackage{amsthm}
 \usepackage{parskip}
 \usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
 \usepackage{graphicx}
 
 
@@ -16,5 +20,60 @@
 \maketitle
 
 \section*{Question 1}
+For each of the languages described below in prose, write a regular expression
+that matches the language, or explain why no such regular expression exists.
+
+\subsection*{a)}
+All numerals in base 4 denoting unsigned integers in which successive digits do not
+increase and there are no unnecessary leading zeros. [10 points]
+For example, the following numerals are in the language: 3211, 310, 210,
+22110, and 0. The following numerals are not in the language: 312, 122, 010, and 00.
+
+\subsection*{b)}
+A language of program identifiers for a conventional programming language over
+the alphabet of lowercase and uppercase letters, digits, and the underscore.
+An identifier must start with a letter (lower or upper case) or an underscore.
+If an identifier starts with an underscore, that first symbol must be followed
+with either a (lower or upper case) letter or a digit. [15 points]
+For example, the following strings are in the language: a\_0, b10, and \_a\_0.
+The following strings are not in the language: 2a, 4\_, and \_ \_a.
+
+\section*{Question 2}
+The following grammar G defines a simple programming language. Each program contains
+a single function “main” consisting of a sequence of (integer) formal parameters
+and a single statement, where the statement could be either an assignment or a return
+statement. Non-terminal symbols start with lower-case English letters; terminal
+symbols start with upper-case English letters or are punctuation symbols. Note
+that only non-terminal symbols can occur on the left hand sides of productions.
+
+\begin{lstlisting}
+    (1) prog $\to$ MAIN(params){stmt}
+    (2) params $\to \varepsilon$
+    (3) params $\to$ VAR, params
+    (4) stmt $\to$ VAR = expr;
+    (5) stmt $\to$ RETURN expr;
+    (6) expr $\to$ term
+    (7) expr $\to$ term op term 
+    (8) op $\to$ +
+    (9) op $\to$ *
+    (10) term $\to$ VAR
+    (11) term $\to$ CONST
+    (12) term $\to$ (expr)
+\end{lstlisting}
+
+\subsection*{a)}
+For each production in G, compute the FIRST set for its right hand side,
+the FOLLOW set for its left hand side, and the FIRST+ set for the entire
+production. Please only put terminal symbols or $\epsilon$ in those sets. [50 points]
+
+\subsection*{b)}
+Is grammar G an LL(1) grammar? If so, explain why. If not, explain why and
+modify grammar G so as to obtain grammar G' that is LL(1) and derives
+exactly the same language as grammar G. [20 points]
+
+\subsection*{c)}
+Generalize G to grammar G'' that describes programs in which the body of
+main contains a sequence of one or more statements. Grammar G'' should 
+be unambiguous. [5 points]
 
 \end{document}
