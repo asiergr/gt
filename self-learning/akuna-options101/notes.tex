@@ -1,0 +1,564 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
+
+\title{Akuna Capital Options 101 Notes}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\section{Basics}
+\subsection{Terminology}
+\textbf{Bid}: The (highest) price for which someone is willing to \textit{buy} something.
+
+\textbf{Offer}: The (lowest) price at which someone is willing to \textit{sell} something.
+
+\textbf{Size}: the number of contracts that one is willing to trade at a given price.
+
+\textbf{Make a market}: to provide a bid and ask price and a quantity/size.
+
+\textbf{Spread}: $|P_{bid} - P_{ask}|$
+
+\textbf{Hedge}: a trade or investment to reduce the risks of another transaction.
+
+\textbf{Index}: an instrument that tracks the performance of a market.
+Generally, an index will track the performance of many stocks.
+E.g. Nasdaq, S\&P 500, and Down Jones Industrial Average.
+
+\textbf{ETF}: marketable security that tracks a stock index, commodity, or other
+basket of assets. Behaves and trades very much like a stock.
+
+\textbf{Commodity}: a raw material (oil, gold) or agricultural product 
+(soybeans, corn) that can be bought and sold, normally at one prevailing price
+
+\textbf{Trader}: can define any active market participant.
+
+\textbf{Market Maker}: a specific trader willing to buy or sell an asset at a specific
+price at all times. Market makers constantly buy and sell related securities,
+with their primary responsibilities being to collect edge and manage risk.
+
+\textbf{Local}: General term for market makers. From pit trading days, as locals 
+stood in the pit every day.
+
+\textbf{Broker}: a person or company that acts as an intermediary between buyers 
+and sellers
+
+\textbf{Paper}: the interested parties trading against market makers. Term
+comes from pit trading days as customer orders came via paper.
+
+\textbf{Hedge Fund/Institution/Bank}: Financial institutions that are active
+market participants. These groups are generally the largest paper customers.
+
+\textbf{Retail Client}: Smaller “paper” customers. For example, an individual
+trading at home.
+
+
+\subsection{Options Specific Terms:}
+
+\textbf{Fill}: Completion of a trade. If a market maker trades on their bid or offer,
+the market maker may claim he/she “got filled”.
+
+\textbf{Tick size (tick increment)}: the increment between one price level 
+and the next smallest price level. Different products have different tick
+sizes. E.g, tick increment in USD is 0.01.
+
+\textbf{Queue Priority}: for markets that are determined “price-time”,
+if multiple orders are entered for the same price, the participant
+who entered his/her order or quote first, will trade first.
+This person is said to have queue priority.
+
+\textbf{Settlement time}: the specific time of days options expire,
+and futures “settle” for the day. Used to calculate daily
+P\&L and mark to market.
+
+\textbf{All-or-None}: an order type that must be executed in its entirety,
+or not executed at all.
+
+\textbf{Immediate or Cancel (IOC)}: a type of order that requires all or part
+of the order to be executed immediately. Unfilled parts of order are cancelled
+sometimes referred to as \textbf{Fill and Kill (FAK)} orders.
+
+\textbf{Good for Day (GFD) order}: a type of order that will remain active until
+executed (in part or full) or until the end of the trading day.
+It is then cancelled.
+
+\textbf{Good-till-cancelled (GTC)}: a type of order that will remain active until
+completed or cancelled by the entering party.
+
+\textbf{Fill or Kill (FOK)}: an order type that must be executed immediately
+in its entirety, otherwise the order is cancelled; often with floor trading
+market makers have a few seconds to decide to make a trade and can also do a
+partial order. Sometimes brokers will use this interchangeably with Fill and Kill
+and will fill partial FOK orders.
+
+\textbf{OCO (one cancels the other)}: when one order is executed, the other order
+is automatically cancelled. Used to protect from too much exposure in one direction.
+
+\textbf{Contract Size}: Multiplier attached to an option/future. Options
+on stock generally have a multiplier of 100 shares. Options on futures
+have a multiplier of 1 future. The multiplier on options on a future and the
+multiplier on the future can vary.
+
+\textbf{Vol bid, catching a bid, ripping/exploding}: Variety of terms for vol
+going up.
+
+\textbf{Vol offered, vol smashed/smoked}: Variety of terms for vol going down.
+
+\textbf{Teenie}: lowest priced options. Generally traded for movement risk purposes.
+
+\textbf{Theoretical Value (Theo)}: based on all inputs, the current value a market
+maker believes an option is worth.
+
+\textbf{Sheets (or fair value)}: same as above, but generally when referring to
+where something traded.
+
+\textbf{Liquidity}: how easy/hard it is to trade close to fair value.
+Generally determined by the number on contracts on the bid/offer, and the width
+of the market.
+
+\subsection{How Market Makers Profit}
+\begin{itemize}
+    \item Calculate a theo \textbf{disseminate} (send out) a bid slightly below and an offer
+slightly above.
+    \item How to sell something you don't own? You are selling a promise to deliver
+the underlying. Some possible outcomes:
+\begin{description}
+    \item[Stock Option:] deliver/buy underlying shares.
+    \item[Cash Settled Option:] debit cash from account and pay buyer\\
+    $P_{transaction} - P_{settlement}$. Done automatically by clearing houses.
+    \item[Future Settled Options:] Deliver a future. 
+\end{description}
+\end{itemize}
+
+\textbf{An option on a future:}
+\begin{enumerate}
+    \item Option contract created.
+    \item Future settled.
+    \begin{enumerate}
+        \item Buyer exercises \textrightarrow New future contract created.
+        \item No exercise \textrightarrow option expires worthless \& end of trade.
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Marketplaces}
+\begin{itemize}
+    \item Akuna trades on electonic exchanges ("on the screens") and open outcry ("trading pits").
+    \item They have servers in the centers (\textbf{co-location})to save nanoseconds when
+sending/amending quotes to the matching-engine.
+    \item \textbf{Over the Counter (OTC)} trades are from one party to another,
+    "off-floor". More \textit{counterparty risk}.
+    \item On an exchange, all entity trading with, clearing company, and exchange
+    would have to default.
+    \item \textbf{Singly listed option} only trades on one exchange
+    (e.g. Live Cattle only on CME).
+    \item AAPL is listed on 12+ exchanges.
+    \item Options on futures regulated by Commodity Futures Trading Company (CFTC).
+    \item Options on equities by Securities and Exchange Commission (SEC).
+    \item Options on futures traded mainly on CME Group (metals, energy, grains,
+    treasuries, currencies, SP500, livestock) and ICE (Oil, sugar, coffee,
+    cocoa, OJ, Russel 2000 Idx, USD Idx). Options on indices on several exchanges.
+    Only CBOE trades SPX and VIX options (licensing). 
+\end{itemize}
+
+\subsubsection{Settlement Types}
+\begin{itemize}
+    \item Most common are stock/cash/futures.
+    \item Futures either cash (E-mini S\&P, Lean Hogs, etc) or physical delivery
+    (e.g. corn)
+    \item <1\% result in physical delivery.
+\end{itemize}
+
+\subsubsection{Stocks \& Futures}
+\begin{itemize}
+    \item The underlyings in options.
+    \item Stock is a share in a company to raise capital.
+    \item Future is a contract/agreement to buy/sell commodity or asset at a 
+    given price in the future. Buyer of future buys underlying and V/V for seller.
+\end{itemize}
+
+\subsection*{Options on Listed Futures}
+\begin{itemize}
+    \item Two types of options: \textit{calls} and \textit{puts}.
+    \item \textbf{Calls/Puts:} The \textit{right but not obligation} to buy/sell
+     underlying for a specified price (strike price) at or before expiration date.
+\end{itemize}
+
+\subsubsection{Contract Specifications}
+\begin{itemize}
+    \item Details always listed by exchange.
+\end{itemize}
+
+\subsubsection{Option, Edge, Multipliers \& Cash}
+\begin{itemize}
+    \item Tick increments \& multipliers are set by exchange.
+    \item $PnL = points \times qty \times multiplier$.
+    \item E.g. Each corn futures contract is for 5000 bushels.
+\end{itemize}
+
+\subsubsection{Edge vs Cash}
+\begin{itemize}
+    \item Sometimes we don't care about PnL, but rather edge in points/ticks
+    against theo (usually for options).
+    \item e.g. bought at 1.00 and sold at 1.04 "made 4 ticks of edge."
+\end{itemize}
+
+\section{}
+\subsection{Payoff Diagrams}
+\begin{itemize}
+    \item \textit{A graph that shows profit of an option or option combinations at expiry
+for different underlyings.}
+\item 2+ options together is a \textbf{spread} or \textbf{combo}.
+\end{itemize}
+
+\begin{figure}[h]
+    \includegraphics[scale=0.5]{2/payoff1}
+    \centering
+\end{figure}
+
+\begin{itemize}
+    \item Akuna doesn't think of options as payoff diagrams because they're not
+    held to expiry.
+    \item Also a lot of hedging using the underlying.
+\end{itemize}
+
+\begin{itemize}
+    \item Call Spread:
+    \begin{itemize}
+        \item A call spread on $K_1 / K_2$ consists on buying a call at $K_1$
+        and selling a call at $K_2$. $K_1 < K_2$
+    \end{itemize}
+    \item Put spread:
+    \begin{itemize}
+        \item A put spread on $K_1 / K_2$ is buying a put for $K_1$ and 
+        selling a put at $K_2$. $K_1 > K_2$.
+    \end{itemize}
+    \item Call/Put Fly:
+    \begin{itemize}
+        \item A call and a put fly are identical (in payoff and greeks).
+        \item A fly for $K_1/K_2/K_3$ is buying one contracts at $K_1$, selling
+        two at $K_2$ and buying one at $K_3$, $K_1 < K_2 < K_3$.
+        \item Is similar to betting on a volitility distribution.
+        \item Max. loss is the fly price.
+        \item Max. gain is $K_2 - K_1 - P_{fly}$.
+        \item Breakevens at $K_1 + P_{fly}$ and $K_3 - P_{fly}$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Time Premium and Put-Call-Parity}
+\begin{itemize}
+    \item \textbf{In-the-Money (ITM)} - an option that has inherent/instrinsic
+    value based on location of underlying compared to strike price.
+    \item \textbf{Out-of-the-money (OTM)} - an option that has no instrinsic
+    value.
+    \item An option that isnt ITM is OTM.
+    \item \textbf{Instrinsic Value} - amount of the option price based on
+    difference between current underlying price and strike. Only applicable for
+    ITM option.
+    \item For a call $V_{intrinsic} = \max(0, P_{underlying} - P_{strike})$.
+    \item For a put $V_{intrinsic} = \max(0, P_{strike} - P_{underlying})$.
+    \item \textbf{Extrinsic Value/Time Premium} - Portion of option price 
+    attributed to optionality of option contract itself. I.e. There is a chance
+    that OTM becomes ITM.
+    \item \textit{OTM options only have extrinsic value, ITM have instrinsic and
+    extrinsic.}
+\end{itemize}
+
+\subsubsection{Forward Pricing}
+\begin{itemize}
+    \item \textbf{Forward Price}: price of underlying at a future time (option exp)
+    accounts for:
+    \begin{itemize}
+        \item Current (spot) price.
+        \item Interest Rate 
+        \item Dividends (if applicable).
+        \item Carrying costs.
+    \end{itemize}
+    \item Once this is established, what contributes to extrinsic value is:
+    \begin{itemize}
+        \item \textbf{Distance to ATM}: how far strike is from forward.
+        \item \textbf{Time}: time to expiry (1y more expensive that 6mos).
+        \item \textbf{Volatility}: Higher implied vol, higher option price.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Put Call Parity (PCP)}
+\begin{itemize}
+    \item Mathematical link between puts and calls at same strike.
+    \item \textbf{The Value of an ITM option is equal to its instrinsic value
+    plus the value of the corresponding OTM option.}
+    \item Simplified Put-Call-Parity formula
+    \begin{equation*}
+        P_{call} - P_{put} = P_{underlying} - P_{strike}
+    \end{equation*}
+    \item This is true otherwise arbitrage exists.
+    \item Being long a call and short a put at the same strike is isomorphic
+    to being long the underlying.
+    \item Taking into account interest rates we get
+    \begin{equation*}
+        P_{forward} - P_{strike} = (P_{call} - P_{put})e^{rt}.
+    \end{equation*}
+\end{itemize}
+
+\subsection{Combos}
+We will talk about \textit{buying} these, remember the seller has the same
+payoff diagram but reflected on $x$ axis.
+
+\textbf{Call Spread}: 
+Let $K_2 < K_1$, then buy call at $K_1$ and sell at $K_2$. Payoff diagram:
+
+\textbf{Put Spread}: 
+Let $K_1 < K_2$, then sell put at $K_1$ and buy at $K_2$. Payoff diagram:
+
+\textbf{Box}: 
+Let $K_1 > K_2$. Buy a call spread (buy $K_1$, sell $K_2$)
+and sell a put spread (sell $K_1$, buy $K_2$). Payoff diagram:
+
+\textbf{Call/Put Fly}: 
+Let $K_1 < K_2 < K_3$. A fly for $K_1/K_2/K_3$ is buying one contracts at $K_1$,
+selling two at $K_2$ and buying one at $K_3$.
+
+\textbf{Straddle}: A straddle for $K$ is buying a call and a put at the same
+strike price $K$. Payoff diagram:
+
+\textbf{Strangle}: Let $K_1 < K_2$. A strangle consists on buying a lower strike
+put (at $K_1$) and a higher strike call (at $K_2$). Same directional/vol bet as
+straddle but less premium. Payoff diagram:
+
+\textbf{Ratio 1x2s}: Either a 1x2 call spread (buy one sell two) or a 1x2 put spread.
+
+\textbf{Risk Reversal}: Let $K_1 < K_2$. Buy a put at $K_1$ and sell a call at
+$K_2$. Done to protect underlying position.
+
+\textbf{Reversal/Conversion}: Buy call, sell put at $K$ \textit{and} sell
+underlying is \textit{reversing out of underlying}. Sell call, buy put at $K$ and buy underlying
+is \textit{converting to underlying}.
+
+\subsection*{Option Limits/Boundaries}
+Things that always hold (for sanity checks and spotting opportunities)
+\begin{itemize}
+    \item ITM call/put should never be worth less that instrinsic value.
+    \item Option can't be worth less than zero.
+    \item Call spread is never worth more than difference of strikes.
+    \item Symmetrical fly is never worth less than zero.
+    \item Same strike calendar (exp. into same ul) is never worth less than
+    zero.
+    \item Put-call parity equation always holds.
+\end{itemize}
+
+\section{Greeks}
+\subsection{Delta}
+\textbf{Delta}: The number of underlying contracts to establish a neutral hedge
+under currecnt market conditions using the current theo value of the option.
+
+\begin{itemize}
+    \item For a call $\Delta \in [0, 1.00]$ but expressed in $[0,100]$ (drop the comma).
+    e.g. 47 delta means for every 100 options we trade 47 uls as a hedge.
+    \item For a put $\Delta \in [-1.00, 0]$.
+    \item Common definitions for $\Delta$:
+    \begin{itemize}
+        \item Sensitivity of option price to change in price of underlying.
+        \item Hedge ratio: the \# of ul contracts needed for a neutral hedge.
+        \item The probability that an option will expire ITM (call). For a put
+        it'd be $|\Delta|$ for expiring ITM. This def. is not rigurous but
+        rather to build intuition.
+        \item Calls have positive $\Delta$, when price of ul increases to does
+        value of the call.
+        \item Au contraire, puts have negative delta; price of ul increases
+        value of put decreases.
+        \item For small changes in ul price, we can use the previous delta value
+        to estimate the new option price (finite diff. approx.)
+        \item  For calls, If implied vol. or time to expiry up then delta
+        approaches
+         >0.50. For decr. then delta approaches 0. For puts, vice versa.
+        \item Increase in time $\cong$ increase in implied vol. Similar for
+        decrease in time and decrease in implied vol.
+        \item For the same strike $K$, $\Delta_{call} + |\Delta_{put}| = 1$.
+        \item \textbf{Covered Trade}: also tied trade is one where the hedge is
+        already included with the option as a package. Both parties get rid of
+        directionality of the bet.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Gamma}
+\textbf{Gamma}: The rate of change of the $\Delta$ w.r.t. change of underlying
+price.
+
+\begin{equation}
+    \Gamma = \frac{d\Delta}{dP_{ul}}.
+\end{equation}
+
+\begin{itemize}
+    \item All options have positive gamma. Long positions get longer deltas and
+    short get shorter deltas.
+    \item Gamma peaks at ATM option (approx. normal distr) with higher peak when
+    vol. is low.
+    \item Gamma scalping and maintaining a delta neutral portfolio:
+    \begin{figure}[h]
+        \includegraphics[scale=0.4]{./3/gamma-scalp}
+        \centering
+    \end{figure}
+    \item Note that delta changes (due to gamma) so we recalculate that first
+    before calculating change in option price due to delta.
+    \item Note that if we were short these options we'd lock in a loss.
+    \item Why not always long gamma? Because of theta! (next chapter)
+    \item \textbf{Cash Gamma}: amount by which cash delta changes if ul moves 1\%.
+    \begin{equation*}
+        Deltas \ per \ 1\% = \frac{Cash \ gamma}{Cash \ delta}, \ Cash \ delta = P_{future}*mult*1
+    \end{equation*}
+    \newpage
+    \item Cool graph:
+
+    \begin{figure}[h]
+        \includegraphics[scale=0.4]{./3/gamma-surface}
+        \centering
+    \end{figure}
+\end{itemize}
+
+\subsection{Theta}
+\textbf{Theta}: How much value an option loses daily. We call this loss of value
+\textit{decay}.
+
+\begin{itemize}
+    \item A position is \textit{paying} (buy a call) or \textit{receiving} (buy
+    a put) each day
+    depending on theta.
+    \item Whether the theta compensates for gamma determines whether gamma
+    hedging works.
+    \item Relationship of theta and gamma. (s.d. = stdev):
+    \begin{equation*}
+        \Theta_{fair} = \frac{\Gamma_{cash}*(s.d \% \ move)^2}{200}.
+    \end{equation*}
+    \newpage
+    \item Cool graph:
+    \begin{figure}[h]
+        \includegraphics[scale=0.4]{./3/theta-surface}
+        \centering
+    \end{figure}
+\end{itemize}
+
+\subsection*{Volatility}
+\textbf{Volatility}: A measuer of the deviation of an underlying's annual price
+movement. The degree of variation of a trading price series over time as
+measured by the standard deviation of logarithmic returns.
+
+\begin{figure}[h]
+    \includegraphics[scale=0.4]{./3/lognormal}
+    \centering
+\end{figure}
+
+\begin{itemize}
+    \item Different types of vol.s used:
+    \begin{itemize}
+        \item \textbf{Historical/Realised volatility}: a measure of how much the
+        ul has moved in the past. Easy to do. Close-to-close prices used (issue
+        when wild movement thru day to end at same price as start). Most widely
+        used for historical datasets.
+        \item \textbf{Implied volatility}: Expected/predicted future vol of ul.
+        An \textit{input} into pricing model and used to derive option theos.
+        Each individual can control option theos by changin implied vol in
+        model.
+        \item \textbf{Forward volatility}: expected avg. vol. between expiration
+        date of two options with successive maturities.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Volatility as a Measure of Movement}
+\begin{itemize}
+    \item Vol. numbers used in options pricing are a measure of stdev of a
+    product's future price move. 252 is the \# of trading days in a yr.
+    \begin{equation*}
+        expected \ 1 \ s.d. \ move \over \ t \ days = \sigma \sqrt{\frac{t}{252}}.
+    \end{equation*}
+    \item Not the same as saying for any given day expected move is as above.
+    The expected daily move formula is
+    \begin{equation*}
+        Expected \ Daily \ Move = 0.8\sigma \sqrt{\frac{t}{252}}.
+    \end{equation*}
+\end{itemize}
+
+Here, the proof of the equation (yay math!)
+\begin{proof}
+    Let $X$ be the random variable representing the daily move. We let 
+    \begin{equation*}
+        X \sim N\left(0, \frac{\sigma^2}{256}\right)
+    \end{equation*}
+    where $\sigma$ is the volatility. Let the daily volatility be
+    $\sigma_d = \sigma / 16$. We want to find $E[|X|]$, we write
+    \begin{align*}
+        E[|X|] &= \int_{-\infty}^\infty |x| \frac{1}{\sqrt{2\pi}\sigma_d}\exp\left(-\frac{x^2}{2\sigma_d^2}\right) \ dx, \\
+        &= \sqrt[]{\frac{2}{\pi}}\int_0^\infty \frac{x}{\sigma_d}\exp\left(-\frac{x^2}{2\sigma_d^2}\right) \ dx, \\
+        &= \sigma_d\sqrt{\frac{2}{\pi}}\left[\exp\left(-\frac{x^2}{2\sigma_d^2}\right)\right]^\infty_0, \\
+        &= \frac{\sigma}{16}\frac{2}{\pi}
+    \end{align*}
+    For $\sigma = 16$ we get the expected daily move of 0.8\%.
+\end{proof}
+
+\subsubsection{Historical Volatility Calculation Example}
+\begin{itemize}
+    \item Assuming calculation from daily closing we calculate log returns (not
+    absolute) and assume the mean of the returns is always zero. The formula is 
+    \begin{equation*}
+        vol = \sqrt{\frac{252}{n}\sum_{i=0}^n\left(\log\frac{S_i}{S_{i-1}}\right)^2}
+    \end{equation*}
+    \item TLDR: Add daily variances, take average, multiply by 252 to annualize.
+    Then tada! we have out vol.
+\end{itemize}
+
+\subsection*{Vega}
+\textbf{Vega}: The option value price change per 1-point change in implied
+volatility.
+\begin{itemize}
+    \item Most talked about greek, options traders are vega traders.
+    \item Depends on time to expiry, distance from ATM, implied vol.
+    \item Closer to ATM is higher vega.
+    \item Options have positive vega. Buyer makes money when implied vol. goes
+    up and lose if it goes down.
+    \item The vega of a portfolio is simply $\nu = num. \ options * mult *
+    option \ vega$
+\end{itemize}
+
+\subsection*{Rho \& Boxes}
+\textbf{Rho}: The sensitivity of option price to change in interest rates. 
+The derivative of option value w.r.t. interest rates.
+\begin{itemize}
+    \item Call and put on same line can have different $\rho$.
+    \item Expressed as change in option price for 1 point (1\%) change in
+    interest rates.
+    \item Usually managed on portfolios, not per option basis.
+    \item individual investors don't manage it much, but MMs do. They express as
+    PnL per 1\% change in interest rates.
+\end{itemize}
+\newpage
+\subsubsection{Interest rate curves}
+\begin{itemize}
+    \item No single interest rate used, used interest rate curve as this one:
+    \begin{figure}[h]
+        \includegraphics[scale=0.4]{./3/ircurve}
+        \centering
+    \end{figure}
+    \item Influenced by the Fed and the rates from the Clearing House.
+    \item Shape can be changed by shifting inputs.
+\end{itemize}
+
+\subsubsection{Boxes}
+\begin{itemize}
+    \item Capturing interest rates thru options. E.g. for exp 4 mos away
+    700-1200 box combo is (+700c-700p+1200p-1200c). No matter what the box is
+    worth 500.00 at expiry (difference in strike prices). Model shows box is
+    worth 499.20 because of cost in tying up capital for 4 mos to purchase asset
+    today that will be worth 500.00 in 4 mos.
+    \item Discount the final price using interest rate and simple Net Present
+    Value equation. Represents the value in interest one could earn by putting
+    capital in bonds that mature in 4 mos.
+    \item The model gives the "fair value" of 499.20
+\end{itemize}
+
+\end{document}

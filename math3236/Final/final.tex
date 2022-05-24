@@ -1,0 +1,221 @@
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\P}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\var}[1]{\text{var}\left[#1\right]}
+\newcommand{\cov}[1]{\text{cov}\left[#1\right]}
+\newcommand{\gammafn}[1]{\Gamma\left(#1\right)}
+\newcommand{\randsamp}{X_1,\dots,X_n}
+\newcommand{\mgf}{moment generating function }
+\newcommand{\pdf}{p.d.f. }
+\newcommand{\pmf}{p.m.f. }
+\newcommand{\cdf}{c.d.f. }
+\newcommand{\clt}{central limit theorem}
+\newcommand{\mle}{M.L.E. }
+\newcommand{\norm}[2]{\mathcal{N}(#1, #2)}
+\DeclareMathOperator*{\Binomial}{Binomial}
+
+\begin{document}
+\section*{Distrs}
+\subsection*{8.2}
+\textbf{Gamma Distr} with params $\alpha = m/2, \beta = 1/2$ is called
+$\chi^2(m)$ distr.
+
+$X \sim \chi^2(m)$, then $\E{X} = m, \var{X} = 2m$.
+
+$X_i \sim \chi^2(m_i)$, then $\sum_n X_i \sim \chi^2(\sum_n m_i)$.
+
+$X \sim \mathcal{N}(0,1)$ and $Y = X^2$, then $Y \sim \chi^2(1)$.
+
+If $X_i \sim \mathcal{N}(0,1)$, then $\sum_n X_i^2 \sim \chi^2(m)$.
+
+\subsection*{8.3}
+$Y \sim \chi^2(m), Z \sim \mathcal{N}(0,1)$, then $X = \frac{Z}{(Y/m)^{1/2}}$
+is the \textit{t-distribution with $m$ degrees of freedom}.
+
+This has a \pdf that you can look at in the book bc it's horrible to type
+
+$X_i \sim \norm{\mu}{\sigma^2}$, then $n^{1/2}(\bar{X}_n - \mu)/\sigma') \sim T(n-1)$.
+Defn of $\sigma'$ in pg 481 (it's the sample variance).
+
+\subsection*{8.5}
+\textbf{Confidence Interval}.
+$\bm{X} = (X_1,\dots,X_n)$ is a rand. samp. from distr. with param $\theta$.
+$g(\theta)$ is a real fn of $\theta$. $A \leq B$ two statistics s.t. for all
+$\theta$, $\P{A < g(\theta) < B} \geq \gamma$. Then $(A,B)$ is the
+\textit{coefficient $\gamma$ or $100\gamma$ percent conf. interval for $g(\theta)$}.
+If $\leq \gamma$ is equality for all $theta$ then it's an \textit{exact} interval.
+
+\textbf{Conf. Int. Normal Distr}.
+$\bm{X}$ a rand. samp. from $\norm{\mu}{\sigma^2}$. Conf interval is given by
+$A = \bar{X}_n - T^{-1}_{n-1}\left(\frac{1 + \gamma}{2}\right)\frac{\sigma'}{n^{1/2}}$,
+$B = \bar{X}_n + T^{-1}_{n-1}\left(\frac{1 + \gamma}{2}\right)\frac{\sigma'}{n^{1/2}}$.
+
+\textbf{One-Sided Conf. Int.}.
+$\bm{X} = (X_1,\dots,X_n)$ is a rand. samp. from distr. with param $\theta$.
+$g(\theta)$ is a real fn of $\theta$. $A \leq B$ two statistics s.t. for all
+$\theta$, $\P{A < g(\theta)} \geq \gamma$. Then $(A,\infty)$ is the 
+\textit{one-sided conf.int. for $g(\theta)$}. Similarly for $(-\infty, B)$ if 
+$\P{g(\theta) < B} \geq \gamma$.
+
+\textbf{One Sided Conf. Int. Normal Distr}.
+$\bm{X}$ a rand. samp. from $\norm{\mu}{\sigma^2}$. Exact lower/upper bound given by
+$A = \bar{X}_n - T^{-1}_{n-1}(\gamma))\frac{\sigma'}{n^{1/2}}$,
+$B = \bar{X}_n + T^{-1}_{n-1}(\gamma)\frac{\sigma'}{n^{1/2}}$.
+
+\textbf{Pivotal.}
+$\bm{X}$ be a rand samp that depends on $\theta$. $V(\bm{X}, \theta)$ is a
+rand var s.t. distr is same for all $\theta$. $V$ is a \textit{Pivotal Qty.}
+We will need a way to invert this, i.e. an $r(v, \bm{x})$ s.t.
+$r(V(\bm{X}, \theta), \bm{X}) = g(\theta)$ for conf. int.s.
+
+\textbf{Confidence Interval from pivotal.}
+$\bm{X}$ a rand samp from distr that depends on $\theta$. Suppose pivotal $V$ exists.
+Let $G$, continuous, be the \cdf of $V$. Assume $r(v, \bm{x})$ exists and is strictly
+increasing in $v$ for all $\bm{x}$. Let $0 < \gamma < 1$ and
+$\gamma_2 > \gamma_1$ s.t. $\gamma_2 - \gamma_1 = \gamma$. Then conf.int. endpoints
+are $A = r(G^{-1}(\gamma_1), \bm{X}), B = r(G^{-1}(\gamma_2), \bm{X})$. If $r$ is
+strictly decreasing then swap $A, B$.
+
+\subsection*{8.7}
+\textbf{Unbiased Estimator.}
+An estimator $\delta(\bm{X})$ is unbiased of a fn $g(\theta)$ if
+$\E{\delta(\bm{X})} = g(\theta)$ for all $\theta$. \textit{Bias} is
+$\E{\delta(\bm{X})} - g(\theta)$.
+
+Let $\delta$ be an estimator with finite variance. Then Mean Sq Error of $\delta$
+as an estimator of $g(\theta)$ is its variance plys square of variance.
+
+\textbf{Unbiased estimator of var.}
+Let $\bm{X}$ be rand samp from distr with finite variance.
+Let $g(\theta) = \var{X_1}$ Unbiased estimator of $g(\theta)$ is
+$\hat{\sigma}_1^2= \frac{1}{n-1}\sum_n (X_i - \bar{X}_n)^2$.
+
+\subsection*{9.2}
+Let $\alpha = \P{\text{Reject } H_0 | \theta = \theta_0}$, and 
+ $\beta = \P{\text{Not Reject } H_0 | \theta = \theta_1}$
+
+$\delta^*$ a test procedure s.t. $H_0$ not refected if $af_0(\bm{x}) > bf_1(\bm{x})$.
+and rejected if $af_0(\bm{x}) < bf_1(\bm{x})$. Either if they are equal. Then for 
+every procedure $\delta$ we have 
+$a\alpha(\delta^*) + b\beta(\delta^*) \leq a\alpha(\delta) + b\beta(\delta)$.
+
+\textbf{Corollary}
+Assume $a, b > 0$. Then $\delta$ for which value of 
+$a\alpha(\delta) + b\beta(\gamma)$ is a min rejects $H_0$ when likelihood
+ratio exceeds $a/b$ and does not reject when likelihood ratio is less than
+$a/b$.
+
+\textbf{Nayman-Pearson lemma.}
+Suppose that $\delta'$ is a test proc with following for for some constant $k > 0$.
+$H_0$ not rejected if $f_1(\bm{x}) < kf_0(\bm{x})$ and rejected if 
+$f_1(\bm{x}) > kf_0(\bm{x})$ and otherwise either. If $\delta$ is another test
+procedure s.t. $\alpha(\delta) \leq \alpha(\delta')$, then it follows that
+$\beta(\delta) \geq \beta(\delta')$. Furthermore, if $\alpha(\delta) < \alpha(\delta')$
+then $\beta(\delta) > \beta(\delta')$.
+
+\subsection*{9.5}
+\textbf{T-test.}
+Test $H_0 \leq \mu_0, H_1 > \mu_0$ with unknown mean and variance. We have the 
+test statistic $U = n^{1/2}\frac{\bar{X}_n - \mu_0}{\sigma'}$. Reject $H_0$
+if $U \geq C$. 
+
+\textbf{Level an Unbiasedness of t Tests.}
+$\pi(\mu, \sigma^2 | \delta) = \alpha_0$ when $\mu = \mu_0$.
+$\pi(\mu, \sigma^2 | \delta) < \alpha_0$ when $\mu < \mu_0$.
+$\pi(\mu, \sigma^2 | \delta) > \alpha_0$ when $\mu > \mu_0$.
+$\pi(\mu, \sigma^2 | \delta) \to 0$ when $\mu \to -\infty$.
+$\pi(\mu, \sigma^2 | \delta) \to 1$ when $\mu \to \infty$.
+
+\textbf{Noncentral t distribution.}
+$W \sim \norm{\psi}{1}, Y \sim \chi^2(m)$. Then
+$X = \frac{W}{(Y/m)^{1/2}}$ is the \textit{noncentral t distribution with m
+degrees of freedom and noncentrality parameter $\psi$.} Note if $\psi = 0$
+then it's just the t-distribution.
+
+\textbf{Thm 9.5.3}
+Let $U$ be noncentral t-distr with $\psi = n^{1/2}(\mu - \mu_0)/\sigma$. Let
+$\delta$ be test that rejects $H_0: \mu \leq \mu_0$ if $U \geq c$. Then
+$\pi(\mu, \sigma^2 | \delta) = 1 - T_{n-1}(c|\psi)$. Let $\delta'$ be the
+test that rejects $H_0: \mu \geq \mu_0$ if $U \leq c$. Then
+$\pi(\mu, \sigma^2 | \delta') = T_{n-1}(c | \psi)$.
+
+\textbf{p-value for 2 sided test.}
+Imagine testing $H_0: \mu = \mu_0, H_1: \mu \neq \mu_0$
+The p-value is $2[1 - T_{n-1}(|u|)]$.
+
+
+\subsection*{10.1}
+\textbf{The $\chi^2$ Test}
+Population contains $k$ types, $p_i$ is prob that random item is of type $i$.
+Let $p_1^0,\dots, p_k^0$ be specific numbers s.t. $p_i^0 > 0$ for all $i$
+and $\sum_k p_i^0 = 1$. We are testing hypothesis 
+$H_0: p_i = p_i^0$ for all $i$, $H_1: p_i \neq p_i^0$ for at least one $i$.
+
+We take a sample of $n$ and let $N_i$ the num of observations in rand samp of 
+type $i$.
+
+\textbf{$\chi^2$ statistic.}
+$Q = \sum_k \frac{N_i - np_i^0)^2}{np_i^0}$ has the property that if $H_0$ is true
+and sample size $n\to \infty$, then $Q \rightarrow \chi^2(k-1)$ in distribution.
+
+\subsection*{10.2}
+\textbf{Composite Null Hypothesis.}
+$H_0: \exists \theta \in \Omega$ s.t. $p_i = \pi_i(\theta)$ for $i = 1,\dots,k.$\\
+$H_1:$ the hypothesis $H_0$ is not true.
+
+\textbf{$\chi^2$ test for Composite Null.}
+As $n \to \infty$ the \cdf of $Q$ converges to the \cdf of $\chi^2(k - 1 - s)$.
+
+\subsection*{11.1}
+\textbf{Least Sq.}
+For a set of $n$ points $(x_i, y_i)$ the straight line minimising sum of squares
+of vertical deviation has slope
+$\hat{\beta}_1 = \frac{\sum_n(y_i-\bar{y})(x_i - \bar{x})}{\sum_n (x_i - \bar{x})^2}$
+and intercept
+$\hat{\beta}_0 = \bar{y} - \hat{\beta}_1\bar{x}.$
+
+The line is $y = \hat{\beta}_0 + \hat{\beta}_1x$.
+
+\subsection*{10.2}
+\textbf{Response/Predictor/Regression.}
+$X_i$ are \textit{predictors} and $Y$ is the response. The conditional expectation
+of $Y$ given $x_i$s is called the \textit{regression function of $Y$ on $X_i$s.}
+
+\textbf{Simple LinReg Regression MLE's.}
+With assumptions on pg 700. The MLE of $\sigma^2$ is 
+$\hat{\sigma}^2 = \frac{1}{2}\sum_n(y_i - \hat{\beta}_0 - \hat{\beta}_1x_i)^2$.
+
+\textbf{Dist of Least Sq estimators.}
+$\hat{\beta}_1 \sim \norm{\beta_1}{\sigma^2/s_x^2}$ and
+$\hat{\beta}_0 \sim \norm{\beta_0}{\sigma^2}$. Finally, 
+$\cov{\hat{\beta}_0, \hat{\beta}_1} = \frac{\bar{x}\sigma^2}{s_x^2}$.
+
+\textbf{MSE of prediction.}
+$\E{(\hat{Y} - Y)^2} = \sigma^2\left[1 + \frac{1}{n} + \frac{(x - \bar{x})^2}{s_x^2}\right]$
+
+\textbf{11.3.1}
+If $Y_i \sim \norm{\mu_i}{\sigma^2}$ (same var) and indep. If $A$ orthogonal
+$n \times n$. and $Z = AY$ then $Z_j \norm{\mu_j}{\sigma^2}$.
+
+\subsection*{11.5}
+\textbf{General Linear Model Estimators.}
+$\bm{\hat{\beta}} = (\bm{Z}^T\bm{Z})^{-1}\bm{Z}^T\bm{Y}.$
+
+
+\end{document}
