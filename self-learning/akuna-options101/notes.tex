@@ -143,8 +143,8 @@ the underlying. Some possible outcomes:
     \item Option contract created.
     \item Future settled.
     \begin{enumerate}
-        \item Buyer exercises \textrightarrow New future contract created.
-        \item No exercise \textrightarrow option expires worthless \& end of trade.
+        \item Buyer exercises \textrightarrow\ New future contract created.
+        \item No exercise \textrightarrow\ Option expires worthless \& end of trade.
     \end{enumerate}
 \end{enumerate}
 
@@ -173,7 +173,7 @@ sending/amending quotes to the matching-engine.
     \item Most common are stock/cash/futures.
     \item Futures either cash (E-mini S\&P, Lean Hogs, etc) or physical delivery
     (e.g. corn)
-    \item <1\% result in physical delivery.
+    \item $<1\%$ result in physical delivery.
 \end{itemize}
 
 \subsubsection{Stocks \& Futures}
@@ -229,39 +229,16 @@ for different underlyings.}
     \item Also a lot of hedging using the underlying.
 \end{itemize}
 
-\begin{itemize}
-    \item Call Spread:
-    \begin{itemize}
-        \item A call spread on $K_1 / K_2$ consists on buying a call at $K_1$
-        and selling a call at $K_2$. $K_1 < K_2$
-    \end{itemize}
-    \item Put spread:
-    \begin{itemize}
-        \item A put spread on $K_1 / K_2$ is buying a put for $K_1$ and 
-        selling a put at $K_2$. $K_1 > K_2$.
-    \end{itemize}
-    \item Call/Put Fly:
-    \begin{itemize}
-        \item A call and a put fly are identical (in payoff and greeks).
-        \item A fly for $K_1/K_2/K_3$ is buying one contracts at $K_1$, selling
-        two at $K_2$ and buying one at $K_3$, $K_1 < K_2 < K_3$.
-        \item Is similar to betting on a volitility distribution.
-        \item Max. loss is the fly price.
-        \item Max. gain is $K_2 - K_1 - P_{fly}$.
-        \item Breakevens at $K_1 + P_{fly}$ and $K_3 - P_{fly}$.
-    \end{itemize}
-\end{itemize}
-
 \subsection{Time Premium and Put-Call-Parity}
 \begin{itemize}
+    \item \textbf{Instrinsic Value} - amount of the option price based on
+    difference between current underlying price and strike. Only applicable for
+    ITM option.
     \item \textbf{In-the-Money (ITM)} - an option that has inherent/instrinsic
     value based on location of underlying compared to strike price.
     \item \textbf{Out-of-the-money (OTM)} - an option that has no instrinsic
     value.
     \item An option that isnt ITM is OTM.
-    \item \textbf{Instrinsic Value} - amount of the option price based on
-    difference between current underlying price and strike. Only applicable for
-    ITM option.
     \item For a call $V_{intrinsic} = \max(0, P_{underlying} - P_{strike})$.
     \item For a put $V_{intrinsic} = \max(0, P_{strike} - P_{underlying})$.
     \item \textbf{Extrinsic Value/Time Premium} - Portion of option price 
@@ -284,7 +261,7 @@ for different underlyings.}
     \item Once this is established, what contributes to extrinsic value is:
     \begin{itemize}
         \item \textbf{Distance to ATM}: how far strike is from forward.
-        \item \textbf{Time}: time to expiry (1y more expensive that 6mos).
+        \item \textbf{Time}: time to expiry (1yr is more expensive that 6mos).
         \item \textbf{Volatility}: Higher implied vol, higher option price.
     \end{itemize}
 \end{itemize}
@@ -322,6 +299,11 @@ Let $K_1 > K_2$. Buy a call spread (buy $K_1$, sell $K_2$)
 and sell a put spread (sell $K_1$, buy $K_2$). Payoff diagram:
 
 \textbf{Call/Put Fly}: 
+A call and a put fly are identical (in payoff and greeks).
+Max. loss is the fly price.
+Max. gain is $K_2 - K_1 - P_{fly}$.
+Breakevens at $K_1 + P_{fly}$ and $K_3 - P_{fly}$.
+Similar to betting on a volitility distribution.
 Let $K_1 < K_2 < K_3$. A fly for $K_1/K_2/K_3$ is buying one contracts at $K_1$,
 selling two at $K_2$ and buying one at $K_3$.
 
@@ -341,7 +323,7 @@ $K_2$. Done to protect underlying position.
 underlying is \textit{reversing out of underlying}. Sell call, buy put at $K$ and buy underlying
 is \textit{converting to underlying}.
 
-\subsection*{Option Limits/Boundaries}
+\subsection{Option Limits/Boundaries}
 Things that always hold (for sanity checks and spotting opportunities)
 \begin{itemize}
     \item ITM call/put should never be worth less that instrinsic value.
@@ -387,7 +369,7 @@ under currecnt market conditions using the current theo value of the option.
     \end{itemize}
 \end{itemize}
 
-\subsection*{Gamma}
+\subsection{Gamma}
 \textbf{Gamma}: The rate of change of the $\Delta$ w.r.t. change of underlying
 price.
 
@@ -444,8 +426,8 @@ price.
     \end{figure}
 \end{itemize}
 
-\subsection*{Volatility}
-\textbf{Volatility}: A measuer of the deviation of an underlying's annual price
+\subsection{Volatility}
+\textbf{Volatility}: A measure of the deviation of an underlying's annual price
 movement. The degree of variation of a trading price series over time as
 measured by the standard deviation of logarithmic returns.
 
@@ -475,7 +457,7 @@ measured by the standard deviation of logarithmic returns.
     \item Vol. numbers used in options pricing are a measure of stdev of a
     product's future price move. 252 is the \# of trading days in a yr.
     \begin{equation*}
-        expected \ 1 \ s.d. \ move \over \ t \ days = \sigma \sqrt{\frac{t}{252}}.
+        expected \ 1 \ s.d. \ move \ over \ t \ days = \sigma \sqrt{\frac{t}{252}}.
     \end{equation*}
     \item Not the same as saying for any given day expected move is as above.
     The expected daily move formula is
@@ -512,7 +494,7 @@ Here, the proof of the equation (yay math!)
     Then tada! we have out vol.
 \end{itemize}
 
-\subsection*{Vega}
+\subsection{Vega}
 \textbf{Vega}: The option value price change per 1-point change in implied
 volatility.
 \begin{itemize}
@@ -525,7 +507,7 @@ volatility.
     option \ vega$
 \end{itemize}
 
-\subsection*{Rho \& Boxes}
+\subsection{Rho \& Boxes}
 \textbf{Rho}: The sensitivity of option price to change in interest rates. 
 The derivative of option value w.r.t. interest rates.
 \begin{itemize}
