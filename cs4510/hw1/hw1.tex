@@ -109,7 +109,7 @@
         then $L[0] = \{101, 1000100\}$.  Prove that if $L$ is regular, so is $L[0]$.
     }
     Let $M := (Q_1, \Sigma, \delta_0, q, F)$ be an automaton that recognises $L$. We will
-    make an automaton $M_1 := (Q', \Sigma', \delta_0', q', F')$ that recognises $L[0]$. Now let
+    make an automaton $M' := (Q', \Sigma', \delta_0', q', F')$ that recognises $L[0]$. Now let
     $Q_2 := \{q_i | i \in 1,...,n-1\}, n = |Q_1|$, and $Q' = Q_1 \cup Q_2$. So we have added $n-1$
     intermediate states. We let $\Sigma' := \Sigma$, $q_0' := q_0$, and $F' = F$.
     Now, let $r_i \in Q_1$ and $s_i \in Q_2$. We define $\delta'$ as follows:
@@ -117,11 +117,12 @@
         \delta'(r_i, 0) & = s_i,            \\
         \delta'(s_i, a) & = \delta(r_i, a).
     \end{align*}
-    Basically, there is a state in $Q_2$ that we can transition to with a 0 in between each
+    Basically, there is a state in $Q_2$ to which we can transition to on a 0.
+    This state is in between each
     of the original states. Once we get to that state, the transition function will use the
     "original" decision (i.e. $\delta(r_i, a)$) to move on to the next state.
 
-    We have now created a new automaton $M'$ that will accept $L[0]$, thus, $L[0]$ is a
+    We have now created a new automaton $M'$ that will accept $L[0]$, thus $L[0]$ is a
     regular language.
 \end{question}
 
