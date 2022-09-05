@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\newcommand{\contradiction}{\Rightarrow\!\Leftarrow}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\DeclareMathOperator*{\dist}{dist}
+
+\newenvironment{hwproof}[2]
+{
+    \textbf{Problem #1.}\\
+    #2
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{Homework 1}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\begin{hwproof}{1}{
+        Use the definition of a connected graph to prove that a nonempty graph $G$
+        is connected if and only if there does not exist a nontrivial partition of $V(G)$
+        with no edges between the parts.\\
+        (Recall that a nontrivial partition of $V(G)$ is a pair $(A, B)$ of nonempty subsets
+        of $V(G)$ such that $A \cap B = \emptyset$ and $A \cup B = V(G)$.)
+    }
+    ($\Rightarrow$) We assume that $G$ is connected. We want to show that there does not exist
+    a nontrivial partition of $V(G)$ with no edges between the parts. Since $G$ is connected,
+    we have that $\forall u \in V(G)$ there exists a path from $u$ to any other $v \in V(G)$.
+
+    Now, for the sake of contradiction, assume that there exists at least one nontrivial partition of
+    $V(G)$ with no edges between any two parts. Call any two of these disconnected parts $C_1$
+    and $C_2$. Now let $u \in C_1$ and $v \in C_2$. Clearly, there cannot be a path from
+    $u$ to $v$, a contradiction $\contradiction$.
+
+    ($\Leftarrow$) We assume there does not exist a nontrivial partition of $V(G)$ with no edges
+    between the parts. Then, clearly, we can construct a path from any vertex $u$ to any other
+    vertex $v$.
+\end{hwproof}
+
+\begin{hwproof}{2.a}{
+        Let $G$ be a an $n$-vertex graph, where $n \geq 1$.\\
+        (a) Prove that if $G$ has no cycles, then $|E(G)| \leq n - 1$.
+    }
+    We will prove the contrapositive, that is, if $|E(G)| > n - 1$ then $G$ has at least one
+    cycle. Take a graph $G$ with $n$ vertices. We will try to construct a graph with $n-1$
+    edges without cycles, and show this cannot be done.
+
+    Consider a first edge $v_1$, clearly we cannot allow self loops since that is a 1-cycle.
+    Consider the next vertex $v_2$, we form an edge $v_1v_2$. Now, we cannot add an edge $v_2v_1$
+    as that would generate a 2-cycle. Consider a third verted $v_3$, we connect it to either
+    $v_1$ or $v_2$. Note that we cannot add any edges without creating a cycle. Repeating this
+    process for all $n$ vertices we end up with a $uv$ path of length $n-1$ that includes
+    all vertices in $V(G)$. Now, we must add another edge, but we cannot do so without
+    creating connecting two vertices that are already connected. Hence, upon adding another
+    edge, we create a cycle.
+
+    Therefore, if $G$ has no cycles, then $|E(G) \leq n - 1$.
+\end{hwproof}
+
+\begin{hwproof}{2.b}{
+        Let $G$ be a an $n$-vertex graph, where $n \geq 1$.\\
+        (b) Prove that if $G$ is a tree, then $|E(G)| = n - 1$
+    }
+    We have $G$ is a tree, and thus has no cycles and is connected. Now assume, for the sake
+    of contradiction, that $|E(G)| \neq n - 1$. We proved in 2.a that if $G$ has no cycles then
+    $|E(G)| \leq n - 1$. Combine this with our initial assumption and we have that
+    $|E(G)| < n - 1$.
+
+    However, it is impossible to connect $n$ vertices with $< n - 1$ edges. This is easy to see
+    since every edge can connect at most one new vertex into a connected component. Thus, $G$
+    is not connected $\contradiction$
+
+    Thus, if $G$ is a tree, then $|E(G)| = n -1$.
+\end{hwproof}
+
+\begin{hwproof}{2.c}{
+        Let $G$ be a an $n$-vertex graph, where $n \geq 1$.\\
+        Show that $G$ is a tree if and only if for all $u,v \in V(G)$, $G$ contains
+        exactly one $uv$-path.
+    }
+\end{hwproof}
+
+\begin{hwproof}{3}{
+        Let $G$ be an $n$-vertex connected simple graph. Run the Bredth-First Search
+        on $G$ with root $e \in V(G)$ and let $T$ be the resulting spanning subtree.\\
+        Show that for all $v \in V(G)$, $\dist_T(r,v) = \dist_G(r,v)$
+    }
+\end{hwproof}
+
+\begin{hwproof}{4}
+    {
+        Let $G$ be a $n$-vertex connected simple graph. Run the Depth-First Search
+        on $G$ with root $r \in V(G)$ and let $T$ be the resulting spanning subtree.
+        By Problem 2(c), we know that $T$ contains exactly one $rv$-path for each vertex
+        $v \in V(G)$. Let us denote this path by $P_v$.
+
+        Show that if two vertices $u, v$ are adjacent in $G$, then either $u \in V(P_v)$
+        or $v \in V(P_u)$.
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {5.a}
+    {
+        Let $G$ be a nonempty finite simple graph. We use
+        $\delta(G) := \min_{v \in V(G)}\deg_G(v)$ to denote the \textbf{minimum degree}
+        of $G$.
+
+        Let $P$ be a path in $G$ of maximum length.\\
+        (a) Show that $|V(P)| \geq \delta(G) + 1$
+
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {5.b}
+    {
+        Let $G$ be a nonempty finite simple graph. We use
+        $\delta(G) := \min_{v \in V(G)}\deg_G(v)$ to denote the \textbf{minimum degree}
+        of $G$.
+
+        Let $P$ be a path in $G$ of maximum length.\\
+        (b) Show that if $\delta(G) \geq 2$, then $G$ contains a cycle of at least
+        $\delta(G) + 1$.
+
+    }
+\end{hwproof}
+
+\begin{hwproof}
+    {6}
+    {Let $G$ be a nonempty finite simple graph. For $v \in V(G)$ and $p \in \N$, a
+        \textbf{flower} with a center $v$ and $p$ petals is a collection of $p$ cycles
+        in $G$ any two of which have precisely one vertex in common, namely $v$.
+        (Draw a picture of what this looks like to se why we call it a "flower".)
+
+        Suppose that $G$ is $d$-\textbf{regular}, meaning that every vertex in $G$
+        has degree $d$. Prove that $G$ contains a flower with $\lfloor d/2 \rfloor$
+        petals.
+
+        Hint: Consider a longest path in $G$}
+\end{hwproof}
+
+
+\end{document}
