@@ -31,6 +31,8 @@
 \begin{document}
 \maketitle
 
+I worked on this homework with Armaan Lala and Ryan Hamblet.
+
 \begin{hwproof}{1}{
         Use the definition of a connected graph to prove that a nonempty graph $G$
         is connected if and only if there does not exist a nontrivial partition of $V(G)$
@@ -49,27 +51,29 @@
 
     ($\Leftarrow$) We assume there does not exist a nontrivial partition of $V(G)$ with no edges
     between the parts. Then, clearly, we can construct a path from any vertex $u$ to any other
-    vertex $v$.
+    vertex $v$. Thus, the graph is connected (since there is exactly one connected component).
 \end{hwproof}
 
 \begin{hwproof}{2.a}{
         Let $G$ be a an $n$-vertex graph, where $n \geq 1$.\\
         (a) Prove that if $G$ has no cycles, then $|E(G)| \leq n - 1$.
     }
-    We will prove the contrapositive, that is, if $|E(G)| > n - 1$ then $G$ has at least one
-    cycle. Take a graph $G$ with $n$ vertices. We will try to construct a graph with $n-1$
-    edges without cycles, and show this cannot be done.
+    We will prove this by minimal coutnerexample. Consider a graph $G$ that has no cycles such
+    that $|E(G)| > n - 1$. The minimal counterexample is a graph $G$ with no cycles and
+    $|E(G)| = n$.
 
-    Consider a first edge $v_1$, clearly we cannot allow self loops since that is a 1-cycle.
-    Consider the next vertex $v_2$, we form an edge $v_1v_2$. Now, we cannot add an edge $v_2v_1$
-    as that would generate a 2-cycle. Consider a third verted $v_3$, we connect it to either
-    $v_1$ or $v_2$. Note that we cannot add any edges without creating a cycle. Repeating this
-    process for all $n$ vertices we end up with a $uv$ path of length $n-1$ that includes
-    all vertices in $V(G)$. Now, we must add another edge, but we cannot do so without
-    creating connecting two vertices that are already connected. Hence, upon adding another
-    edge, we create a cycle.
+    Now, consider a path $P = v_0v_1\dots v_k$ of maximal length in $G$. We will show that
+    $\deg(v_0) = 1$. Clearly, since $v_0v_1$ is an edge we have that $\deg(v_0)$. (Note:
+    there is a degenrate case where the longest path is a signle vertex, but this implies there
+    are no edges).
+    Consider a vertex $u \neq v_1$ that is adjacent to $v_0$. If $u$ is not in $P$
+    then $uP$ is a longer path than $P$, a contradiction. If $u \in P$ then there is a cycle
+    $uv_0v_1\dots v_iu$, a contradiction. Therefore, $\deg(v_0) = 1$
 
-    Therefore, if $G$ has no cycles, then $|E(G) \leq n - 1$.
+    Now consider the graph $G' = G - v_0$. Then, $G'$ is a cycle free graph with $n - 1$
+    vertices and $n - 1$ edges. However, we assumed $n$ was the smallest counterexample
+    $\contradiction$.
+
 \end{hwproof}
 
 \begin{hwproof}{2.b}{
@@ -81,9 +85,16 @@
     $|E(G)| \leq n - 1$. Combine this with our initial assumption and we have that
     $|E(G)| < n - 1$.
 
-    However, it is impossible to connect $n$ vertices with $< n - 1$ edges. This is easy to see
-    since every edge can connect at most one new vertex into a connected component. Thus, $G$
-    is not connected $\contradiction$
+    However, it is impossible to connect $n$ vertices with $< n - 1$ edges.
+    We can prove this easily by induction on the number of edges in a connected component $C$.
+    Consider the base case where we have $V(C) = {v_0}$. We have $n = 1$ vertices and $n - 1 = 0$
+    edges.
+    Now, consider a connected component with $k$
+    vertices and $k - 1$ edges, to add a vertex into this connected component, we must also add an edge.
+    Therefore we will have $k + 1$ vertices and $k$ edges. Hence, we need at least $n - 1$
+    edges to connect $n$ vertices.
+
+    So if $|E(G)| < n - 1$, then $G$ is not connected $\contradiction$
 
     Thus, if $G$ is a tree, then $|E(G)| = n -1$.
 \end{hwproof}
@@ -93,13 +104,47 @@
         Show that $G$ is a tree if and only if for all $u,v \in V(G)$, $G$ contains
         exactly one $uv$-path.
     }
+    ($\Rightarrow$)
+    We know that $G$ is a tree, and thus has no cycles and exactly $n - 1$ edges.
+
+    Now, for the sake of contradiction, assume there is a $G$ with $u,v \in V(G)$ such that
+    there exists more that one $uv$-path in $G$. Call these paths $P_1, P_2$.
+    Let $P_1 := u = u_1u_2...u_n=v$ and $P_2 := u = v_1v_2...v_n = v$. Now, since
+    $P_1 \neq P_2$ there is some $i, j \in [1,n]$ such that $u_i \neq v_i$ and
+    $u_j \neq v_j$ (i.e. the paths "split" at some point). Thus, we can
+    create a cycle $u_{i-1}u_iu_{i+1}...u_jv_jv_{j-1}...v_iv_{i-1} = u_{i - 1}\contradiction$.
+
+    ($\Leftarrow$)
+    We know that $G$ contains exactly on $uv$-path for all $u,v \in V(G)$. We want to show
+    that $G$ is a tree. Assume, for the sake of contradiction, that $G$ is not a tree.
+    Then, we could (for example) have $G$ be a 3-cycle, which clearly has more than
+    one $uv$-path for all $u,v \in V(G) \contradiction$.
+
+    Therefore we have that $G$ is a tree if and only if for all $u,v \in V(G)$, $G$ contains
+    exactly one $uv$-path.
 \end{hwproof}
 
 \begin{hwproof}{3}{
         Let $G$ be an $n$-vertex connected simple graph. Run the Bredth-First Search
-        on $G$ with root $e \in V(G)$ and let $T$ be the resulting spanning subtree.\\
-        Show that for all $v \in V(G)$, $\dist_T(r,v) = \dist_G(r,v)$
+        on $G$ with root $r \in V(G)$ and let $T$ be the resulting spanning subtree.\\
+        Show that for all $v \in V(G)$, $\dist_T(r,v) = \dist_G(r,v)$.
     }
+    We will show that $\dist_T(r,v)$ is always the shortest path (i.e. $\dist_G(r,v)$) by
+    induction.
+
+    Consider the base case with $v \neq r$ adjacent to $r$. Then at the start of the
+    algorithm all the neighbors of $r$ are added to the spanning tree $T$. Meaning that
+    $v$ is added to $T$ as a neighbor of $r$ and $\dist_T(r,v) = 1 = \dist_G(r,v)$.
+
+    Now consider $v_k$ such that $\dist_G(r, v_k) = \dist_T(r,v_k)$. We assume strongly that
+    for any predecessor $v_{k - i}, 0 < i < k$ that $\dist_T(r, v_{k - i}) = \dist_G(r, v_{k-1})$.
+    Now, take some $v_{k + 1} \not \in T$ and adjacent to $v_k$.
+
+    Then, the BFS algorithm will add all $v_{k + 1}$ to $T$, meaning
+    that $\dist_T(r, v_{k + 1}) = \dist_T(r, v_k) + 1 = \dist_G(r, v_k) + 1$.
+    We know there is not a shorter path because otherwise $v_{k + 1}$ would have been added to $T$
+    earlier (our strongly inductive assumption). Therefore, The $rv_{k + 1}$-path is the shortest
+    path in $G$.
 \end{hwproof}
 
 \begin{hwproof}{4}
@@ -112,6 +157,14 @@
         Show that if two vertices $u, v$ are adjacent in $G$, then either $u \in V(P_v)$
         or $v \in V(P_u)$.
     }
+    Assume, without loss of generality, that $u$ is added into $T$ before $v$. We also note that when
+    vertices are added to the tree they are given a timestamp. Let $i,j$ be the timestamps for
+    $u, v$ respectively. Clearly, if $v$ is added to $T$ as a descendant of $u$, or after
+    one of $u$'s descendants, we are done since $u$ is in the $rv$-path.
+
+    We will prove that there is no other way that $v$ can be added to $T$. Assume, for the sake
+    of contradiction, that $v$ is added otherwise. This implies that $v$ was added after a vertex
+    with timestamp lesser than $i$. This implies then that $u,v$ are not adjacent in $G$ $\contradiction$.
 \end{hwproof}
 
 \begin{hwproof}
@@ -123,8 +176,12 @@
 
         Let $P$ be a path in $G$ of maximum length.\\
         (a) Show that $|V(P)| \geq \delta(G) + 1$
-
     }
+    Let $v_0\dots v_k$ be a longest path in $G$. Then, all the neighbors of $v_n$ lie on
+    this path (otherwise the path would not be a longest one). Therefore,
+    $n \geq \deg(v_n) \geq \delta(G)$. So we have that $|E(G)| = n \geq \delta(G)$. Adding one on
+    both sides $n + 1 \geq \delta(G) + 1$ which is the same as $|V(G)| \geq \delta(G) + 1$
+    since $P$ is a tree.
 \end{hwproof}
 
 \begin{hwproof}
@@ -137,13 +194,17 @@
         Let $P$ be a path in $G$ of maximum length.\\
         (b) Show that if $\delta(G) \geq 2$, then $G$ contains a cycle of at least
         $\delta(G) + 1$.
-
     }
+    Let $v_0\dots v_n$ be a longest path in $G$. From 5a we know that
+    $|E(P)| = n \geq \deg(v_n) \geq \delta(G)$. Now, consider some
+    $v_i \in P$ such that $i < n$ is minimal with $v_iv_n \in E(G)$. This implies we have
+    some cycle $C := v_iv_{i + 1}\dots v_nv_i$ that is of length at least $\delta(G) + 1$.
 \end{hwproof}
 
 \begin{hwproof}
     {6}
-    {Let $G$ be a nonempty finite simple graph. For $v \in V(G)$ and $p \in \N$, a
+    {
+        Let $G$ be a nonempty finite simple graph. For $v \in V(G)$ and $p \in \N$, a
         \textbf{flower} with a center $v$ and $p$ petals is a collection of $p$ cycles
         in $G$ any two of which have precisely one vertex in common, namely $v$.
         (Draw a picture of what this looks like to se why we call it a "flower".)
@@ -152,7 +213,15 @@
         has degree $d$. Prove that $G$ contains a flower with $\lfloor d/2 \rfloor$
         petals.
 
-        Hint: Consider a longest path in $G$}
+        Hint: Consider a longest path in $G$
+    }
+    Consider a longest $uv$-path $P = v_0v_1\dots v_k$ in $G$. Then, we have that all
+    all of the neighbors of $v_0$ lie inside the path. We also know that $\deg(v_0) = d$. Now,
+    pair the neighbors of $v_0$ in $P$ (i.e. $(v_i, v_j), (v_k, v_l), \dots$)
+    such that $i < j < k < l$.
+    Note that we have $\lfloor d / 2 \rfloor$ pairs. Now, create cycles\\
+    $(v_0v_i\dots v_jv_0, v_0v_k\dots v_lv_0, \dots)$. We now have a flower centered at $v_0$ with
+    $\lfloor d/2 \rfloor$ petals.
 \end{hwproof}
 
 
