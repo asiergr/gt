@@ -55,14 +55,10 @@ bool is_longalu(uint64_t inst_addr, uint8_t op_type){
   return false;
 }
 
-// This fn is fine
-bool has_raw_hazard(Pipeline_Latch reader, Pipeline_Latch writer) {
-  if (!reader.valid || !writer.valid) {
-    if (VERBOSE)
-      printf("\nEITHER READER OR WRITER INVALID\n");
+bool has_hazard(Pipeline_Latch reader, Pipeline_Latch writer) {
+  if (!reader.valid || !writer.valid)
     return false;
-  }
-  
+
   uint8_t reader_src1_reg = reader.tr_entry.src1_reg;
   uint8_t reader_src2_reg = reader.tr_entry.src2_reg;
   uint8_t reader_src1_needed = reader.tr_entry.src1_needed;
@@ -73,8 +69,7 @@ bool has_raw_hazard(Pipeline_Latch reader, Pipeline_Latch writer) {
   
   bool reg1_conflict = (reader_src1_needed && writer_dest_needed) && (reader_src1_reg == writer_dest);
   bool reg2_conflict = (reader_src2_needed && writer_dest_needed) && (reader_src2_reg == writer_dest);
-  bool cc_hazard = reader.tr_entry.cc_read && writer.tr_entry.cc_write;
-  bool has_hazard = reg1_conflict || reg2_conflict || cc_hazard;
+  bool has_hazard = reg1_conflict || reg2_conflict;
 
   if (VERBOSE && has_hazard)
     printf("\n HAZARD between %u and %u\n", reader.tr_entry.inst_addr, writer.tr_entry.inst_addr);
@@ -144,30 +139,30 @@ void pipe_print_state(Pipeline *p){
         if(latch_type_i == 0)
           printf("\t");
           if(p->pipe_latch[latch_type_i][width_i].valid == true) {
-            printf(" %6u ",(uint32_t)( p->pipe_latch[latch_type_i][width_i].tr_entry.inst_addr));
+            printf(" %6u ",(uint32_t)( p->pipe_latch[latch_type_i][width_i].op_id));
           } else {
               printf(" ------ ");
           }
       }
       if(VERBOSE){
         printf("\n");
-        printf("op_type: %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.op_type));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.op_type));
         printf(",");
-        printf("dest: %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.dest));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.dest));
         printf(",");
-        printf("dest_needed: %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.dest_needed));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.dest_needed));
         printf("<-");
-        printf("src1: %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src1_reg));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src1_reg));
         printf(",");
-        printf("src2: %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src2_reg));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src2_reg));
         printf(",");
-        printf("src1_needed %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src1_needed));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src1_needed));
         printf(",");
-        printf("src2_needed %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src2_needed));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.src2_needed));
         printf(",");
-        printf("cc_read: %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.cc_read));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.cc_read));
         printf(",");
-        printf("cc_write %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.cc_write));
+        printf(" %u ",(uint32_t)( p->pipe_latch[0][width_i].tr_entry.cc_write));
 
         if(p->pipe_latch[0][width_i].tr_entry.op_type == 0){
           printf(" %u", p->pipe_latch[0][width_i].tr_entry.inst_addr);
@@ -262,14 +257,15 @@ void pipe_cycle_ID(Pipeline *p){
     p->pipe_latch[ID_LATCH][ii].stall = false;
 
   for(ii=0; ii<PIPE_WIDTH; ii++){
-    Pipeline_Latch if_latch = p->pipe_latch[IF_LATCH][ii];
+    Pipeline_Latch next_inst_IF_latch = p->pipe_latch[IF_LATCH][ii];
     Pipeline_Latch ex1_latch = p->pipe_latch[EX1_LATCH][ii];
     Pipeline_Latch ex2_latch = p->pipe_latch[EX2_LATCH][ii];
 
-    if (has_raw_hazard(if_latch, p->pipe_latch[ID_LATCH][ii]) 
-      || has_raw_hazard(if_latch, ex1_latch) 
-      || has_raw_hazard(if_latch, ex2_latch) 
-      || has_raw_hazard(if_latch, p->pipe_latch[MA_LATCH][ii])) {
+    if (has_hazard(next_inst_IF_latch, p->pipe_latch[ID_LATCH][ii])
+        || has_hazard(next_inst_IF_latch, ex1_latch)
+        || has_hazard(next_inst_IF_latch, ex2_latch)
+        || has_hazard(next_inst_IF_latch, p->pipe_latch[MA_LATCH][ii])) {
+
         p->pipe_latch[ID_LATCH][ii].stall = true;
       }
     
@@ -281,12 +277,10 @@ void pipe_cycle_ID(Pipeline *p){
       
     }
 
-    if (p->pipe_latch[ID_LATCH][ii].stall) { 
-      p->pipe_latch[ID_LATCH][ii].valid = false;
-    }
-    else { // not stalling, move inst along
+    if (!p->pipe_latch[ID_LATCH][ii].stall) // not stalling, next inst
       p->pipe_latch[ID_LATCH][ii] = p->pipe_latch[IF_LATCH][ii];
-    }
+    else
+      p->pipe_latch[ID_LATCH][ii].valid = false;
   }
 }	
 
@@ -297,19 +291,14 @@ void pipe_cycle_IF(Pipeline *p){
   int ii,jj;
   Pipeline_Latch fetch_op;
   bool tr_read_success;
-  
-  bool is_next_stalled = p->pipe_latch[ID_LATCH][ii].stall;
 
   for(ii=0; ii<PIPE_WIDTH; ii++){
-    if (is_next_stalled) {
-      continue;
-    }
-    pipe_get_fetch_op(p, &fetch_op);
-    
-    if(BPRED_POLICY != -1){
-      pipe_check_bpred(p, &fetch_op);
-    }
-    p->pipe_latch[IF_LATCH][ii]=fetch_op;
+      pipe_get_fetch_op(p, &fetch_op);
+      
+      if(BPRED_POLICY != -1){
+        pipe_check_bpred(p, &fetch_op);
+      }
+      p->pipe_latch[IF_LATCH][ii]=fetch_op;
   }
 }
 
