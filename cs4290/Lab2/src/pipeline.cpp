@@ -19,7 +19,7 @@ extern int32_t ENABLE_MEM_FWD;
 extern int32_t ENABLE_EXE_FWD;
 extern int32_t BPRED_POLICY;
 
-bool VERBOSE = true;
+bool VERBOSE = false;
 
 /**********************************************************************
  * Support Function: Read 1 Trace Record From File and populate Fetch Op
@@ -77,11 +77,40 @@ bool has_raw_hazard(Pipeline_Latch reader, Pipeline_Latch writer) {
   bool has_hazard = reg1_conflict || reg2_conflict || cc_hazard;
 
   if (VERBOSE && has_hazard)
-    printf("\n HAZARD between %u and %u\n", reader.tr_entry.inst_addr, writer.tr_entry.inst_addr);
+    printf("\n HAZARD between %u and %u\n", reader.op_id, writer.op_id);
 
   return has_hazard;
 }
 
+void sort_pipes(Pipeline* p){
+  // Sorts the pipes by validity and then by op_id
+  for (int i = 0; i < PIPE_WIDTH - 1; i++) {
+    for (int j = 0; j < PIPE_WIDTH - i - 1; j++) {
+      if (!p->pipe_latch[IF_LATCH][j].valid) {
+        if (p->pipe_latch[IF_LATCH][j + 1].valid && !p->pipe_latch[IF_LATCH][j].valid) {
+          Pipeline_Latch temp = p->pipe_latch[IF_LATCH][j];
+          p->pipe_latch[IF_LATCH][j] = p->pipe_latch[IF_LATCH][j+1];
+          p->pipe_latch[IF_LATCH][j+1] = temp;
+        }
+      } else {
+        if ((p->pipe_latch[IF_LATCH][j].op_id > p->pipe_latch[IF_LATCH][j+1].op_id) && p->pipe_latch[IF_LATCH][j+1].valid) {
+          Pipeline_Latch temp = p->pipe_latch[IF_LATCH][j];
+          p->pipe_latch[IF_LATCH][j] = p->pipe_latch[IF_LATCH][j+1];
+          p->pipe_latch[IF_LATCH][j+1] = temp;
+        }
+      }
+    }
+  }
+}
+
+void stall_if_younger_stalled(Pipeline* p, int ii){
+  for (int j = 0; j < PIPE_WIDTH; j++) {
+    if (p->pipe_latch[ID_LATCH][j].stall){
+      p->pipe_latch[ID_LATCH][ii].stall = true;
+      break;
+    }
+  }
+}
 
 
 /**********************************************************************
@@ -144,7 +173,7 @@ void pipe_print_state(Pipeline *p){
         if(latch_type_i == 0)
           printf("\t");
           if(p->pipe_latch[latch_type_i][width_i].valid == true) {
-            printf(" %6u ",(uint32_t)( p->pipe_latch[latch_type_i][width_i].tr_entry.inst_addr));
+            printf(" %6u ",(uint32_t)( p->pipe_latch[latch_type_i][width_i].op_id));
           } else {
               printf(" ------ ");
           }
@@ -256,22 +285,31 @@ void pipe_cycle_EX1(Pipeline *p){
 void pipe_cycle_ID(Pipeline *p){
   // TODO: UPDATE HERE (Part A, B)
   int ii;
+  sort_pipes(p);
 
   //initialize everything to false before setting stalls
   for (ii = 0; ii < PIPE_WIDTH; ii++)
     p->pipe_latch[ID_LATCH][ii].stall = false;
 
   for(ii=0; ii<PIPE_WIDTH; ii++){
+    stall_if_younger_stalled(p, ii);
+    
     Pipeline_Latch if_latch = p->pipe_latch[IF_LATCH][ii];
-    Pipeline_Latch ex1_latch = p->pipe_latch[EX1_LATCH][ii];
-    Pipeline_Latch ex2_latch = p->pipe_latch[EX2_LATCH][ii];
 
-    if (has_raw_hazard(if_latch, p->pipe_latch[ID_LATCH][ii]) 
-      || has_raw_hazard(if_latch, ex1_latch) 
-      || has_raw_hazard(if_latch, ex2_latch) 
-      || has_raw_hazard(if_latch, p->pipe_latch[MA_LATCH][ii])) {
-        p->pipe_latch[ID_LATCH][ii].stall = true;
-      }
+    for (int j = 0; j < PIPE_WIDTH; j++) {
+      Pipeline_Latch id_latch = p->pipe_latch[ID_LATCH][j];
+      Pipeline_Latch ex1_latch = p->pipe_latch[EX1_LATCH][j];
+      Pipeline_Latch ex2_latch = p->pipe_latch[EX2_LATCH][j];
+      Pipeline_Latch ma_latch = p->pipe_latch[MA_LATCH][j];
+      
+      if (has_raw_hazard(if_latch, id_latch) 
+        || has_raw_hazard(if_latch, ex1_latch)
+        || has_raw_hazard(if_latch, ex2_latch)
+        || has_raw_hazard(if_latch, ma_latch)) {
+          p->pipe_latch[ID_LATCH][ii].stall = true;
+        }
+    }
+
     
     if (ENABLE_MEM_FWD){	
 
@@ -298,9 +336,9 @@ void pipe_cycle_IF(Pipeline *p){
   Pipeline_Latch fetch_op;
   bool tr_read_success;
   
-  bool is_next_stalled = p->pipe_latch[ID_LATCH][ii].stall;
 
   for(ii=0; ii<PIPE_WIDTH; ii++){
+    bool is_next_stalled = p->pipe_latch[ID_LATCH][ii].stall;
     if (is_next_stalled) {
       continue;
     }
