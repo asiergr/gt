@@ -58,8 +58,6 @@ bool is_longalu(uint64_t inst_addr, uint8_t op_type){
 // This fn is fine
 bool has_raw_hazard(Pipeline_Latch reader, Pipeline_Latch writer) {
   if (!reader.valid || !writer.valid) {
-    if (VERBOSE)
-      printf("\nEITHER READER OR WRITER INVALID\n");
     return false;
   }
   
@@ -301,22 +299,37 @@ void pipe_cycle_ID(Pipeline *p){
       Pipeline_Latch ex1_latch = p->pipe_latch[EX1_LATCH][j];
       Pipeline_Latch ex2_latch = p->pipe_latch[EX2_LATCH][j];
       Pipeline_Latch ma_latch = p->pipe_latch[MA_LATCH][j];
+
+      bool is_ex1_fwdable = false;
+      bool is_ex2_fwdable = false;
+      bool is_id_fwdable_at_ex1 = false;
+
+      if (ENABLE_EXE_FWD) {
+        bool is_id_longalu = is_longalu(id_latch.tr_entry.inst_addr, id_latch.tr_entry.op_type);
+        bool is_ex1_longalu = is_longalu(ex1_latch.tr_entry.inst_addr, ex1_latch.tr_entry.op_type);
+        
+        bool is_id_ld = id_latch.tr_entry.op_type == OP_LD;
+        bool is_ex1_ld = ex1_latch.tr_entry.op_type == OP_LD;
+        bool is_ex2_ld = ex2_latch.tr_entry.op_type == OP_LD;
+        
+        bool is_ex1_ex2_same_dest = ex1_latch.tr_entry.dest == ex2_latch.tr_entry.dest;
+        
+        is_id_fwdable_at_ex1 = !is_id_longalu && !is_id_ld;
+        is_ex1_fwdable = !is_ex1_longalu && !is_ex1_ld;
+        is_ex2_fwdable = !is_ex2_ld || is_ex1_ex2_same_dest;
+      }
       
-      if (has_raw_hazard(if_latch, id_latch) 
-        || has_raw_hazard(if_latch, ex1_latch)
-        || has_raw_hazard(if_latch, ex2_latch)
-        || has_raw_hazard(if_latch, ma_latch)) {
+      bool is_ma_fwdable = false;
+      if (ENABLE_MEM_FWD) {
+        is_ma_fwdable = true;
+      }
+
+      if ((has_raw_hazard(if_latch, id_latch) && !is_id_fwdable_at_ex1)
+        || (has_raw_hazard(if_latch, ex1_latch) && !is_ex1_fwdable)
+        || (has_raw_hazard(if_latch, ex2_latch) && !is_ex2_fwdable)
+        || (has_raw_hazard(if_latch, ma_latch) && !is_ma_fwdable)) {
           p->pipe_latch[ID_LATCH][ii].stall = true;
         }
-    }
-
-    
-    if (ENABLE_MEM_FWD){	
-
-    }
-
-    if (ENABLE_EXE_FWD){	
-      
     }
 
     if (p->pipe_latch[ID_LATCH][ii].stall) { 
