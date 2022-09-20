@@ -1,0 +1,288 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\usepackage{tikz}
+
+\usetikzlibrary{graphs,graphs.standard}
+
+\makeatletter
+\pgfmathdeclarefunction{alpha}{1}{%
+  \pgfmathint@{#1}%
+  \edef\pgfmathresult{\pgffor@alpha{\pgfmathresult}}%
+}
+
+
+\newcommand{\contradiction}{\Rightarrow\!\Leftarrow}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\set}[1]{\{#1\}}
+
+\DeclareMathOperator*{\Aut}{Aut}
+\DeclareMathOperator*{\aut}{aut}
+\DeclareMathOperator*{\emb}{emb}
+
+\newenvironment{hwproof}[2]
+{
+    \textbf{Problem #1.}\\
+    #2
+    \begin{proof}
+}{
+    \end{proof}
+    \newpage
+}
+
+\title{Homework 2}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+I worked on this homework with Armaan Lala and Ryan Hamblet.
+
+\begin{hwproof}
+    {1.a}
+    {
+        The \textbf{maximum degree} of a finite graph $G$ is the quantity
+        $\Delta(G) := \max_{v\in V(G)}\deg_G(v)$. A \textbf{leaf} in a tree $T$
+        is a vertex of degree 1.
+
+        (a) Prove that every finite tree $T$ has at least $\Delta(T)$ leaves.
+    }
+    We will prove this by induction on $\Delta(G)$. The base case is trivial,
+    since a tree $T$ with only one vertex has $\Delta(T) = 0$ and $0 \geq 0$ leaves.
+
+    Now, assume we have a tree $T$ with $\Delta(T) = k$ and $n \geq k$ leaves. Now, consider
+    another tree $T'$ with $n' \geq 1$ leaves. Without loss of generality,
+    suppose that $\Delta(T) \geq \Delta(T')$. We draw an edge from $v \in V(T)$ with
+    maximum degree so any vertex in $T'$. Now, $\Delta(T) = k + 1$. The number of
+    leaves on $T$ is now $n + n' \geq k + 1$. Note that if we connect $T$ to a leaf
+    in $T'$ the number of leaves added is still $\geq 1$. This is easy to see if
+    $n' \geq 2$ (we are "removing" a leaf but adding $n' - 1 \geq 1$ of them).
+    If $n' = 1$ then this node will remain a leaf after being connected to $T$.
+
+    Therefore, every finite tree $T$ has at least $\Delta(T)$ leaves.
+\end{hwproof}
+
+\begin{hwproof}
+    {1.b}
+    {
+        The \textbf{maximum degree} of a finite graph $G$ is the quantity
+        $\Delta(G) := \max_{v\in V(G)}\deg_G(v)$. A \textbf{leaf} in a tree $T$
+        is a vertex of degree 1.
+
+        (b) Conclude that every finite tree on at least 2 vertices has at least
+        2 leaves.
+    }
+    Suppose we have a tree $T$ with at least two vertices, for it to be a tree
+    these have to be connected. Thus, $\Delta(T) \geq 1$. Now, if
+    $\Delta(T) \geq 2$ then by the previous exercise we know there are at least
+    two leaves. If $\Delta(T) = 1$ then we have some $uv$-path, which has two leaves
+    (the vertices $u$ and $v$).
+\end{hwproof}
+
+\begin{hwproof}
+    {2a}
+    {
+        Let $G$ be a finite simple bipartite graph with a bipartition $(A, B)$.
+
+        (a) Suppose that:
+        \begin{itemize}
+            \item every vertex in $G$ has at least one neighbor; and
+            \item for all $a \in A$ and $b \in B$, if $ab \in E(G)$, then
+                  $\deg_G(a) \geq \deg_G(b)$.
+        \end{itemize}
+        Show that $|A| \leq |B|$.\\
+        Hint: Assign a weight $w$ to each edge $ab$ so that for all $a \in A, w(a) = 1$.
+    }
+    Let $w: E(G) \to \R$ such that $w(ab) = 1, \forall a \in A$. We know that since $G$
+    is bipartite
+    \begin{equation}
+        \sum_{a \in A} w(a) = \sum_{a \in A} \deg(a) = \sum_{b \in B} w(b) = \sum_{b \in B} \deg(b).
+    \end{equation}
+    However, we also
+    know that for any given $\deg_G(a) \geq \deg_G(b)$.
+    Therefore, there must be more vertices in $B$ for (1) to hold.
+    Thus, $|A| \leq |B|$
+\end{hwproof}
+
+\begin{hwproof}
+    {2b}
+    {
+        Let $G$ be a finite simple bipartite graph with a bipartition $(A, B)$.
+
+        Suppose that:
+        \begin{itemize}
+            \item every vertex in $G$ is adjacent to at least one but not all the vertices in the
+                  opposite side of the bipartition; and
+            \item  for all $a \in A$ and $b \in B$, if $ab \not \in E(G)$, then
+                  $\deg_G(a) \geq \deg_G(b)$.
+        \end{itemize}
+        Show that $|A| \leq |B|$.
+    }
+    Suppose that $|A| > |B|$. Let $w: E(G) \to \R$ be defined by
+    $w(e) = 1$ for all $e \in E(G)$. then $w(a) = \deg_G(v)$ for any $v \in V(G)$.
+    Since $G$ is bipartitie, we also have that
+    \begin{equation}
+        \sum_{a \in A} w(a) = \sum_{a \in A} \deg(a) = \sum_{b \in B} w(b) = \sum_{b \in B} \deg(b).
+    \end{equation}
+    Now, by our assumption, $|A| > |B|$, this implies that
+
+\end{hwproof}
+
+\begin{hwproof}
+    {3}
+    {
+        Suppose that $P$ is a finite set of points in the plane of size $|P| \geq 2$. For each
+        pair of points in $P$, there is exactly one straight line containing both of them,
+        and we let $L$ be the set of all such straight lines. Fig. 1 shows an example with
+        5 points and 8 lines.
+
+        Show that $|L| \geq |P|$ unless all the points in $P$ lie on a single straight line.
+    }
+
+\end{hwproof}
+
+\begin{hwproof}
+    {4a}
+    {
+        Let $k, n$ be positive integers such that $n \geq 2k$. The \textbf{Kneser graph}
+        $KG_{k,n}$ is the simple graph whose vertices are the $k$-elements subsets of
+        the set $\set{1,\dots,n}$ in which there is an edge between two sets $a,b$
+        if and only if $a\cap b = \emptyset$
+
+        (a) How many vertices and edges does $KG_{k,n}$ have?
+    }
+    There are $\binom{n}{k}$ vertices since there are these many ways of picking $k$ elements
+    from a set of size $n$. Now, to find the number of edges, first we find the degree of each
+    vertex. That is, we need to find the number of $k$-elements subjects disjoint from a given
+    subset $A$. This is the same as the number of $k$-elements subsets in
+    $\set{1\dots n} - A$ which has size $n - k$. Therefore, each vertex has degree
+    $\binom{n - k}{k}$. Therefore, the number of edges is
+    $\frac{1}{2}\binom{n}{k}\binom{n - k}{k}$.
+\end{hwproof}
+
+\begin{hwproof}
+    {4b}
+    {
+        Let $k, n$ be positive integers such that $n \geq 2k$. The \textbf{Kneser graph}
+        $KG_{k,n}$ is the simple graph whose vertices are the $k$-elements subsets of
+        the set $\set{1,\dots,n}$ in which there is an edge between two sets $a,b$
+        if and only if $a\cap b = \emptyset$
+
+        (b) Show that $KG_{2,5}$ is isomorphic to the Petersen graph
+    }
+    First, we will use the labelled version of the Petersen Graph $P$ below:
+
+    \begin{center}
+        \begin{tikzpicture}[every node/.style={draw,circle,very thick}]
+            \graph [clockwise,math nodes] {
+            subgraph C_n [V={a,b,c,d,e},name=A, radius=2cm];
+            subgraph I_n [V={f,g,h,i,j},name=B, radius=1cm];
+            \foreach \x [evaluate={%
+                        \i=alpha(\x);
+                        \j=alpha(mod(\x+1,5)+6);
+                        \k=alpha(\x+5);}] in {1,...,5}{
+                    A \i -- B \k;
+                    B \j -- B \k;
+                }
+            };
+        \end{tikzpicture}
+    \end{center}
+
+    Now, consider the graph $KG_{2,5}$. This graph has vertices corresponding to
+    $\set{1,2}, \set{1,3}, \set{1,4}, \set{1, 5}, \set{2, 3}, \set{2, 4}, \set{2,5}$,
+    $\set{3,4}, \set{3,5}, \set{4,5}$.
+
+    Consider the function $f: V(KG_{2,5}) \to V(P)$ such that
+    \begin{align*}
+        f(\set{1, 2}) & = i \\
+        f(\set{1, 3}) & = b \\
+        f(\set{1, 4}) & = e \\
+        f(\set{1, 5}) & = h \\
+        f(\set{2, 3}) & = j \\
+        f(\set{2, 4}) & = c \\
+        f(\set{2, 5}) & = a \\
+        f(\set{3, 4}) & = f \\
+        f(\set{3, 5}) & = d \\
+        f(\set{4, 5}) & = g \\
+    \end{align*}
+    This function is clearly bijective and is such that $uv \in E(KG_{2,5}) \iff f(u)f(v)\in E(P)$.
+\end{hwproof}
+
+\begin{hwproof}
+    {4c}
+    {
+        Let $k, n$ be positive integers such that $n \geq 2k$. The \textbf{Kneser graph}
+        $KG_{k,n}$ is the simple graph whose vertices are the $k$-elements subsets of
+        the set $\set{1,\dots,n}$ in which there is an edge between two sets $a,b$
+        if and only if $a\cap b = \emptyset$
+
+        (c) Prove that for every pair of vertices $a,b$ of $KG_{k,n}$ there is an automorphism
+        $f \in \Aut(KG_{k,n})$ such that $f(a) = b$. (Graphs that have this property are
+        called \textbf{vertex-transitive}).
+    }
+
+
+\end{hwproof}
+
+\begin{hwproof}
+    {5a}
+    {
+        The $n$-dimensional Boolean cube is the simple graph $Q_n$ whose vertices are the
+        sequences of 0s and 1s of length $n$, and where there is an edge between two sequences
+        $x_1x_2\dots x_n$ and $y_1y_2\dots y_n$ if and only if they differ in precisely
+        one coordinate, i.e., if there is a unique index $i \in \set{1,\dots n}$ such that
+        $x_i \neq yi$. Fig. 3 shows the graphs $Q_0, Q_1, Q_2$, and $Q_3$.
+
+        (a) How many edges and vertices does $Q_n$ have?
+    }
+    For each $i \in \set{1\dots n}$ we have two options (1 or 0). Therefore there are
+    $2^n$ vertices. We will prove by induction this graph has $2^{n-1}n$ edges.
+
+    The base case is simple, $Q_0$ has $n=0$ and $2^{-1}*0 = 0$ edges. Now consider $Q_k$ and
+    assume it has $2^{k - 1}k$ edges. We observe that $Q_{k + 1}$ can be represented as
+    two copies of $Q_k$, one with $x_{k + 1} = 0$ and another with $x_{k + 1} = 1$.
+    There are $2^n$ edges between these copies (since we connect each vertex with
+    $x_{k + 1} = 0$ to it's "copy" with $x_{k + 1} = 1$). Therefore, we have that
+    the total number of edges is $2*2^{k-1}k + 2^k = 2^kk + 2^k = 2^k{k + 1}$.
+
+    Therefore, the $n$-dimensional Boolean cube has $2^n$ vertices and $2^{n-1}n$ edges.
+\end{hwproof}
+
+\begin{hwproof}
+    {5b}
+    {
+        The $n$-dimensional Boolean cube is the simple graph $Q_n$ whose vertices are the
+        sequences of 0s and 1s of length $n$, and where there is an edge between two sequences
+        $x_1x_2\dots x_n$ and $y_1y_2\dots y_n$ if and only if they differ in precisely
+        one coordinate, i.e., if there is a unique index $i \in \set{1,\dots n}$ such that
+        $x_i \neq yi$. Fig. 3 shows the graphs $Q_0, Q_1, Q_2$, and $Q_3$.
+
+        (b) Compute $\aut(Q_n)$
+    }
+    We pick a vertex $v \in V(Q_n)$. Given that the graph is $2^n$-regular, we see that
+    in an automorphism we can place this vertex in any of the $2^n$ points.
+    Now, consider this same vertex $v$ with $\deg(v) = n$. We want to place the vertices
+    of this edge. There are $n!$ ways of doing this ($n$ vertices on $n$ spots). Since
+    we do this for each vertex, we have that $\aut(Q_n) = 2^nn!$
+\end{hwproof}
+
+\begin{hwproof}
+    {6}
+    {
+        Let $G$ and $H$ be finite simple graphs such that $\hom(F, G) = \hom(F,H)$ for every
+        connected finite simple graph $F$. Show that $G \cong H$.
+    }
+    We start by noting that $\hom(F,G) = \hom(F, H)$ implies $\emb(F,G) = \emb(F,H)$
+\end{hwproof}
+
+\end{document}
