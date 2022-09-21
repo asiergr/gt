@@ -29,7 +29,7 @@ extern int32_t ENABLE_MEM_FWD;
 extern int32_t ENABLE_EXE_FWD;
 extern int32_t BPRED_POLICY;
 
-bool VERBOSE = false;
+bool VERBOSE = true;
 
 /**********************************************************************
  * Support Function: Read 1 Trace Record From File and populate Fetch Op
@@ -199,6 +199,9 @@ void pipe_cycle_WB(Pipeline *p){
       p->stat_retired_inst++;
       if(p->pipe_latch[MA_LATCH][ii].op_id >= p->halt_op_id){
 		    p->halt=true;
+      }
+      if (p->pipe_latch[MA_LATCH][ii].is_mispred_cbr) {
+        p->fetch_cbr_stall = false;
       }
     }
   }
@@ -381,8 +384,13 @@ void pipe_cycle_ID(Pipeline *p){
         p->pipe_latch[IF_LATCH][ii].stall = 1;
         p->pipe_latch[ID_LATCH][ii].valid = 0;    
       }
-	  }
+	  } else if (p->fetch_cbr_stall) {
+      // id_latch is not valid and we mispredicted. Stall.
+      printf("\n latch in ID not valid, and fetch_cbr_stall.\n");
+      p->pipe_latch[IF_LATCH][ii].stall = 1;
+    }
   }	
+  
 
   /**************************************************/
   /* If there is an instruction stalled in the IF latch due to data dependencies,
@@ -412,8 +420,15 @@ void pipe_cycle_IF(Pipeline *p){
   bool tr_read_success;
 
   for(ii=0; ii<PIPE_WIDTH; ii++){
-    if(!p->pipe_latch[IF_LATCH][ii].stall){
+    
+    if (p->fetch_cbr_stall) {
+      p->pipe_latch[IF_LATCH][ii].valid &= p->pipe_latch[ID_LATCH][ii].stall;
+    } else {
+      p->pipe_latch[IF_LATCH][ii].valid = true;
+    }
 
+    if(!p->pipe_latch[IF_LATCH][ii].stall && !p->fetch_cbr_stall){
+      //We don't stall and don't have a mispredict
       pipe_get_fetch_op(p, &fetch_op);
       
       if(BPRED_POLICY != -1){
@@ -433,6 +448,19 @@ void pipe_check_bpred(Pipeline *p, Pipeline_Latch *fetch_op){
   // stall fetch using the flag p->fetch_cbr_stall
 
   // TODO: UPDATE HERE (Part B)
+  if (fetch_op->tr_entry.op_type != OP_CBR) return;
+
+  p->b_pred->stat_num_branches++;
+  bool pred = p->b_pred->GetPrediction(fetch_op->tr_entry.inst_addr);
+
+  if (pred != fetch_op->tr_entry.br_dir) {
+    printf("\n Misprediction on, pred: %d.\n", pred);
+    p->b_pred->stat_num_mispred++;
+    p->fetch_cbr_stall = true;
+    fetch_op->is_mispred_cbr = true;
+  }
+  p->b_pred->UpdatePredictor(fetch_op->tr_entry.inst_addr, pred, fetch_op->tr_entry.br_dir);
+
 }
 
 

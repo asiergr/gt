@@ -247,6 +247,9 @@ void pipe_cycle_WB(Pipeline *p){
       if(p->pipe_latch[MA_LATCH][ii].op_id >= p->halt_op_id){
 		    p->halt=true;
       }
+      if (p->pipe_latch[MA_LATCH][ii].is_mispred_cbr) {
+        p->fetch_cbr_stall = false;
+      }
     }
   }
 }
@@ -331,6 +334,9 @@ void pipe_cycle_ID(Pipeline *p){
           p->pipe_latch[ID_LATCH][ii].stall = true;
         }
     }
+    if (!p->pipe_latch[IF_LATCH][ii].valid && p->fetch_cbr_stall) {
+      p->pipe_latch[ID_LATCH][ii].stall = true;
+    }
 
     if (p->pipe_latch[ID_LATCH][ii].stall) { 
       p->pipe_latch[ID_LATCH][ii].valid = false;
@@ -352,7 +358,13 @@ void pipe_cycle_IF(Pipeline *p){
 
   for(ii=0; ii<PIPE_WIDTH; ii++){
     bool is_next_stalled = p->pipe_latch[ID_LATCH][ii].stall;
-    if (is_next_stalled) {
+    
+    if (!p->fetch_cbr_stall)
+      p->pipe_latch[IF_LATCH][ii].valid = true;
+    else
+      p->pipe_latch[IF_LATCH][ii].valid &= is_next_stalled;
+
+    if (is_next_stalled || p->fetch_cbr_stall) {
       continue;
     }
     pipe_get_fetch_op(p, &fetch_op);
@@ -373,6 +385,20 @@ void pipe_check_bpred(Pipeline *p, Pipeline_Latch *fetch_op){
   // stall fetch using the flag p->fetch_cbr_stall
 
   // TODO: UPDATE HERE (Part B)
+  if (fetch_op->tr_entry.op_type != OP_CBR) return;
+  p->b_pred->stat_num_branches++;
+  if (BPRED_POLICY == BPRED_PERFECT) return;
+
+  bool pred = p->b_pred->GetPrediction(fetch_op->tr_entry.inst_addr);
+  p->b_pred->UpdatePredictor(fetch_op->tr_entry.inst_addr, fetch_op->tr_entry.br_dir, pred);
+
+  if (pred == fetch_op->tr_entry.br_dir) return; // predicted right, woo!
+
+  if (VERBOSE) printf("\n Misprediction on: , pred: %d.\n", fetch_op->op_id, pred);
+
+  p->b_pred->stat_num_mispred++;
+  p->fetch_cbr_stall = true;
+  fetch_op->is_mispred_cbr = true;
 }
 
 
