@@ -63,7 +63,7 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
     Now, assume we have a tree $T$ with $\Delta(T) = k$ and $n \geq k$ leaves. Now, consider
     another tree $T'$ with $n' \geq 1$ leaves. Without loss of generality,
     suppose that $\Delta(T) \geq \Delta(T')$. We draw an edge from $v \in V(T)$ with
-    maximum degree so any vertex in $T'$. Now, $\Delta(T) = k + 1$. The number of
+    maximum degree to any vertex in $T'$. Now, $\Delta(T) = k + 1$. The number of
     leaves on $T$ is now $n + n' \geq k + 1$. Note that if we connect $T$ to a leaf
     in $T'$ the number of leaves added is still $\geq 1$. This is easy to see if
     $n' \geq 2$ (we are "removing" a leaf but adding $n' - 1 \geq 1$ of them).
@@ -103,15 +103,14 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
         Show that $|A| \leq |B|$.\\
         Hint: Assign a weight $w$ to each edge $ab$ so that for all $a \in A, w(a) = 1$.
     }
-    Let $w: E(G) \to \R$ such that $w(ab) = 1, \forall a \in A$. We know that since $G$
+    Let $e = ab \in E(G)$ and $w: E(G) \to \R$ such that $w(ab) = \frac{1}{\deg_G(a)}, \forall a \in A$. We know that since $G$
     is bipartite
     \begin{equation}
-        \sum_{a \in A} w(a) = \sum_{a \in A} \deg(a) = \sum_{b \in B} w(b) = \sum_{b \in B} \deg(b).
+        \sum_{a \in A} w(a) = \sum_{b \in B} w(b).
     \end{equation}
-    However, we also
-    know that for any given $\deg_G(a) \geq \deg_G(b)$.
-    Therefore, there must be more vertices in $B$ for (1) to hold.
-    Thus, $|A| \leq |B|$
+    The left side is $|A|$ by construction. Now, since $\deg_G(a) \geq \deg_G(b)$
+    for all $a \in A, b \in B$, then $w(b) \leq 1, \forall b \in B$. Therefore,
+    for (1) to hold, it must be true that $|A| \leq |B|$.
 \end{hwproof}
 
 \begin{hwproof}
@@ -128,13 +127,16 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
         \end{itemize}
         Show that $|A| \leq |B|$.
     }
-    Suppose that $|A| > |B|$. Let $w: E(G) \to \R$ be defined by
-    $w(e) = 1$ for all $e \in E(G)$. then $w(a) = \deg_G(v)$ for any $v \in V(G)$.
+    Let $e = ab \in E(G)$ and $w: E(G) \to \R$ be defined by
+    $w(a) = 1$ for all $a \in V(G)$. then $w(a) = \deg_G(v)$ for any $v \in V(G)$.
     Since $G$ is bipartitie, we also have that
     \begin{equation}
         \sum_{a \in A} w(a) = \sum_{a \in A} \deg(a) = \sum_{b \in B} w(b) = \sum_{b \in B} \deg(b).
     \end{equation}
-    Now, by our assumption, $|A| > |B|$, this implies that
+    We know that for every $b \in B$ there exists an $a \in A$ such that
+    $\deg_G(a) > \deg_G(b)$. Therefore, $|A| < |B|$, otherwise the sums would not
+    be equal.
+
 
 \end{hwproof}
 
@@ -148,7 +150,18 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
 
         Show that $|L| \geq |P|$ unless all the points in $P$ lie on a single straight line.
     }
+    Let $A$ be the set of points in the plane and $B$ the set of lines. We draw an
+    edge $e = ab, a \in A, b \in B$ if and only if $b$ passes through $a$.
 
+    Now let $G$ be a bipartite graph with $A, B$ as the bipartition. By construction,
+    all vertices have at least one neighbor (each line passes through at least two
+    points, and we consider all pairs). Let $a\in A, b \in B$ such that
+    $\deg_G(a) = k$ be non-adjacent, and let $n_a$ be the number of points lying
+    on the line as $a$. Then, $k = |P| - n_a$. Now, since $b$ is not adjacent
+    to $a$ (or any point colinear to $a$), then $\deg_G(b) = |P| - 1 - n_a$.
+
+    Therefore, we have that $\deg_G(b) \leq |P| - 1 - n_a < \deg_G(a)$. Hence,
+    by problem 2b, $|P| \leq |L|$.
 \end{hwproof}
 
 \begin{hwproof}
@@ -230,8 +243,20 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
         $f \in \Aut(KG_{k,n})$ such that $f(a) = b$. (Graphs that have this property are
         called \textbf{vertex-transitive}).
     }
+    For brevity, we will denote the general $KG_{k,n}$ as $K$.
+    Let $v \in V(K)$ be represented by a $k$-subset in the set $\set{1\dots n}$
+    such that $v = \set{n_1, n_2, \dots, n_k}$.
+    We the consider a permutation $\pi: \N \to \N$ on $n$ elements. We will define
+    a new function $\tau: V(K) \to V(K)$ such that
+    \[\tau(v) = \set{\pi(n_1), \pi(n_2),\dots, \pi(n_k)}.\]
+    The function $\tau$ is clearly a bijection since $\pi$ is a bijection.
 
-
+    Now, since $\tau$ is a bijection we have that $\tau(v) = \tau(u)$ if and only
+    $v = u$. Now consider two adjacent vertices $u,v \in V(K)$. Then by construction
+    of $K$, $u,v$ have no elements in common. Therefore, $\tau(u), \tau(v)$ also
+    have no elements in common, and are thus still adjacent. So we have that
+    $\tau$ induces an automorphism on $K$ such that $f(u) = v$ for any
+    $u, v \in V(G)$.
 \end{hwproof}
 
 \begin{hwproof}
@@ -272,8 +297,20 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
     We pick a vertex $v \in V(Q_n)$. Given that the graph is $2^n$-regular, we see that
     in an automorphism we can place this vertex in any of the $2^n$ points.
     Now, consider this same vertex $v$ with $\deg(v) = n$. We want to place the vertices
-    of this edge. There are $n!$ ways of doing this ($n$ vertices on $n$ spots). Since
+    of this edge. There are $n!$ ways of doing this. Since
     we do this for each vertex, we have that $\aut(Q_n) = 2^nn!$
+
+    Consider two automorphism on $Q_n$, $f_1, f_2$, that leave a vertex $v \in V(G)$
+    and it's neighbors unchanged. Consider a neighbor of a neighbor of $v$. This
+    edge has two elements different from $v$ (since every vertex is a binary string).
+    Pick one of the elements that are different and "flip" it, this given us
+    a neighbor of $v$. If we "flip" the other element we get a different
+    neighbor of $v$. Generally, a vertex $n$ edges away from $v$ must have
+    $n$ neighbors with their position unchanged which lock the position of
+    the vertex. These edges must remain the same after $f_1^{-1}\circ f_2$.
+    Therefore, $f_1^{-1}\circ f_2$ is the identity map and $f_1 = f_2$.
+    Thus, labelling a vertex and its neighbors gives rise to a unique
+    automorphism. Hence, the number of automorphism of $Q_n$ is $2^nn!$.
 \end{hwproof}
 
 \begin{hwproof}
@@ -282,7 +319,21 @@ I worked on this homework with Armaan Lala and Ryan Hamblet.
         Let $G$ and $H$ be finite simple graphs such that $\hom(F, G) = \hom(F,H)$ for every
         connected finite simple graph $F$. Show that $G \cong H$.
     }
-    We start by noting that $\hom(F,G) = \hom(F, H)$ implies $\emb(F,G) = \emb(F,H)$
+    Let $X$ be a finite graph (may not be
+    connected). If $X$ is connected, then we are done (as proven in class).
+    Otherwise, we can split up $X$ into it's connected components
+    $C_1, C_2, \dots C_k$. We have that
+    \[\hom(C_i, G) = \hom(C_i, H), \ \forall i \in [1,k].\]
+
+    Now we also note that
+    \[\hom(C_i, G) = \emb(C_i, G) = c_i \ \forall i \in [1,k].\]
+    Since all the $C_i$s are independent, we can embed them individually without
+    interfering with each other.
+
+    Therefore,
+    \[\hom(X, G) = \prod_{i = 1}^k c_i = \hom(X, H).\]
+    Thus, for any finite simple graph $X$ the number of embeddings into $G$ and
+    $H$ are the same. As shown in class, this implies that $G \cong H$.
 \end{hwproof}
 
 \end{document}
