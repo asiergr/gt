@@ -1,0 +1,259 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\newcommand{\size}[1]{|#1|}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\contradiction}{\Rightarrow\!\Leftarrow}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\DeclareMathOperator*{\dist}{dist}
+
+\newenvironment{hwproof}[2]
+{
+    \textbf{Problem #1.}\\
+    #2
+    \begin{proof}
+}{
+    \end{proof}
+}
+
+\title{Homework 1}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+I worked on this homework with Armaan Lala and Ryan Hamblet.
+
+\begin{hwproof}
+    {1}
+    {The standard deck of 52 playing cards is arbitrarily divided into 13 piles with 4 cards
+        in each pile. Show that it is possible to pick one card from each pile to get cards of all
+        13 distinct values (i.e., an ace, a 2, a 3, ..., a Queen, and a King).}
+    Consider two sets $A, B$. Set $A$ contains the possible values for the cards (i.e. ace, 2, etc.)
+    and $B$ contains the 13 piles with four cards. Clearly, $(A,B)$ is bipartite. We now draw an
+    edge between $a \in A$ and $b \in B$ if and only if $a$ is in the pile $b$. We now notice this is nothing but a system of
+    distinct representatives. It suffices to find a representative for every pile to solve this problem.
+
+    We know that this exists if and only if there is a matching that covers every vertex in $B$. Since this is a finite graph,
+    it suffices to show that that the bipartite graph meets the Hall Condition. That is, for every $S \subseteq A$, $\size{N_G(S)} \geq \size{S}$.
+    Consider a subset of a single element $S_1 = \set{a}$. This element is a card value, and the card value must be contained in at least one
+    pile. More specifically, $1 \leq \size{N_G(S_1)} \leq 4$ (since there are 4 cards of any given type). This property is true for every
+    card value. Therefore, for any subset $S\subseteq A$ we see that $\size{S} \leq \size{N_G(S)} \leq 4\size{S}$.
+
+    This clearly shows that the Hall condition is met, and thus we have a matching that covers all the vertices in $A$. Therefore, there exists
+    a unique representative for every pile, and thus we can pick a card from each pile to get cards of all 13 values.
+\end{hwproof}
+
+\begin{hwproof}
+    {2a}
+    {All graph in this problem are finite.
+
+        Show that the edges of a $d$-regular bipartite graph can be partitioned into $d$ perfect matchings.}
+
+    Let $G = (A,B)$ be a bipartite graph. We will denote the edge set
+    of this graph as $E$. Since $(A,B)$ is $d$-regular, we know there exists a perfect matching $M_1$. Now, we remove
+    all the edges of $M_1$ from $E$. Since each edge connected a vertex in $A$ to a vertex in $B$, we are now left
+    with a $d-1$-regular bipartite graph. We now have a perfect matching $M_2$. We then remove the edges in this matching
+    from $E$, we are left with a $d-2$-regular graph. We repeat these steps until there are no edges left in $E$, this
+    is possible because we will always have an $i$-regular bipartite graph where $0\leq i \leq d$. We notice
+    we will end up removing all edges from $E$ and will have produced $d$ disjoint matchings (since the edges are
+    removed every time). Therefore, the edges of a $d$-regular graph can be partitioned into $d$ perfect matchings.
+\end{hwproof}
+
+\begin{hwproof}
+    {2b}
+    {All graph in this problem are finite.
+
+        Show that every bipartite graph of maximum degree $d$ is a subgraph of some $d$-regular bipartite graph.
+    }
+    We will denote as $K_{m,n}$ the bipartite graph with partition $(A,B)$ such that $\size{A} = n, \size{B} = m$ and
+    every $a \in A$ is connected to every $b \in B$. Now say we have a bipartite graph $G$ with bipartition $(A_1, B_1)$.
+    Now let $n = \max\set{\size{A_1}, \size{B_2}}$. Consider the graph $K_{n,n}$ that is $n$ regular. Now, successively remove edges from $K_{n,n}$
+    until it is $d$-regular. We call this new graph $G'$. We claim that $G \subseteq G'$ since $V(G) \subseteq V(G')$ and $E(G) \subseteq E(G')$, and
+    if two vertices are adjacent in $G$, they are also adjacent in $G'$. Furthermore, $G'$ is $d$-regular as required.
+\end{hwproof}
+
+\begin{hwproof}
+    {2c}
+    {All graphs in this problem are finite.
+
+        Conclude that the edges of every bipartite graph of maximum degree $d$ can be partitioned into $d$ matchings.
+    }
+    We know from 2a that every $d$-regular graph has $d$ perfect matchings. We also know from 2b that every
+    bipartite graph $G$ is a subset of a $d$-regular bipartite graph $G'$. Hence, if we take the partitions that
+    are perfect matchings of $G'$ and subtract the edges that are not in $G$ we get $d$ matchings from the edges
+    of $G$. Clearly the partition is disjoint (from 2a) and contains all the edges from $G$ (from 2b). There are no empty elements in the partition
+    because there is at least one element in $G$ of degree $d$ (which needs at least $d$ different matching partitions).
+\end{hwproof}
+
+\begin{hwproof}
+    {2d}
+    {All graphs in this problem are finite
+
+        For each $d \geq 2$, give an example of a simple non-bipartite graph of maximum degree $d$ whose edges cannot be
+        partitioned into $d$ matchings.}
+
+    For any even $d$ we can simply pick $K_{d+1}$. For an odd $d$, we find a graph in OEIS A099437 that meets the maximum
+    degree condition :) (We want a Class II graph with maximum degree $d$).
+\end{hwproof}
+
+\begin{hwproof}
+    {3a}
+    {Show that if $G$ has no isolated vertices, then $\alpha(G) \leq \beta'(G)$.}
+
+    We know that since there are no isolated vertices,
+    every vertex in $G$ has at least one adjacent vertex, and none of it's neighbors are another vertex in the
+    independent set (by definition). This implies directly that $\alpha(G) \leq \beta'(G)$.
+\end{hwproof}
+
+\begin{hwproof}
+    {3b}
+    {Show that for every graph $G$, $\alpha(G) + \beta(G) = \size{V(G)}$.}
+
+    Assume $D$ is a max vertex cover in $G$. Now consider $D^C$, we will prove this is an idependent set. Assume, for the sake of
+    contradiction, that $D^C$ is not an independent set. Then, there exist $u,v \in D^C$ such that $uv \in E(G)$. This implies that
+    $u,v \not\in D$, so $D$ does not cover the edge $uv, \contradiction$.
+    Thus, we know that $\alpha(G) \geq \size{V(G)} - \beta(G)$.
+
+    Now, assume that $I$ is a maximum independent set. Assume, for the sake of contradiction, that $I^C$ is not a vertex cover.
+    Then, there exists $uv \in E(G)$ such that $u, v \not \in I^C$, so $u, v \in I, \contradiction$. Therefore, $I^C$ is a vertex cover.
+    Therefore, we have that $\beta(G) \leq \size{V(G)} - \alpha(G)$.
+
+    Combining both equations, we get that $\alpha(G) + \beta(G) = \size{V(G)}$.
+\end{hwproof}
+
+\begin{hwproof}
+    {3c}
+    {Show that for every graph $G$ without isolated vertices, $\alpha'(G) + \beta'(G) = \size{V(G)}$}.
+
+    Let $M$ be a a maximum matching. We will show that the set $I$ of edges that are not adjacent to any edge in $M$ is an independent set.
+    Assume, for the sake of contradiction, that it is not an independent set.
+    Then, there exist $u,v \in I$ such that $uv \in E(G)$. This implies, we can expand the matching $M$ by adding this edge to this
+    vertex, meaning the matching was not maximal $\contradiction$. Therefore, $I$ is an indpendent set.
+
+    Now, we construct an edge cover $D$. To do this, for every $v\in I$ we take an edge adjacent to $v$. We also add all the edges in $M$.
+    This set now covers all the vertices in $G$ and $\size{D} = \alpha'(G) + \size{I}$. Therefore we have that
+    \begin{equation*}
+        \alpha'(G) + \size{D} \leq \alpha(G) + \size{D} = 2\alpha'(G) + \size{I} = \size{V(G)}.
+    \end{equation*}
+
+    Now, consider a minimum edge cover $C$, then the edges in $C$ cannot form a path of length $>2$ (Since if we have a path of length 3, we
+    can remove the middle edge to make a smaller edge cover). Therefore, all the connected components in $C$ form star graphs (denoted as $S_n$).
+    Let $C_i$ denote the $i$th connected component and $n$ denote the number of connected components.
+    Now we have that $\sum_{i=1...n}^n \size{C_i} = \size{V(G)}$ and $\sum_{i=1...n} = \beta'(G)$. Now, since star graph are trees, we have that
+    $\size{E(C_i)} = \size{V(C_i)} -1$ for all $i$. Therefore, $\beta'(G) + n = \size{V(G)}$. Thus,
+    \begin{equation*}
+        \beta'(G) + \alpha'(G) \leq \beta'(G) + n = \size{V(G)}
+    \end{equation*}
+
+    Finally, combining both equations, we get that $\alpha(G) + \beta(G) = \size{V(G)}$.
+\end{hwproof}
+
+\begin{hwproof}
+    {3d}
+    {Conclude that if $G$ is a bipartite graph without isolated vertices, then $\alpha(G) = \beta'(G)$.}
+
+    We know from 2b and 2c that, since there are no isolated vertices, $\alpha(G) + \beta(G) = \alpha'(G) + \beta'(G)$. Now, by the Konig-Egervary
+    theorem, since $G$ is bipartite, we know that $\alpha'(G) = \beta(G)$. Therefore, we have the needed result that $\alpha(G) = \beta'(G)$.
+\end{hwproof}
+
+\begin{hwproof}
+    {4a}
+    {Show that $G$ has a 1-to-$k$-matching if and only if for all $S \subseteq A, \size{N_G(S)} \geq k\size{S}$}.
+
+    ($\Rightarrow$) We assume that $G$ has a 1-to-$k$ matching. That is, there is a set of edges $M \subseteq E(G)$ such that every $a \in A$ is incident to
+    at least $k$ edges in $M$, while each $b \in B$ is incident to at most one edge in $M$. Now, we create an auxiliary graph $G' = (A', B')$ that replaces each $a \in A$ with
+    a set of $k \geq k$ vertices. We draw an edge from each of these vertices to all the $b\in B$ that the vertex we are replacing was neighboring, if there were more than $k$
+    neighbors, one of the vertices will have degree $\deg(a) - k$. Now, for any $S' \subseteq A'$, $\size{N_{G'}(S')} \geq \size{S'}$, this is easy to see as every vertex has
+    degree greater than 1. Now, let $S \subseteq A$ we have that $\size{S'} = k\size{S}$.
+    Therefore, $\size{N_G(S)} \geq k\size{S}$ as needed.
+
+    ($\Leftarrow$) We assume that $S \subseteq A, \size{N_G(S)} \geq k\size{S}$. Now, we create an auxiliary graph $G' = (A', B')$ that replaces each $a \in A$ with
+    a set of $k$ vertices. We draw an edge from each of these vertices to all the $b\in B$ that the vertex we are replacing was neighboring, if there were more than $k$
+    neighbors, one of the vertices will have degree $\deg(a) - k$. Now, pick $S \subseteq A$, we know that $\size{N_G(S)} \geq k\size{S}$. Now let $S' \subseteq A'$,
+    we have that $\size{S'} = k\size{S}$. Therefore, $\size{N_{G'}(S')} \geq \size{S'}$. Since, $G'$ is bipartite, this implies there is a perfect matching in $G'$.
+    This, then implies there is a 1-to-$k$ matching in $G$.
+\end{hwproof}
+
+\begin{hwproof}
+    {4b}
+    {Show that $G$ has a $k$-to-1-matching if and only if for all $S \subseteq A$, $k\size{N_G(S)} \geq \size{S}$.}
+
+    For both parts of this question we will use an auxiliary graph $G' = (A', B')$ created by replacing every $b \in B$ with a set of $k$ edges. Let $A' = A$. Then, we draw an
+    edge from each of the $k$ new vertices from the new set to the edge in $A$ that $b$ was neighboring.
+
+    ($\Rightarrow$) Assume that $G$ has a $k$-to-one matching, that is, there is a set $M \subseteq E(G)$ such that each vertex $a \in A$ is incident to at least one edge in $M$,
+    and each vertex $b \in B$ is incident to at most $k$ edges in $M$. Now we consider the auxiliary graph $G'$, in it we can see that for any
+    $S' \subseteq A, \size{N_{G'}(S')} \geq \size{S}$. Now, since $\size{N_{G'}(S')} = k\size{N_G}(S)$, in $G$ we have that $S \subseteq A$, $k\size{N_G(S)} \geq \size{S}$.
+
+    ($\Leftarrow$) We assume that for all $S \subseteq A$, $k\size{N_G(S)} \geq \size{S}$. Now, consider the auxiliary graph $G'$. Since $\size{N_{G'}(S')} = k\size{N_G}(S)$,
+    we have that for any $S' \subseteq A, \size{N_{G'}(S')} \geq \size{S}$. Therefore, there exists a perfect matching in $G'$. Therefore, we have a $k$-to-1 matching in $G$.
+
+\end{hwproof}
+
+\begin{hwproof}
+    {5a}
+    {Prove that if a finite graph $G$ has no essential vertices, then $\emptyset$ is a barrier in $G$.}
+
+    To show that $\emptyset$ is a barrier, we must show that all even components of $G$ have a perfect matching and all odd components of $G$ have "nearly perfect" matchings.
+    Now, we know that since, $G$ has no essential vertices, it is hypomatchable. That is, for any $v \in V(G)$, there is a perfect matching in $G - v$. Consider an even component
+    in $G$, then we could remove any $v$ in this component, make it odd, and still have a perfect matching. This is not possible, so $G$ has no even components.
+
+    Now consider an odd component $K \subseteq G$ and some $v \in K$. Again, since $G$ is hypomatchable, $G-v$ has a perfect matching, implying that $K - v$ also does.
+    Adding $v$ back in we notice that $K$ now has a "nearly perfect" matching. Therefore, we have that $\emptyset$ is a barrier in $G$.
+\end{hwproof}
+
+\begin{hwproof}
+    {5b}
+    {Let $G$ be a finite graph. Show that if $v \in V(G)$ is an essential vertex in $G$ and $B \subseteq V(G) \backslash \set{v}$ is a barrier in $G - v$, then
+        $B \cup \set{v}$ is a barrier in $G$.}
+
+    Let $G$ be a graph with an essential vertex $v$ and a barrier $B \subseteq V(G)$ in $G-v$, and $M$ be a maximum matching in $G$. Since $v$ is essential, there is an
+    edge $e \in M$ that covers $v$. Now, if we remove that edge, we see that $\size{M-e} = \size{M} - 1 = \alpha'(G) - 1 = \alpha'(G - v)$.
+
+    This tell us that $M-e$ is a maximum matching in $G - v$. Let $U_G(M)$ denote the vertices left uncovered by a matching $M$. Since, we know that $B$ is a barrier in
+    $G - v$, we have that $U_{G-v}(M-e) = o((G-v) - B) - \size{B} = o(G - (B\cup v)) - \size{B}$. However, $U_{G-v} = U_G(M-e) + 1$ since $v \in G$ and is uncovered.
+    Adding $e$ to $G$ covers two new vertices, so
+    \begin{equation}
+        U_G(M) = U_G(M-e) - 2 = U_{G-v}(M-e) - 1 = o(G - (B\cup v)) - \size{B} - 1 = o(G - (B \cup v)) - \size{B\cup v}.
+    \end{equation}
+    And this is the definition of a barrier.
+\end{hwproof}
+
+\begin{hwproof}
+    {6}
+    {Show that every finite connected 3-regular graph with at most 2 bridges has a perfect matching.}
+
+    Let $G$ be a finite connected 3-regular graph with at most 2 bridges. Assume, for the sake of contradiction, that $G$ does not have a perfect matching.
+    Let $M$ be the maximal matching in $G$. Let $B$ be a barrier in $G$, and suppose $C_1,\dots C_k$ are odd components of $G - B$. Let $c_i$ denote the number of
+    edges that connect $B$ and $C_i$. We know that $C_i$ must be conneted to $B$ by an odd number of edges, that is, $c_i$ is odd, and at most
+    two of them are 1 (since there are at most two bridges). So, the number of edges connecting $B$ to $G - B$ is at most $3(k - 2) + 2 = 3k - 4$. Now, since every
+    vertex in $B$ has degree 3, we know that the number of edges connecting $B$ to $G - B$ is at most $3\size{B}$.
+
+    Now, let $d$ be the number of edges connecting $B$ and $C_i$ for all $i$, $f$ be the number of edges from $G$ to the even components of $G - B$, and $h$ the
+    number of edges connecting vertices within $B$. We see that $3\size{B} = d + f + 2h$. Combining this with our previous inequality we get
+    \begin{equation*}
+        3k - 4 \leq d \leq  d + f + 2h = 3\size{B}.
+    \end{equation*}
+    Since $3k - 4$ is not divisible by 3 and $3\size{B}$ is, these cannot be equal.
+    So, either $3k - 4 < d$ or $f + 2h > 0$.
+
+    Since $d$ is the sum of $k$ odd numbers, then $d$ and $k$ have the same parity.
+    So, if $3k - 4 \leq d$ then $3k - 2 \leq d$. Therefore, $3k - 2 \leq 3\size{S} + 2/3$.
+    Similarly, since $f$ is even, if $f + 2h > 0$, then $f + 2h \geq 2$. Finally, we
+    get that $3k - 4 \leq 3\size{S} - 2$ so $k \leq \size{S} + 2/3$.
+
+    However, $k$ is an integer, so $k \leq \size{S} + 2/3$ implies $k \leq \size{S}$. Therefore, we have a perfect matching.
+\end{hwproof}
+\end{document}
