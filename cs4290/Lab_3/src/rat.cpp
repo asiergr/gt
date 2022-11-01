@@ -40,12 +40,9 @@ void RAT_print_state(RAT *t){
 /////////////////////////////////////////////////////////////
 
 int  RAT_get_remap(RAT *t, int arf_id){
-  RAT_Entry entry = t->RAT_Entries[arf_id];
-  if (entry.valid && arf_id != -1) {
-    return entry.prf_id;
-  }
-  
-  // something not valid
+  if (t->RAT_Entries[arf_id].valid && (arf_id != -1)) {
+    return t->RAT_Entries[arf_id].prf_id;
+  } 
   return -1;
 }
 
@@ -54,8 +51,8 @@ int  RAT_get_remap(RAT *t, int arf_id){
 /////////////////////////////////////////////////////////////
 
 void RAT_set_remap(RAT *t, int arf_id, int prf_id){
-  t->RAT_Entries[arf_id].valid = true;
   t->RAT_Entries[arf_id].prf_id = prf_id;
+  t->RAT_Entries[arf_id].valid = true;
 }
 
 /////////////////////////////////////////////////////////////

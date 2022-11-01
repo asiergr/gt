@@ -199,7 +199,6 @@ void pipe_cycle_decode(Pipeline *p){
    int ii = 0;
 
    int jj = 0;
-   static uint64_t start_inst_id = 1;
 
 
    // Loop Over ID Latch
@@ -209,11 +208,10 @@ void pipe_cycle_decode(Pipeline *p){
      } else {  // No Stall & there is Space in Latch
        for(jj = 0; jj < PIPE_WIDTH; jj++) { // Loop Over FE Latch
          if(p->FE_latch[jj].valid) {
-           if(p->FE_latch[jj].inst.inst_num == start_inst_id) { // In Order Inst Found
+           if(p->FE_latch[jj].inst.inst_num != -1) { // In Order Inst Found
              p->ID_latch[ii]        = p->FE_latch[jj];
              p->ID_latch[ii].valid  = true;
              p->FE_latch[jj].valid  = false;
-             start_inst_id++;
              break;
            }
          }
@@ -308,59 +306,53 @@ void pipe_cycle_issue(Pipeline *p) {
   // TODO: If src1/src2 is not remapped, set src1ready/src2ready
   // TODO: If src1/src is remapped, set src1tag/src2tag from RAT. Set src1ready/src2ready based on ready bit from ROB entries.
   // TODO: Set dr_tag
+
   for (int ii = 0; ii < PIPE_WIDTH; ii++) {
-    // Check if latch is valid if not dont do anything
-    if (p->ID_latch[ii].valid == 0) continue;
+    if (!p->ID_latch[ii].valid) continue;
     
-    if (!ROB_check_space(p->pipe_ROB)) {
+    if (ROB_check_space(p->pipe_ROB)) {
+      int src1_phys = RAT_get_remap(p->pipe_RAT, p->ID_latch[ii].inst.src1_reg);
+      int src2_phys = RAT_get_remap(p->pipe_RAT, p->ID_latch[ii].inst.src2_reg);
+      pipe_print_state(p);
+      
+      if (src1_phys != -1) {
+        p->ID_latch[ii].inst.src1_ready = ROB_check_ready(p->pipe_ROB, src1_phys);
+        p->ID_latch[ii].inst.src1_tag = src1_phys;
+      } else {
+        p->ID_latch[ii].inst.src1_ready = true;
+      }
+
+      if (src2_phys != -1) {
+        p->ID_latch[ii].inst.src1_ready = ROB_check_ready(p->pipe_ROB, src2_phys);
+        p->ID_latch[ii].inst.src1_tag = src2_phys;
+      } else {
+        p->ID_latch[ii].inst.src1_ready = true;
+    }
+
+    int prev_tail = ROB_insert(p->pipe_ROB, p->ID_latch[ii].inst);
+    p->pipe_ROB->ROB_Entries[prev_tail].valid = 1; 
+    p->pipe_ROB->ROB_Entries[prev_tail].ready = 0; 
+    p->pipe_ROB->ROB_Entries[prev_tail].exec = 0; 
+
+    p->pipe_ROB->ROB_Entries[prev_tail].inst.dr_tag = prev_tail;
+    if (p->pipe_ROB->ROB_Entries[prev_tail].inst.dest_reg != 1) {
+      RAT_set_remap(p->pipe_RAT, p->pipe_ROB->ROB_Entries[prev_tail].inst.dest_reg, prev_tail);
+    }
+    p->ID_latch[ii].stall = false;
+    p->ID_latch[ii].valid = false;
+    } else {// no space, stall
       p->ID_latch[ii].stall = true;
 
       if (ii > 0 && !p->ID_latch[ii - 1].valid) {
         Pipe_Latch hold = p->ID_latch[ii-1];
-        p->ID_latch[ii-1] = p->ID_latch[ii];
         p->ID_latch[ii] = hold;
+        p->ID_latch[ii-1] = p->ID_latch[ii];
         p->ID_latch[ii].valid = false;
         p->ID_latch[ii].stall = false;
       }
     }
-
-    // ROB has space
-    int src1_remap = RAT_get_remap(p->pipe_RAT, p->ID_latch[ii].inst.src1_reg);
-    int src2_remap = RAT_get_remap(p->pipe_RAT, p->ID_latch[ii].inst.src2_reg);
-
-    if (src1_remap == -1) { 
-      p->ID_latch[ii].inst.src1_ready = true;
-    } else { 
-      p->ID_latch[ii].inst.src1_ready = ROB_check_ready(p->pipe_ROB, src1_remap);
-      p->ID_latch[ii].inst.src1_tag = src1_remap;
-    }
-
-    if (src2_remap == -1) { 
-      p->ID_latch[ii].inst.src2_ready = true;
-    } else {
-      p->ID_latch[ii].inst.src2_ready = ROB_check_ready(p->pipe_ROB, src2_remap);
-      p->ID_latch[ii].inst.src2_tag = src2_remap;
-    }
-
-    int prev_tail = ROB_insert(p->pipe_ROB, p->ID_latch[ii].inst);
-    p->pipe_ROB->ROB_Entries[prev_tail].valid = 1;
-    p->pipe_ROB->ROB_Entries[prev_tail].ready = 0;
-    p->pipe_ROB->ROB_Entries[prev_tail].exec = 0;
-
-    p->pipe_ROB->ROB_Entries[prev_tail].inst.dr_tag = prev_tail;
-
-    if (p->pipe_ROB->ROB_Entries[prev_tail].inst.dest_reg != -1) {
-      RAT_set_remap(p->pipe_RAT, p->pipe_ROB->ROB_Entries[prev_tail].inst.dest_reg, prev_tail);
-    }
-    
-    p->ID_latch[ii].stall = false;
-    p->ID_latch[ii].valid = false;
-
   }
-
 }
-
-
 
 //--------------------------------------------------------------------//
 
@@ -375,57 +367,58 @@ void pipe_cycle_schedule(Pipeline *p) {
     // inorder scheduling
     // Find all valid entries, if oldest is stalled then stop
     // Else mark it as ready to execute and send to SC_latch
-    
     for (int ii = 0; ii < PIPE_WIDTH; ii++) {
-      int oldest_valid_idx = -1;
-      for (int j = 0; j < MAX_ROB_ENTRIES; j++) {
-        if (!p->pipe_ROB->ROB_Entries[j].valid) continue;
-
-        if (!p->pipe_ROB->ROB_Entries[j].exec && !p->pipe_ROB->ROB_Entries[j].ready) {
-          if ((oldest_valid_idx == -1) || (p->pipe_ROB->ROB_Entries[oldest_valid_idx].inst.inst_num > p->pipe_ROB->ROB_Entries[j].inst.inst_num)) {
-            oldest_valid_idx = j;
-          }
+      // find oldest
+      int oldest_valid_inst = -1;
+      for (int jj = 0; jj < MAX_ROB_ENTRIES; jj++) {
+        if ((!p->pipe_ROB->ROB_Entries[jj].valid) || (p->pipe_ROB->ROB_Entries[jj].exec || p->pipe_ROB->ROB_Entries[jj].ready)) continue;
+        if (oldest_valid_inst == -1) {
+          oldest_valid_inst = jj;
+        } else if (p->pipe_ROB->ROB_Entries[oldest_valid_inst].inst.inst_num > p->pipe_ROB->ROB_Entries[jj].inst.inst_num) {
+          oldest_valid_inst = jj;
         }
       }
-      
-      if (oldest_valid_idx == -1) {
-        p->SC_latch[ii].valid = false;
+
+      if (oldest_valid_inst == -1) {
         p->SC_latch[ii].stall = true;
+        p->SC_latch[ii].valid = false;
         return;
-      } else { 
-        ROB_mark_exec(p->pipe_ROB, p->pipe_ROB->ROB_Entries[oldest_valid_idx].inst);
-        if (!p->pipe_ROB->ROB_Entries[oldest_valid_idx].exec) {
-          p->SC_latch[ii].valid = false;
-          p->SC_latch[ii].stall = true;
-          return;
-        } else {
-          p->SC_latch[ii].valid = true;
-          p->SC_latch[ii].stall = false;
-          p->SC_latch[ii].inst = p->pipe_ROB->ROB_Entries[oldest_valid_idx].inst;
-        }
-      } 
+      }
+      // We have an oldest inst
+      ROB_mark_exec(p->pipe_ROB, p->pipe_ROB->ROB_Entries[oldest_valid_inst].inst);
+      if (!p->pipe_ROB->ROB_Entries[oldest_valid_inst].exec) {
+        p->SC_latch[ii].stall = true;
+        p->SC_latch[ii].valid = false;
+        return;
+      }
+      // inst is ready
+      p->SC_latch[ii].stall = false;
+      p->SC_latch[ii].valid = true;
+      p->SC_latch[ii].inst = p->pipe_ROB->ROB_Entries[oldest_valid_inst].inst;
     }
   }
 
   if(SCHED_POLICY==1){
+    // out of order scheduling
+    // Find valid + src1ready + src2ready + !exec entries in ROB
+    // Mark ROB entry as ready to execute  and transfer instruction to SC_latch
     for (int ii = 0; ii < PIPE_WIDTH; ii++) {
-      // vector of instructions
-      std::vector<Inst_Info> insts;
+      std::vector<Inst_Info> inst_infos;
 
-      // find instructions for which both sources are ready, and the instruction is unscheduled
-      for (int j = 0; j < MAX_ROB_ENTRIES; j++) {
-        if (p->pipe_ROB->ROB_Entries[j].valid && p->pipe_ROB->ROB_Entries[j].inst.src1_ready && p->pipe_ROB->ROB_Entries[j].inst.src2_ready
-            && !p->pipe_ROB->ROB_Entries[j].exec && !p->pipe_ROB->ROB_Entries[j].ready) {
-            insts.push_back(p->pipe_ROB->ROB_Entries[j].inst);
-        }
+      for (int jj = 0; jj < MAX_ROB_ENTRIES; jj++) {
+        if (!p->pipe_ROB->ROB_Entries[jj].valid) continue;
+        if (p->pipe_ROB->ROB_Entries[jj].inst.src1_ready && p->pipe_ROB->ROB_Entries[jj].inst.src2_ready
+            && !p->pipe_ROB->ROB_Entries[jj].exec && !p->pipe_ROB->ROB_Entries[jj].ready) {
+            inst_infos.push_back(p->pipe_ROB->ROB_Entries[jj].inst);
+          }
       }
-
-      // if v_size > 0 means there is instructions to schedule
-      if (insts.size() <= 0) continue;
-
-      Inst_Info oldest_inst = insts[0];
-      for (Inst_Info inst: insts) {
-        if (inst.inst_num < oldest_inst.inst_num) oldest_inst = inst;
+      
+      if (inst_infos.size() <= 0) continue;
+      // There are instructions to schedule
+      Inst_Info oldest_inst = inst_infos[0];
+      for (Inst_Info inst_info: inst_infos) {
+        if (inst_info.inst_num < oldest_inst.inst_num)
+        oldest_inst = inst_info;
       }
       ROB_mark_exec(p->pipe_ROB, oldest_inst);
       p->SC_latch[ii].valid = true;
@@ -433,7 +426,6 @@ void pipe_cycle_schedule(Pipeline *p) {
       p->SC_latch[ii].inst = oldest_inst;
     }
   }
-
 }
 
 
@@ -444,19 +436,16 @@ void pipe_cycle_writeback(Pipeline *p){
   // TODO: Go through all instructions out of EXE latch
   // TODO: Writeback to ROB (using wakeup function)
   // TODO: Update the ROB, mark ready, and update Inst Info in ROB
-  for (int i = 0; i < MAX_WRITEBACKS; i++) {
-    if (!p->EX_latch[i].valid) continue;
-    
-    if (p->EX_latch[i].inst.exe_wait_cycles > 0) {
-      p->EX_latch[i].stall = true;
+  for (int ii = 0; ii < MAX_WRITEBACKS; ii++) {
+    if (!p->EX_latch[ii].valid) continue;
+    if (p->EX_latch[ii].inst.exe_wait_cycles > 0 || p->EX_latch[ii].inst.dr_tag == -1) {
+      p->EX_latch[ii].stall = true;
       continue;
     }
-
-    if (p->EX_latch[i].inst.dr_tag != -1) {
-      ROB_wakeup(p->pipe_ROB, p->EX_latch[i].inst.dr_tag);
-      ROB_mark_ready(p->pipe_ROB, p->EX_latch[i].inst);
-      p->EX_latch[i].valid = false;
-    }
+    
+    ROB_wakeup(p->pipe_ROB, p->EX_latch[ii].inst.dr_tag);
+    ROB_mark_ready(p->pipe_ROB, p->EX_latch[ii].inst);
+    p->EX_latch[ii].valid = false;
   }
 }
 
@@ -465,25 +454,29 @@ void pipe_cycle_writeback(Pipeline *p){
 
 
 void pipe_cycle_commit(Pipeline *p) {
-  int ii = 0;
+  int ii;
 
   // TODO: check the head of the ROB. If ready commit (update stats)
   // TODO: Deallocate entry from ROB
   // TODO: Update RAT after checking if the mapping is still relevant
   // TODO: Flush pipeline when exception is found
-
-  for (ii = 0; ii < PIPE_WIDTH; ii++) {
+  
+  for (ii = 0; ii< PIPE_WIDTH; ii++) {
     if (!ROB_check_head(p->pipe_ROB)) continue;
-
-      Inst_Info curr = ROB_remove_head(p->pipe_ROB);
-      if (RAT_get_remap(p->pipe_RAT, curr.dest_reg) == curr.dr_tag) {
-        RAT_reset_entry(p->pipe_RAT, curr.dest_reg);
-      }
-      p->stat_retired_inst += 1;
-      if (curr.inst_num >= p->halt_inst_num) {
-        p->halt = true;
-      }
+    
+    p->stat_retired_inst += 1;
+    Inst_Info inst_info = ROB_remove_head(p->pipe_ROB);
+    int phys_reg = RAT_get_remap(p->pipe_RAT, inst_info.dest_reg);
+    if (phys_reg == inst_info.dr_tag) RAT_reset_entry(p->pipe_RAT, inst_info.dest_reg);
+    if (inst_info.inst_num >= p->halt_inst_num) {
+      p->halt = true;
+    }
   }
+
+
+
+
+
 }
 
 //--------------------------------------------------------------------//

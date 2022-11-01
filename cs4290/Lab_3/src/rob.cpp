@@ -33,7 +33,7 @@ void ROB_print_state(ROB *t){
   for(ii = 0; ii < NUM_ROB_ENTRIES; ii++) {
     printf("%5d ::  %d\t", ii, (int)t->ROB_Entries[ii].inst.inst_num);
     printf(" %5d\t", t->ROB_Entries[ii].valid);
-    printf(" %5d\t", t->ROB_Entries[ii].ready);
+    printf(" %5d\n", t->ROB_Entries[ii].ready);
     printf(" %5d\n", t->ROB_Entries[ii].exec);
   }
   printf("\n");
@@ -54,12 +54,12 @@ bool ROB_check_space(ROB *t){
 int ROB_insert(ROB *t, Inst_Info inst){
   if (!ROB_check_space(t)) return -1;
 
-  int curr_tail = t->tail_ptr;
-  t->ROB_Entries[curr_tail].valid = true;
-  t->ROB_Entries[curr_tail].inst = inst;
+  int prev_tail = t->tail_ptr;
+  t->ROB_Entries[prev_tail].inst = inst;
+  t->ROB_Entries[prev_tail].valid = true;
 
-  t->tail_ptr = (curr_tail + 1) % (MAX_ROB_ENTRIES - 1);
-  return curr_tail;
+  t->tail_ptr = (t->tail_ptr + 1) % (NUM_ROB_ENTRIES - 1);
+  return prev_tail;
 }
 
 /////////////////////////////////////////////////////////////
@@ -67,14 +67,12 @@ int ROB_insert(ROB *t, Inst_Info inst){
 /////////////////////////////////////////////////////////////
 
 void ROB_mark_exec(ROB *t, Inst_Info inst){
-  for (int ii = 0; ii < MAX_ROB_ENTRIES; ii++) {
-    ROB_Entry entry = t->ROB_Entries[ii];
-    if (entry.inst.inst_num == inst.inst_num && entry.valid) {
-      entry.exec = entry.inst.src1_ready && entry.inst.src2_ready;
-      return;
+  for (int i = 0; i < NUM_ROB_ENTRIES; i++) {
+    if (t->ROB_Entries[i].valid && (t->ROB_Entries[i].inst.inst_num == inst.inst_num)) {
+      t->ROB_Entries[i].exec = t->ROB_Entries[i].inst.src1_ready && t->ROB_Entries[i].inst.src2_ready;
+      break;
     }
   }
-
 }
 
 
@@ -83,11 +81,10 @@ void ROB_mark_exec(ROB *t, Inst_Info inst){
 /////////////////////////////////////////////////////////////
 
 void ROB_mark_ready(ROB *t, Inst_Info inst){
-  for (int ii = 0; ii < MAX_ROB_ENTRIES; ii++) {
-    ROB_Entry entry = t->ROB_Entries[ii];
-    if (entry.inst.inst_num == inst.inst_num && entry.valid) {
-      entry.ready = true;
-      return;
+  for (int i = 0; i < NUM_ROB_ENTRIES; i++) {
+    if (t->ROB_Entries[i].valid && (t->ROB_Entries[i].inst.inst_num == inst.inst_num)) {
+      t->ROB_Entries[i].ready = true;
+      break;
     }
   }
 }
@@ -97,8 +94,7 @@ void ROB_mark_ready(ROB *t, Inst_Info inst){
 /////////////////////////////////////////////////////////////
 
 bool ROB_check_ready(ROB *t, int tag){
-  ROB_Entry entry = t->ROB_Entries[tag];
-  return entry.valid && entry.ready;
+  return t->ROB_Entries[tag].ready && t->ROB_Entries[tag].valid;
 }
 
 
@@ -115,18 +111,16 @@ bool ROB_check_head(ROB *t){
 /////////////////////////////////////////////////////////////
 
 void  ROB_wakeup(ROB *t, int tag){
-  for (int ii = 0; ii < MAX_ROB_ENTRIES; ii++) {
-    ROB_Entry entry = t->ROB_Entries[ii];
-    if (!entry.valid) continue;
-    
-    Inst_Info inst = entry.inst;
-    if (inst.src1_tag == tag) {
-      inst.src1_ready = true;
-      inst.src1_tag = -1;
+  for (int i = 0; i < NUM_ROB_ENTRIES; i++) {
+    if (!t->ROB_Entries[i].valid) continue;
+
+    if (t->ROB_Entries[i].inst.src1_tag == tag) {
+      t->ROB_Entries[i].inst.src1_tag = -1; // -1 means ready
+      t->ROB_Entries[i].inst.src1_ready = true;
     }
-    if (inst.src2_tag == tag) {
-      inst.src2_ready = true;
-      inst.src2_tag = -1;
+    if (t->ROB_Entries[i].inst.src2_tag == tag) {
+      t->ROB_Entries[i].inst.src2_tag = -1;
+      t->ROB_Entries[i].inst.src2_ready = true;
     }
   }
 }
@@ -137,29 +131,13 @@ void  ROB_wakeup(ROB *t, int tag){
 /////////////////////////////////////////////////////////////
 
 Inst_Info ROB_remove_head(ROB *t){
-  // check if it's valid
-  if (!ROB_check_head(t)) return {.inst_num=(uint64_t) -1};
-  ROB_Entry entry = t->ROB_Entries[t->head_ptr];
-  entry.valid = false;
+  if (!ROB_check_head(t)) return {.inst_num = (uint64_t) -1};
+
+  Inst_Info ret_val = t->ROB_Entries[t->head_ptr].inst;
+  t->ROB_Entries[t->head_ptr].valid = false;
   t->head_ptr = (t->head_ptr + 1) % (NUM_ROB_ENTRIES - 1);
-  return entry.inst;
-}
+  return ret_val;
 
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////
-// Invalidate all entries in ROB
-/////////////////////////////////////////////////////////////
-
-void ROB_flush(ROB *t){
-  for(int ii=0; ii<MAX_ROB_ENTRIES; ii++){
-    t->ROB_Entries[ii].valid=false;
-    t->ROB_Entries[ii].ready=false;
-    t->ROB_Entries[ii].exec=false;
-  }
-  t->head_ptr=0;
-  t->tail_ptr=0;
 }
 
 /////////////////////////////////////////////////////////////
