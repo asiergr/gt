@@ -1,0 +1,245 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{tikz}
+\usepackage{wasysym}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+
+\newcommand{\contradiction}{\Rightarrow\!\Leftarrow}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\defeq}{:=}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\epsilon}{\varepsilon}
+
+\DeclareMathOperator*{\dist}{dist}
+\DeclareMathOperator*{\val}{val}
+
+\newenvironment{hwproof}[2]
+{
+    \textbf{Problem #1.}\\
+    #2
+    \begin{proof}
+}{
+    \end{proof}
+    \newpage
+}
+
+\title{Homework 1}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+I worked on this homework with and Ryan Hamblet.
+
+\begin{hwproof}
+    {1}
+    {The goal of this problem is to show that the Ford--Fulkerson algorithm may run forever and not even get close to the maximum feasible
+        flow value if some of the capacities are irrational.
+
+        \medskip
+
+        Consider the network $N$ shown in Fig.1. Here $\phi = (\sqrt{5}-1)/2 = 0.618\ldots$ is the positive solution to the equation
+        $\phi^2 = 1 - \phi$ (also known as the \textbf{Golden Ratio}.) Note that all of the capacities in this network are integers, except for
+        the capacity of the connection from $a$ to $b$.
+    }
+
+    (a) What is the maximum value of a feasible flow in $N$?
+
+    By the cut max-flow min-cut theorem, we can easily see by inspection that the maximum feasible flow in $N$ is 201.
+
+    Suppose we are trying to use the Ford--Fulkerson algorithm to find a maximum flow in $N$. We start with the zero flow $f_0$, and then build
+    the next flow $f_1$ as follows:
+
+    \begin{leftbar}
+        Use the augmenting path $(s,c,b,t)$ to obtain a flow $f_1$.
+    \end{leftbar}
+    (b) Compute the flow $f_1$. What is $\val(f_1)$?
+
+    We observe that $\val(f_1) = 1$.
+
+    Next, we apply the following sequence of four augmenting paths:
+
+    \begin{leftbar}
+        Use the augmenting path $(s,a,b,c,d,t)$ to obtain a flow $f_2$.
+
+        Use the augmenting path $(s,c,b,a,t)$ to obtain a flow $f_3$.
+
+        Use the augmenting path $(s,a,b,c,d,t)$ to obtain a flow $f_4$.
+
+        Use the augmenting path $(s,d,c,b,t)$ to obtain a flow $f_5$.
+    \end{leftbar}
+
+    We then continue to repeatedly use the same four augmenting paths. That is, once we have computed $f_{4k+1}$ for some $k$, we do the following:
+
+    \begin{leftbar}
+        Use the augmenting path $(s,a,b,c,d,t)$ to obtain a flow $f_{4k+2}$.
+
+        Use the augmenting path $(s,c,b,a,t)$ to obtain a flow $f_{4k+3}$.
+
+        Use the augmenting path $(s,a,b,c,d,t)$ to obtain a flow $f_{4k+4}$.
+
+        Use the augmenting path $(s,d,c,b,t)$ to obtain a flow $f_{4k+5}$.
+    \end{leftbar}
+
+    (c) Show that for every $k \geq 0$, the following equalities hold:
+    \[
+        f_{4k+1}(a,b) \,=\, \phi - \phi^{2k+1}, \qquad f_{4k+1}(c, b) \,=\, 1, \qquad \text{and} \qquad f_{4k+1}(c, d) \,=\,  1 - \phi^{2k}.
+    \]
+
+    \begin{proof}
+        We will prove this using induction. We start by noting that the edges with capacity of 100 are "large enough", that is, they will never consititute the
+        minimum excess in the augmenting path. At $k = 0$ we conider $f_1$, which is the flow we get after augmenting on $(s,c,b,t)$. We get that
+        \[
+            f_{1}(a,b) = 0 = \phi - \phi^{2*0 +1}, \qquad f_1(c,b) = 1, \qquad f_1(c,d) = 1 = 1 - \phi^{2*0}
+        \]
+        Now, we assume $4k + 1$ and prove $4k + 5$. Assuming $4k + 1$ we have the graph.
+        After augmenting on $p_1 = (s,a,b,c,d,t)$ we get that $\epsilon(p_1) = \phi^{2k + 1}$. Augmenting on this path we now have that
+        \[
+            f_{4k+2}(a,b) \,=\, \phi, \qquad f_{4k+2}(c, b) = 1 - \phi^{2k + 1}, \qquad \text{and} \qquad f_{4k+2}(c, d) =  1 - \phi^{2k + 2}.
+        \]
+
+        Now, we augment on $p_2 = (s,c,b,a,t)$ we get $\epsilon = \phi^{2k + 1}$. Augementing on this path we get
+        \[
+            f_{4k+3}(a,b) \,=\, \phi - \phi^{2k + 1}, \qquad f_{4k+3}(c, b) = 1, \qquad \text{and} \qquad f_{4k+3}(c, d) =  1 - \phi^{2k + 2}.
+        \]
+
+        Now we augment on $p_3 = (s,a,b,c,d,t)$ and we get that $\epsilon(p_3) = \phi^{2k + 2}$. Augmenting on this path we get
+        \[
+            f_{4k+4}(a,b) \,=\, \phi - \phi^{2k + 1}, \qquad f_{4k+4}(c, b) = 1, \qquad \text{and} \qquad f_{4k+4}(c, d) =  1 - \phi^{2k + 2}.
+        \]
+
+        Now we augment on $p_4 = (s,d,c,b,t)$ and we get that $\epsilon(p_4) = \phi^{2k + 2}$. Augmenting on this path we get
+        \[
+            f_{4k+5}(a,b) \,=\, \phi - \phi^{2k + 3}, \qquad f_{4k+5}(c, b) = 1, \qquad \text{and} \qquad f_{4k+5}(c, d) =  1 - \phi^{2k + 2}.
+        \]
+
+        Now, we can clearly see that $4k + 1$ implies $4k + 5 = 4(k + 1) + 1$ as needed. Hence, we are done.
+    \end{proof}
+
+    (d)
+    \begin{proof}
+        Again, we will prove this using induction. We see that for $k = 1$ we have $\val(f_1) = 3 = 1 + 2\phi + 2\phi^2$. Now, we assume that the flow at
+        $4k + 1$ is $1 + 2\phi + 2\phi^2 + \dots 2\phi^{2k}$. Now, from the previous exercise we know how much flow we added using the previous agumenting paths.
+        The flow we added is exactly $2\phi^{2k + 1} + 2\phi^{2k + 2}$. Since the FF algorithm only adds flow at each step we now have that the flow at
+        $4k + 5 = 4(k + 1) + 1$ is exactly $ 1 + 2\phi + 2\phi^2 + \dots 2\phi^{2k} + 2\phi^{2k + 1} + 2\phi^{2k + 2}$ as needed.
+    \end{proof}
+
+    (e)
+    \begin{proof}
+        We can represent the flow at each $k$ as a geometric series $-1 + \sum_0^n 2\phi^n$. Since $\phi < 1$ we know this series converges to the value
+        $-1 + 2/(1 - \phi) \approx 4.236 < 5$.
+    \end{proof}
+\end{hwproof}
+
+\begin{hwproof}
+    {2}
+    {Given two graphs $G$ and $H$, their \textbf{union} is the graph $G \cup H$ with
+        \[
+            V(G \cup H) \,=\, V(G) \cup V(H) \qquad \text{and} \qquad E(G \cup H) \,=\, E(G) \cup E(H).
+        \]
+        Show that if $G$ and $H$ are $k$-connected graphs such that $|V(G) \cap V(H)| \geq k$, then the graph $G \cup H$ is also $k$-connected.}
+
+    Let $S \subseteq V(G \cup V)$, we will show that if $|S| < k$ then $G \cup H$ is still connected. When we remove vertices from $V(G) \triangle V(H)$ the union is
+    still connected as $G, H$ are $k$-connected. Now, if we remove vertices from $V(G\cap H)$ we know that since $|S| < k$ and $G, H$ are $k$-connected that this
+    will not disconnect the graph. This is because there will always be at least one vertex in the intersecting set that had $k$ disjoint paths to every other
+    vertex in the graph, which cannot be made disjoint by removing less that $k$ edges (Menger's Thm.).
+\end{hwproof}
+
+\begin{hwproof}
+    {3}
+    {In this problem you shall prove the vertex version of Menger's theorem, namely:
+
+        \textbf{Theorem.} \textsl{If $G$ is a finite simple graph and $x$, $y \in V(G)$ are distinct non-adjacent vertices, then $\kappa(x,y) = \lambda(x,y)$.}
+
+        To prove this theorem, we set up a network $N$ as follows. For each vertex $v \in V(G) \setminus \set{x,y}$, we create a pair of new vertices $v_{\mathrm{in}}$ and $v_{\mathrm{out}}$. The vertex set of $N$ is
+        \[
+            V \,\defeq\, \set{x,y} \cup \set{v_{\mathrm{in}}, v_{\mathrm{out}} \,:\, v \in V(G) \setminus \set{x,y}}.
+        \]
+        Make $x$ the source and $y$ the sink. As for the capacity function, we define:
+
+
+        \begin{itemize}
+            \item $c(v_{\mathrm{in}}, v_{\mathrm{out}}) \defeq 1$ for all $v \in V(G) \setminus \set{x,y}$;
+
+            \item $c(v_{\mathrm{out}}, u_{\mathrm{in}}) \defeq \text{``}\infty\text{''}$ for all adjacent $u$, $v \in V(G) \setminus \set{x,y}$;
+
+            \item $c(x, v_{\mathrm{in}}) \defeq \text{``}\infty\text{''}$ for all $v \in N_G(x)$; and
+
+            \item $c(v_{\mathrm{out}}, y) \defeq \text{``}\infty\text{''}$ for all $v \in N_G(y)$.
+        \end{itemize}
+
+        (You should explain what $\text{``}\infty\text{''}$ means here.) All other capacities are zero.
+
+        Use the network $N$ to prove the theorem.}
+
+    First, we note that in this network "$\infty$" is simply $\kappa(x,y)$. Now, we note that since the capacity is integral, there exists a maximum flow of
+    integral value.
+
+    By construction of $N$ we have that in a maximum integral flow $f(v_{in}, v_{out}) = 1$ or 0 for all $v \in V(G)\backslash\set{x,y}$. This
+    implies that a flow from $x$ to $y$ with a flow of value $k$ means there are $k$ vertex disjoint paths from $x$ to $y$. This is because if any two paths
+    used the same vertex, then either the flow is greater than 1 (a contradiction) or is not integral. Therefore,if there is a flow of value $k$ in this network,
+    then we have $k$ internally vertex disjoint paths in $G$.
+
+    Now we must show that $\kappa(x,y) = k$ implies this property. Consider any $XY$ cut in $G$, if this cut has some $v_{out} \in X$ then clearly this cut has
+    capacity greater than $k$, since $v_{out}$ alone has capacity at least $k$ coming out of it. So, consider an $XY$ cut where all the elements in $X$ are
+    $v_{in}$, then, all the elements of $Y$ are the $v_{out}$. We observe that the capacity is also $k$, since otherwise we could remove corresponding vertices in
+    $G$ and separate $x$ and $y$ with fewer than $k$ vertices, a contradiction.
+
+    Therefore, every $XY$ cut in $N$ has capacity at least $\kappa(x,y)$. This implies there is an integral flow of this value, meaning there are at least $k$
+    internally vertex disjoint paths from $x$ to $y$. This now implies that $\lambda(x,y) \geq \kappa(x,y)$.
+
+    Now, it is relatively obvious that $\kappa(x,y) \geq \lambda(x,y)$ since otherwise if there were $\lambda(x,y)$ vertex disjoint paths from $x$ to $y$, we would have
+    to remove at least one vertex from each to disconnect them.
+
+    Therefore, we have that $\kappa(x,y) = \lambda(x,y)$ as required.
+
+\end{hwproof}
+
+\begin{hwproof}
+    {4}
+    {Let $G$ be a $k$-connected finite simple graph, where $k \geq 2$. Prove that if $S \subseteq V(G)$ is a set of size $k$, then there is a cycle $C$ in $G$ such that $S \subseteq V(C)$.
+
+        \textbf{Hint.} Show that if $C$ is a cycle such that $S \not \subseteq V(C)$, then there is another cycle $C'$ with $|S \cap V(C')| > |S \cap V(C)|$.}
+
+    Let $C$ be a cycle containing as many of the $s \in S$ as possible. Now, assume, for the sake of contradiction, that only $l$ of the vertices in $S$ are actually
+    in $C$ and call these vertices $v_1, v_2, \dots, v_l$, ($l < k$). Then, there exists some $u \in S$ such that $u \not \in C$. By Menger's Theorem we know
+    there are at least $k$ independent paths from $u$ to $C$. However, these paths must meet in between each of the vertices $v_1, v_2,\dots ,v_l$ with no paths
+    meeting in the same portion of the cycle $v_iCu$, or else there exists a larger cycle containing $u$. However, if this is not the case, there are already
+    $k$ elements in $C$ (since we essentially partitioned the cycle into $k$ segments, each containing at least one vertex from $S$), a contradiction.
+
+    Therefore, this cycle exists as needed.
+\end{hwproof}
+
+\begin{hwproof}
+    {5}
+    {Let $G$ be a finite graph. Given two distinct vertices $x$, $y \in V(G)$, the notation $x \,\overset{k}{\aquarius}\, y$ means that $G$ contains $k$ edge-disjoint $xy$-paths.
+
+        \smallskip
+
+        \noindent Let $x$, $y$, $z \in V(G)$ be three distinct vertices. Show that if $x \,\overset{k}{\aquarius}\, y$ and $y \,\overset{k}{\aquarius}\, z$, then $x \,\overset{k}{\aquarius}\, z$.}
+
+    Assume, for the sake of contradiction, that this is not true. That is, there exist $n < k$ disjoint paths between $x$ and $z$. Then, we can use $\leq k - 1$
+    edges to disconnect them. Call this set of edges $E$. We claim that there is at least one $xy$ path and one $yz$ path that contain no edges form $E$.
+
+    To prove this claim, we assume that this is not true. Since these paths are composed of distinct edges, this would imply that $|E| \leq k$, which is a contradiction.
+    Therefore, our claim is true.
+
+    Now, consider the auxiliary graph $G - E$. Since $|E| \leq k - 1$ there is one $xy$ path and one $yz$ path remaining. Therefore, there is one more $xz$ path,
+    a contradiction.
+\end{hwproof}
+
+\end{document}
