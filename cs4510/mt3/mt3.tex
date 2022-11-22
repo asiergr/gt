@@ -1,0 +1,134 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsfonts}
+\usepackage{parskip}
+\usepackage{listings}
+\usepackage{braket}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata, bending, positioning}
+
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newenvironment{question}[2]
+{
+    {\large \textbf{Question #1.}}\\
+    #2\\\\
+}{\newpage}
+
+\title{Midterm 3}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\begin{question}
+    {0}{Honor Code}
+    I commit to uphold the ideals of honor and integrity by refusing to betray the
+    trust bestowed upon me as a member of the Georgia Tech community.
+
+    Signature: Asier Garcia Ruiz
+\end{question}
+
+\begin{question}
+    {1a}
+    {True or False: For any single tape Turing machine $M$, there is a
+        single tape Turing machine $M'$ such that $L(M) = L(M')$ and for all inputs $x$, if
+        $M$ halts on $x$, then $M'$ halts on $x$, with $x$ written on the tape when it is
+        finished (and nothing else). Defend your answer.}
+
+    True. We will describe how $M'$ works. Firstly, we would have $M'$ add a \# to the input tape at the first blank. Then, it would proceed to copy
+    over the input $x$ on the tape again. The new tape would look like $x\# x$. Now, $M'$ will do the exact same thing than $M$, only it will act exclusively
+    on the input to the right of \#. If it tried to overwrite the \#, then everything will get shifted enough so that it
+    does not happen. When $M'$ is done processing the input on the right side, if it accepts, then it will erase from the \# rightward (including the \#).
+    This will leave only the original input $x$ on the tape.
+\end{question}
+
+\begin{question}
+    {1b}
+    {True or False: the number of \emph{true} arithmetical statements
+        involving positive integers, $+, \times, (, )$ and $=$ is countable, i.e. $``(17+31)\times2=96"$. Defend your answer.}
+
+    True. We are given the set of elements that can compose a true arithmetical statement. That is, the numbers 0-9 and the operators
+    $+, \times, (, ), =$. We will map the four latter to the letters $A, B, C, D, E$, and will map the numbers 0-9 to themselves.
+    Now, we will map all arithmetic expressions to these elements. For example, the expression $1 + 1 = 2$ would be mapped to 1B1E2.
+    We now note that this is nothing but a hexadecimal number. Therefore, we are able to map all these hexadecimal numbers to their base 10
+    counterparts. This now implies that we are anle to map each true arithmetic expression on the positive integers to a natural number.
+    Therefore, both groups are the same size and thus the number of statements is countable.
+\end{question}
+
+\begin{question}
+    {1c}
+    {Let $P$ be some decidable property of graphs. That is,
+        $$L_P = \{\braket{G} ~|~ G\text{ has property } P\}$$
+        is decidable. Prove that the language
+        $$\{\braket{G} ~|~ G \text{ does not have property }P \text{ but } G \text{ contains a subgraph with property }P\}$$ is decidable.}
+
+    We know that $L_P$ is decideable, therefore there is a decider $D$ that can decide whether a graph $G$ has a property $P$. We will construct a new
+    decider $D'$ as follows. First, we run the decider $D$ on $\braket{G}$, and if it accepts, then we will reject. This is because we are told that $G$ does
+    not have the property $P$. Now, we will enumerate every possible subgraph of $G$, we will call this set $G_e$. For each $G' \in G_e$, we will run
+    $D$ on $\braket{G'}$. If any of the $\braket{G'}$ is accepted, we will accept. Otherwise, if they are all rejected, we will reject.
+
+    Clearly, we can form a new decider $D'$ for $L_{p}'$, so this language is decideable.
+\end{question}
+
+\begin{question}
+    {2}
+    {Show that $L_1 = \{\langle M\rangle ~|~ |L(M)| \geq 1000\}$ is Turing-recognizable
+        by constructing a recognizer for it. Explain why the machine you constructed is not
+        a decider.}
+
+    Let $M$ be a multitape Turing Machine with two tapes $T_1$ and $T_2$. We will generate strings, and check which ones are in $L(M)$. We will now have
+    $T_1$ store all the strings generated, this is to ensure we do not test the same string twice. We will have $T_2$ store the number of strings which we
+    found are in $L(M)$, we do this to check whether the number of strings in the language is greater than or equal to 1000. If this is true, then we
+    accept, otherwise we reject. In order to prevent us getting stuck on the same computation of whether a string is in the language, we will process
+    them as follows. Let $s_1, s_2, \dots, s_m$ be the strings we are processing. We will process $s_1$ for one step, then
+    $s_1, s_2$ for two timesteps, then $s_1, s_2, s_3$ for three timesteps. We will do this successively and stop processing a string once its belonging to
+    the language has been determined. We have therefore constructed a recogniser.
+
+    The reason this is not a decider is because it can loop infinitely. Consider the case where we cannot find 1000 string from the same language because
+    there are not that many, then the recogniser keeps looping between generating the string and checking if the string has already been generated.
+\end{question}
+
+\begin{question}
+    {3a}
+    {}
+
+    First, we will simulate a regular Turing machine using a write-twice (i.e., $k \geq 2)$ Turing machine. This new TM will simulate a single step of the
+    original machine by copying the entire tape over to a fresh portion of the tape to the right-hand side of the currently used portion. This copying
+    will operate character by character, and it will mark each character as copied once it does so. We observe that this sequence will alter each square
+    twice; it writes the character for the first time and then marks it as copied. We record the position of the original TM tape head.
+    When we copy cells at or adjacent to the marked position, the tape content is updated according to the rules of the original Turing machine.
+\end{question}
+
+\begin{question}
+    {3b}
+    {}
+    Now, in order to do this with a write once machine, we will do the same as before, except that each cell of the previous tape is represented by two cells
+    on the new tape. The first cell contains the original TMs tape symbol and the second is the mark used in the copying procedure. Because the input
+    is not presented to the machine with two cells per symbol, the first time the tape is copied over, the copying marks are put directly over the input symbols.
+\end{question}
+
+\begin{question}
+    {4}
+    {Prove that $L_2 = \{(\langle M_1\rangle, \langle M_2\rangle)\ |\
+            L(M_1) \cup L(M_2) = \Sigma^*\}$ is undecidable.}
+
+    To prove this, we will reduce $ALL_{CFG}$, to $L_2$. As usual, we start by assuming that $L_2$ is decidable and decided by $D$. From here, we will
+    construct $D'$ that decided $ALL_{CFG}$. The input is $\braket{C}$ where $C$ is the CFG we are checking the language for.
+
+    Now, we will create $D'$, a new CFG. First, we create a new Turing machine $M_1$ that is equivalent to the CFG $C$, and a new Turing Machine $M_2$ such
+    that $L(M') = \emptyset$. This is how $D'$ will run: we will run $D$ on the input $(\braket{M_1}, \braket{M_2})$. We have that
+    $L(M_1) \cup L(M_2) = \Sigma^*$ and $L(M_2) = \emptyset$, so we are simply running $D$ on $\braket{M_1}$ where $L(M_1) = \Sigma^*$. Now, if
+    $D$ rejects this implies that $L(M_1) \neq \Sigma^*$, so $D'$ rejects. Otherwise, $L(M_1) = \Sigma^*$ and $D'$ accepts.
+
+    Finally, we have that $D$ runs $M_1$ and either accepts or rejects it depending on whether $L(M_1) = \Sigma^*$. Since $D'$ is a decider
+    for $ALL_{CFG}$, we have a contradiction. Therefore, $L_2$ is undecidable.
+\end{question}
+\end{document}
