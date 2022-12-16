@@ -1,0 +1,132 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsfonts}
+\usepackage{parskip}
+\usepackage{listings}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata, bending, positioning}
+
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\bigo}[1]{\mathcal{O}(#1)}
+
+\newenvironment{question}[2]
+{
+    {\large \textbf{Question #1.}}\\
+    #2\\\\
+}{\newpage}
+
+\title{Homework N}
+\author{Asier Garcia Ruiz}
+
+\begin{document}
+\maketitle
+
+\begin{question}
+    {1}
+    {Show that if SAT is in co-NP, then NP = co-NP. (Recall that to prove two sets are
+        equal, show that each set is a subset of the other.)}
+
+    ($\subseteq$) We assume that $A \in NP$. Then, we are able to reduce $A$ to the SAT problem. Since SAT is in co-NP then
+    we directly get that $S$ is in co-NP. So we have that $co-NP \subseteq NP$.
+
+    ($\supseteq$) Assume that $A \in co-NP$, then we have that $\overline{A} \in NP$. We know already that $co-NP \subseteq NP$ and
+    thus $\overline{A} \in co-NP$. Therefore, $A \in NP$ showing that $co-NP \supseteq NP$.
+
+    Thus, we have that if SAT in in co-NP then $NP - co-NP$
+\end{question}
+
+\begin{question}
+    {2}
+    {Show that if P = NP, then every language in P is NP-complete except for $\emptyset$
+        and $\Sigma^*$.}
+
+    Let $A \in P$ such that $A \neq \emptyset, \Sigma^*$. Let $L \in NP = P$ be a language, then $L$ has a decider that decides in
+    polynomial time, we will denote it as $D_L$. We now create a reduction from $L \to A$ that works in polynomial time.
+    We take an input string $s$ and run $D_L$ on $s$. If $s$ is accepted then it is equal to some string in $L$, otherwise
+    $s$ is equal to some string in $\overline{L}$.
+
+    The reason this does not work with $\emptyset$ is because any machine that computes it always rejects it. Therefore,
+    there is no way to map outputs that get accepted to this set. Similarly, for $\Sigma^*$, a machine will always accept it,
+    so there is no way to map the outputs that get rejected.
+
+    Therefore, we have show the premise as needed.
+\end{question}
+
+\begin{question}
+    {3a}
+    {Show the following is NP-complete: $4_2-SAT$: given a SAT problem $\phi$ with four literals per clause, is
+        there an assignment of the variables of $\phi$ such that each clause contains at
+        least two true literals?}
+
+    We start by verifying that $4_2-SAT$ is in NP. Given an instance $I$ the problem with $m$ clauses with 4 literals each  and a candidate solution $S$.
+    Given this solution we can verify it in $\bigo{m}$ time. Therefore the problem is in NP.
+
+    As we know that 3SAT is NP-Complete, we will simply reduce 3SAT to $4_2-SAT$. Given that any given clause in 3SAT has 3 or less literals we will
+    consider all the possible cases for a clause.
+
+    Case I: A clause with three literals\\
+    Given a clause of the form $(a \wedge b \wedge c)$ we will map this to
+    $$(a \vee b \vee c \vee d)$$
+    where $d$ is a new literal that is always assigned to be true.
+
+    Case II: A clause with two literals\\
+    Given a clause of the form $(a \wedge b)$ we will map this to
+    $$(a \vee b \vee a \vee b)$$
+
+    Case III: A clause with one literal\\
+    Given a clause of the form $(a)$ we will map this to
+    $$(a \vee a \vee a \vee a)$$
+
+    This transformation can be done in polynomial time $\bigo{m}$ where $m$ is the number of clauses in the $4_2-SAT$ since we simply have to iterate
+    through these clauses and transform them.
+
+    We now show the correctness of the transformation. Consider a valid solution to 3SAT, then it is easy to manually check that clause by clause this
+    will be a valid solution to $4_2-SAT$ since there are always at least two true literals in every clause. Now, given a valid solution for $4_2-SAT$
+    it is again easily to check with our mapping that this constitutes a valid solution to 3SAT.
+\end{question}
+
+\begin{question}
+    {3b}
+    {Show the following in NP-complete: $SUBGRAPH-WEIGHT$: Given a graph $G$ whose vertices and edges have
+        associated integer weights, and an integer $k$, does $G$ contain a subgraph of
+        weight $k$? (Define the weight of a graph to be the sum of the weights of the vertices and edges of that graph.)}
+
+    We first verify that the problem is in NP. Given an instance $I$ of the problem and a candidate solution to the problem $S$
+    we can verify this solution in polynomial time. We simply have to add up the weights of all the vertices and edges in the subgraph.
+    Let $G'$ denote the subgraph and $V(G'), E(G')$ the vertex and edge set correspondingly.
+    If the sum is $k$, then it is valid, otherwise it is not. This takes $\bigo{|E(G)|V(G)|}$ time so it is polynomial and the problem
+    is in NP.
+
+    We know that $SUBSET-SUM$ is NP-complete, and this is what we will reduce to $SUBGRAPH-WEIGHT$. Consider a set $S$ of
+    numbers and a number $k$. the $SUBSET-SUM$ problem states we must find a subset of $S$ with sum $k$. Now, Consider the
+    graph $G$ such that $|V(G)| = |S|$ and $E(G) = \emptyset$. We have one vertex $v_s \in V(G)$ for every $s \in S$. Now, we
+    assign a weight of $s$ to each corresponsing $v_s$. This transformation can be done in $\bigo{|V(G)|}$ which is
+    polynomial time.
+
+    We now show the correctness of the transformation. That is, there is a solution to $SUBSET-SUM$ if and only if there is
+    a solution to $SUBGRAPH-WEIGHT$. Consider a solution to $SUBSET-SUM$, then the corresponding vertices in the graph after the
+    transformation will have weights that add up to $k$, which is a solution. Now, consider a solution to $SUBGRAPH-WEIGHT$, then
+    we have found a set of vertices whose added weight is $k$, this directly implies that there is a subset with sum $k$.
+
+    Therefore, $SUBGRAPH-WEIGHT$ is NP-complete.
+\end{question}
+
+\begin{question}
+    {Bonus}
+    {In your opinion, what are the three most important concepts or arguments or ideas
+        presented in this course? Give a 1-2 sentence explanation for why you chose each
+        item.}
+
+    I really enjoyed the ideas of Non-deterministic automatons and  context free grammars. I recall when taking compilers that this topic was briefly
+    mentioned and we went through some exercises about it. I thought the idea of using these types of algorithms to construct the front
+    end of a compiler was really interesting so it was nice to go more in depth into the algorithmic aspects of it.
+\end{question}
+\end{document}

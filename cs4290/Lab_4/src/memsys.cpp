@@ -198,7 +198,7 @@ uint64_t memsys_access_modeA(Memsys* sys, Addr lineaddr, Access_Type type, uint3
 
 	if (needs_dcache_access) {
 		// Miss
-		if (!cache_access(sys->dcache,lineaddr,is_write,core_id) {
+		if (!cache_access(sys->dcache,lineaddr,is_write,core_id)) {
 			// Install the new line in L1
 			cache_install(sys->dcache,lineaddr,is_write,core_id);
 		}
@@ -214,11 +214,60 @@ uint64_t memsys_access_modeA(Memsys* sys, Addr lineaddr, Access_Type type, uint3
 ////////////////////////////////////////////////////////////////////
 
 uint64_t memsys_access_modeBC(Memsys* sys, Addr lineaddr, Access_Type type, uint32_t core_id){
-	uint64_t delay;
+	uint64_t delay = 0;
 
 	// Perform the icache/dcache access
 
 	// On dcache miss, access the L2 + install the new line + if needed, perform writeback
+
+  if(type == ACCESS_TYPE_IFETCH){
+    delay += ICACHE_HIT_LATENCY;
+
+    if (cache_access(sys->icache, lineaddr, FALSE, core_id) == MISS) {
+      uint64_t delay_l2 = memsys_L2_access(sys, lineaddr, FALSE, core_id);
+      cache_install(sys->icache, lineaddr, FALSE, core_id);
+      delay += delay_l2;
+    }
+  }
+    
+  if(type == ACCESS_TYPE_LOAD){
+    delay += DCACHE_HIT_LATENCY;
+
+    if (cache_access(sys->dcache, lineaddr, FALSE, core_id) == MISS) {
+      uint64_t l2_del = memsys_L2_access(sys, lineaddr, FALSE, core_id);
+      cache_install(sys->dcache, lineaddr, FALSE, core_id);
+      delay += l2_del;
+
+      if (sys->dcache->last_evicted.dirty && sys->dcache->last_evicted.valid) {
+        uint32_t n_idx_bits = ceil(log(sys->dcache->num_sets)/log(2));
+        uint32_t mask = (1 << n_idx_bits) - 1;
+        uint32_t idx = (lineaddr & mask);
+        uint32_t dest_addr = (sys->dcache->last_evicted.tag << n_idx_bits) | idx;
+
+        memsys_L2_access(sys, dest_addr, TRUE, core_id);
+      }
+    }
+  }
+  
+
+  if(type == ACCESS_TYPE_STORE){
+    delay += DCACHE_HIT_LATENCY;
+
+    if (cache_access(sys->dcache, lineaddr, TRUE, core_id) == MISS) {
+      uint64_t l2_del = memsys_L2_access(sys, lineaddr, FALSE, core_id);
+      cache_install(sys->dcache, lineaddr, TRUE, core_id);
+      delay += l2_del;
+
+      if (sys->dcache->last_evicted.dirty && sys->dcache->last_evicted.valid) {
+        uint32_t n_idx_bits = ceil(log(sys->dcache->num_sets)/log(2));
+        uint32_t mask = (1 << n_idx_bits) - 1;
+        uint32_t idx = (lineaddr & mask);
+        uint32_t dest_addr = (sys->dcache->last_evicted.tag << n_idx_bits) | idx;
+        memsys_L2_access(sys, dest_addr, TRUE, core_id);
+      }
+    }
+  }
+
 
 	return delay;
 }
@@ -231,6 +280,20 @@ uint64_t memsys_access_modeBC(Memsys* sys, Addr lineaddr, Access_Type type, uint
 uint64_t memsys_L2_access(Memsys* sys, Addr lineaddr, bool is_writeback, uint32_t core_id){ 
 	uint64_t delay = L2CACHE_HIT_LATENCY;
 
+	if (cache_access(sys->l2cache, lineaddr, is_writeback, core_id) == HIT) return delay;
+
+    if (is_writeback == FALSE) {
+      delay += dram_access(sys->dram, lineaddr, FALSE);
+    }
+    cache_install(sys->l2cache, lineaddr, is_writeback, core_id);
+	bool cond = sys->l2cache->last_evicted.dirty && sys->l2cache->last_evicted.valid;
+    if (cond) {
+        uint64_t n_idx_bits = ceil(log(sys->dcache->num_sets)/log(2));
+        uint64_t mask = (1 << n_idx_bits) - 1;
+        uint64_t idx = (lineaddr & mask);
+        uint64_t dest_address = (sys->dcache->last_evicted.tag << n_idx_bits) | idx;
+      dram_access(sys->dram, dest_address, TRUE);
+    }
 	return delay;
 }
 
@@ -258,13 +321,69 @@ uint64_t memsys_convert_vpn_to_pfn(Memsys *sys, uint64_t vpn, uint32_t core_id){
 /////////////////////////////////////////////////////////////////////
 
 uint64_t memsys_access_modeDE(Memsys* sys, Addr v_lineaddr, Access_Type type, uint32_t core_id){
-	uint64_t delay;
+	uint64_t delay = 0;
 	Addr p_lineaddr;
 
 	// First convert lineaddr from virtual (v) to physical (p) using the
 	// function memsys_convert_vpn_to_pfn(). Page size is defined to be 4KB.
 	// NOTE: VPN_to_PFN operates at page granularity and returns page addr
 
+  uint64_t n_offset_b = ceil(log(PAGE_SIZE)/log(2)) - ceil(log(CACHE_LINESIZE)/log(2));
+  uint64_t mask = (1 << n_offset_b) - 1;
+  uint64_t offset = (v_lineaddr & mask);
+
+  uint64_t vpn = v_lineaddr >> n_offset_b;
+  uint64_t pfn = memsys_convert_vpn_to_pfn(sys, vpn, core_id);
+
+  p_lineaddr = (pfn << n_offset_b) | offset;
+
+  if(type == ACCESS_TYPE_IFETCH){
+    bool is_hit = cache_access(sys->icache_coreid[core_id], p_lineaddr, FALSE, core_id);
+    delay += ICACHE_HIT_LATENCY;
+
+    if (is_hit == MISS) {
+      uint64_t delay_l2 = memsys_L2_access_multicore(sys, p_lineaddr, FALSE, core_id);
+      cache_install(sys->icache_coreid[core_id], p_lineaddr, FALSE, core_id);
+      delay += delay_l2;
+    }
+  }
+
+  if(type == ACCESS_TYPE_LOAD){
+    bool is_hit = cache_access(sys->dcache_coreid[core_id], p_lineaddr, FALSE, core_id);
+    delay += DCACHE_HIT_LATENCY;
+    if (is_hit == MISS) {
+      uint64_t delay_l2 = memsys_L2_access_multicore(sys, p_lineaddr, FALSE, core_id);
+
+      cache_install(sys->dcache_coreid[core_id], p_lineaddr, FALSE, core_id);
+      delay += delay_l2;
+
+      if (sys->dcache_coreid[core_id]->last_evicted.dirty && sys->dcache_coreid[core_id]->last_evicted.valid) {
+        uint64_t n_idx_bits = ceil(log(sys->dcache_coreid[core_id]->num_sets)/log(2));
+        uint64_t mask = (1 << n_idx_bits) - 1;
+        uint64_t idx = (p_lineaddr & mask);
+        uint64_t dest_address = (sys->dcache_coreid[core_id]->last_evicted.tag << n_idx_bits) | idx;
+        memsys_L2_access_multicore(sys, dest_address, TRUE, core_id);
+      }
+    }
+  }
+  
+  if(type == ACCESS_TYPE_STORE){
+    bool is_hit = cache_access(sys->dcache_coreid[core_id], p_lineaddr, TRUE, core_id);
+    delay += DCACHE_HIT_LATENCY;
+
+    if (is_hit == MISS) {
+      uint64_t delay_l2 = memsys_L2_access_multicore(sys, p_lineaddr, FALSE, core_id);
+      cache_install(sys->dcache_coreid[core_id], p_lineaddr, TRUE, core_id);
+      delay += delay_l2;
+      if (sys->dcache_coreid[core_id]->last_evicted.dirty && sys->dcache_coreid[core_id]->last_evicted.valid) {
+        uint64_t n_idx_b = ceil(log(sys->dcache_coreid[core_id]->num_sets)/log(2));
+        uint64_t mask = (1 << n_idx_b) - 1;
+        uint64_t idx = (p_lineaddr & mask);
+        uint64_t dest_address = (sys->dcache_coreid[core_id]->last_evicted.tag << n_idx_b) | idx;
+        memsys_L2_access_multicore(sys, dest_address, TRUE, core_id);
+      }
+    }
+  }
 	return delay;
 }
 
@@ -273,8 +392,21 @@ uint64_t memsys_access_modeDE(Memsys* sys, Addr v_lineaddr, Access_Type type, ui
 // Used by Parts D,E to access the L2
 /////////////////////////////////////////////////////////////////////
 
-uint64_t memsys_access_modeDE(Memsys* sys, Addr v_lineaddr, Access_Type type, uint32_t core_id){
-	uint64_t delay;
+uint64_t memsys_L2_access_multicore(Memsys* sys, Addr v_lineaddr, bool is_write, uint32_t core_id){
+	uint64_t delay = L2CACHE_HIT_LATENCY;
+
+  if (cache_access(sys->l2cache, v_lineaddr, is_write, core_id) == HIT) return delay;
+    uint64_t dram_delay = dram_access(sys->dram, v_lineaddr, FALSE);
+    cache_install(sys->l2cache, v_lineaddr, is_write, core_id);
+    delay += dram_delay;
+    if (sys->l2cache->last_evicted.dirty && sys->l2cache->last_evicted.valid) {
+      uint64_t numIdxBits = ceil(log(sys->l2cache->num_sets)/log(2));
+      uint64_t idxMask = (1 << numIdxBits) - 1;
+      uint64_t idx = (v_lineaddr & idxMask);
+      uint64_t dest_address = (sys->l2cache->last_evicted.tag << numIdxBits) | idx;
+
+      dram_access(sys->dram, dest_address, TRUE);
+    }
 
 	return delay;
 }

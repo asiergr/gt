@@ -1,0 +1,646 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{parskip}
+\usepackage{bm}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\newcommand{\contradiction}{\Rightarrow\!\Leftarrow}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\size}[1]{|#1|}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\st}{such that }
+\newcommand{\tfae}{the following are equivalent}
+
+\DeclareMathOperator*{\dist}{dist}
+\DeclareMathOperator*{\emb}{emb}
+\DeclareMathOperator*{\defect}{def}
+\DeclareMathOperator*{\val}{val}
+\DeclareMathOperator*{\ch}{ch}
+
+\title{Final Revies}
+\author{Asier Garcia Ruiz}
+
+\newtheorem*{definition}{Definition}
+\newtheorem*{proposition}{Proposition}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+
+\begin{document}
+\maketitle
+
+\begin{definition}
+    A graph $ H $ is a \textbf{subgraph} of $ G $ if $ V(H) \subseteq V(G) $ and $ E(H) \subseteq E(G) $.
+\end{definition}
+
+\begin{definition}[Spanning Subgraph]
+    If $ H $ is a subgraph of $ G $ and $ V(H) = V(G) $ we say that $ H $ is a \textbf{spanning} subgraph of $ G $.
+\end{definition}
+
+\begin{definition}[Induced Subgraph]
+    If $ H $ is a subgraph of $ G $ and it includes every edge of $ G $ between two vertices in $ V(G) $ then it is an \textbf{induced subgraph} of $ G $.
+\end{definition}
+
+\begin{definition} [Connected Graph]
+    A graph $ G $ is \textbf{connected} if for every vtx $ u \in V(G) $, there is a pth from $ u $ to every other $ v \in V(G) $.
+\end{definition}
+
+\begin{definition}[Path]
+    A \textbf{path} from a vertex $ u $ to a vertex $ v $ is a sequence of edges such that every $ e_i $ shares a vertex with $ e_{i + 1} $.
+\end{definition}
+
+\begin{proposition}
+    IF there is a $ uv $-walk then there is a $ uv $-path.
+\end{proposition}
+
+\begin{proposition}
+    A graph $ G $ is connected if and only if it is non-empty and ther is a nontrivial partition $ (A,B) $ of $ V(G) $ such that $ E(A,B) = \emptyset $.
+\end{proposition}
+
+\begin{proposition}
+    $ G $ is connected if and only if $ G $ has a single component.
+\end{proposition}
+
+\begin{proposition}
+    Every connected graph on $ n \geq 1 $ vertices has $ \geq n - 1 $ edges.
+\end{proposition}
+
+\begin{definition}[Tree]
+    A \textbf{tree} is a connected graph without cycles.
+\end{definition}
+
+\begin{theorem}[]
+    $ G $ is connected if and only if $ G $ has a spanning subtree.
+\end{theorem}
+
+\begin{proposition}
+    If $ G $ is connected, graph search produces a spanning tree.
+\end{proposition}
+
+\begin{proposition}
+    $ G $ is a simple graph. Let $ u,v \in V(G) $. Consider a shortest $ uv $-path $ P $ in $ G $.
+    Then, for each $ u_i $, $ \dist_G(u, u_i) = i $.
+\end{proposition}
+
+\begin{lemma}
+    Let $ G $ be a connected finite simple graph. Running BFS on $ G $ with root $ r $ yields a sequence of vertices $ v_1, \dots, v_n $.
+    Then, $ \dist_G(v_1, r) \leq \dist_G(v_2, r) \leq \dots \leq \dist_G(v_n, r)$.
+\end{lemma}
+
+\begin{theorem}[]
+    Let $ G $ be a connected finite simple graph and let $ T $ be a spanning subtree of $ G $ produces by the BFS with root $ r \in V(G) $.
+    Then, for every vertex $ u \in V(G) $ we have $ \dist_G(u,r) = \dist_T(u,r) $.
+\end{theorem}
+
+\begin{lemma}[Handshake]
+    If $ G $ is a finite graph, then $ \size{E(G)} = \frac{1}{2}\sum_{v \in V(G)}\deg(v) $.
+\end{lemma}
+
+\begin{proposition}
+    Let $ G $ be a finite with a bipartition $ (A,B) $. Let $ w: E(G) \to \R $. For a vertex $ x \in V(G) $, define
+    $ w(x) = \sum_{e \text{incident to} x} w(e)$. Then, $ \sum_{a \in A}^{}w(a) = \sum_{b \in B}^{}w(b) = \sum_{e \in E(G)}^{} w(e) $.
+\end{proposition}
+
+\begin{corollary}
+    Let $ G $ be a finite bipartite graph with bipartition $ (A,B) $. Suppose $ G $ is \textbf{$d$-regular} for some $ d \geq 1 $.
+    Then $ \size{A} = \size{B} $.
+\end{corollary}
+
+\begin{theorem}[Smith]
+    $ G $ a finite graph with exactly 2 vertices of even degree, namely $ s $ and $ t $. Then the number of Hamiltonian paths from
+    $ s $ to $ t $ is even.
+\end{theorem}
+
+\begin{corollary}
+    $ G $ finite simple graph with all vertices of odd degree. If $ G $ has a Hamiltonian cycle, then it has $ \geq 2 $ such cycles.
+\end{corollary}
+
+\begin{definition}[Isomorphism]
+    Let $ G, H $ be simple graphs. An \textbf{isomorphism} from $ G $ to $ H $ is a bijective function $ f: V(G) \to V(H) $ \st for all
+    $ u,v \in V(G) $ we have $ uv \in E(G) \iff f(u)f(v) \in E(H) $.
+
+    $ G $ and $ H $ are \textbf{isomorphic}, $ G \cong H $, if there is an isomorphism from $ G $ to $ H $.
+\end{definition}
+
+\begin{proposition}
+    Isomorphisms are transitive.
+\end{proposition}
+
+\begin{definition}[Automorphism]
+    An \textbf{automorphism} of a graph $ G $ is an isomorphism form $ G $ to $ G $.
+\end{definition}
+
+\begin{definition}[Homomorphism]
+    $ G,H $ be simple graphs. A \textbf{homomorphism} from $ G $ to $ H $ is a function $ f: V(G) \to V(H) $ \st if
+    $ uv \in E(G) $ then $ f(u)f(v) \\in E(H) $.
+\end{definition}
+
+\begin{lemma}
+    $ G, H $ simple graphs, $ H $ bipartite. If there is a homomorphism from $ G  $ to $ H $, then $ G $ is also bipartite.
+\end{lemma}
+
+\begin{definition}[Independent Set]
+    A set $ I \subseteq V(G) $ is \textbf{indepenent} if there are no $ uv \in E(G) $.
+\end{definition}
+
+\begin{lemma}
+    $ f: V(G) \to V(H) $ is a homomorphism, $ I \subseteq V(H) $ is independent, then $ f^{-1}(I) $ is also independent (in $ G $).
+\end{lemma}
+
+\begin{definition}[Independent Partition]
+    An \textbf{independent partition} of $ G $ is a set $ \mathcal{P} $ of non-empty disjoint, independent sets whose union is $ V(G) $.
+\end{definition}
+
+\begin{lemma}
+    $ \mathcal{P} $ is an independent partition of $ G $. then the quotient map $ \pi_\mathcal{P} $ is an epimorphism from $ G $ to
+    $ G / \mathcal{P} $.
+\end{lemma}
+
+\begin{definition}[Kernel]
+    $ f: V(G) \to V(H) $ a homomorphism from $ G $ to $ H $. The \textbf{kernel} of $ f $, $ \ker(f) $ is the partition of $ G $
+    where two vertices $ u,v $ are in the same part if and only if $ f(u) = f(v) $.
+\end{definition}
+
+\begin{theorem}[Fundamental Theorem on Homomorphism]
+    $ G, H $ simple graphs, $ f $ a homomorphism form $ G $ to $ G $. Then:
+    \begin{enumerate}
+        \item $ \pi_{\ker(f)} $ is an epimorphism form $ G $ to $ G / \ker(f) $.
+        \item $ f^* $ is a monomorphism from $ G / \ker(f) $ to $ H $.
+        \item $ f = f^* \circ \pi_{\ker(f)} $.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proposition}
+    $ G, H $ finite simple graphs. \tfae:
+    \begin{enumerate}
+        \item For every simple graph $ F $ on $ \leq k $ vertices, $ \hom(F, G) = \hom(F, H) $.
+        \item For every simple raph $ F $ on $ \leq k $ vertices, $ \emb(F, G) = \emb(F, H) $.
+    \end{enumerate}
+\end{proposition}
+
+\begin{corollary}
+    $ G, H $ simple finite graphs. If $ \hom(F,G) = \hom(F, H) $ for every simple finite graph $ F $, then $ G \cong H $.
+\end{corollary}
+
+\begin{definition}[Deck]
+    The \textbf{deck} of $ G $, $ D(G) $ is the list (with multiplicities) of the iso-types of the graphs obtained by removing a single
+    vertex from $ G $. A graph $ K \in D(G) $ is called a \textbf{card}.
+\end{definition}
+
+\begin{definition}[Reconstructible graph]
+    $ G $ is reconstructible if $ G \cong H $ for every graph $ H $ \st $ D(G) = D(H) $.
+\end{definition}
+
+\begin{definition}[Recognisable property]
+    A property of graphs is \textbf{recognisable} if whenever $ G, H $ are graphs on $ \geq 3 $ vertices \st $ D(G) = D(H) $ and
+    $ G $ has the property, $ H $ also has the property.
+\end{definition}
+
+\begin{lemma}
+    Connectedness is a recognisable property.
+\end{lemma}
+
+\begin{lemma}
+    If $ G $ is a connected graph on $ \geq 2 $ vertices, then there are $ \geq 2 $ vertices $ v \in V(G) $ \st $ G - v $ is also connected.
+\end{lemma}
+
+\begin{lemma}
+    If $ G $ has $ n \geq 3 $ vertices, from $ D(G) $ we can find out $ \size{E(G)} $.
+\end{lemma}
+
+\begin{lemma}
+    If $ G $ is a graph on $ n \leq 3 $ vertices, then from $ D(G) $, we can find out the degrees of all the vertices of $ G $.
+\end{lemma}
+
+\begin{corollary}
+    Regular graphs (on $ \geq 3 $ vertices) are reconstructible.
+\end{corollary}
+
+\begin{lemma}[Kelly]
+    Suppose $ G, H $ are $ n $-vertex graph with $ D(G) = D(H) $. Let $ F $ be a graph with $ k < n $ vertices. Then
+    $ \emb(F, G) = \emb(F, H) $.
+\end{lemma}
+
+\begin{lemma}[Kelly for homos]
+    $ G, H $ are $ n $-vertex graphs with $ D(G) = D(H) $. Let $ F $ be a graph \st there is no surjective homomorphism from $ F $ to
+    $ G $ or $ H $. Then $ \hom(F, G) = \hom(F, H)$.
+\end{lemma}
+
+\begin{proposition}
+    Disconnected graphs on $ \geq 3 $ vertices are reconstructible.
+\end{proposition}
+
+\begin{definition}[Matching]
+    A \textbf{matching} in a graph $ G $ is a set $ M $ of non-loop edges \st every vertex of $ G $ is incident to $ \leq 1 $ edge in $ M $.
+\end{definition}
+
+\begin{definition}[Covered/Saturated]
+    A vertex $ v $ is covered/saturated by a matching $ M $ if it is incident to an edge in $ M $.
+\end{definition}
+
+\begin{definition}[Perfect matching]
+    A matching is \textbf{perfect} if every vertex is covered by it.
+\end{definition}
+
+\begin{definition}[Maximal matching]
+    A matching is \textbf{maximal} if it is impossible to form a larger matching by adding an edge to $ M $.
+\end{definition}
+
+\begin{definition}[Maximum matching]
+    A matching is \textbf{maximum} if it is the largest matching.
+\end{definition}
+
+\begin{definition}[M-alternating path]
+    An \textbf{$M$-alternating path} is a path in $ G $ whose edges alternate between $ M $ and $ E(G) \backslash M $.
+\end{definition}
+
+\begin{definition}[Augmenting path]
+    An \textbf{augmenting path} for $ M $ is an $ M $-alternating path of positive length whose endpoints are uncovered by $ M $.
+\end{definition}
+
+\begin{theorem}[Berge]
+    Let $ M $ be a matching in a finite graph $ G $. Then $ M $ is maximum if and only if there are no augmenting paths for $ M $.
+\end{theorem}
+
+\begin{definition}[Hall Condition]
+    Let $ G $ be a finite bipartite graph with a bipartition $ (A,B) $. The \textbf{Hall condition} states that for every subset
+    $ S \subseteq A, \size{N_G(S)} \geq \size{S}$
+\end{definition}
+
+\begin{theorem}[Hall]
+    If $ G $ be a finite bipartite graph with a bipartition $ (A,B) $ that satisfies the hall condition, then $ G $ has a matching that covers $ A $.
+\end{theorem}
+
+\begin{corollary}
+    Let $ G $ be a bipartite $ d $-regular graph, $ d \geq 1 $. Then $ G $ has a perfect matching.
+\end{corollary}
+
+\begin{definition}[Defect]
+    For $ S \subseteq A $, the \textbf{defect} of $ S $ is $ \defect(S) = \size{S} - \size{N_G(S)} $.
+\end{definition}
+
+\begin{theorem}[Generalised Hall's Theorem]
+    Let $ G $ a graph with bipartition $ (A,B) $. Then $ \alpha'(G) = \size{A} - \max_{S \subseteq A}\defect(S) $
+\end{theorem}
+
+\begin{definition}[Vertex cover]
+    A \textbf{vertex cover} in $ G $ is a set $ C \subseteq V(G) $ \st every edge is incident to at least one vertex in $ C $
+\end{definition}
+
+\begin{theorem}[Konig-Egervary]
+    If $ G $ is bipartite, then $ \alpha'(G) = \beta(G) $
+\end{theorem}
+
+\begin{definition}[Barrier]
+    A set $ S \subseteq V(G) $ is called a \textbf{barrier} if there is a matching in $ G $ with exactly
+    $ o(G - S) - \size{S} $ uncovered vertices.
+
+    Equivalently, $ \alpha'(G) = \frac{1}{2}(\size{V(G)} - o(G - S) - \size{S}) $.
+
+    Observe that if $ S $ is a barrier then for every max matching $ M $:
+    \begin{enumerate}
+        \item $ M $ induces a perfect matching in every even component of $ G - S $.
+        \item $ M $ induces an almost perfect matching in every off component of $ G - S $
+        \item $ M $ covers $ S $.
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[Berge-Tutte]
+    Every finite graph has a barrier.
+\end{theorem}
+
+\begin{corollary}
+    A graph $ G $ has a perfect matching if and only if it satisfies the Tutte condition:
+    for every set $ S \subseteq V(G) , o(G - S) \leq \size{S} $.
+\end{corollary}
+
+\begin{definition}[Bridge]
+    A \textbf{bridge} in a connected graph $ G $ is an edge $ e \in E(G) $ \st $ G - e $ is disconnected.
+\end{definition}
+
+\begin{theorem}[Peterson]
+    Every connected 3-regular graph with no bridges has a perfect matching.
+\end{theorem}
+
+\begin{definition}[Essential vertex]
+    A vertex $ v \in V(G) $ is \textbf{essential} if every maximum matching in $ G $ covers $ v $.
+\end{definition}
+
+\begin{definition}[Hypomatchable]
+    A graph is \textbf{hypomatchable} if for every vertex $ v \in V(G) $, $ G - v $ has a perfect matching.
+\end{definition}
+
+\begin{lemma}
+    A connected graph $ G $ has no essential vertices if and only if it is hypomatchable.
+\end{lemma}
+
+\begin{definition}[Network]
+    A network is a tuple $ N = (V, s, t, c) $ where
+    \begin{enumerate}
+        \item $ V $ is a set of vertices.
+        \item $ s, t \in V $ are distinct vertices called the source of the sink.
+        \item $ c: V \times V \to [0, \infty]$ is a function \st $ c(v, v) =0 $ for all $ v \in V $, called the \textbf{capacity} function.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Flow]
+    A \textbf{flow} in a network $ N $ is a function $ f: V \times V \to \R $ \st
+    \begin{enumerate}
+        \item $ f(v,v) = 0 $ for all $ v \in V $.
+        \item $ f(u,v) = -f(v,u) $ for all $ u,v \in V $.
+        \item $ \sum_{u \in V}^{}f(v,u) = 0 $ for all $ v \in V \setminus \{s,t\} $.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Value of a flow]
+    Let $ f $ be a flow in $ N $. The \textbf{value} of $ f $ is $ \val(f) = \sum_{u \in V}^{}f(s, u) $
+\end{definition}
+
+\begin{proposition}
+    Let $ f $ be a flow in $ N $, $ V $ finite. Then,$ \val(f) = \sum_{u \in V}^{}f(u, t) $
+\end{proposition}
+
+\begin{definition}[s,t cut]
+    An \textbf{$ s, t $-cut} in a network $ N $ is a partition $ (S, T) $ of $ V $ \st $ s \in S $ and $ t \in T $.
+    The capacity of an $ s,t $-cut is $ c(S, T) = \sum_{u\in S}^{}\sum_{v \in T}^{}c(u,v) $.
+\end{definition}
+
+\begin{proposition}
+    Let $ f $ be a flow in a finite network $ N $. If $ (S, T) $ is an $ s,t $-cut, then
+    $ \val(f) = \sum_{u \in S}^{}\sum_{v \in T}^{}f(u,v) $.
+\end{proposition}
+
+\begin{corollary}
+    IF $ f $ is a \textbf{feasible} flow in a finite network $ N $, $ (S, T) $ and $ s,t $-cut, then
+    $ \val(f) \leq c(S,T) $.
+\end{corollary}
+
+\begin{theorem}[Max-flow / min-cut]
+    In a finite network, the max value of the a feasible flow is the min capacity of an $ s,t $-cut.
+\end{theorem}
+
+\begin{proposition}
+    Let $ N $ be a finite network. Then there is a feasible flow in $ N $ with maximum value.
+\end{proposition}
+
+\begin{definition}[Excess]
+    The \textbf{excess} of a pair $ (u,v) \in V \times V $ is $ \epsilon(u,v,f) = c(u,v) - f(u,v) $. If $ = 0 $ then
+    $ (u,v) $ is saturated, otherwise unsaturated.
+
+    For a sequence $ (u_0, \dots u_k) $ we have $ \epsilon(u_0, \dots, u_ k) = \min_{0\leq i \leq k-1}\{\epsilon(u_i, u_{i+1}, f)\}$
+\end{definition}
+
+\begin{definition}[f-unsaturated path]
+    An \textbf{f-unsaturated path} is a sequence $ (u_0, \dots, u_k) $ with positive excess.
+\end{definition}
+
+\begin{definition}[Augmenting path for $f$]
+    An $ f $-unsaturated $ s,t $-path.
+\end{definition}
+
+\begin{theorem}[Berge for flows]
+    Let $ N $ be a finite network, $ f $ a feasible flow. IF there are no augmenting paths for $ f $, then $ f $ is maximum.
+    Moreover, in that case, letting $ S = \set{v \in V: \text{there is an $f$ unsaturated $sv$-path}} $ and $ T = V \setminus S $
+    we have that $ (S,T) $ is an $ s,t $-cut with $ \val(f) = c(S, T) $.
+\end{theorem}
+
+\begin{corollary}
+    Let $ N $ be a finite network with $ c(u,v) \in \Z $ for all $ u,v \in V $. Then, there is a max flow such that
+    $ f(u,v) \in \Z $ for all $ u,v \in V $.
+\end{corollary}
+
+\begin{definition}[Separating set / Vertex cut]
+    A \textbf{separating set/vertex cut} in $ G $ is a set $ S \subseteq V(G) $ \st $ G - S $ has $ \geq 2 $ component.
+\end{definition}
+
+\begin{definition}[k-connected]
+    $ G $ is $ k $-connected if there is no separating set in $ G $ of size $ < k $ and $ \size{V(G)} \geq k + 1 $.
+\end{definition}
+
+\begin{definition}[vertex connectivity]
+    The \textbf{vertex connectivity} of a non-empty graph $ G $ is $ \kappa(G) $, the max $ k $ \st $ G $ is $ k $-connected.
+\end{definition}
+
+\begin{definition}[Disconnecting set]
+    A set $ S \subseteq E(G) $ is \textbf{disconnecting} if $ G - S $ has $ \geq 2 $ components.
+\end{definition}
+
+\begin{definition}[Edge connectivity]
+    $ G $ is a $ k $-edge-connected if $ \size{V(G)} \geq 2 $ and no disconnecting set of $ < k $ edges. We have that
+    $ \kappa'(G) $ is the max $ k $ \st $ G $ is $ k $-edge-connected.
+\end{definition}
+
+\begin{theorem}[Whitney]
+    If $ G $ is a finite graph on $ \geq 2 $ vertices, then $ \kappa(G) \leq \kappa'(G) $.
+\end{theorem}
+
+\begin{definition}[$uv$-separating]
+    $ G $ a graph, $ u,v \in V(G), u \neq v $. A set $ S \subseteq E(G) $ is $ uv $-separating if there is no $ uv $-path in $ G - S $.
+    We have $ \kappa'(u,v) $ is min size of a $ uv $-separating set of edges.
+\end{definition}
+
+\begin{definition}[]
+    $ \lambda'(u,v) = $ max number of edge-disjoint $ uv $-paths in $ G $.
+\end{definition}
+
+\begin{theorem}[Menger]
+    In every finite graph $ G $, if $ u,v \in V(G), u\neq v $ then $ \kappa'(u,v) = \lambda'(u,v) $
+\end{theorem}
+
+\begin{lemma}
+    Let $ f $ be an integral flow in a network $ N $. Let $ G_f $ be a directed graph with $ xy \in E(G_f) $ if and only if $ f(x,y) > 0 $.
+    If $ \val(f) = k $, then there are $ k $-directed $ st $-paths in $ G_f $ \st each edge $ xy \in E(G) $ is used in at most
+    $ f(x,y) $ of them.
+\end{lemma}
+
+\begin{theorem}[Generalised Menger]
+    If $ X,Y \subseteq V(G) $ are disjoint sets of vertices, then $ \kappa'(X,Y) = \lambda'(X,Y) $
+\end{theorem}
+
+\begin{theorem}[Vertex version of Menger]
+    $ G $ a finite simple graph. Let $ x,y \in V(G) $ distinct non-adjacent vertices. Then $ \kappa(x,y) = \lambda(x,y) $.
+\end{theorem}
+
+\begin{proposition}
+    $ G $ finite and simple, $ v \in V(G) $ \st $ \deg(v) \geq k $ and $ G - v $ is $ k $-connected. Then $ G $ is also $ k $-connected.
+\end{proposition}
+
+\begin{proposition}
+    $ G $ finite simple and $ k $-connected. Let $ x, y_1, \dots, y_k \in V(G) $ be distinct vertices. Then $ G $ contains $ k $ paths
+    $ P_1, \dots, P_k $ \st each $ P_i $ starts at $ x $ and ends at $ y_i $ and the only vertex any of these paths have in common in $ x $.
+\end{proposition}
+
+\begin{definition}[Block]
+    A \textbf{block} in $ G $ is a subgraph $ B $ of $ G $ \st
+    \begin{enumerate}
+        \item $ B $ is connected and has no cut vertices.
+        \item $ B $ is maximal with above property. (i.e. can't add vertices/edges to make it larger and maintain above property.)
+    \end{enumerate}
+\end{definition}
+
+\begin{proposition}
+    An edge $ e \in E(G) $ is a block if and only if $ e $ is a bridge.
+\end{proposition}
+
+\begin{proposition}
+    If $ B_1, B_2 $ are distinct blocks, then $ \size{V(B_1) \cap V(B_2) \leq 1} $.
+\end{proposition}
+
+\begin{corollary}
+    Every edge belongs to exactly one block.
+\end{corollary}
+
+\begin{definition}[Block-cut points]
+    The \textbf{block-cut point} of a graph $ G $ is a bipartite graph $ (A,B) $ \st vertices in one part are the blocks of $ G $, vertices in the other
+    part are the cut-vertices in $ G $. There is an edge between a block $ B $ and a cut-vertex $ v $ if and only if $ v \in V(B) $.
+\end{definition}
+
+\begin{theorem}[]
+    The block-cut point graph of $ G $ is a tree.
+\end{theorem}
+
+\begin{definition}[Proper Coloring]
+    A \textbf{proper coloring} of a graph $ G $ is a function $ f: V(G) \to C $ \st $ f(u) \neq f(v) $ for all $ uv \in E(G) $.
+\end{definition}
+
+\begin{definition}[Chromatic number]
+    The \textbf{chromatic number} of $ G $ is the min. $ \size{C} $ \st $ G $ admits a proper coloring.
+\end{definition}
+
+\begin{definition}[Clique]
+    The \textbf{clique number} of $ G $, $ \omega(G) $ is the max size of a clique (a complete subraph).
+\end{definition}
+
+\begin{proposition}
+    For every $ k $, there is a graph $ G $ with $ \chi(G) \geq k $ and $ \omega(G) = 2 $ (triangle free)
+\end{proposition}
+
+\begin{proposition}
+    $ \chi(G) \leq \Delta(G) + 1 $.
+\end{proposition}
+
+\begin{definition}[$d$-degenerate graph]
+    A graph $ G $ is $ d $-degenerate if its vertices can be order as $ v_1, \dots, v_n $ so that each $ v_i $ is proeceded by $ \leq d $ of its
+    neighbors.
+
+    The degeneracy of $ G $ is the min $ d $ \st $ G $ is $ d $-degenerate.
+\end{definition}
+
+\begin{theorem}[Brooks]
+    If $ G $ is a connected graph, then $ \chi(G) \leq \Delta(G) $ unless $ G \cong K_{\Delta(G) + 1} $ or $ \Delta(G) = 2 $ and $ G $ is an odd cycle.
+\end{theorem}
+
+\begin{definition}[List coloring]
+    Let $ G $ be a graph and $ L $ be an assignment to each vertex $ v \in V(G) $ of a set $ L(v) $ called the \textbf{list of available colours} for
+    $ v $.
+\end{definition}
+
+\begin{definition}[L-coloring]
+    An \textbf{L-coloring} of $ G $ is a function $ c $ that assigns to each $ v \in V(G) $ a color $ c(v) \in L(v) $.
+
+    An $ L $-coloring is proper if $ c(u) \neq c(v) $ for all $ uv \in E(G) $.
+
+    $ G $ is $ L $-colorable if there is a proper $ L $-coloring of $ G $.
+\end{definition}
+
+\begin{definition}[f-choosable]
+    Given a function $ f: V(G) \to \N $ say that $ G $ is $ f $-choosable  (or $ f $-list-colorable) if for every assignment $ L $ with
+    $ \size{L(v)} \geq f(v) $ for all $ v \in V(G) $, $ G $ has a proper $ L $-coloring.
+\end{definition}
+
+\begin{definition}[k-choosable]
+    For $ k \in \N $, $ G $ is $ k $-choosable if it is $ f $-choosable for the function $ f $ \st $ f(v) = k $ for all $ v \in V(G) $.
+\end{definition}
+
+\begin{definition}[choosability]
+    The \textbf{choosability/list-chromatic-number} of $ G $, $ \ch(G) = \chi_l(G)$ is the min $ k $ \st $ G $ is $ k $-choosable.
+
+    Observe $ \chi(G) \leq \ch(G) $
+\end{definition}
+
+\begin{proposition}
+    Let $ k \geq 3, N = \binom{2k - 1}{k} $. Then the complete bipartite graph $ K_{n,n} $ satisfies $ \chi(K_{n,n}) = 2 $ but
+    $ \ch(K_{n,n}) > k$.
+\end{proposition}
+
+\begin{definition}[Degree list assignment]
+    A \textbf{degree-list assignment} for $ G $ is a list assignment $ L $ \st $ \size{L(v)} \geq \deg(v) $ for all $ v \in V(G) $.
+\end{definition}
+
+\begin{definition}[degree-choosable]
+    $ G $ is degree choosable if it is $ L $-colorable for every degree-list assignment $ L $.
+
+    Observe trees are not degree choosable.
+\end{definition}
+
+\begin{proposition}
+    Even cycles are 2-choosable (hence, degree choosable)
+\end{proposition}
+
+\begin{proposition}
+    Let $ G $ be a connected graph and let $ L $ be a degree-list assignment for $ G $. Suppose that for some vertex $ v \in V(G) $,
+    $ \size{L(v)} \geq \deg(v) $. Then $ G $ is $ L $-colorable.
+\end{proposition}
+
+\begin{corollary}
+    If $ G $ is a connected graph with $ \chi(G) = \Delta(G) + 1 $, then $ G $ is $ \Delta(G) $-regular.
+\end{corollary}
+
+\begin{lemma}
+    Let $ G $ be a connected graph that is not degree-choosable. Then no non-empty induced subgraph of $ G $ is degree-choosable.
+\end{lemma}
+
+\begin{lemma}
+    $ G $ a connected graph with no cut-vertices. If $ G $ is not degree-choosable, then $ G $ is regular.
+\end{lemma}
+
+\begin{corollary}
+    If $ G $ is a connected, non-degree-choosable graph, then all connected induced subgraphs of $ G $ with no cut-vertices (e.g., the blocks of $ G $)
+    are regular.
+\end{corollary}
+
+\begin{lemma}
+    If $ G $ is a connected, non-degree-choosable graph with no cut-vertices, then $ G $ is a complete graph or an odd cycle.
+\end{lemma}
+
+\begin{theorem}[]
+    A connected graph $ G $ is not degree-choosable if and only if all its blocks are cliques and odd cycles.
+\end{theorem}
+
+\begin{corollary}[Brooks' Thm.]
+    If $ G $ is a connected graph \st $ \chi(G) > \Delta(G) $, then $ G $ is a complete graph or an odd cycle.
+\end{corollary}
+
+\begin{definition}[Proper Edge Coloring]
+    A \textbf{proper edge-coloring} of $ G $ is a function $ f: E(G) \to C $ \st $ f(e) \neq f(e') $ whenever $ e,e' \in E(G) $ are
+    distinct edges with a common vertex.
+\end{definition}
+
+\begin{theorem}[Konig]
+    $ \chi'(G) = \Delta(G) $ for bipartite $ G $.
+\end{theorem}
+
+\begin{definition}[Line Graph]
+    The \textbf{line graph} of $ G $ is the graph $ L(G) $ with $ V(L(G)) = E(G) $, two edges are adjacent in $ L(G) $ if and only if
+    they are different and have a common vertex.
+\end{definition}
+
+\begin{theorem}[Shannon]
+    For every graph $ G $, $ \chi'(G) \leq \floor{\frac{3\Delta(G)}{2}} $.
+\end{theorem}
+
+\begin{theorem}[Vizing]
+    For every simple graph $ G $, $ \chi'(G) \leq \Delta(G) + 1 $.
+\end{theorem}
+
+\end{document}

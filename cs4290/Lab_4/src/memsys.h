@@ -47,7 +47,7 @@ uint64_t memsys_access_modeDE(Memsys* sys, Addr lineaddr, Access_Type type, uint
 
 // For parts B/C/D/E you must use this function to access L2 
 uint64_t memsys_L2_access(Memsys* sys, Addr lineaddr, bool is_writeback, uint32_t core_id);
-uint64_t memsys_L2_access_multicore(Memsys* sys, Addr lineaddr, bool is_writeback, uint32_t core_id);
+uint64_t memsys_L2_access_multicore(Memsys* sys, Addr v_lineaddr, bool is_writeback, uint32_t core_id);
 
 // This function can convert VPN to PFN
 uint64_t memsys_convert_vpn_to_pfn(Memsys* sys, uint64_t vpn, uint32_t core_id);

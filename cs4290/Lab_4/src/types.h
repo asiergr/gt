@@ -1,5 +1,8 @@
 #ifndef __TYPES_H__
 
+#define FALSE 0
+#define TRUE 1
+
 #define HIT   1
 #define MISS  0
 

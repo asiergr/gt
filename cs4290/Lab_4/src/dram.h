@@ -2,11 +2,30 @@
 #define DRAM_H
 
 #include <stdint.h>
+#include "types.h"
+
+#define MAX_BANKS 256
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Define the Data Structures here with correct field (Look at Appendix B for more details)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+typedef struct Rowbuf_Entry Rowbuf_Entry;
+typedef struct DRAM DRAM;
+
+struct Rowbuf_Entry {
+	bool valid;
+	uint64_t row_id;
+};
+
+struct DRAM {
+	Rowbuf_Entry banks[MAX_BANKS];
+
+	uint64_t stat_read_access;
+	uint64_t stat_write_access;
+	uint64_t stat_read_delay;
+	uint64_t stat_write_delay;
+};
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Mandatory variables required for generating the desired final reports as necessary
