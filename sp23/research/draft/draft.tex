@@ -1,0 +1,22 @@
+\documentclass{article}
+
+\input{./../../preamble.tex}
+
+\begin{document}
+    \begin{theorem}
+        Let $l$ be a loss function and $D = (\bm{x}_{n}, \bm{y}_{n})_{n=1}^{d}$ be training examples. Then
+        \begin{equation}
+            \min_{N \in \N, \{c_{n}\} \in \R^{N}\, \{\omega_{n} = (a_{n}, b_{n})\} \in (\mathbb{S}^{d})^{N}} 
+            l(\mathcal{N}_{\omega, c} ; \bm{y}) + \alpha \sum_{n=1}^{N} \phi(\abs{c_{n}}),
+        \end{equation}
+        where $\mathbb{S}^{d} = \{(a,b) \in \R^{d + 1} : \pnorm{2}{(a,b)}^{2} = 1\}$ is the unit sphere in $\R^{d + 1}$.
+
+        Is the same as
+        \begin{equation}
+            \min_{N \in \N, \{a_{n}, b_{n}, c_{n}\}_{n=1}^{N}} l(\mathcal{N}_{\omega, \hat{c}} ; \bm{y})
+            \alpha \sum_{n=1}^{N} \phi(2 + \abs{\hat{c}_{n}} + \pnorm{2}{w_{n}}^{2}),
+        \end{equation}
+    where $\hat{c}_{n} = \frac{\omega_{n}}{\pnorm{}{\omega_{n}}}$.
+    \end{theorem}
+    
+\end{document}

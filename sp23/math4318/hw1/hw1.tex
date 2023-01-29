@@ -1,0 +1,198 @@
+\documentclass{article}
+\input{./../../preamble.tex}
+
+\title{Homework 1}
+\begin{document}
+\maketitle
+    \exercise{1}
+
+    Prove that the function $f(x) = \abs{x})$ is differentiable for all $x \neq 0$, but is not differentiable for $x = 0$.
+
+    \begin{proof}
+        We will begin by showing that $f(x)$ is not differentiable at $x = 0$. We know the definition of the derivative is
+        \begin{equation*}
+            \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}.
+        \end{equation*}
+
+        Now, we interpret $f(x)$ as a piece-wise function.
+        \begin{equation*}
+            f(x) = \begin{cases}
+                x & \text{if } x >= 0,\\
+                -x & \text{if } x < 0
+                \end{cases}
+        \end{equation*}
+        Now, let us consider the left and right handed limits of this function. We will start with the left limit
+        \begin{equation*}
+            \lim_{h \to 0^{-}} \frac{-x - h + x}{h} = -1.
+        \end{equation*}
+
+        Now, we consider the right limit.
+        \begin{equation*}
+            \lim_{h \to 0^{+}} \frac{x + h -x}{h} = 1.
+        \end{equation*}
+
+        Since the right and left handed limits at $x = 0$ are different, we have that the function is not differentiable at 
+        this point. However, at any other point, the function simply behaves like a linear function, so if has a derivative.
+        Namely,
+
+        \begin{equation*}
+            f '(x) = \begin{cases}
+                1 & \text{if } x > 0,\\
+                -1 & \text{if } x < 0.
+                \end{cases}
+        \end{equation*}
+    \end{proof}
+
+    \newpage
+    \exercise{2}
+    Find where the function
+    \begin{equation*}
+        f(x) =
+        \begin{cases}
+            x^{2} & \text{ if } x \text{ is rational},\\
+            0  & \text{ if } x \text{ is irrational}.
+        \end{cases}
+    \end{equation*}
+    is (a) continuous, and (b) differentiable.
+
+    \begin{proof}
+        We will first prove that this function is continuous at $x=0$. Let $\epsilon > 0$ and $\delta = \sqrt{\epsilon}$.
+        Now, we let $\abs{x - 0} < \delta$. We can now see that if $x$ is irrational, then $\abs{f(x) - f(0)} = 0 < \epsilon$
+        If $x$ is irrational, then $\abs{f(x) - f(0)} = x^{2} < \delta^{2} = \sqrt{\epsilon}^{2} = \epsilon $.
+        So, we always have that $\abs{f(x) - f(0)} < \epsilon$. Therefore, $f$ is continuous at $x = 0$.
+
+        Now, we show that $f$ is continuous nowhere else. Suppose that $x \neq 0$ is rational. We note that the irrationals are dense
+        in $\R$, so any open interval in $\R$ contains an irrational number. Now, we let $\epsilon = \frac{x^{2}}{2}$. We let
+        $x_{0} \in (x -\delta, x + \delta)$ be irrational. Now, we have that 
+        \begin{equation*}
+            \abs{f(x) - f(x_{0})} = \abs{x^{2} - 0} = x^{2} \geq \frac{x^{2}}{2} = \epsilon.
+        \end{equation*}
+        Therefore, $f$ is not continuous when $x \neq 0$ is rational.
+
+        Similarly, we let $x \neq 0$ an irrational number. We note that the rationals are dense in $\R$. We let 
+        $\epsilon = x^{2}, \delta > 0$. We let $q$ be a rational in the interval $(x - \delta, x + \delta)$ such that
+        $f(q) = q^{2} > x^{2}$. Finally, we get that
+        \begin{equation*}
+            \abs{f(x) - f(x_{0})} = \abs{0 - q^{2}} = q^{2} > x^{2} = \epsilon.
+        \end{equation*}
+        Therefore, $f$ is not continous at the irrational $x \neq 0$.
+    \end{proof}
+
+    \subexercise{b}
+    \begin{proof}
+        Clearly since the function is discontinuous at $x \neq 0$, it is not differentiable at $x \neq 0$. Let us check what the 
+        limits as $x \to 0$ are. Again, since the irrationals are dense in the reals, we can approach this limit
+        from the rational or the irrational numbers. 
+        We have that 
+        \begin{equation*}
+            \lim_{x \to 0, x \in \Q} \frac{f(x) - f(0)}{x - 0} = 0,
+        \end{equation*}
+        and 
+        \begin{equation*}
+            \lim_{x \to 0, x \in \R \setminus  \Q} \frac{f(x) - f(0)}{x - 0} = 0.
+        \end{equation*}
+        
+        Therefore, since the limits agree, $f(x)$ is differentiable at 0.
+    \end{proof}
+
+    \newpage
+    \exercise{3}
+    Consider the function
+    \begin{equation*}
+        f(x) = 
+        \begin{cases}
+            x^{2}\sin(\frac{1}{x}) & \text{ if } x \neq 0,\\
+            0 & \text{ if } x = 0.
+        \end{cases}
+    \end{equation*}
+
+    \subexercise{a}
+    Prove that $x$ is differentiable on $\R$ (you may use differentiation rules for trigonometric, functions)
+
+    \begin{proof}
+        We can explicitly calculate the derivative using first principles to get
+        \begin{equation*}
+            \dv{f}{x}(x) = 
+            \begin{cases}
+                2x\sin(\frac{1}{x}) - \cos(\frac{1}{x}) & \text{ if } x \neq 0,\\
+                0 & \text{ if } x = 0.
+            \end{cases}
+        \end{equation*}
+        \end{proof}
+
+    \subexercise{b}
+    \begin{proof}
+        We will prove that $\dv{f}{x}$ is not continuous at $x = 0$. To do this we simply look at the limit as $x \to 0$. We have that
+        \begin{equation*}
+            \lim_{x \to 0} 2x\sin(\frac{1}{x}) + \cos(\frac{1}{x}).
+        \end{equation*}
+        We simply replace $z = \frac{1}{x}$ to get 
+        \begin{equation*}
+            \lim_{z \to \infty} 2\frac{\sin(z)}{z} + \cos(z).
+        \end{equation*}
+
+        While $\lim_{z \to \infty} 2 \frac{\sin z}{z} = 0$, we have that $\lim_{z \to \infty} \cos z$ does not exist. Therefore,
+        $\dv{f}{x}$ is not differentiable at $x = 0$ since the limit does not agree with $f(0)$.
+    \end{proof}
+    
+    \newpage
+    \exercise{4}
+    \subexercise{a}
+    Suppose that $f: [a,b] \to \R$ is differentiable on $[a,b]$. Suppose $f^{\prime} (a) < f^{\prime}(b)$ and 
+    $\beta \in (f^{\prime}(a), f^{\prime}(b))$ prove that $g(x) = f(x) - \beta(x - a)$ obtains its minimum in $[a,b]$ at a point in the 
+    open interval $(a,b)$.
+
+    \begin{proof}
+        We begin by calculating
+        \begin{equation*}
+            g^{\prime}(x) = f^{\prime}(x) - \beta.
+        \end{equation*}
+        Now, we see that $g^{\prime}(a) = f^{\prime}(a) - \beta$ and $g^{\prime}(b) = f^{\prime}(b) - \beta$. Now, since 
+        $\beta \in (f^{\prime}(a), f^{\prime}(b))$ we know that $g^{\prime}(a) < 0$ and $g^{\prime}(b) > 0$. Meaning that
+        the minimum point cannot lie at $x = a,b$. Therefore, it must lie in $(a,b)$.
+    \end{proof}
+
+    \subexercise{b}
+    Conclude that if $\beta \in (f^{\prime}(a), f^{\prime}(b))$, then there exists $c \in (a,b)$ with $f^{\prime}(c) = \beta$.
+
+    \begin{proof}
+        Since we know the stationary point is a minimum, we can simply set $g^{\prime}(x) = 0$ to find it. We get that
+        \begin{gather*}
+            g^{\prime}(x) = f^{\prime}(x) - \beta = 0,\\
+            f^{\prime}(x) = \beta.
+        \end{gather*}
+        Therefore, we get that there exists $c \in (a,b)$ with $f^{\prime}(c) = \beta$ as needed.
+    \end{proof}
+
+    \newpage
+    \exercise{5}
+    Consider the polynomial
+    \begin{equation*}
+        p(x) = x^{9} + 3x^{7} + 21x^{3} + 321,
+    \end{equation*}
+    
+    The goal of this question is to show that $p$ has only one root.
+
+    \subexercise{a}
+    Suppose $p$ has two roots. Find a contradiction using Rolle's theorem.
+    \begin{proof}
+        Suppose we have two roots at $x = a,b$. By Rolle's theorem we know $\exists c \in (a,b) \text{ such that } f(c) = 0$.
+        Now, we note that 
+        \begin{equation*}
+            p^{\prime}(x) = 9x^{8} + 21x^{6} + 63x^{2}.
+        \end{equation*}
+        Therefore, the only place that $p^{\prime}(x) = 0$ is at $x = 0$. This implies that $a < 0 < b$. However, we also note 
+        that $p^{\prime}(x) > 0 \ \ \forall x > 0$, so $p(x)$. Therefore, if $p(x)$ has a root at $a$, 
+        and only increases starting at 0, it cannot have another root after that, which is where the root would be as per
+        our first finding. \contra
+    \end{proof}
+
+    \subexercise{b}
+    Show that $p$ has at least one root.
+
+    \begin{proof}
+        We can see that $p(-2) = -743$ and $p(-1) = 296$. By the Intermediate Value Theorem, $\exists c \in (-2, -1)$ such that
+        $p(c) = 0$.
+    \end{proof}
+
+\end{document}

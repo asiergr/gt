@@ -1,0 +1,15 @@
+\usepackage{parskip}
+\usepackage{derivative}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{physics}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\pnorm}[2]{\lVert #2 \rVert_{#1}}
+\newcommand{\sz}[1]{\lvert #1 \rvert}
+
+\DeclareMathOperator{\argmin}{argmin}
+
