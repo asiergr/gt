@@ -1,0 +1,330 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+\geometry{letterpaper, left=20mm, right=20mm}
+
+\begin{document}
+\section{The derivative on $\R$}
+
+\begin{definition}[ Limit point of a set ]
+	Let $X \subset \R$, $x_{0} \in \R $ is a limit point of $X$ if
+	\begin{equation*}
+		\forall \epsilon > 0 \ \exists x \in X, x \neq n_{0} \text{ such that } | x - x_{0} | < \epsilon,
+	\end{equation*}
+	or
+	\begin{equation*}
+		\exists x_{n } \in X, x_{n } \neq x_{0}, x_{n } \to x_{0} \text{ as } n \to \infty.
+	\end{equation*}
+\end{definition}
+
+\begin{definition}[ Derivative at a point ]
+	Suppose $X \subset \R $ and $x_{0}$ is a limit point of $X$. then $f : X \to \R $ is differentiable at $x_{0}$ if
+	\begin{equation*}
+		\lim_{x \in X, x \to x_{0}} \frac{f(x) - f(x_{0})}{x - x_{0}}
+	\end{equation*}
+	exists. If so, we call the limit $f^{\prime}(x_{0})$.
+\end{definition}
+
+\begin{theorem}{Differentiable functions are continuous}
+	If $f$ is differentiable at $x_{0}$, then $f$ is continuous at $x_{0}$.
+\end{theorem}
+
+\begin{theorem}[ Properties of derivatives ]
+	Suppose $f, g : X \to \R $ are differentiable at $x_{0} \in X$. Then
+	\begin{itemize}
+		\item (Sums and differences) If $a, b \in \R$, then $af + bg $ is differentiable at $x_{0}$, and
+		      $(af + bg )^{\prime}(x_{0}) = af^{\prime}(x_{0}) + bg^{\prime}(x_{0})$.
+		\item (Product rule) The function $fg $ is differentiable at $x_{0}$ and
+		      \begin{equation*}
+			      (fg )^{\prime}(x_{0}) = f^{\prime }(x^{0})g(x^{0}) + f(x_{0})g^{\prime}(x_{0}).
+		      \end{equation*}
+		\item (Quotient rule) If $g(x^{0}) \neq 0$, then $f / g$ is differentiable at $x_{0}$, and
+		      \begin{equation*}
+			      (f/g)^{\prime }(x_{0}) = \frac{g(x_{0})f^{\prime}(x_{0}) - f(x_{0})g^{\prime}(x_{0})}{[g(x_{0})]^{2}}
+		      \end{equation*}
+	\end{itemize}
+\end{theorem}
+
+\begin{theorem}[ The chain rule ]
+	Suppose $f : X \to Y$ is differentiable at $x_{0} \in X, f(x_{0})$ is a limit point of $Y \subset \R $, and
+	$g : Y \to \R $ is differentiable at $f(x_{0})$. Then $g \circ f $ is differentiable, and
+	\begin{equation*}
+		(g \circ f )^{\prime}(x_{0}) = g^{\prime}(f(x_{0}))f^{\prime}(x_{0}).
+	\end{equation*}
+\end{theorem}
+
+\begin{definition}[ Big 'O' and little 'o' ]
+	For functions $f, g$, we write
+	\begin{equation*}
+		f(x) = O(g(x)) \text{ as } x \to a
+	\end{equation*}
+	if $\exists M > 0$ such that $\abs{\frac{f(x)}{g(x)}} \leq M$ for all $x$ close enough to $a $.
+
+	Or,
+	\begin{equation*}
+		f(x) = o(g(x)) \text{ as } x \to a
+	\end{equation*}
+	if $\lim_{x \to a }\frac{f(x)}{g(x)} = 0$
+\end{definition}
+
+\begin{definition}[ Newton's Approximation ]
+	$f $ if differentiable at\\
+	$x_{0} \iff \abs{f(x) - [f(x_{0}) + L(x - x_{0})] = o(\abs{x - x_{0}})}$
+\end{definition}
+
+\begin{theorem}[ Fermat's theorem ]
+	Suppose that $f : [a, b ] \to \R $ is differentiable on $(a,b )$ and attains its maximum at $x \in (a,b )$. Then
+	$f^{\prime}(x) = 0$.
+\end{theorem}
+
+\begin{theorem}[ Rolle's Theorem ]
+	Suppose that $f $ is continuous on the interval $[a, b ]$, that $f $ is differentiable on $(a,b )$ and
+	$f(a ) = f(b )$. Then, there exists some $c \in (a,b )$ with $f^{\prime }(c) = 0$
+\end{theorem}
+
+\begin{theorem}[ The Mean Value Theorem ]
+	Suppose that $f $ is continuous on the interval $[a, b ]$ and that $f $ is differentiable on $(a, b )$.
+	Then there exists some $c \in (a, b )$ with
+	\begin{equation*}
+		f^{\prime}(c) = \frac{f(b) - f(a)}{b - a }
+	\end{equation*}
+\end{theorem}
+
+\begin{theorem}[ Cauchy's Extended Mean Value Theorem ]
+	Suppose that $f $ is continuous on the interval $[a, b ]$ and that $f $ is differentiable on $(a, b )$.
+	Then there exists some $c \in (a, b )$ with
+	\begin{equation*}
+		f^{\prime}(c)(g(b) - g(a)) = g^{\prime}(c)(f(b) - f(a)).
+	\end{equation*}
+\end{theorem}
+
+\begin{theorem}[ L'Hopital's Rule ]
+	Suppose that $f$ and $g$ are both continuous functions on $[a,b]$ that are differentiable on $(a,b)$, and
+	$f(a) = g(a) = 0$, but $g^{\prime}(x) \neq 0$ for all $x \in (a,b)$. Suppose
+	$\lim_{x \to a^{+}} \frac{f^{\prime}(x)}{g^{\prime}(x)}$ exists. Then $g(x) \neq 0$ for all $x \in (a,b)$ and
+	\begin{equation*}
+		\lim_{x \to a^{+}} \frac{f(x)}{g(x)} = \lim_{x \to a^{+}} \frac{f^{\prime}(x)}{g^{\prime}(x)}
+	\end{equation*}
+\end{theorem}
+
+\begin{theorem}[ Taylor's Theorem ]
+	Suppose that $f$ is continuous on and interval $[a,b]$ and that $f^{\prime}, f^{\prime\prime}, \dots, f^{(k+1)}$
+	exist on $[a,b]$. Then there is a $d \in [a,b]$ so at
+	\begin{equation*}
+		f(b) = f(a) + (b - a)f^{\prime}(a) + \dots + \frac{(b - a)^{k}}{k!}f^{(k)}(a) + \frac{(b-a)^{k+1}}{(k+1)!}f^{(k+1)}(d).
+	\end{equation*}
+\end{theorem}
+
+\newpage
+\section{The integral in $\R$}
+
+\begin{definition}[ The Riemann Integral ]
+	Suppose that $f : [a,b] \to \R$ is a bounded function (i.e., $\exists M < \infty \text{such that} \abs{f(x)} \leq M$
+	for every $x \in [a, b]$). We would liek to define the integral
+	\begin{equation*}
+		\int_{a}^{b} f
+	\end{equation*}
+\end{definition}
+
+\begin{definition}[ Partitions ]
+	A partition $\bm{P}$ of $[a,b]$ is a collection of non-overalapping intervals whose union is $[a,b]$.
+
+	Often written as $\bm{P} = \{a_{0}, \dots, a_{N}\}$ where $a = a_{0} < a_{1} < \dots < a_{N} = b$ to mean that\\
+	$\bm{P} = \{[a_{0}, a_{1}], [a_{1}, a_{2}], \dots, [a_{N-1}, a_{N}]\}$.
+
+	For an interval $I$ we set $\abs{I}$ to be the length of $I$.
+\end{definition}
+
+\begin{definition}[ Upper and Lower Riemann Integrals ]
+	Suppose $f : [a, b] \to \R$ is bounded, and $\bm{P} = {I_{1}, \dots I_{N}}$ is a partition of $[a,b]$, then
+	\begin{align*}
+		\mathcal{U}(f, \bm{P}) & = \sum_{j=1}^{N}(\sup_{I_{j}} f) * \abs{I_{j}} = \sum_{I \in \bm{P}} (\sup_{I} f) * \abs{I}, \\
+		\mathcal{L}(f, \bm{P}) & = \sum_{j=1}^{N}(\inf_{I_{j}} f) * \abs{I_{j}} = \sum_{I \in \bm{P}} (\inf_{I} f) * \abs{I}, \\
+	\end{align*}
+\end{definition}
+
+\begin{theorem}[ The fundamental inequality ]
+	If $\bm{P}_{1}, \bm{P}_{2}$ are partitions of $[a,b]$, then
+	\begin{equation*}
+		\mathcal{U}(f, \bm{P}_{1}) \geq \mathcal{L}(f, \bm{P}_{2})
+	\end{equation*}
+\end{theorem}
+
+\begin{definition}[ Refinement of a partition ]
+	Suppose $\bm{P}_{1}, \bm{P}_{2}$ are partitions of $[a, b]$. We call a partition $\bm{P}_{1}$ a refinement
+	of $\bm{P}_{2}$ if every interval of $\bm{P}_{1}$ is contained in an interval in $\bm{P}_{2}$.
+\end{definition}
+
+\begin{definition}[ Common refinement of two partitions ]
+	Suppose $\bm{P}_{1}, \bm{P}_{2}$ are partitions of $[a, b]$, then the common refinement $\bm{P}$ of
+	$\bm{P}_{1}, \bm{P}_{2}$ is defined as
+	\begin{equation*}
+		\bm{P} = \{I \cap J : I \in \bm{P}_{1}, J \in \bm{P}_{2} \quad \text{and} \quad I \cap J \neq \O \}.
+	\end{equation*}
+\end{definition}
+
+\begin{definition}[ Riemann Integrable ]
+	We call a bounded function $f : [a,b] \to \R$ \textbf{Riemann Integrable} if
+	\begin{equation*}
+		\sup_{\bm{P}} \mathcal{L}(f, \bm{P}) = \inf_{\bm{P}} \mathcal{U}(f, \bm{P}).
+	\end{equation*}
+
+	If $f$ is Riemann integrable, then we define
+	\begin{equation*}
+		\int_{a}^{b} f = \sup_{\bm{P}}\mathcal{L}(f, \bm{P}) = \inf_{\bm{P}} \mathcal{U}(f, \bm{P}).
+	\end{equation*}
+\end{definition}
+
+\begin{definition}[ Another criterion ]
+	We call a bounded function $f : [a,b] \to \R$ \textbf{Riemann Integrable} if and only if for every
+	$\epsilon > 0$ there exists a partition $\bm{P}$ such that
+	\begin{equation*}
+		\mathcal{U} (f, \bm{P}) - \mathcal{L}(f, \bm{P}) < \epsilon.
+	\end{equation*}
+\end{definition}
+
+\begin{theorem}[ A useful inequality ]
+	If $f$ is Riemann integrable and $\abs{f(x)} \leq M$ for every $x \in [a, b]$, then
+	\begin{equation*}
+		-M(b-a) \leq \int_{a}^{b} f \leq M(b-a).
+	\end{equation*}
+\end{theorem}
+
+\begin{theorem}[ Continuous functions are Riemann integrable ]
+	Suppose $f : [a,b] \to \R$ is a continuous function, then $f$ is Riemann integrable.
+\end{theorem}
+
+\begin{definition}[ Piecewise continuous functions ]
+	A bounded function $f : [a, b] \to \R$ is called \textbf{piecewise continuous} if there is a partition $\bm{P}$
+	such that $f$ is continuous on $I$ for every $I \in \bm{P}$. (I.e., there are finitely many jump discontinuities)
+\end{definition}
+
+\begin{theorem}[ Piecewise functions are Riemann integrable ]
+	Suppose $f : [a,b] \to \R$ is a piecewise continuous function, then $f$ is Riemann integrable.
+\end{theorem}
+
+\begin{theorem}[ Monotone functions are Riemann integrable ]
+	Suppose $f : [a,b] \to \R$ is a bounded monotone function, then $f$ is Riemann integrable.
+\end{theorem}
+
+\begin{theorem}[ Algebraic properties of the Riemann integral ]
+	Suppose $f, g : [a, b] \to \R$ are Riemann integrable, then:
+	\begin{itemize}
+		\item $f + g$ is Riemann integrable and
+		      \begin{equation*}
+			      \int_{a}^{b} (f + g) = \int_{a}^{b} f + \int_{a}^{b} g.
+		      \end{equation*}
+		\item If $\alpha \in \R$, then $\alpha f$ is Riemann integrable and
+		      $\int_{a}^{b} \alpha f = \alpha \int_{a}^{b} f$.
+		\item $f - g$ is Riemann integrable and
+		      \begin{equation*}
+			      \int_{a}^{b} (f - g) = \int_{a}^{b} f - \int_{a}^{b} g.
+		      \end{equation*}
+		\item $f \geq g$ for every $x \in [a, b]$, then
+		      \begin{equation*}
+			      \int_{a}^{b} f \geq \int_{a}^{b} g.
+		      \end{equation*}
+		\item $c \in (a, b)$, then $f$ is integrable on $[a, c]$ and $[c, b]$ and
+		      $\int_{a}^{b} f = \int_{a}^{c} f + \int_{c}^{b} f$.
+	\end{itemize}
+\end{theorem}
+
+\begin{theorem}[ Maximums and minimums ]
+	If $f, g : [a, b] \to \R$ are both Riemann integrable, the so are $\max(f, g), \min(f, g)$.
+\end{theorem}
+
+\begin{corollary}
+	The absolute value $\abs{f} = f^{+} - f^{-}$\\
+	where $f^{+} = \max(f, 0), f^{-} = \min(f, 0)$ is Riemann integrable.
+\end{corollary}
+
+\begin{theorem}[Change of Variables]
+	Let $g : [a, b] \to \R$ be a continuously differentiable (i.e., derivative is continuous on $[a,b]$),
+	and assume that $g([a,b]) \subset [c, d]$. Let $f : [c,d] \to \R$ be continuous. Then
+	\begin{equation*}
+		\int_{a}^{b} f(g(x))g^{\prime}(x) dx = \int_{g(a)}^{g(b)} f(t) dt.
+	\end{equation*}
+\end{theorem}
+
+\begin{theorem}[Riemann-Stieljes Integral]
+	Suppose that $f : [a,b] \to \R$ is a bounded function, and $\alpha : [a,b] \to \R$ is an increasing function.
+	For an interval $I = [c,d]$, we put $\alpha(I) = \alpha(d) - \alpha(c)$. If $\alpha(x) = x$, then
+	$\alpha(I) = | I |$. The Riemann-Stieljes integral generalises the Riemann integral to a
+	more general notion on 'length' determined by $\alpha$.
+
+	For a partition $\bm{P}$, set
+	\begin{equation*}
+		\mathcal{U}(f, \bm{P}) = \sum_{I \in \bm{P}} \sup_{I} f \cdot \alpha(I) \quad \text{and} \quad
+		\mathcal{L}(f, \bm{P}) = \sum_{I \in \bm{P}} \inf_{I} \cdot \alpha(I).
+	\end{equation*}
+
+	We say $f$ is $\alpha$-Riemann-Stieljes integrable if
+	\begin{equation*}
+		\inf_{\bm{P}}\mathcal{U}(f, \bm{P}) = \sup_{\bm{P}} \mathcal{L}(f, \bm{P}),
+	\end{equation*}
+	and set the common balue equal $\int_{a}^{b} f \ d \alpha$.
+\end{theorem}
+
+\begin{definition}[Uniform Convergence]
+	A function $f_{n} : X \to \R$ converges uniformly to $f : X \to \R$ if
+	$\forall \epsilon > 0, \exists N \in \N$ such that $|f_{n}(x) - f(x) | < \epsilon , \forall x \in X, n \geq N$
+\end{definition}
+
+\begin{theorem}[Uniform limit of continuous function is continuous]
+	Let $f_{n} : [a, b] \to \R$ be continuous, if $f_{n} \to f$ uniformly on $[a,b]$.
+	Then $f$ is continuous on $[a,b]$.
+\end{theorem}
+
+\begin{theorem}[Switching limits and integration]
+	If $f_{n} : [a,b] \to R$ is Riemann integrable, and $f_{n} \to f$ uniformly on
+	$[a,b]$. Then $f$ is Riemann integrable and
+	\begin{equation*}
+		\lim_{n \to \infty} \int_{a}^{b}f_{n} = \int_{a}^{b} f.
+	\end{equation*}
+\end{theorem}
+
+\begin{corollary}
+	If, $f_{n} : [a,b] \to \R$ is Riemann integrable, and $\sum_{n = 0}^{\infty} f_{n}$ converges uniformly,
+	then $f = \sum_{n = 0}^{\infty} f_{n}$ is Riemann integrable, and
+	\begin{equation*}
+		\int_{a}^{b} f = \sum_{n = 0}^{\infty} \int_{a}^{b} f_{n}.
+	\end{equation*}
+\end{corollary}
+
+\begin{theorem}[Interchange of limits and derivatives]
+	Suppose $f_{n} : [a, b] \to \R$ are differentiable on $[a, b]$.
+	Suppose that $\exists c \in [a,b]$ such that $f_{n}(c) \to f(c)$ converges as $n \to \infty$.
+	Further, suppose that the derivatices $f^{\prime}_{n}$ converge uniformly on $[a, b]$
+	to some function $g$. Then $f_{n}$ converges uniformly to a function $f$
+	that is differentiable on $[a, b]$, and $f^{\prime} = g$.
+\end{theorem}
+
+\begin{theorem}[The Weierstrass Approximation Theorem]
+	Suppose $f : [a,b] \to \R$ is a continuous function. Fix $\epsilon > 0$. There exists
+	a polynomial $P$ such that $|f(x) - P(x)| < \epsilon$ for every $x \in [a,b]$.
+\end{theorem}
+
+\begin{definition}[Convolution]
+	For compactly supported function $f, g : \R \to \R$, we define
+	\begin{equation*}
+		f * g(x) = \int_{-\infty}^{\infty} f(y)g(x - y) \ dy.
+	\end{equation*}
+\end{definition}
+
+\begin{theorem}[Convolutions with polynomials are polynomials]
+	Let $f : \R \to \R$ be a continuous function supported on $[0, 1]$, and
+	$g : [-1, 1] \to \R$ be a continuous function that is a polynomial on
+	$[-1, 1]$, then $f * g$ is a polynomial on $[0, 1]$.
+\end{theorem}
+
+\begin{definition}[$(\epsilon, \delta)$-approximation to the identity]
+	We call $g : \R \to \R$ an $(\epsilon, \delta)$-approximation to identity if $g$ is
+	continuous and companctly supported on $[-1, 1]$, and satisfies
+	\begin{itemize}
+		\item $\int_{-1}^{1} g = 1$,
+		\item $g \geq 0$ on $[-1, 1]$,
+		\item $|g(x)| \leq \epsilon$ for $x \in [-1, -\delta] \cup [\delta, 1]$.
+	\end{itemize}
+\end{definition}
+
+\end{document}

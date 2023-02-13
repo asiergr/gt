@@ -56,7 +56,16 @@ def load_mnist_trainval():
     #       data. Use 80% of your data for training and 20% of your data for    #
     #       validation                                                          #
     #############################################################################
-    
+    train_len: int = int(len(data) * 0.80)
+    val_len: int = len(data) - train_len
+
+    train_data, val_data = data[:train_len], data[train_len:]
+    assert len(train_data) == train_len
+    assert len(val_data) == val_len
+
+    train_label, val_label = label[:train_len], label[train_len:]
+    assert len(train_label) == train_len
+    assert len(val_label) == val_len
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -103,7 +112,17 @@ def generate_batched_data(data, label, batch_size=32, shuffle=False, seed=None):
     #    It's okay if the size of your last batch is smaller than the required  #
     #    batch size                                                             #
     #############################################################################
-    
+    if shuffle:
+        zipped = list(zip(data, label))
+        random.shuffle(zipped)
+        data, label = zip(*zipped)
+        data, label = list(data), list(label)
+
+    batched_data = []
+    batched_label = []
+    for i in range(0, len(data), batch_size):
+        batched_data.append(np.array(data[i : i + batch_size]))
+        batched_label.append(np.array(label[i : i + batch_size]))
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -198,7 +217,17 @@ def plot_curves(train_loss_history, train_acc_history, valid_loss_history, valid
     #    1) Plot learning curves of training and validation loss                #
     #    2) Plot learning curves of training and validation accuracy            #
     #############################################################################
+    x = np.arange(len(train_loss_history))
+    plt.plot(x, train_loss_history, label = 'train loss')
+    plt.plot(x, valid_loss_history, label = 'validation loss')
+    plt.legend()
+    plt.show()
 
+    x = np.arange(len(valid_loss_history))
+    plt.plot(x, train_acc_history, label = 'train accuracy')
+    plt.plot(x, valid_acc_history, label = 'validation accuracy')
+    plt.legend()
+    plt.show()
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################

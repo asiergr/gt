@@ -1,4 +1,4 @@
-\documentclass{article} 
+\documentclass[twoside]{article} 
 \input{./../../preamble.tex}
 
 \begin{document}
@@ -8,25 +8,31 @@ I have not collaborated with anyone on this homework.
 \section{Optimization}
 \subsection{}
 \begin{proof}
-    We will show that $\grad f $ is orthogonal to $\pdv{\vec{r}}{t}\big|_{t_0}$. To do this, we will show that $\grad f_{0} \cdot \pdv{\vec{r}}{t}\big|_{t_{0}} = 0$.
-    We have that $x_{0} \in \R$ and that $L_{f(x_{0})}$ is a level surface passing through this point. The gradient at this point is 
-    $\grad f_{0}$
+    We have that $\vec{r}(t)$ is a curve passing through a point $x_{0} \in \R_{d}$. We have a level surface
+    $L_{f(x_{0})}$ passing through this point, and also that $\vec{r}(t) \in L_{f(x_{0})} \ \forall t$.
 
-    Now, we also have that $\vec{r} = [x_{1}(t), \dots, x_{d}(t)]$ is a curve passing through $x_{0}$. Therefore, $\exists t_{0} \in \R$
-    such that $\vec{r}(t_{0}) = x_{0}$. We also know that $\vec{r}(t) \in L_{f(x_{0})} \text{ for all } t$.
+    Now, we can see that $f(r(t)) = f(x_{0}) \ \forall t$ (since the curve lies entirely in the level surface).
+    Taking the derivative we have that 
+    \begin{equation*}
+        \dv{f}{t} = \dv{}{\vec{x}}f(x_{0}),\\
+    \end{equation*}
+    by the chain rule
+    \begin{equation}
+        \dv{f}{\vec{r}}\dv{\vec{r}}{t} = 0.\\
+    \end{equation}
+
+    Now, we will show that $\grad f_{0} $ is orthogonal to $\pdv{\vec{r}}{t}\big|_{t_0}$. To do this, we will show that $\grad f_{0} \cdot \pdv{\vec{r}}{t}\big|_{t_{0}} = 0$.
 
     We start by noting that
     \begin{align*}
-        \grad f_{0} \cdot \pdv{\vec{r}}{t} &= \sum_{k=1}^{d}\pdv{f}{x_{k}}\big |_{x_{0}}\pdv{x_{k}}{t}\big |_{t_{0}},\\
+        \grad f_{0} \cdot \pdv{\vec{r}}{t}\big |_{x_{0}} &= \sum_{k=1}^{d}\pdv{f}{x_{k}}\big |_{x_{0}}\pdv{x_{k}}{t}\big |_{t_{0}},\\
                                            \intertext{now, by the chain rule}
-                                           &= \sum_{k=1}^{d} \pdv{f}{t} \big |_{x_{0}}
+                                           &= \sum_{k=1}^{d} \dv{f}{t} \big |_{x_{0}}
+                                           \intertext{now using (1)}
+                                           &= \sum_{k=1}^{d} 0 = 0
     \end{align*}
-    Now, we know that since $\vec{r}$ lies on the level surface, then we always have that $f(\vec{r}) = c$. Taking the derivative
-    \begin{equation*}
-        \dv{f}{r}\dv{r}{t} = \dv{f}{t} = \dv{}{t}c = 0
-    \end{equation*}
 
-    Therefore, we finally get that $\grad f_{0} \cdot \pdv{\vec{r}}{t} = \sum_{k=1}^{d} \pdv{f}{t} \big |_{x_{0}} = 0$.
+    Therefore, we get our result as required.
 \end{proof}
 
 We have just proven that the directon of steepest descent of any level curve is orthogonal to the tangent of any arbitrary curve living
@@ -45,18 +51,26 @@ necessarily true.
 
 \begin{proof}
     We will prove this by contraction. That is, assume that $\grad g(\mathbf{w}^{t}) \neq 0$.
-    Let $\gamma > 0$ and $\mathbf{w} \in R^{n}$ such that 
-    $\pnorm{2}{\mathbf{w}^{t} - \mathbf{w}} < \gamma$.  Without loss of generality, we assume that 
-    $\grad g(\mathbf{w}^{t}) = [c, 0, \dots, 0]$ where $c \in \Z_{> 0}$. This implies that there exists some $\epsilon > 0$ such that
-    with $\mathbf{\epsilon} = [\epsilon, 0, \dots, 0]$ we have that $\pnorm{2}{\mathbf{w}^{t} - (\mathbf{w} + \mathbf{\epsilon})} < \gamma$
-    but $g(\mathbf{w} + \mathbf{\epsilon}) < g(\mathbf{w}^{t})$, which is a contradiction.
+    Therefore, we have that
+    \begin{equation*}
+        \grad g(w^{t}) = \langle c_{1}, \dots, c_{n} \rangle
+    \end{equation*}
+    for some arbitrary $c_{i} \in \R$.
 
-    The reason we can say this without loss of generality is because if the gradient is nonzero in other dimesnions, then the
-    $\mathbf{\epsilon}$ vector will simply also have other dimensions. And if $c$ is negative, then we subtract $\mathbf{\epsilon}$
-    instead of adding it.
+    Now, we let $\gamma > 0$ and pick $0 < \epsilon < \frac{\gamma}{\sqrt{\sum_{i}c_{i}^{2}}}$. We now let 
+    \begin{equation*}
+        \vec{\epsilon} = \langle \epsilon c_{1}, \dots, \epsilon c_{n} \rangle,
+    \end{equation*}
+    and consider the point $w^{t} + \vec{\epsilon}$. We have that 
+    \begin{equation*}
+        \lVert w^{t} - (w^{t} + \vec{\epsilon}) \rVert = \lVert \vec{\epsilon} \rVert = \sqrt{\sum_{i} (\epsilon c_{i})^{2}}
+        = \epsilon \sqrt{\sum_{i} c_{i}^{2}} < \gamma.
+    \end{equation*}
 
-    To prove that the converse is not necessarily true, we can consider a saddle point. We know that on a saddle point the gradient
-    is zero, but it is clearly not a minimum (by definition).
+    However, we also have that $g(\vec{w}^{t}) > g(\vec{w}^{t} + \vec{\epsilon})$, since the direction of the gradient
+    is always that of the steepest descent. \contra
+
+    Therefore, we have that the gradient is zero as required.
 \end{proof}
 
 \newpage
@@ -65,8 +79,10 @@ Prove that if a differentiable function $g: \R^{n} \to \R$ is convex and the gra
 $\mathbf{w}^{*}$ is the global minimum of $g$.
 
 \begin{proof}
-    We claim that any function $f: \R^{n} \to \R$ is convex if $f(\vec{y}) > f(\vec{x}) + \grad f(\vec{x})^{T}(\vec{y} - \vec{x})$.
-    for all $\vec{x}, \vec{y} \in \R^{n}$
+    \begin{claim}
+        Any convex function $f: \R^{n} \to \R$ has $f(\vec{y}) > f(\vec{x}) + \grad f(\vec{x})^{T}(\vec{y} - \vec{x})$
+        for all $\vec{x}, \vec{y} \in \R^{n}$
+    \end{claim}
     \begin{proof}
         We begin by noting that
         \begin{equation*}
@@ -79,15 +95,15 @@ $\mathbf{w}^{*}$ is the global minimum of $g$.
         Then, we let $h = t(y_{k} - x_{k})$ and get that
         \begin{align*}
             \pdv{f}{x_{k}}(y_{k} - x_{k}) &= \lim_{t \to 0} \frac{f(x_{k} + t(y_{k} - x_{k})) - f(x)}{t},
-            \intertext{since $g$ is convex, we then have that}
+            \intertext{since $f$ is convex, we then have that}
                                           &\leq \lim_{t \to 0} \frac{(1 - t)f(x_{k}) + tf(y_{k}) - f(x_{k})}{t}\\
                                           &= f(y_{k}) - f(x_{k})
         \end{align*}
         Therefore, we have that $f(\vec{y}) > f(\vec{x}) + \grad f(\vec{x})^{T}(\vec{y} - \vec{x})$ as required.
     \end{proof}
 
-    Now that we have proven this intermediate result, it becomes evident that if $\grad f(\mathbf{w}^{*}) = 0$ then we have that 
-    $f(\mathbf{w}) > g(\mathbf{w}^{*}) \text{ for all } \mathbf{w} \in \R^{n}$. Which concludes our proof.
+    Now that we have proven this intermediate result, it becomes evident that if $\grad g(\mathbf{w}^{*}) = 0$ then we have that 
+    $g(\mathbf{w}) > g(\mathbf{w}^{*}) \text{ for all } \mathbf{w} \in \R^{n}$. Which concludes our proof.
 \end{proof}
 
 \newpage
@@ -156,10 +172,10 @@ $\mathbf{w}^{*}$ is the global minimum of $g$.
         \mathcal{L}(\mathbf{y}, \alpha) = -\mathbf{x}^{T}\mathbf{y} - H(\mathbf{y}) + \alpha(\mathbf{1}^{T}\mathbf{y} - 1).
     \end{equation*}
     
-    Now, calculating $\grad_{\mathbf{y}} \mathcal{L}(\mathbf{y, \alpha}) = 0$ yields, for each $i$
+    Now, calculating $\grad_{\mathbf{y}} \mathcal{L}(\mathbf{y, \alpha}) = 0$ yields, for each $i$,
     \begin{gather*}
         -x_{i} + \log_{}y_{i}^{*} + 1 + \alpha^{*} = 0,\\
-        \log_{}y_{i}^{*} = x_{i} - 0 - \alpha^{*},\\
+        \log_{}y_{i}^{*} = x_{i} - 1 - \alpha^{*},\\
         y_{i} = \exp{x_{i} - 1 - \alpha^{*}}.
     \end{gather*}
 
@@ -195,14 +211,15 @@ $\mathbf{w}^{*}$ is the global minimum of $g$.
 \begin{proof}
     We will prove that if $G$ is a DAG, then $G$ has a topological ordering.
 
-    We will do a proof by inducting on $\sz{V} = k$.
-    \textbf{Base Case:} We take a DAG $G_{0}$ of size $\sz{V} = 1$. Clearly this has a topological ordering: the only vertex $v \in V$.
+    We will do a proof by inducting on $\lvert V \rvert = k$.
 
-    \textbf{Inductive assumption:} We assume that a dag $G_{1}$ such that $\sz{V} = k$ has a topological ordering.
+    \textbf{Base Case:} We take a DAG $G_{0}$ of size $\lvert V \rvert = 1$. Clearly this has a topological ordering: the only vertex $v \in V$.
 
-    \textbf{Inductive step:} We now consider a dag $G_{2}$ such that $\sz{V} = k + 1$. Now, we remove a vertex $v$ with no incoming
-    edges from $G_{2}$. When we remove this vertex we also remove every edge adjacent (i.e., incoming)on this vertex. Now, we have the
-    graph $G_{2} - v$ which has $\sz{V} = k$. Since removing an edge cannot form cycles, we have that this new graph is also a
+    \textbf{Inductive assumption:} We assume that a dag $G_{1}$ such that $\lvert V \rvert = k$ has a topological ordering.
+
+    \textbf{Inductive step:} We now consider a dag $G_{2}$ such that $\lvert V \rvert = k + 1$. Now, we remove a vertex $v$ with no incoming
+    edges from $G_{2}$. When we remove this vertex we also remove every edge adjacent (i.e., incoming) on this vertex. Now, we have the
+    graph $G_{2} - v$ which has $\lvert V \rvert = k$. Since removing an edge cannot form cycles, we have that this new graph is also a
     DAG. Therefore, this graph has a topological ordering.
 
     Now, we consider the topological ordering of $G_{2} - v$ that is $\{v_{1}, \dots, v_{k}\}$. To this ordering we append the removed
@@ -220,7 +237,7 @@ $\mathbf{w}^{*}$ is the global minimum of $g$.
 
     Now assume, for the sake of contradiction, that $G$ is not a DAG. That is, there is a directed cycle 
     $C$ in $G$. Let $v_{i} \in C$ be the lowest indexed vertex in $C$ and $v_{j} \in C$ be the 
-    highest indexed vertex in $C$. This implies that there is an edge $(v_{j}, v_{i})$ such that $i < j$, a contradiction.
+    highest indexed vertex in $C$. This implies that there is an edge $(v_{j}, v_{i})$ such that $j > i$. \contra
 
     Therefore, $G$ is a DAG as needed.
 \end{proof}

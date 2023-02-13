@@ -35,11 +35,10 @@
 \renewcommand\O{\ensuremath{\emptyset}}
 \newcommand\Q{\ensuremath{\mathbb{Q}}}
 \newcommand\C{\ensuremath{\mathbb{C}}}
-\newcommand{\pnorm}[2]{\lVert #2 \rVert_{#1}}
-\newcommand{\sz}[1]{\lvert #1 \rvert}
 
 % Operators
-\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 % Easily typeset systems of equations (French package)
 \usepackage{systeme}
@@ -68,13 +67,14 @@
 \newmdtheoremenv[nobreak=true]{lemma}{Lemma}
 \newmdtheoremenv[nobreak=true]{proposition}{Proposition}
 \newmdtheoremenv[nobreak=true]{theorem}{Theorem}
-\newmdtheoremenv[nobreak=true]{corollary}{Corollaty}
+\newmdtheoremenv[nobreak=true]{corollary}{Corollary}
 \newmdtheoremenv{conjecture}{Conjecture}
 \newtheorem*{remark}{Remark}
 \newtheorem*{problem}{Problem}
 \newtheorem*{eg}{Example}
 \newtheorem*{question}{Question}
 \newtheorem*{intuition}{Intuition}
+\newtheorem*{claim}{Claim}
 
 % End example environments with a small diamond (just like proof
 % environments end with a small square)
@@ -138,6 +138,8 @@
 }
 
 
+% For page size and geometry
+\usepackage{geometry}
 
 % These are the fancy headers
 \usepackage{fancyhdr}

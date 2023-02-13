@@ -1,0 +1,157 @@
+\documentclass[twoside]{article}
+\input{./../../preamble.tex}
+
+\begin{document}
+    \exercise{1}
+    \begin{proof}
+        Let 
+        \begin{equation*}
+            g(x) = f(x) - \sum_{k = 0}^{n - 1} \frac{f^{(k)}(a)}{k!}(x - a)^{k}
+        \end{equation*}
+        and 
+        \begin{equation*}
+            h(x) = (x - a)^{n}
+        \end{equation*}
+        We now note that
+        \begin{equation*}
+            g^{(i)}(a) = f^{(i)}(a) = 0 \qquad  \forall i \in [0, n - 1].
+        \end{equation*}
+        
+        Now, we apply Cauchy's mean value theorem and get
+        \begin{equation*}
+            \frac{g^{\prime}(c_{1})}{h^{\prime}(c_{2})} = \frac{g(b) - g(a)}{h(b) - h(a)} = \frac{g(b)}{h(b)},
+        \end{equation*}
+        where $c_{1} \in (a,b)$.
+
+        Now, we apply this again on the interval $(a, c_{1})$ to get
+        \begin{equation*}
+            \frac{g^{\prime\prime}(c_{2})}{h^{\prime\prime}(c_{2})} 
+            = \frac{g^{\prime}(c_{1}) - g^{\prime}(a)}{h^{\prime}(c_{1}) - h^{\prime}(a)} 
+            = \frac{g^{\prime}(c_{1})}{h^{\prime}(c_{1})},
+        \end{equation*}
+        for some $c_{2} \in (a, c_{1})$.
+
+        Applying this $n$ times we get a progression $a < c_{n} < \dots < c_{1} < b$ and
+        \begin{equation*}
+            \frac{g(b)}{h(b)} = \frac{g^{(n)}(c)}{h^{(n)}(c)},
+        \end{equation*}
+        for some $c = c_{n} \in (a,b)$.
+
+        Replacing the substituted values we get that
+        \begin{equation*}
+            \frac{f(b) - \sum_{k = 0}^{n - 1} \frac{f^{(k)}(a)}{k!}(b - a)^{k}}{(b - a)^{n}} = \frac{f^{(n)}(c)}{n!}.
+        \end{equation*}
+        Which, upon rearragement, yields
+        \begin{equation*}
+            f(b) = \sum_{k = 0}^{n - 1} \frac{f^{(k)}(a)}{k!}(b - a)^{k} + \frac{f^{(n)}(c)}{n!}(b-a)^{n}
+        \end{equation*}
+        as desired.
+    \end{proof}
+    \exercise{2}
+    \begin{proof}
+        We have that $f$ is Riemann integrable, therefore $\exists \bm{P}, \epsilon > 0$ such that
+        \begin{equation*}
+            \mathcal{U}(f, \bm{P}) - \mathcal{L}(f, \bm{P}) < \epsilon_{1}
+        \end{equation*}
+
+        Now consider the upper sum of $\alpha f$, 
+        \begin{align*}
+            \mathcal{U}(\alpha f, \bm{P}) &= \sum_{I \in \bm{P}} \sup_{I} (\alpha f) * |I|,\\
+                                          &= \alpha \sum_{I \in \bm{P}} \sup_{I} f * |I|,\\
+                                          &= \alpha \mathcal{U}(f, \bm{P}).
+        \end{align*}
+        Since $\inf_{I} (\alpha f) = \alpha \inf_{I} (f) \forall I \in \bm{P}$ we get the similar result
+        \begin{equation*}
+            \mathcal{L}(\alpha f, \bm{P}) = \alpha \mathcal{L}(f, \bm{P}).
+        \end{equation*}
+
+        Now, we let $\epsilon_{2} = \frac{\epsilon_{1}}{\alpha} > 0$ if $\alpha > 0$ or 
+        $\epsilon_{2} = -\frac{\epsilon_{1}}{\alpha} > 0$ if $\alpha < 0$. Therefore, now we have that
+        \begin{equation*}
+            \mathcal{U}(\alpha f, \bm{P}) - \mathcal{L}(\alpha f, \bm{P}) 
+        = \alpha \left[\mathcal{U}(f, \bm{P}) - \mathcal{L}(f, \bm{P})\right] < \alpha \epsilon_{1}
+        = \epsilon_{2}
+        \end{equation*}
+        Therefore we have that $\alpha f$ is Riemann integrable.
+
+        Now, to show the value of $\int_{a}^{b} \alpha f$ we consider
+        \begin{equation*}
+            \int_{a}^{b} \alpha f = \sup_{\bm{P}} \mathcal{L}(\alpha f, \bm{P})
+            = \sup_{\bm{P}} \alpha \mathcal{L}(\alpha f, \bm{P})
+            = \alpha \sup_{\bm{P}} \mathcal{L}(\alpha f, \bm{P})
+            = \alpha \int_{a}^{b} f.
+        \end{equation*}
+        Concluding our proof.
+    \end{proof}
+
+    \exercise{3}
+    \begin{proof}
+        Since $f$ is Riemann integrable, we have that 
+        \begin{align*}
+            \int_{a}^{b} f &= \sup_{\bm{P}} \mathcal{L}(f, \bm{P}),\\ 
+                           &= \sup_{\bm{P}}\sum_{I \in \bm{P}} \inf_{I} f * |I|.
+                           \intertext{Now, since $f(x) \geq 0 \ \forall x \in [a,b]$ and $|I| > 0 \ \forall I$}
+                           &\geq 0.
+        \end{align*}
+    \end{proof}
+
+    \exercise{4}
+    \subexercise{a}
+    \begin{proof}
+        We start by considering the lower sum $\mathcal{L}(f, \bm{P}) = \sum_{I \in \bm{P}} \inf_{I} f * |I|$.
+        We observe that for any partition $\bm{P}$ there cannot be an interval consisting
+        of a single point. Therefore, for a any $I \in \bm{P}$ we have that
+        $\inf_{I} f = 1$. Thus, our lower sum can be resolved to
+        \begin{equation*}
+            \mathcal{L}(f, \bm{P}) = \mathcal{L}(f, \bm{P}) = \sum_{I \in \bm{P}} \inf_{I} f * |I|
+            = \sum_{I \in \bm{P}} |I| = |[1, 3]| = 2,
+        \end{equation*}
+        as required.
+    \end{proof}
+
+    \subexercise{b}
+    \begin{proof}
+        Let $\epsilon > 0$ and consider a parition $\bm{U} = \{1, 1 + \frac{\epsilon}{n}, 3 - \frac{\epsilon}{n}, 3\}$.
+        Now we calculate the upper sum,
+        \begin{align*}
+            \mathcal{U}(f, \bm{U}) &= \sum_{I \in \bm{U}} \sup_{I} f * |I|,\\
+                                   &= 3\frac{\epsilon}{n} + 1(2 - 2\frac{\epsilon}{n}) + 5\frac{\epsilon}{n},\\ 
+                                   &= 2 + 6\frac{\epsilon}{n},\\ 
+                                   \intertext{picking any $n \geq 6$,}
+                                   &\leq 2 + \epsilon.
+        \end{align*}
+    \end{proof}
+
+    \exercise{5}
+    \subexercise{a}
+    \begin{proof}
+        Suppose that $u = \sup_{A} f, v = \sup_{A} g$. Clearly we have that
+        \begin{equation*}
+            f(a) + g(a) \leq u + v \qquad \forall a \in A.
+        \end{equation*}
+        Now, let $w = \sup_{A} f + g$. By the definition of a supremum, this is the
+        tightest upper bound for $f(a) + g(a) \ \forall a \in A$. 
+        Therefore, we have that $w \leq u + v$ as needed.
+
+        We will follow a similar logic for the infimum.
+        Let $u = \inf_{A} f, v = \inf_{A} g$. Clearly we have that
+        \begin{equation*}
+            u + v \leq f(a) + g(a) \qquad  \forall a \in A.
+        \end{equation*}
+        Now, let $w = \inf_{A} f + g$. By the definition of an infimum, this is
+        the tighest lower bound for $f(a) + g(a) \ \forall a \in A$.
+        Therefore, we have that $u + v \leq w$ as needed.
+    \end{proof}
+
+    \subexercise{b}
+    \begin{proof}
+        Now we consider the upper sum of $f + g$ and see that
+        \begin{align*}
+            \mathcal{U}(f + g, \bm{P}) &= \sum_{I \in \bm{P}}\sup_{I} (f + g) * |I|,\\ 
+                                       &\leq \sum_{I \in \bm{P}} (\sup_{I} f + \sup_{I} g)*|I|,\\ 
+                                       &= \sum_{I \in \bm{P}} \sup_{A} f * |I| + \sum_{I \in \bm{P}} \sup_{A} g * |I|,\\ 
+                                       &= \mathcal{U}(f, \bm{P}) + \mathcal{U}(g, \bm{P}),
+        \end{align*}
+        as needed.
+    \end{proof}
+\end{document}

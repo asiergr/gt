@@ -1,0 +1,139 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+
+\begin{document}
+    \exercise{1}
+    Let $a < b$ and let $f : [a, b ] \to \R$ be a differentiable function. Prove that
+
+    \subexercise{a }
+    If $f^{\prime} > 0$ for all $x \in (a, b)$, then $f$ is strictly monotone increasing.
+    \begin{proof}
+        Assume, for the sake of contradiction, that $\exists x, y \in [a, b]$ such that $x < y$ but $f(x) > f(y)$.
+        Now, by the Mean Value Theorem, $\exists c \in [x,y]$ such that 
+        \begin{equation*}
+            f^{\prime}(c) = \frac{f(y) - f(x)}{y - x}.
+        \end{equation*}
+        We note, however, that the numerator is negative while the denominator is positive.
+        Therefore, $\exists c \in [a, b]$ such that $f^{\prime}(c) < 0$ \contra.
+    \end{proof}
+
+    \subexercise{b}  
+    If $f^{\prime}(x) = 0$ for all $x \in (a,b)$, then $f $ is a constant function.
+
+    \begin{proof}
+        Let $x \in (a,b)$.
+        By the Mean Value Theorem we have that $\exists c \in [a, x]$ such that 
+        \begin{equation*}
+            f^{\prime}(c) = \frac{f(x) - f(a)}{x - a}.
+        \end{equation*}
+        However, $f^{\prime}(c) = 0$ for all $c \in (a,b)$. Therefore we have that $f(x) = f(a)$ for all $x$.
+        Since $f(a)$ is just a constant, we have our result as required.
+    \end{proof}
+
+    \newpage
+    \exercise{2}
+    Suppose $f : (a,b) \to \R$ and $c \in (a,b)$. Prove that if $f^{\prime\prime}(c)$ exists, then
+    % https://math.stackexchange.com/questions/221905/check-my-workings-show-that-lim-h-to0-fracfxh-2fxfx-hh2-fx
+    % https://math.stackexchange.com/questions/210264/second-derivative-formula-derivation/210273#210273
+    \begin{equation*}
+        f^{\prime\prime}(c) = \lim_{h\to 0} \frac{f(c + h) + f(c - h) - 2f(c)}{h^{2}}
+    \end{equation*}
+    (Hint: use Cauchy Extended Mean Value Theorem)
+
+    \begin{proof}
+        We will prove this using L'Hopital's theorem. We apply the theorem on the limit and get that
+        \begin{equation*}
+            \lim_{h \to 0} \frac{f^{\prime}(c + h) + f^{\prime}(c - h)}{2h}.
+        \end{equation*}
+        Which is nothing but an alternate definition of $f^{\prime\prime}(c)$.
+    \end{proof}
+
+    \newpage
+    \exercise{3}
+    % https://math.stackexchange.com/questions/1560143/convergence-of-sum-n-1-inftyfn-iff-convergence-of-int-1-infty
+    Suppose $f : [0, \infty) \to [0, \infty)$ is a bounded decreasing function.
+    Prove that 
+    \begin{equation*}
+        \sum_{n=1}^{\infty}f(n) \text{ converges if and only if } \sup_{N \in \N} \int_{0}^{N} f < \infty.
+    \end{equation*}
+    (Hint: find a relationship between $\sum_{n=1}^{N} f(n), \sum_{n=1}^{N-1} f(n) \text{ and } \int_{0}^{N}f $)
+
+    \begin{proof}
+        We note that since $f$ is decreasing function we have that 
+        \begin{equation}
+            f(n + 1) < \int_{n}^{n+1} f < f(n).
+        \end{equation}
+        
+        We also see that the integral $\sup_{N \in \N}\int_{1}^{N}$ exists only if the series
+        \begin{equation*}
+            \int_{1}^{2} f + \int_{2}^{3} f + \dots
+        \end{equation*}
+        converges.
+
+        Now, from (1) we can actually get both direction of our if and only if statement.
+        The left half of the inequality demonstrates that we can compare the series and integral
+        as such 
+        \begin{equation*}
+            S_{n} = \sum_{n = 1}^{\infty} f(n + 1) < \sum_{n = 1}^{\infty} \int_{n}^{n+1} f = I.
+        \end{equation*}
+        Therefore, $S_{n}$ will converge if $\sup_{N \in N} I$ exists.
+
+        On the other side we have that we can compare
+        \begin{equation*}
+            I^{\prime} = \sum_{n = 1}^{\infty} < \sum_{n=1}^{\infty} f(n) = S_{n}^{\prime}.
+        \end{equation*}
+        This proves that $\sup_{N \in \N}I^{\prime}$ will exist if $\sum_{n=1}^{\infty}f(n)$ converges.
+
+    \end{proof}
+
+    \newpage
+    \exercise{4}
+    (You can use the result of question 3.) Show that 
+    \begin{equation*}
+        \sum_{n=2}^{\infty} \frac{1}{n(\ln n)^{p}} \text{ converges if and only } p > 1.
+    \end{equation*}
+
+    \begin{proof}
+        First, we find the integral $I = \int_{0}^{N} \frac{1}{n(\ln n)^{p}} dn$. We let $u = \ln n$ and see that
+        \begin{align*}
+            \int_{0}^{N} \frac{1}{n(\ln n)^{p}} &= \int_{0}^{\ln(N)} \frac{1}{nu^{p}}\frac{1}{n},\\ 
+                                                &= \int_{1}^{\ln N}\frac{1}{u^{p}}, \\
+                                                &= \left[\frac{u^{-p + 1}}{-p + 1}\right]_{1}^{\ln N},\\ 
+                                                &=  \left[\frac{\ln^{-p + 1}(n)}{-p + 1}\right]_{0}^{N},\\ 
+                                                &= \frac{1}{-p + 1}\left[\frac{1}{\ln^{p-1}(N)} - 1\right].
+        \end{align*}
+        Clearly we cannot have that $p = 1$. We can also see that $\sup_{N \in \N} I < \infty$ only 
+        when $p > 1$.
+
+        Now, having found this, we use the result proven in Exercise 3. to the series 
+        $\sum_{2}^{\infty} \frac{1}{n(\ln n)^{p}}$ and conclude that it converges if and only if $p < 1$.
+    \end{proof}
+
+    \newpage
+    \exercise{5}
+    Prove that a continuous function $f : [a,b] \to \R $ is uniformly continuous.
+
+    \begin{proof}
+        Assume, for the sake of contradiction, that $f$ is not uniformly continuous. This implies that there exists
+        some $\epsilon > 0$ such that for ever $\delta > 0$ there exists $x, y \in [a, b]$ such that 
+        $\lvert x - y \rvert < \delta$ but $\lvert f(x) - f(y) \rvert > \epsilon$. We pick these $x, y \in [a, b]$ and 
+    call them $x_{n}, y_{n}$, since $[a, b]$ is closed and bounded, then there are subsequences $\{x_{n_{k}}\} \{y_{n_{k}}\}$
+        of $\{x_{n}\}, \{y_{n}\}$ such that $\{x_{n_{k}}\}$ converges to $c \in [a,b]$. We now observe that 
+        \begin{equation*}
+            \lvert y_{n_{k}} - c \rvert = \lvert y_{n_{k}} - x_{n_{k}} + x_{n_{k}} - c \rvert 
+            < \rvert y_{n_{k}} - x_{n_{k}} \rvert + \lvert x_{n_{k}} - c \rvert.
+        \end{equation*}
+        Since both of the terms of the right go to zero, we get that $\{y_{n_{k}}\}$ also converges to $c$.
+
+        Now we consider
+        \begin{align*}
+            \lvert f(x_{n_{k}}) - f(c) \rvert &= \lvert f(x_{n_{k}}) - f(y_{n_{k}}) + f(y_{n_{k}}) - f(c) \rvert, \\
+            &\geq \lvert f(x_{n_{k}}) - f(y_{n_{k}}) \rvert - \lvert f(y_{n_{k}}) - f(c), \\
+            &\geq \epsilon - \lvert f(y_{n_{k}}) - f(c) \rvert.
+        \end{align*}
+        Now, if $f$ was continuous at $c$ then we would have that $\lvert f(y_{n_{k}}) - f(c) \rvert = 0$,
+        which would be a contradiction.
+        Therefore, $f$ is not continuous \contra.
+    \end{proof}
+\end{document}

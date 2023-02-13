@@ -62,6 +62,17 @@ class TwoLayerNet(_baseNetwork):
         #    2) Compute Cross-Entropy Loss and batch accuracy based on network      #
         #       outputs                                                             #
         #############################################################################
+        y = np.array(y)
+        X = np.array(X)
+        h1 = np.einsum('ij,jk -> ik', X, self.weights['W1'])
+        h1 += self.weights['b1'].reshape(1, h1.shape[1])
+        h2 = self.sigmoid(h1)
+        h3 = np.einsum('ij,jk -> ik', h2, self.weights['W2'])
+        h3 += self.weights['b2'].reshape(1, h3.shape[1])
+        h4 = self.softmax(h3)
+
+        loss = self.cross_entropy_loss(h4, y)
+        accuracy = self.compute_accuracy(h4, y)
 
         #############################################################################
         #                              END OF YOUR CODE                             #
@@ -77,7 +88,17 @@ class TwoLayerNet(_baseNetwork):
         #          You may also want to implement the analytical derivative of      #
         #          the sigmoid function in self.sigmoid_dev first                   #
         #############################################################################
+        h4[range(y.shape[0]), y] -= 1
+        h3_bar = h4 / y.shape[0]
+
+        self.gradients['b2'] = np.sum(h3_bar, axis=0)
+        h2_bar = np.einsum('ij,jk -> ik', h3_bar, self.weights['W2'].T)
+        self.gradients['W2'] = np.einsum('ij,jk -> ik', h2.T, h3_bar)
         
+        h1_bar = self.sigmoid_dev(h1) * h2_bar
+
+        self.gradients['W1'] = np.einsum('ij,jk -> ik', X.T, h1_bar)
+        self.gradients['b1'] = np.sum(h1_bar, axis=0)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################

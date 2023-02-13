@@ -43,7 +43,13 @@ class SoftmaxRegression(_baseNetwork):
         # Hint:                                                                     #
         #   Store your intermediate outputs before ReLU for backwards               #
         #############################################################################
-
+        y = np.array(y)
+        X = np.array(X)
+        linear_scores = np.einsum('ij,jk -> ik', X, self.weights['W1'])
+        relud = self.ReLU(linear_scores)
+        softmax_pred = self.softmax(relud)
+        loss = self.cross_entropy_loss(softmax_pred, y)
+        accuracy = self.compute_accuracy(softmax_pred, y)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
@@ -56,7 +62,10 @@ class SoftmaxRegression(_baseNetwork):
         #        1) Compute gradients of each weight and bias by chain rule         #
         #        2) Store the gradients in self.gradients                           #
         #############################################################################
-        
+        softmax_pred[range(y.shape[0]), y] -= 1
+        h2 = softmax_pred / y.shape[0]
+        h2 = self.ReLU_dev(relud) * h2
+        self.gradients["W1"] = np.einsum("ij,jk->ik", X.T, h2)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################

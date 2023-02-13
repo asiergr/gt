@@ -18,7 +18,9 @@ class _BaseOptimizer:
         #    1) Apply L2 penalty to model weights based on the regularization       #
         #       coefficient                                                         #
         #############################################################################
-        
+        model.gradients["W1"] += self.reg * model.weights['W1']
+        if "W2" in model.gradients:
+            model.gradients["W2"] += self.reg * model.weights['W2']
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################

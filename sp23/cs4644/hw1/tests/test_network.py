@@ -35,7 +35,7 @@ class TestNetwork(unittest.TestCase):
         self.assertAlmostEqual(expected_loss, loss, places=5)
 
 
-        self.assertAlmostEqual(np.sum(np.abs(w1_grad_expected - model.gradients['W1'])), 0)
-        self.assertAlmostEqual(np.sum(np.abs(b1_grad_expected - model.gradients['b1'])), 0)
-        self.assertAlmostEqual(np.sum(np.abs(w2_grad_expected - model.gradients['W2'])), 0)
         self.assertAlmostEqual(np.sum(np.abs(b2_grad_expected - model.gradients['b2'])), 0)
+        self.assertAlmostEqual(np.sum(np.abs(w2_grad_expected - model.gradients['W2'])), 0)
+        self.assertAlmostEqual(np.sum(np.abs(b1_grad_expected - model.gradients['b1'])), 0)
+        self.assertAlmostEqual(np.sum(np.abs(w1_grad_expected - model.gradients['W1'])), 0)
