@@ -1,0 +1,374 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+\title{Deep Learning Problem Set 2}
+\begin{document}
+\maketitle
+
+\exercise{1}
+I collaborated with Ayush Panda on this homework.
+
+\exercise{2}
+\subexercise{1}
+\begin{proof}
+	We are to find the solution $\bm{w}^{*}$ to the following problem
+	\begin{equation*}
+		\argmin_{\bm{w}} f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)})
+		+ \frac{\lambda}{2} \lVert \bm{w} - \bm{w}^{(t)} \rVert^{2}.
+	\end{equation*}
+	Since there are no constraints and $f$ is convex, we can simply define the function
+	\begin{equation*}
+		\mathcal{L}(\bm{w}) = f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)})
+        + \frac{\lambda}{2} \lVert \bm{w} - \bm{w}^{(t)} \rVert^{2}
+	\end{equation*}
+    and find the minimum by taking the gradient. 
+
+	\begin{claim}
+		We claim that
+		\begin{equation*}
+			\grad \lVert \bm{x} \rVert^{2} = 2\bm{x}.
+		\end{equation*}
+		\begin{proof}
+			From the definiton of the norm
+			\begin{equation*}
+				f(x) = \lVert x \rVert^{2} = \sum_{j = 1}^{n} x_{j}^{2},
+			\end{equation*}
+			then
+			\begin{equation*}
+				\pdv{f}{x_{j}} = \pdv{}{x_{j}} \sum_{j = 1}^{n} x_{j}^{2} = 2x_{j}.
+			\end{equation*}
+			and the claim follows.
+		\end{proof}
+	\end{claim}
+
+	Having proven this claim, we proceed to find $\grad \mathcal{L}(\bm{w})$. We write,
+	\begin{align*}
+		\grad_{\bm{w}} \mathcal{L}(\bm{W}) & = \grad_{\bm{w}}
+		\left[ f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)})\langle
+		+ \frac{\lambda}{2} \lVert \bm{w} - \bm{w}^{(t)} \rVert^{2} \right],                               \\
+		                                   & = 0 + \grad f(\bm{w}^{(t)}) + \lambda(\bm{w} - \bm{w}^{(t)}). \\
+	\end{align*}
+	Now, setting this equal to zero, we get
+	\begin{equation*}
+		\bm{w} = \bm{w}^{(t)} - \frac{1}{\lambda}\grad f(\bm{w}^{(t)}).
+	\end{equation*}
+
+	This tells us that the gradient descent method is the solution to this $\argmin$ problem. Meaning that
+	assuming that $f$ is convex (or at least locally convex) it will always take us to $\bm{w}^{*}$
+	that minimises this loss function, should we choose to use it.
+
+	Clearly we can see that $\eta = \frac{1}{\lambda}$.
+\end{proof}
+
+\subexercise{2}
+\begin{proof}
+	We will prove the inequality
+	\begin{equation*}
+		\sum_{t=1}^{T} \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t}
+		\leq \frac{\lVert \bm{w}^{*} \rVert^{2}}{2 \eta}
+		+ \frac{\eta}{2}\sum_{t=1}^{T}\lVert \bm{v}_{t} \rVert^{2}.
+	\end{equation*}
+
+	We begin by noting that
+	\begin{align*}
+		\lVert \bm{w}^{(t+1)} - \bm{w}^{(*)} \rVert^{2}
+		 & = \lVert \bm{w}^{(t)} - \eta \bm{v}_{t} - \bm{w}^{*} \rVert^{2},                                     \\
+		 & = \lVert \bm{w}^{(t)} - \bm{w}^{*} \rVert^{2}
+		+ \eta^{2} \lVert \bm{v}_{t} \rVert^{2} - 2 \eta \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t} \rangle. \\
+	\end{align*}
+	Which, after rearranging gives us
+	\begin{equation*}
+		\langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t} \rangle
+		= \frac{\lVert \bm{w}^{(t)} - \bm{w}^{*} \rVert^{2}}{2 \eta}
+		+ \frac{\eta \lVert \bm{v}_{t} \rVert^{2}}{2}
+		-  \frac{\lVert \bm{w}^{(t + 1)} - \bm{w}^{*} \rVert^{2}}{2 \eta}.
+	\end{equation*}
+	Now, we sum over all $t$, and observe that the sum is telescoping. Giving us that
+	\begin{equation*}
+		\sum_{t = 1}^{T} \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t} \rangle
+		= \frac{\lVert \bm{w}^{(1)} - \bm{w}^{*} \rVert^{2}}{2 \eta}
+		+ \frac{\eta \lVert \bm{v}_{t} \rVert^{2}}{2}
+		-  \frac{\lVert \bm{w}^{(T + 1)} - \bm{w}^{*} \rVert^{2}}{2 \eta}.
+	\end{equation*}
+	We now see that the last term in the equation is negative, and note that $\bm{w}^{1} = 0$.
+	This leads to the final result that
+	\begin{equation*}
+		\sum_{t=1}^{T} \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t}\rangle
+		\leq \frac{\lVert \bm{w}^{*} \rVert^{2}}{2 \eta}
+		+ \frac{\eta}{2}\sum_{t=1}^{T}\lVert \bm{v}_{t} \rVert^{2},
+	\end{equation*}
+	as required.
+
+\end{proof}
+
+\subexercise{3}
+\begin{proof}
+	We start by noting that since $f$ is convex, we have that
+	\begin{equation*}
+		f(y) - f(x) \leq \grad f(y)\cdot(y - x),
+	\end{equation*}
+	where $\cdot$ denotes the inner product.
+
+	Therefore we immediately get that
+	\begin{align*}
+		f(\bar{\bm{w}}) - f(\bm{w}^{*}) & \leq \grad f\left(\frac{1}{T}\sum_{t=1}^{T} \bm{w}^{t}\right)
+		\cdot \left(\frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{T}] - \bm{w}^{*}\right).
+		\intertext{Now, note that $\frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{(t)}] - \bm{w}^{*}
+			= \frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{(t)}- \bm{w}^{*}]$ and use the fact that
+		$\grad $ is a linear operator to get that}
+		                                & = \left[\frac{1}{T}\sum_{t=1}^{T} \grad f(\bm{w}^{(t)})\right]
+		\cdot \left[\frac{1}{T}\sum_{t=1}^{T} \bm{w}^{(t)} - \bm{w}^{*}\right],                          \\
+		                                & = \frac{1}{T}\sum_{t=1}^{T}(\bm{w}^{(t)} - \bm{w}^{*})
+		\cdot \grad f(\bm{w}^{(t)}),
+	\end{align*}
+	as required.
+\end{proof}
+
+\begin{proof}
+	Now, that we have established these two inequalities, we can use them together
+	to find an upper bound on the convergence of gradient descent.
+
+	From both inequalities we have that
+	\begin{equation*}
+		f(\bar{\bm{w}}) - f(\bm{w}^{*}) \leq
+		\frac{1}{T}\sum_{t=1}^{T}\langle \bm{w}^{(t)} - \bm{w}^{*}, \grad f(\bm{w}^{(t)})\rangle
+		\leq \frac{\lVert \bm{w}^{*} \rVert^{2}}{2 \eta T}
+		+ \frac{\eta}{2T}\sum_{t=1}^{T}\lVert \grad f(\bm{w}^{t}) \rVert^{2}.
+	\end{equation*}
+	Now, we use the fact that $f$ is $\rho$-Lipschitz and $B$ is an upper bound
+	for $\lVert \bm{w}^{*} \rVert$ to get that
+	\begin{align*}
+		\frac{\lVert \bm{w}^{*} \rVert^{2}}{2 \eta T}
+		+ \frac{\eta}{2T}\sum_{t=1}^{T}\lVert \grad f(\bm{w}^{t}) \rVert^{2}
+		 & \leq \frac{B^{2}}{2 \eta T} + \frac{\eta}{2T} \sum_{t=1}^{T} \rho^{2}, \\
+		 & = \frac{B^{2}}{2 \eta T} + \frac{\eta \rho^{2}}{2}.
+		\intertext{Now, we let $\eta = \frac{B}{\rho \sqrt{T}}$,}
+		 & = \frac{B \rho}{2\sqrt{T}} + \frac{B \rho}{2\sqrt{T}}
+		= \frac{B \rho}{\sqrt{T}} = \mathcal{O}\left(\frac{1}{\sqrt{T}}\right),
+	\end{align*}
+	as required.
+
+\end{proof}
+
+\exercise{3}
+\subexercise{a}
+\begin{proof}
+	We are to find the solution to
+	\begin{equation*}
+		\argmin_{\bm{w}} \left[f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)}) \rangle
+			+ \frac{1}{2}(\bm{w} - \bm{w}^{(t)})^{T}\bm{H}(\bm{w} - \bm{w}^{(t)})\right].
+	\end{equation*}
+	Similarly to 2.1, this is an unconstrained problem, so we can simply define the function
+	\begin{equation*}
+		\mathcal{L}(\bm{w}) = f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)}) \rangle
+		+ \frac{1}{2}(\bm{w} - \bm{w}^{(t)})^{T}\bm{H}(\bm{w} - \bm{w}^{(t)}),
+	\end{equation*}
+	take the gradient, and set it equal to zero.
+
+	\begin{claim}
+		We claim that
+		\begin{equation*}
+			\grad \bm{w}^{T}\bm{A}\bm{w} = 2\bm{A}\bm{w}
+		\end{equation*}
+		for any symmetric $\bm{A}$.
+
+		\begin{proof}
+			Let
+			\begin{equation}
+				f(x) = \bm{w}^{T}\bm{A}\bm{w} = \sum_{i = 1}^{n} \sum_{j = 1}^{n} w_{i}a_{ij}w_{j}
+				= \sum_{i = 1}^{n} (a_{ii}w_{i}^{2} + \sum_{j \neq i}w_{i}a_{ij}w_{j}).
+			\end{equation}
+			Now, we can take the partial derivative with respect to the $k$th element.
+			\begin{align*}
+				\pdv{}{w_{k}} \left[\sum_{i = 1}^{n} (a_{ii}w_{i}^{2} + \sum_{j \neq i}w_{i}a_{ij}w_{j})\right]
+				 & = 2a_{kk}w_{k} + \sum_{j \neq k}w_{j}a_{jk} + \sum_{j \neq k} a_{kj}w_{j}.
+				\intertext{now, since $\bm{A}$ is symmetric (i.e. $a_{ij} = a_{ji} \ \forall i, j$),}
+				 & = 2a_{kk}w_{k} + \sum_{j \neq k} 2w_{j}a_{jk},                             \\
+				 & = \sum_{i = 1}^{n} 2w_{k}a_{ki}.
+			\end{align*}
+			Concluding the proof of the claim.
+		\end{proof}
+	\end{claim}
+
+	Now, with the claim proven, we proceed to find the gradient of $\mathcal{L}(\bm{w})$.
+	\begin{align*}
+		\grad \mathcal{L}(x)
+		 & = 0 + \grad f(\bm{w}^{(t)}) + \bm{H}\bm{w}.
+	\end{align*}
+	Now, setting this equal to zero, we get that
+	\begin{equation*}
+		\bm{w} = \bm{H}^{-1}\grad f(\bm{w}^{(t)}).
+	\end{equation*}
+\end{proof}
+
+\subexercise{b}
+There are $2(50*50) + 500 = 5500$ parameters. Therefore $H \in \R^{5500 \times 5500}$.
+
+\subexercise{c}
+Using Eqn 9 from the problem worksheet and letting $\Delta \bm{w} = r \bm{v}$, rearranging, we get
+\begin{align*}
+	\bm{Hv} & =
+	\frac{1}{r} [\grad_{\bm{w}} (\bm{w} + r \bm{v}) - \grad_{\bm{w}}(\bm{w}) + \mathcal{O}(\lVert r \bm{v} \rVert^{2})], \\
+	        & = \frac{1}{r} [\grad_{\bm{w}} (\bm{w} + r \bm{v}) - \grad_{\bm{w}}(\bm{w})] + \mathcal{O}(r),              \\
+\end{align*}
+
+\subexercise{e}
+\begin{proof}
+	We prove two properties of the $\mathcal{R}$ operator.
+
+	\begin{align*}
+		\mathcal{R}_{\bm{v}}\{cf(\bm{w})\}
+		 & = \pdv{}{r} cf(\bm{w} + r \bm{v}) |_{r = 0},  \\
+		 & = c \pdv{}{r} f(\bm{w} + r \bm{v}) |_{r = 0}, \\
+		 & = c\mathcal{R}_{\bm{v}}\{f(\bm{w})\}.
+	\end{align*}
+	as needed.
+
+	We also have that
+	\begin{align*}
+		\mathcal{R}_{\bm{v}}\{f(\bm{w}g(\bm{w}))\}
+		 & = \pdv{}{r} f(\bm{w} + r \bm{v})g(\bm{w} + r \bm{v}) |_{r = 0}, \\
+		 & = f(\bm{w} + r \bm{v})\pdv{}{r}g(\bm{w} + r \bm{v}) |_{r = 0} +
+		g(\bm{w} + r \bm{v})\pdv{}{r} f(\bm{w} + r \bm{v}) |_{r = 0},      \\
+		 & = f(\bm{w})\pdv{}{r}g(\bm{w} + r \bm{v}) |_{r = 0} +
+		g(\bm{w})\pdv{}{r} f(\bm{w} + r \bm{v}) |_{r = 0},                 \\
+		 & = \mathcal{R}_{\bm{v}}\{f(\bm{w})\}g(\bm{w})
+		+ \mathcal{R}_{\bm{v}}\{g(\bm{w})\}f(\bm{w}),                      \\
+	\end{align*}
+	as needed.
+
+	This concludes our proof.
+\end{proof}
+
+\subexercise{e}
+\begin{proof}
+	Using Eqn 9 again, letting $\Delta \bm{w} = r \bm{v}$,
+	and using the limit definition of the derivative, we get
+	\begin{align*}
+		\bm{Hv}
+		 & = \lim_{r \to 0} \frac{1}{r} [\grad_{\bm{w}} (\bm{w} + r \bm{v}) - \grad_{\bm{w}}(\bm{w})], \\
+		 & = \pdv{}{r} \grad_{\bm{w}}(\bm{w} + r \bm{v}) |_{r = 0},                                    \\
+		 & = \mathcal{R}_{\bm{v}}\{\grad_{\bm{w}}(\bm{w})\}.
+	\end{align*}
+\end{proof}
+
+\subexercise{f}
+With an auto-differentiation library we can find $\grad_{\bm{w}}$ since this is nothing but the derivative of the loss
+with respect to the weights. Now, instead of calculating the Hessian, we can simply use the $\mathcal{R}$ operator
+on the gradient to find the Hessian. This makes the process of finding the hessian much less expensive.
+
+\exercise{4}
+\subexercise{a}
+
+
+\exercise{5}
+\subexercise{a}
+
+\begin{proof}
+	To show that $C_{a}S = SC_{a}$ we can simply multiply them. Simply multiplying the matrices we get
+	\begin{equation*}
+		C_{a}S =
+		\begin{bmatrix}
+			a_{0}     & a_{n - 1} & \cdots & a_{1}  \\
+			a_{1}     & a_{0}     & \cdots & a_{2}  \\
+			\vdots    & \vdots    & \ddots & \vdots \\
+			a_{n - 1} & a_{n - 2} & \cdots & a_{0}
+		\end{bmatrix}
+		\begin{bmatrix}
+			0 & 0      & \cdots & 1      \\
+			1 & 0      & \cdots & 0      \\
+			0 & \ddots & \ddots & \vdots \\
+			0 & \cdots & 1      & 0
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			a_{n - 1} & a_{n - 2} & \cdots & a_{0}     \\
+			a_{1}     & a_{0}     & \cdots & a_{1}     \\
+			\vdots    & \vdots    & \ddots & \vdots    \\
+			a_{n - 2} & a_{n - 3} & \cdots & a_{n - 1}
+		\end{bmatrix}
+		= SC_{a}
+	\end{equation*}
+\end{proof}
+
+\subexercise{b}
+\begin{proof}
+	Let $f$ be a linear operator. We want to show that $f(Sx \bm{x}) = Sf(\bm{x}) \iff f(x) = (x * w)_{i} = C_{a}\bm{x}$.
+
+	($\Leftarrow$)\\
+	We assume that $f(\bm{x}) = C_{a} \bm{x}$, as we proved in (a) we know that $C_{a}S = SC_{a}$.
+	Therefore, we hc ave that
+	\begin{equation*}
+		f(S \bm{x}) = C_{a}S \bm{x} = SC_{a}\bm{x} = Sf(\bm{x}).
+	\end{equation*}
+	Thus, $f$ is shift-equivariant.
+
+	($\Rightarrow$)\\
+	We assume that $f$ is some shift-equivariant linear operator.
+	This implies that $f(S \bm{x}) = AS \bm{x} = SA \bm{x} = Sf(x)$.
+
+	Let $A$ be any matrix, then we have that
+	\begin{equation*}
+		AS =
+		\begin{bmatrix}
+			a_{11} & a_{12} & \cdots        & a_{1n} \\
+			a_{21} & a_{22} & \cdots        & a_{2n} \\
+			\vdots & \vdots & \ddots        & \vdots \\
+			a_{n1} & a_{n2} & \cdots a_{nn}
+		\end{bmatrix}
+		\begin{bmatrix}
+			0 & 0      & \cdots & 1      \\
+			1 & 0      & \cdots & 0      \\
+			0 & \ddots & \ddots & \vdots \\
+			0 & \cdots & 1      & 0
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			a_{12} & a_{13} & \cdots & a_{1n}       & a_{11} \\
+			a_{22} & a_{23} & \cdots & a_{n, n - 1} & a_{21} \\
+			\vdots & \vdots & \ddots & \vdots       & \vdots \\
+			a_{n2} & a_{3n} & \cdots & a_{nn}       & a_{n1}
+		\end{bmatrix}
+	\end{equation*}
+	Now, by our assumption, we know this must be equal to
+	\begin{align*}
+		SA
+		 & =
+		\begin{bmatrix}
+			0 & 0      & \cdots & 1      \\
+			1 & 0      & \cdots & 0      \\
+			0 & \ddots & \ddots & \vdots \\
+			0 & \cdots & 1      & 0
+		\end{bmatrix}
+		\begin{bmatrix}
+			a_{11} & a_{12} & \cdots        & a_{1n} \\
+			a_{21} & a_{22} & \cdots        & a_{2n} \\
+			\vdots & \vdots & \ddots        & \vdots \\
+			a_{n1} & a_{n2} & \cdots a_{nn}
+		\end{bmatrix}, \\
+		 & =
+		\begin{bmatrix}
+			a_{n1}       & a_{n2}       & \cdots & a_{n, n-1}     & a_{nn}       \\
+			a_{11}       & a_{12}       & \cdots & a_{1, n - 1}   & a_{1n}       \\
+			\vdots       & \vdots       & \ddots & \vdots         & \vdots       \\
+			a_{n - 1, 1} & a_{n - 1, 2} & \cdots & a_{n - 1, n-1} & a_{n - 1, n}
+		\end{bmatrix}.
+	\end{align*}
+	We can see now that this implies that $a_{11} = a_{22} = \dots = a_{nn}$,
+	$a_{12} = a_{n1} = \dots$. We now see that this is nothing
+	but the circulant matrix.
+
+	Therefore, we have that the circulant matrix is the only linear operator that
+	is shift-equivariant.
+\end{proof}
+
+\subexercise{c}
+Shift-equivariance is very powerful in terms of processing spatial or spatio-temporal data.
+This is because it implies that the data can be shifted in any direction, and the result
+will be the same as if it were shifted \textit{after} the convolution.
+
+This means, in short, that the convolution kernel is not dependent on spatial location,
+which makes it generalise easily.
+\exercise{6}
+
+\end{document}

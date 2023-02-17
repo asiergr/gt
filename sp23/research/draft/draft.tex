@@ -3,92 +3,108 @@
 \input{./../../preamble.tex}
 
 \begin{document}
-    \begin{definition}
-        We define a shallow neural network with $N$ neurons to be a function $\mathcal{N} : \R^{d} \to \R$
-        of the form
-        \begin{equation*}
-            \mathcal{N}_{\omega, c} = \sum_{n=1}^{N}c^{n} \sigma(\bm{w}_{n} \cdot [\bm{x}, 1]^{T}),
-        \end{equation*}
-        where $\sigma(\bm{w}_{n} \cdot [\bm{x}, 1]^{T})$ are the single neurons, $N$ is the width of the network,
-        and $\bm{\omega} = (a_{n}, b_{n}) \in \R^{d + 1}$ denoted the nodes with inner
-        weights $a_{n} \in \R^{n}$ and $b_{n} \in \R$. The numbers $c_{n} \in \R$ are called
-        the outer weights.
-    \end{definition}
+\begin{definition}
+	We define a shallow neural network with $N$ neurons to be a function $\mathcal{N} : \R^{d} \to \R$
+	of the form
+	\begin{equation*}
+		\mathcal{N}_{\omega, c} = \sum_{n=1}^{N}c^{n} \sigma(\bm{w}_{n} \cdot [\bm{x}, 1]^{T}),
+	\end{equation*}
+	where $\sigma(\bm{w}_{n} \cdot [\bm{x}, 1]^{T})$ are the single neurons, $N$ is the width of the network,
+	and $\bm{\omega} = (a_{n}, b_{n}) \in \R^{d + 1}$ denoted the nodes with inner
+	weights $a_{n} \in \R^{n}$ and $b_{n} \in \R$. The numbers $c_{n} \in \R$ are called
+	the outer weights.
+\end{definition}
 
-    \begin{definition}
-        We let $L(\cdot)$ denote the least squares loss function
-        \begin{equation*}
-            L(\mathcal{N}_{\omega, c} ; \bm{y}) = L_{K, x}(\mathcal{N}_{\omega, c} ; \bm{y}) 
-            := \frac{1}{2K}\sum_{k = 1}^{K} \lvert \mathcal{N}_{\omega, c}(x_{k}) - y_{k} \rvert^{2}.
-        \end{equation*}
-    \end{definition}
+\begin{definition}
+	We let $L(\cdot)$ denote the least squares loss function
+	\begin{equation*}
+		L(\mathcal{N}_{\omega, c} ; \bm{y}) = L_{K, x}(\mathcal{N}_{\omega, c} ; \bm{y})
+		:= \frac{1}{2K}\sum_{k = 1}^{K} \lvert \mathcal{N}_{\omega, c}(x_{k}) - y_{k} \rvert^{2}.
+	\end{equation*}
+\end{definition}
 
-    \begin{lemma}
-        Let 
-        \begin{align*}
-            I(w, c) &= L(\mathcal{N}_{\omega, c} ; \bm{y}) + \alpha \sum_{n = 1}^{N} \phi(\rvert c_{n} \lvert),\\ 
-            J(w, c) &=  L(\mathcal{N}_{\omega, c} ; \bm{y}) 
-            + \alpha \sum_{n=1}^{N} \phi\left(\frac{\abs{c_{n}}^{2} + \lVert w_{n} \rVert^{2}}{2}\right).
-        \end{align*}
+\begin{lemma}\label{lemma:equality-of-problems}
+	Let
+	\begin{align*}
+		I(w, c) & = L(\mathcal{N}_{\omega, c} ; \bm{y}) + \alpha \sum_{n = 1}^{N} \phi(\rvert c_{n} \lvert), \\
+		J(w, c) & =  L(\mathcal{N}_{\omega, c} ; \bm{y})
+		+ \alpha \sum_{n=1}^{N} \phi\left(\frac{\abs{c_{n}}^{2} + \lVert w_{n} \rVert^{2}}{2}\right).
+	\end{align*}
 
-        For any $(\hat{\omega}, \hat{c}) \in (\mathbb{S}^{d} \times \R)^{N}$, there exists a 
-        $(\bar{\omega}, \bar{c}) \in (\R^{d + 1} \times \R)^{N}$
-        such that $I(\hat{\omega}, \hat{c}) = J(\bar{\omega}, \bar{c})$.
-    \end{lemma}
+	For any $(\hat{\omega}, \hat{c}) \in (\mathbb{S}^{d} \times \R)^{N}$, there exists a
+	$(\bar{\omega}, \bar{c}) \in (\R^{d + 1} \times \R)^{N}$
+	such that $I(\hat{\omega}, \hat{c}) = J(\bar{\omega}, \bar{c})$.
+\end{lemma}
 
-    \begin{proof}
-        Let $(\hat{\omega}_n, \hat{c}_n) \in \mathbb{S}_{d} \times \R^{N}$.
-        Now, let $\bar{\omega}_n = \frac{\hat{\omega}_n}{\sqrt{|\hat{c}_n |}}$ and
-        $\bar{c}_n = \hat{c}_n \cdot \sqrt{|\hat{c}_n|}$.
+\begin{proof}
+	Let $(\hat{\omega}_n, \hat{c}_n) \in \mathbb{S}_{d} \times \R^{N}$.
+	Now, let $\bar{\omega}_n = \frac{\hat{\omega}_n}{\sqrt{|\hat{c}_n |}}$ and
+	$\bar{c}_n = \hat{c}_n \cdot \sqrt{|\hat{c}_n|}$.
 
-        Now consider
-        \begin{align*}
-            I(\hat{\omega}_n, \hat{c}_n) &= \lVert \mathcal{N}_{\hat{\omega}, \hat{c}} - \bm{y} \rVert_{2}
-                            + \alpha \sum_{n = 1}^{N} \phi(|\hat{c}_n|).\\
-                          % &= \left\lVert \sum_{n=1}^{N}\hat{c}_{n}\lVert \hat{\omega}_{n} \rVert 
-                          % \sigma \left(\frac{\hat{\omega}}{\lVert \hat{\omega} \rVert}\cdot [\bm{x}, 1]^{T}\right)
-                          % - \bm{y} \right\rVert_{2}+ \alpha \sum_{n = 1}^{N} \phi(\lvert \hat{c} \rvert \lVert \hat{\omega} \rVert),\\
-                          \intertext{}
-                          % \intertext{Now, due to the inequality of geometric and arithmetic means, we get}
-                          % &\leq L(\mathcal{N}_{\hat{\omega}, \hat{c}} ; \bm{y})
-                          % + \alpha \sum_{n = 1}^{N} \phi \left(\frac{\abs{c_{n}}^{2} + \lVert w_{n} \rVert^{2}}{2}\right)
-        \end{align*}
-        Note that due to the positive homogeneity of ReLU we then have that 
-        $\lVert \mathcal{N}_{\hat{\omega}, \hat{c}} - \bm{y} \rVert_{2} = \lVert \mathcal{N}_{\bar{\omega}, \bar{c}} - \bm{y} \rVert_{2} $,
-        and also that $|\hat{c}_n | = \frac{|\bar{c}_n|^2 + \lVert \bar{\omega}_n \rVert^2}{2}$.
-        Therefore, $J(\hat{\omega}, \hat{c}) = I(\bar{\omega}, \bar{c})$.
-    \end{proof}
+	Now consider
+	\begin{align*}
+		I(\hat{\omega}_n, \hat{c}_n) & = \lVert \mathcal{N}_{\hat{\omega}, \hat{c}} - \bm{y} \rVert_{2}
+		+ \alpha \sum_{n = 1}^{N} \phi(|\hat{c}_n|).                                                    \\
+	\end{align*}
+	Note that due to the positive homogeneity of ReLU we then have that
+	$\lVert \mathcal{N}_{\hat{\omega}, \hat{c}} - \bm{y} \rVert_{2} = \lVert \mathcal{N}_{\bar{\omega}, \bar{c}} - \bm{y} \rVert_{2} $,
+	and also that $|\hat{c}_n | = \frac{|\bar{c}_n|^2 + \lVert \bar{\omega}_n \rVert^2}{2}$.
+	Therefore, $I(\hat{\omega}, \hat{c}) = J(\bar{\omega}, \bar{c})$.
 
-    \begin{theorem}
-        Let $L$ be a loss function and $D = (\bm{x}_{n}, \bm{y}_{n})_{n=1}^{d}$ be training examples. Then
-        \begin{equation}
-            \min_{N \in \N, \{c_{n}\} \in \R^{N}\, \{\omega_{n} = (a_{n}, b_{n})\} \in (\mathbb{S}^{d})^{N}} 
-            L(\mathcal{N}_{\omega, c} ; \bm{y}) + \alpha \sum_{n=1}^{N} \phi(\abs{c_{n}}),
-        \end{equation}
-        where $\mathbb{S}^{d} = \{(a,b) \in \R^{d + 1} : \lVert {(a,b)}^{2} \rVert_{2} = 1\}$ is the unit sphere in $\R^{d + 1}$.
+\end{proof}
 
-        Is the same as
-        \begin{equation}
-            \min_{N \in \N, \{(a_{n}, b_{n}, c_{n})\}\in (\R^{d} \times \R \times \R)^{N}} L(\mathcal{N}_{\omega, c} ; \bm{y})
-            + \alpha \sum_{n=1}^{N} \phi\left(\frac{\abs{c_{n}}^{2} + \lVert w_{n} \rVert^{2}}{2}\right).
-        \end{equation}
-    By equivalence we mean that
-    if $(a_{n}, b_{n}, b_{n})$ is a solution to (1), then, after scaling, 
-    it is also a solution to (2), and viceversa.
-    \end{theorem}
+\begin{theorem}
+	Let $L$ be a loss function and $D = (\bm{x}_{n}, \bm{y}_{n})_{n=1}^{d}$ be training examples. Then
+	\begin{equation}
+		\min_{N \in \N, \{c_{n}\} \in \R^{N}\, \{\omega_{n} = (a_{n}, b_{n})\} \in (\mathbb{S}^{d})^{N}}
+		L(\mathcal{N}_{\omega, c} ; \bm{y}) + \alpha \sum_{n=1}^{N} \phi(\abs{c_{n}}),
+	\end{equation}
+	where $\mathbb{S}^{d} = \{(a,b) \in \R^{d + 1} : \lVert {(a,b)}^{2} \rVert_{2} = 1\}$ is the unit sphere in $\R^{d + 1}$.
 
-    \begin{proof}
-        From Lemma 1. we know that for any $(\hat{\omega}, \hat{c}) \in (\mathbb{S}^{d} \times \R)^{N}$
-        exists a $(\bar{\omega}, \bar{c}) \in (\R^{d+1} \times \R)^{N}$ such that
-        $I(\hat{\omega}, \hat{c}) = J(\bar{\omega}, \bar{c})$.
+	Is the same as
+	\begin{equation}
+		\min_{N \in \N, \{(a_{n}, b_{n}, c_{n})\}\in (\R^{d} \times \R \times \R)^{N}} L(\mathcal{N}_{\omega, \hat{c}} ; \bm{y})
+		+ \alpha \sum_{n=1}^{N} \phi\left(\frac{\abs{\hat{c}_{n}}^{2} + \lVert w_{n} \rVert^{2}}{2}\right).
+	\end{equation}
+	where $\hat{c}_{n} = \lVert \frac{\omega_{n}}{\omega_{n}} \rVert$. By equivalence we mean that
+	if $(a_{n}, b_{n}, b_{n})$ is a solution to (1), then, after scaling,
+	it is also a solution to (2), and viceversa.
+\end{theorem}
 
-        We show this implies the global minima of $I, J$ occurr "at the same point".
-        That is, the value $(\omega^{*}, c^{*})$ that minimises $I$ can be mapped to a 
-        corresponding value $(\bar{\omega}^{*}, \bar{\omega}^{*})$ that minimises $J$.
+\begin{proof}
+	Let $h: (\R^{d + 1}\times \R) \to (\mathbb{S}^{d} \times \R)$, we note that due to the increasing nature of $\phi$,
+	and the inequality between arithmetic and geometric sums,
+	\begin{equation}\label{eq:problem-inequality}
+		J(\bar{\bm{w}}, \bar{\bm{c}}) \geq I(h(\bar{\bm{w}}, \bar{\bm{c}}))
+		\quad \forall (\bar{\bm{w}}, \bar{\bm{c}}) \in (\R^{d + 1}\times \R).
+	\end{equation}
 
-        To do this, we start by noting that $I$ is a lower of $I$.
+	Let $g: (\mathbb{S}^{d} \times \R) \to (\R^{d + 1}\times \R)$ as described in Lemma \ref{lemma:equality-of-problems}.
+	We take a value $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ that minimises $J$.
+	Now, by Eq. (\ref{eq:problem-inequality}) and Lemma \ref{lemma:equality-of-problems} we have that
+	\begin{equation}\label{eq:J-equals-I}
+		J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}) \geq I(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})) 
+        = J(g(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}))) \geq J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}).
+	\end{equation}
+	Therefore, $J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}) = I(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}))$.
 
-    \end{proof}
-    
+	\begin{claim}
+		$h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $I$.
+
+		Assume, for the sake of contradiction, that it does not. this implies
+		$\exists \hat{\bm{w}}^{*} \in (\mathbb{S}^{d} \times \R)$ such that
+		\begin{equation*}
+			I(\hat{\bm{w}}^{*}, \hat{\bm{c}}^{*}) < I(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})).
+		\end{equation*}
+		However, from (\ref{eq:J-equals-I}) and (\ref{lemma:equality-of-problems})
+		we get that this implies
+		\begin{equation*}
+			J(g(\hat{\bm{w}}^{*}, \hat{\bm{c}}^{*})) < J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}),
+		\end{equation*}
+		which is a contradiction as $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $J$.
+	\end{claim}
+	Therefore, we have that if $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $J$, then,
+	after scaling, it is also a solution to $I$.
+\end{proof}
+
 \end{document}
-
