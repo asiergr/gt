@@ -1,0 +1,318 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+
+\begin{document}
+\section{Collaborators}
+I collaborated on this with Ayush Panda.
+
+\section{}
+\exercise{1}
+The matrix needed is
+\begin{equation*}
+	A =
+	\begin{bmatrix}
+		w_{22} & 0 & 0      & 0 & 0 & 0      & 0 & 0      \\
+		0      & 0 & w_{20} & 0 & 0 & 0      & 0 & 0      \\
+		0      & 0 & 0      & 0 & 0 & w_{02} & 0 & 0      \\
+		0      & 0 & 0      & 0 & 0 & 0      & 0 & w_{00} \\
+	\end{bmatrix}
+\end{equation*}
+
+\exercise{2}
+The affine transformation $A$ can be written as
+\begin{equation*}
+	A =
+	\begin{bmatrix}
+		w_{00} & 0      & 0      & 0      \\
+		w_{01} & 0      & 0      & 0      \\
+		0      & w_{00} & 0      & 0      \\
+		0      & w_{01} & 0      & 0      \\
+		w_{10} & 0      & 0      & 0      \\
+		w_{11} & 0      & 0      & 0      \\
+		0      & w_{10} & 0      & 0      \\
+		0      & w_{11} & 0      & 0      \\
+		0      & 0      & w_{00} & 0      \\
+		0      & 0      & w_{01} & 0      \\
+		0      & 0      & 0      & w_{00} \\
+		0      & 0      & 0      & w_{01} \\
+		0      & 0      & w_{10} & 0      \\
+		0      & 0      & w_{11} & 0      \\
+		0      & 0      & 0      & w_{10} \\
+		0      & 0      & 0      & w_{11} \\
+	\end{bmatrix}
+\end{equation*}
+
+\exercise{3}
+The affine transformation for a convolutional layer with kernel size
+$(4, 1, 1, 1)$ is 
+\begin{equation*}
+    A =
+    \begin{bmatrix}
+        w_{00} &0&0&0\\ 
+        0&w_{10}&0&0\\ 
+        0&0& w_{10}&0\\ 
+        0&0&0&w_{11}\\
+        w_{00} &0&0&0\\ 
+        0&w_{10}&0&0\\ 
+        0&0& w_{10}&0\\ 
+        0&0&0&w_{11}\\
+        w_{00} &0&0&0\\ 
+        0&w_{10}&0&0\\ 
+        0&0& w_{10}&0\\ 
+        0&0&0&w_{11}\\
+        w_{00} &0&0&0\\ 
+        0&w_{10}&0&0\\ 
+        0&0& w_{10}&0\\ 
+        0&0&0&w_{11}\\
+    \end{bmatrix}.
+\end{equation*}
+The affine transformation for the convolution with kernel size $(1, 1, 2, 2)$
+is the same as the one on Exercise 2. It is pretty evident that there 
+transformations are equivalent as you can get one by simply swapping rows 
+of the other. The only that changes is the order of the elements when 
+flattened in row major.
+
+\section{Logic and XOR}
+\exercise{4}
+We have that $\bm{w} = [w_{1}, w_{2}]^{T} \in \R^{2}, b \in \R$ and $\bm{x} \in \{0,1\}^{2}$. We also define
+\begin{equation*}
+	f(\bm{x}) =
+	\begin{cases}
+		1 \text{ if } \bm{w}^{T}\bm{x} + b \geq 0,\\
+		0  \text{ if } \bm{w}^{T}\bm{x} + b < 0.
+	\end{cases}
+\end{equation*}
+
+To find $\bm{w}_{AND}, b_{AND}$ (which we will denote as $\bm{w}, b$ for simplicity)
+we require that
+\begin{align*}
+	\bm{w}^{T} [0, 0] + b < 0 \     & \implies \ b < 0,                    \\
+	\bm{w}^{T} [0, 1] + b < 0 \     & \implies \ w_{2} + b < 0,            \\
+	\bm{w}^{T} [1, 0] + b < 0 \     & \implies \ w_{1} + b < 0,            \\
+	\bm{w}^{T} [1, 1] + b \geq 0 \  & \implies \ w_{1} + w_{2} + b \geq 0.
+\end{align*}
+Combining these, we get that
+\begin{equation*}
+	w_{1} + w_{2} + 3b < 0 \quad \text{and} \quad w_{1} + w_{2} + b \geq 0.
+\end{equation*}
+There are an infinite amount of choices that satisfy this.
+One such example is $w_{1} = w_{2} = 1, b = -2$.
+
+To find $\bm{w}_{OR}, b_{OR}$ (which we will denote as $\bm{w}, b$ for simplicity)
+we require that
+\begin{align*}
+	\bm{w}^{T} [0, 0] + b < 0 \     & \implies \ b < 0,                    \\
+	\bm{w}^{T} [0, 1] + b \geq 0 \  & \implies \ w_{2} + b \geq 0,         \\
+	\bm{w}^{T} [1, 0] + b \geq 0 \  & \implies \ w_{1} + b \geq 0,         \\
+	\bm{w}^{T} [1, 1] + b \geq 0 \  & \implies \ w_{1} + w_{2} + b \geq 0.
+\end{align*}
+Combining these, we get that
+\begin{equation*}
+	b < 0 \quad \text{and} \quad 2w_{1} + 2w_{2} + 3b \geq 0.
+\end{equation*}
+There are an infinite amount of choices that satisfy this.
+One such example is $w_{1} = w_{2} = 2, b = -1$.
+
+\exercise{5}
+To find $\bm{w}_{XOR}, b_{XOR}$ (which we will denote as $\bm{w}, b$ for simplicity)
+we require that
+\begin{align*}
+	\bm{w}^{T} [0, 0] + b < 0 \     & \implies \ b < 0,                 \\
+	\bm{w}^{T} [0, 1] + b \geq 0 \  & \implies \ w_{2} + b \geq 0,      \\
+	\bm{w}^{T} [1, 0] + b \geq 0 \  & \implies \ w_{1} + b \geq 0,      \\
+	\bm{w}^{T} [1, 1] + b \geq 0 \  & \implies \ w_{1} + w_{2} + b < 0.
+\end{align*}
+Combining these, we get that
+\begin{equation*}
+	w_{1} + w_{2} + 2b < 0 \quad \text{and} \quad w_{1} + w_{2} + 2b \geq 0.
+\end{equation*}
+Which is clearly impossible. Therefore XOR cannot be represented using a linear model of this form.
+
+\section{Piece-wise Linearity}
+\exercise{6}
+We have the function
+\begin{equation*}
+	h(x) = W^{(3)}\max \{0, W^{(2)} \max \{0, W^{(1)}x + b^{(1)}\} + b^{(2)}\} + b^{(3)}
+\end{equation*}
+with the given weights. We can actually unfold these piece wise components as such
+\begin{align*}
+	h(x)
+	 & = W^{(3)}\max \{0, W^{(2)} \max \{0, W^{(1)}x + b^{(1)}\} + b^{(2)}\} + b^{(3)},           \\
+	 & =  W^{(3)}\max \{0, W^{(2)} \max \{0, [1.5x, 0.5x + 1]^{T}\} + b^{(2)}\} + b^{(3)},        \\
+	 & =
+	\begin{cases}
+		W^{(3)} \max \{0, W^{2}[0, 0]^{T} + b^{(2)}\} + b^{(3)}           & \text{if } x \leq -2,     \\
+		W^{(3)} \max \{0, W^{2}[0, 0.5x + 1]^{T} + b^{(2)}\} + b^{(3)}    & \text{if } -2 < x \leq 0, \\
+		W^{(3)} \max \{0, W^{2}[1.5x, 0.5x + 1]^{T} + b^{(2)}\} + b^{(3)} & \text{if } x > 0,
+	\end{cases} \\
+	 & =
+	\begin{cases}
+		W^{(3)} \max \{0, [0, 1]^{T}\} + b^{(3)}               & \text{if } x \leq -2,     \\
+		W^{(3)} \max \{0, [x + 2, 0.5x + 1]^{T}\} + b^{(3)}    & \text{if } -2 < x \leq 0, \\
+		W^{(3)} \max \{0, [2.5x + 2, 3.5x + 1]^{T}\} + b^{(3)} & \text{if } x > 0,
+	\end{cases}            \\
+	 & =
+	\begin{cases}
+		W^{(3)}[0, 1]^{T} + b^{(3)}                & \text{if } x \leq -2,     \\
+		W^{(3)} [x + 2, 0.5x + 1]^{T} + b^{(3)}    & \text{if } -2 < x \leq 0, \\
+		W^{(3)} [2.5x + 2, 3.5x + 1]^{T} + b^{(3)} & \text{if } x > 0,
+	\end{cases}                        \\
+	 & =
+	\begin{cases}
+		0        & \text{if } x \leq -2,     \\
+		1.5x + 3 & \text{if } -2 < x \leq 0, \\
+		6x + 3   & \text{if } x > 0.
+	\end{cases}
+\end{align*}
+
+Therefore,
+\begin{equation*}
+	h^{\prime}(x) =
+	\begin{cases}
+		0   & \text{if } x \leq -2,     \\
+		1.5 & \text{if } -2 < x \leq 0, \\
+		6   & \text{if } x > 0.
+	\end{cases}
+\end{equation*}
+Having found this, we can calculate $W, b$ for the different points.
+
+Let $x = 2$, then $h^{\prime}(2) = 6 = W$ and thus $b = 9$ since $h(2) = 15 = W(2) + b$.
+
+Let $x = -1$, then $h^{\prime}(-1) = 1.5 = W$ and thus $b = 0$ since $h(-1) = 1.5 = W(-1) + b$.
+
+Let $x = 1$, then $h^{\prime}(1) = 6 = W$ and thus $b = 3$ since $h(1) = 9 = W(1) + b$.
+
+\newpage
+\section{Depth - Composing Linear Pieces}
+\exercise{7}
+\begin{proof}
+	We will prove that there are $2^{d}$ regions identified by $f_{1}(\cdot)$ by induction.
+
+	Base case: $d = 1$. Let $x \in \R$, then
+	\begin{equation*}
+		f_{1}(x) = \abs{2x - 1}.
+	\end{equation*}
+	This identifies the linear regions $(0, \frac{1}{2}), (\frac{1}{2}, 1)$ onto $(0, 1)$.
+	This is $2^{1}$ regions, so our base case is met.
+
+	Now, assume that for $x \in \R^{d - 1}$ the function $f_{1}$ identifies $2^{d - 1}$ regions.
+	Namely, the regions $((0, \frac{1}{2}), (\frac{1}{2}, 1))^{d - 1}$.
+	We now consider $x \in \R^{d}$ and note that $f_{1_{d}} = \abs{2x_{d} - 1}$.
+	Therefore, we now identify the regions
+	$((0, \frac{1}{2}), (\frac{1}{2}, 1))^{d - 1} \times ((0, \frac{1}{2}), (\frac{1}{2}, 1))
+		= ((0, \frac{1}{2}), (\frac{1}{2}, 1))^{d}$.
+
+	Intuitively, we can imagine this as "folding" all the regions in $\R^{d}$ (of which there
+	are $2^{d}$) into a subset of the first orthant.
+\end{proof}
+
+\exercise{8}
+\begin{proof}
+	Let $g$ identify $n_{g}$ regions of $(0, 1)^{d}$ onto $(0, 1)^{d}$ and
+	$f$ identify $n_{f}$ regions of $(0, 1)^{d}$ onto $(0, 1)^{d}$.
+	The total numver of separate input out space neighborhoods that are mapped onto
+	a commot neighborhood is given recursively by
+	\begin{equation*}
+		N_{R}^{l} = \sum_{R^{\prime} \in \mathcal{R}^{l}} N_{R_{\prime}}^{l - 1}
+	\end{equation*}
+	where $l$ is the layer. Specifially, we have a two layer case so we can easily
+	resolve this recurrence as
+	\begin{equation*}
+		N_{R}^{2} = \sum_{R^{\prime} \in \mathcal{R}^{2}} n_{g} = n_{f}n_{g}.
+	\end{equation*}
+\end{proof}
+
+\exercise{9}
+\begin{proof}
+	We will prove this by inducting on $L$.
+
+	Base case: $k = 1$. We have already shows that $f_{1} = h_{1}$ identifies $2^{d}$ regions,
+	so we are done.
+
+	We now assume that $h_{k - 1}$ identifies $2^{(k - 1)d}$ regions of $\bm{x}$.
+	Now, take $h_{k} = \abs{W_{k}\bm{h}_{k - 1} + \bm{b}_{k}}$. As we showed in Ex. 8, for any
+	two regions $h_{k - 1}, h_{k}$ that identify $2^{(k - 1)d}, 2^{d}$ regions of their
+	input-output maps respectively, the total regions mapped is
+	$2^{(k - 1)d}2^{d} = 2^{kd}$ as needed.
+
+	Therefore, $f(\bm{x})$ identifies $2^{Ld}$ regions of its input.
+\end{proof}
+
+\newpage
+\section{Implicit Regularizaton of Gradient descent}
+\exercise{10}
+\begin{proof}
+	For this proof, we will assume that $w^{(0)} \in \Span \{\bm{X}\}$.
+	We have that $f(\bm{w}) = \norm{\bm{y} - \bm{X}\bm{w}}$, therefore, taking the gradient
+	we get $\grad_{\bm{w}}f(\bm{w}) = 2\bm{X}^{T}(\bm{X} \bm{w} - \bm{y})$. We further note that
+	since the updates are of the form $\bm{w}^{(t + 1)} = \bm{w}^{(t)} - \eta \grad f(\bm{w}^{(t)})$
+	and $\bm{w}^{(t)} \in \Span \{\bm{X}\}$ for all $t$, then all the updates are also
+	in the span of $\bm{X}$. Therefore, we can write
+	$w^{(t)} = \bm{w}^{(t - 1)} - \bm{X}\bm{u}$ for some $\bm{u}$.
+
+	Now, since $w^{(0)} \in \Span \{\bm{X}\}$ we have that $x^{(0)} = \bm{X}^{T}\bm{v}$
+	for some vector $\bm{v}$. Therefore, $w^{(t + 1)} = X^{T}(u + v)$.
+	Now, we know that gradient descent will converge to
+	$\bm{w}_{gd} = X^{T}\bm{u}_{gd}$ at a point where $\grad_{\bm{w}}f = 0$.
+
+	Putting all this together, we get that
+	\begin{gather*}
+		2\bm{X}^{T}(\bm{Xw}_{gd} - \bm{y}) = 0,\\
+		2\bm{X}^{T}(\bm{XX}^{T}\bm{u}_{gd} - \bm{y}) = 0,\\
+		\bm{u}_{gd} = (\bm{XX}^{T})^{-1}\bm{y},\\
+		(\bm{X}^{T})^{-1} = (\bm{XX}^{T})^{-1}\bm{y},\\
+		\bm{w}_{gd} = \bm{X}^{T}(\bm{XX}^{T})^{-1}\bm{y},
+	\end{gather*}
+	which is a well known minimum norm solution to the problem $Xw = y$
+	(i.e., the solution to a linear regression by least squares).
+\end{proof}
+
+\exercise{11}
+The optimiztion problem in (24) and (25) is expressing a solution of
+the system $\bm{Xw} = \bm{y}$ such that the l-2 norm of $\bm{w}$ is the
+smallest it can be. Basically, it is projecting the vector $\bm{y}$ onto 
+the span of $\bm{X}$ and finding the solution to that, this 
+solution will have the minimum norm, which can also be interpreted as 
+regularising the weights.
+
+\exercise{12}
+This tells us that gradient descent prefers solutions of minimum norm.
+Clearly if the surface is not convex then the solution is not unique,
+and gradient descent prefers the solution with minimum norm.
+
+\newpage
+\section{Receptive Fields}
+\exercise{13}
+\subexercise{a}
+When working with deep convolutional neural networks we are sometimes 
+interested in what affects specific output pixels/decisions. This is determined 
+by the combination of the receptive fields that end up affecting that output pixel.
+Therefore, it is interesting to know which values in which layers affect the 
+subsequent values.
+
+\subexercise{b}
+Evidently we have that $r_{2} = 1$.
+Now, using the recursion we get 
+\begin{align*}
+    r_{1} &= s_{2}r_{2} + (k_{2} - s_{2}) = 3,\\ 
+    r_{0} &= s_{1}r_{2} + (k_{1} - s_{1}) = 19.
+\end{align*}
+
+\subexercise{c}
+To calculate the receptive fields we use the recursive formula.
+To calculate the size of the feature map we use equation (26).
+Combinind the results we get
+\begin{align*}
+    f_{0} = 259,\ & r_{0} = 163,\\
+    f_{1} = 63,\ & r_{1} = 39,\\
+    f_{2} = 31,\ & r_{2} = 19,\\
+    f_{3} = 31,\ & r_{3} = 15,\\
+    f_{4} = 15,\ & r_{4} = 7,\\
+    f_{5} = 15,\ & r_{5} = 5,\\
+    f_{6} = 15,\ & r_{6} = 3,\\
+    f_{7} = 15,\  & r_{7} = 1,\\
+\end{align*}
+
+
+\end{document}

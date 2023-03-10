@@ -1,0 +1,95 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+\title{Analysis II HW 6}
+
+\begin{document}
+    \maketitle
+
+    \exercise{1}
+    We will first prove that $\cos \frac{\pi}{2} = 0$.
+    \begin{proof}
+        Using the angle summation identity for $\cos$ we get that 
+        \begin{equation*}
+            \cos(\frac{\pi}{2}) = \cos(\pi - \frac{\pi}{2})
+            = \cos \pi \cos \frac{\pi}{2} - \sin \pi \sin \frac{\pi}{2}
+            = \cos \pi \cos \frac{\pi}{2}.
+        \end{equation*}
+        Rearranging,
+        \begin{equation*}
+            \cos \frac{\pi}{2} (\cos \pi) + 1 = 0,
+        \end{equation*}
+        therefore,
+        \begin{equation*}
+            \cos \frac{\pi}{2} = 0 \quad \text{and} \quad \cos \pi = -1.
+        \end{equation*}
+    \end{proof}
+
+    Now, we prove that $\cos x > 0, x \in [0, \frac{\pi}{2})$.
+    \begin{proof}
+        As shown in class, $(\cos x)^{\prime} = -\sin x < 0, x \in [0, \pi)$.
+        Therefore, $\cos x$ is strictly decresing on $(0, \pi)$.
+        However, as shown before, $\cos \frac{\pi}{2} = 0$, so it must be the case that 
+        $\cos x > 0, x \in [0, \frac{\pi}{2})$.
+    \end{proof}
+
+    \exercise{2}
+    \subexercise{a}
+    We start by noting that if we take $\sin^{2} x + \cos^{2} x = 1$ and divide by 
+    $\cos^{2}x$ on both sides we get $\tan^{2} x + 1 = \sec^{2} x$.
+
+    Now, using the quotient rule
+    \begin{align*}
+        \dv{}{x}\tan x
+        &= \dv{}{x} \frac{\sin x}{\cos x},\\ 
+        &= \frac{\cos^{2} x + \sin^{2} x}{\cos^{2} x},\\ 
+        &= \sec^{2}x = 1 + \tan^{2} x,
+    \end{align*}
+    as needed.
+
+    \subexercise{b}
+    Since $\sin x$ is continuous everywhere and $\cos x = 0$ only when $x = \pm \frac{\pi}{2}$,
+    and also continuous everywhere, we get that $\tan x$ is continuous in the interval.
+
+    Now, since $(\tan x)^{\prime} = 1 + \tan^{2} x \geq 1$ for all $x \in (-\frac{\pi}{2}, \frac{\pi}{2})$,
+    it is also increasing in the interval.
+
+    \subexercise{c}
+    By the Inverse Function Thm. we have that
+    \begin{equation*}
+        (\arctan x)^{\prime} = \frac{1}{1 + (\tan \arctan x)^{2}} = \frac{1}{1 + x^{2}}
+    \end{equation*}
+
+    Then taking the derivative of the other side,
+    \begin{equation*}
+        \dv{}{x} \sum_{n = 0}^{\infty} \frac{(-1)^{n}x^{2n + 1}}{(2n + 1)}
+        = \sum_{n = 0}^{\infty} (-1)^{n} x^{2n} = \frac{1}{1 + x^{2}}.
+    \end{equation*}
+    Therefore, by the uniqueness of power series,
+    \begin{equation*}
+        \dv{}{x} \arctan x = \dv{}{x} \sum_{n = 0}^{\infty} \frac{(-1)^{n}x^{2n + 1}}{(2n + 1)}
+    \end{equation*}
+    and
+    \begin{equation*}
+         \arctan x = \sum_{n = 0}^{\infty} \frac{(-1)^{n}x^{2n + 1}}{(2n + 1)}
+    \end{equation*}
+
+    \exercise{3}
+
+    \exercise{4}
+    \begin{proof}
+        Let $\sum_{i, j} \abs{a_{i,j}}$ converge. Now, let $b_{i,j} = \max(a_{i,j}, 0)$ and
+        $c_{i,j} = \max(-a_{i,j}, 0)$. We now have that 
+        $0 \leq b_{i,j} \leq \abs{a_{i,j}}$ and $0 \leq c_{i,j} \leq \abs{a_{i,j}}$.
+        Therefore, $\sum_{i,j} b_{i,j}, \sum_{i,j} c_{i,j}$ converge (using the comparison test).
+
+        This now implies that 
+        \begin{equation*}
+        \sum_{i,j} b_{i,j} - \sum_{i,j} c_{i,j} = \sum_{i,j} b_{i,j} - c_{i,j}
+        = \sum_{i,j} a_{i,j}
+        \end{equation*}
+        converges. We can combine the sums because the summations are finite (they converge).
+    \end{proof}
+
+    
+\end{document}

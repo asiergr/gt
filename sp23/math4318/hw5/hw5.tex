@@ -1,0 +1,179 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+
+\begin{document}
+    \exercise{1}
+    \subexercise{a}
+    Consider
+    \begin{equation*}
+        \sum_{n = 0}^{\infty}x^{n}.
+    \end{equation*}
+
+    \subexercise{b}
+    Consider
+    \begin{equation*}
+        \sum_{n = 1}^{\infty} (-1)^{n}\frac{x^{n}}{n}.
+    \end{equation*}
+
+    \subexercise{c}
+    Consider
+    \begin{equation*}
+        \sum_{n = 1}^{\infty} (-1)^{n}\frac{x^{2}}{n}.
+    \end{equation*}
+
+    \exercise{2}
+    \begin{proof}
+        We want to show that for some $\epsilon > 0$, when $x \in (-1, 1)$ and $n \geq N$,
+        \begin{equation*}
+            \left|\sum_{n = 0}^{n - 1} - \frac{1}{1 - x} \right| < \epsilon.
+        \end{equation*}
+
+    We begin by noting that the partial sum 
+    \begin{equation*}
+        S_{n} = \sum_{k = 0}^{n - 1} |x|^{k} = \left| \frac{(1 - x^{n})}{1 - x} \right|
+    \end{equation*}
+    when $x \in (-1, 1)$. Now we pick some $\epsilon > 0$ and some $n \geq N$.
+    We have that 
+    \begin{align*}
+        \left| \left| \frac{1 - x^{n}}{1 - x} \right| - \frac{1}{1 - x} \right|
+        &=
+        \intertext{and note that when $x \in (-1, 1), \frac{1}{1 - x} = \left| \frac{1}{1 - x} \right|$.
+        So we are left with}
+        &= \left| \left| \frac{1 - x^{n}}{1 - x} \right| - \left| \frac{1}{1 - x} \right| \right|,\\
+        &\leq \left| \frac{1-x^{n}}{1 - x} - \frac{1}{1 - x} \right|,\\ 
+        &= \left|\frac{-x^{n}}{1 - x} \right|,\\ 
+        &= \frac{|x|^{n}}{1 - |x|}.
+        \intertext{Now, we let $N = \log_{x}(\epsilon(1 - |x|))$,}
+        &\leq \frac{\epsilon(1 - |x|)}{1 - |x|} = \epsilon
+    \end{align*}
+    as needed.
+
+    Therefore, we have absolute convergence as required.
+
+    Now we show that the series does not uniformly converge on $(-1, 1)$.
+    Since we have absolute converges, we also know that $S_{n}$ 
+    converges pointwise to $\frac{1}{1 - x}$ for $|x| < 1$.
+    Now, we consider the subset $0 < x < 1 \subset |x| < 1$. So we have that 
+    \begin{equation*}
+        \sup_{|x| < 1} \left|\frac{1}{1 - x} - S_{n}(x) \right| \geq \sup_{0 < x < 1} \left|\frac{1}{1 - x} - S^{n}(x)\right|.
+    \end{equation*}
+    Now, we observe that 
+    \begin{equation*}
+        \frac{1}{1 - x} - S_{n}(x) > \frac{1}{1 - x} - (k + 1), 0 < x < 1,
+    \end{equation*}
+    and 
+    \begin{equation*}
+        \lim_{x \to 1^{-}} \frac{1}{1 - x} = \infty.
+    \end{equation*}
+    Therefore,
+    \begin{equation*}
+        \lim_{x \to 1^{-}} \frac{1}{1 - x} - S_{n}(x) = \infty.
+    \end{equation*}
+    Therefore we have that 
+    \begin{equation*}
+         \sup_{0 < x < 1} \left|\frac{1}{1 - x} - S^{n}(x)\right| = \infty
+    \end{equation*}
+    and 
+    \begin{equation*}
+         \sup_{|x| < 1} \left|\frac{1}{1 - x} S_{n}(x) \right| = \infty
+    \end{equation*}
+    as needed. Thus, since $n$ is arbitrary, we do not have uniform convergence.
+    \end{proof}
+
+    \exercise{3}
+    \begin{proof}
+        We will start by proving that $f$ is smooth (i.e., infinitely differentiable)
+        everywhere.
+
+        We use the power series representation of the exponential function at 0 to find that,
+        given some $m \in \N$,
+        \begin{equation*}
+            \frac{1}{x^{m}} = x\left(\frac{1}{x}\right)^{m + 1} 
+            \leq (m + 1)! x \sum_{n = 0}^{\infty}\frac{1}{n!}\left(\frac{1}{x}\right)^{n}
+            = (m + 1)!xe^{1/x}, x > 0.
+        \end{equation*}
+
+        We now divide by $e^{1/x}$ and take the limit to zero from above
+        \begin{equation*}
+            \lim_{x \to 0^{+}} \frac{e^{-1/x}}{x^{m}} \leq (m + 1)!\lim_{x \to 0^{+}}x = 0.
+        \end{equation*}
+
+        Now, we find the formula for the derivatives of $f$.
+        We will show that $f^{(n)}(x) = \frac{p_{n}(x)}{x^{2n}}$ if $x > 0$ and 0 if $x \leq 0$ 
+        where $p_{n + 1} = x^{2}p^{\prime}(x) - (2nx - 1)p_{n}(x), p_{1}(x) = 1$
+        The case when $x \leq 0$ is trivial, so we focus on the former.
+
+        For the base case we have that 
+        $f^{\prime}(0) = \lim_{x \to 0^{+}} = \frac{f(x) - f(0)}{x - 0} = 
+        \lim_{x \to 0^{+}} \frac{e^{-1/x}}{x} = 0$.
+
+        Now we have that
+        \begin{equation*}
+            f^{(n + 1)}(0) = \left(\frac{p^{\prime}_{n}(x)}{x^{2n}} - 2n \frac{p_{n}(x)}{x_{2n + 1}}
+                + \frac{p_{n}(x)}{x^{2n+2}}\right)f(x) = \frac{p_{n+1}(x)}{x^{2(n+1)}}f(x).
+        \end{equation*}
+
+        For the derivative of $f^{(n)}(0)$ we get that
+        \begin{equation*}
+            f^{(n)}(0) = \lim_{x \to 0^{+}} = \frac{f^{(n)}(x) - f^{(n)}(0)}{x - 0} = 
+            \lim_{x \to 0^{+}} \frac{p_{n}(x)}{x^{2n + 1}}e^{-1/x} = 0.
+        \end{equation*}
+
+        Therefore, the derivatives are continuous everywhere, including 0.
+        This shows the function is smooth everywhere.
+
+        However, as we have noted, all derivatives at 0 are equal to zero.
+        Therefore, the Taylor series of $f$ at the origin converges to 
+        zero at all points. This implies that $f$ is not analytic at the origin.
+    \end{proof}
+
+    \exercise{4}
+    \subexercise{a}
+    \begin{proof}
+        For the base case we have that
+        \begin{equation*}
+            |f_{0}(t)| = |f(t)| \leq M
+        \end{equation*}
+        for some $M \in \R$. We know this is true as it is given to us that
+        $f$ is bounded above.
+
+        Now, we assume that
+        \begin{equation*}
+            |f_{n}(t)| \leq \frac{M}{n!}(t - a)^{n}.
+        \end{equation*}
+
+        Consider 
+        \begin{align*}
+            |f_{n + 1}(t)| 
+            &= \left|\int_{a}^{t}f_{n}(x) \ dx\right|,\\ 
+            &\leq \int_{a}^{t} |f_{n}(x)| \ dx,\\ 
+            &\leq \int_{a}^{t} \frac{M}{n!}(t - a)^{n},\\
+            &= \frac{M}{(n + 1)!}(t - a)^{n + 1}
+        \end{align*}
+        as required. Which concludes our proof.
+    \end{proof}
+
+    \subexercise{b}
+    \begin{proof}
+        We want to show that for some $\epsilon > 0, n \geq N$,
+        \begin{equation*}
+            |f_{n}(x)| < \epsilon.
+        \end{equation*}
+
+        By the result in (a) we already have that
+        \begin{align*}
+            |f_{n}(x)|
+            &\leq \frac{M}{n!}(t - a)^{n},
+            \intertext{since $t \in [a,b]$,}
+            &\leq \frac{M}{n!}(b - a)^{n},\\
+            \intertext{now, we pick $N$ such that $\frac{M}{N!}(b - a)^{N} < \epsilon$
+            to get}
+            &< \epsilon.
+        \end{align*}
+        The reason this choice of $N$ works is because $N!$ grows faster than
+        any exponential in $N$.
+
+        Therefore, this concludes our proof.
+    \end{proof}
+\end{document}

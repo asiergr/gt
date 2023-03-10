@@ -1,0 +1,100 @@
+\documentclass[twoside]{article}
+
+\input{./../../preamble.tex}
+
+\begin{document}
+\exercise{1}
+\begin{proof}
+	We begin by noting that
+	\begin{equation*}
+		F(x + 1) = \lim_{N \to \infty} \int_{0}^{N} t^{x + 1}e^{-t} \ dt.
+	\end{equation*}
+	We let $u = t^{x + 1}, dv = e^{-t}$
+	and then we have that $du = (x + 1)t^{x}, v = -e^{-t}$.
+	Now, using integration by parts we have that
+	\begin{align*}
+		F(x + 1)
+		 & = \lim_{N \to \infty} \int_{0}^{N} t^{x + 1}e^{-t} \ dt,                        \\
+		 & = \lim_{N \to \infty} \left[-t^{x + 1}e^{-t}\right]_{0}^{N}
+		+ \int_{0}^{N} (x + 1)t^{x}e^{-t} \ dt,                                            \\
+		 & = \lim_{N \to \infty} -N_{x + 1}e^{-N} + (x + 1) \int_{0}^{N} t^{x}e^{-t} \ dt, \\
+		 & = (x + 1) \lim_{N \to \infty} \int_{0}^{N} t^{x}e^{-t} \ dt,                    \\
+		 & = (x + 1)F(x),
+	\end{align*}
+	as required.
+\end{proof}
+
+\exercise{2}
+\begin{proof}
+	Assume, for the sake of contradiction, that $F(t)$ is differentiable at $c$.
+	Then, using the limit definition of the derivative, we have that
+	\begin{equation*}
+		F^{\prime}(c) = \lim_{t \to c} \frac{F(t) - F(c)}{t - c}
+		= \lim_{t \to c} \frac{1}{t - c}\left[\int_{a}^{t}f(x) \ dx - \int_{a}^{c} f(x) \ dx\right].
+	\end{equation*}
+	Now we can use l'H\^opital's rule with the fundamental theorem of calculus
+	to get that
+	\begin{equation*}
+		F^{\prime}(c) = \lim_{t \to c} f(t).
+	\end{equation*}
+	However, we know that $f$ is not continous at $c$, so this limit does not
+	exist \contra.
+
+	Therefore, we have that $F(t)$ is not differentiable at $c$ as required.
+\end{proof}
+
+\exercise{3}
+\begin{proof}
+	Assume, for the sake of contradiction, that $\exists c \in [a, b]$ such that
+	$f(c) > 0$. Now, by the continuity of $f$, we have that for any $\epsilon > 0$,
+	there exists $\delta > 0$ such that $|x - c| < \delta$
+	implies $|f(x) - f(c)| < \epsilon$. This implies that
+	\begin{equation*}
+		\int_{A}^{B} f(x) \ dx > 0
+	\end{equation*}
+	where $A = \max\{c - \delta, a\}, B = \min\{c + \delta, b\}$. Now, by the properties
+	of integrals we have that
+	\begin{equation*}
+		\int_{a}^{b} f(x) \ dx = \int_{a}^{A} f(x) \ dx + \int_{A}^{B} f(x) \ dx
+		+ \int_{B}^{b} \ dx > 0 \quad \contra.
+	\end{equation*}
+	Therefore, we have that $f(x) = 0$ for all $x \in [a,b]$ as required.
+\end{proof}
+
+\exercise{4}
+Consider the function
+\begin{equation*}
+	f(x) =
+	\begin{cases}
+		1 \text{ if } x \in \Q, \\
+		-1 \text{ if } x \not\in \Q.
+	\end{cases}
+\end{equation*}
+This function is not Riemann integrable on $[0, 1]$, but
+\begin{equation*}
+	f^{2} = 1,
+\end{equation*}
+is clearly Riemann integrable on $[0, 1]$.
+
+\exercise{5}
+\begin{proof}
+	We start by noting that the rationals and irrationals are dense in the reals. This means
+	that is in every interval $[c, d] \in [0, 1]$ there exists a rational $q \in [c, d]$ and
+	and irrational $r \in [c, d]$
+
+	Now, we consider any lower sum of $f$ and note that for every partition $\bm{P}$ of $[0, 1]$
+	\begin{equation*}
+		\mathcal{L}(f, \bm{P}) = \sum_{I \in \bm{P}} \inf_{I} (f) * |I| = 0,
+	\end{equation*}
+	since $\inf_{I} (f) = 0$ for all $I \in \bm{P}$.
+
+	Now, we consider any upper sum of $f$, for every partition $P$ of $[0, 1]$
+	\begin{equation*}
+		\mathcal{U}(f, \bm{P}) = \sum_{I \in \bm{P}} \sup_{I} (f) * |I| > 0
+	\end{equation*}
+	since $\sup_{I} > 0$ for all $I \in \bm{P}$ and $|I| \neq 0 \ \forall I \in \bm{P}$.
+
+	Therefore, since $\mathcal{L}(f, \bm{P}) \neq \mathcal{U}(f, \bm{P})$ for any $P$, we have that
+	$f$ is not Riemann integrable on $[0, 1]$ as required.
+\end{proof}
+\end{document}

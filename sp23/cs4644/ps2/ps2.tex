@@ -1,6 +1,8 @@
 \documentclass[twoside]{article}
 
 \input{./../../preamble.tex}
+\usetikzlibrary{shapes.geometric, arrows}
+
 \title{Deep Learning Problem Set 2}
 \begin{document}
 \maketitle
@@ -19,9 +21,9 @@ I collaborated with Ayush Panda on this homework.
 	Since there are no constraints and $f$ is convex, we can simply define the function
 	\begin{equation*}
 		\mathcal{L}(\bm{w}) = f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)})
-        + \frac{\lambda}{2} \lVert \bm{w} - \bm{w}^{(t)} \rVert^{2}
+		+ \frac{\lambda}{2} \lVert \bm{w} - \bm{w}^{(t)} \rVert^{2}
 	\end{equation*}
-    and find the minimum by taking the gradient. 
+	and find the minimum by taking the gradient.
 
 	\begin{claim}
 		We claim that
@@ -31,11 +33,11 @@ I collaborated with Ayush Panda on this homework.
 		\begin{proof}
 			From the definiton of the norm
 			\begin{equation*}
-				f(x) = \lVert x \rVert^{2} = \sum_{j = 1}^{n} x_{j}^{2},
+				f(x) = \lVert \bm{x} \rVert^{2} = \sum_{j = 1}^{n} x_{j}^{2},
 			\end{equation*}
 			then
 			\begin{equation*}
-				\pdv{f}{x_{j}} = \pdv{}{x_{j}} \sum_{j = 1}^{n} x_{j}^{2} = 2x_{j}.
+				\pdv{f}{x_{i}} = \pdv{}{x_{i}} \sum_{j = 1}^{n} x_{j}^{2} = 2x_{i}
 			\end{equation*}
 			and the claim follows.
 		\end{proof}
@@ -44,7 +46,7 @@ I collaborated with Ayush Panda on this homework.
 	Having proven this claim, we proceed to find $\grad \mathcal{L}(\bm{w})$. We write,
 	\begin{align*}
 		\grad_{\bm{w}} \mathcal{L}(\bm{W}) & = \grad_{\bm{w}}
-		\left[ f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)})\langle
+		\left[ f(\bm{w}^{(t)}) + \langle \bm{w} - \bm{w}^{(t)}, \grad f(\bm{w}^{(t)})\rangle
 		+ \frac{\lambda}{2} \lVert \bm{w} - \bm{w}^{(t)} \rVert^{2} \right],                               \\
 		                                   & = 0 + \grad f(\bm{w}^{(t)}) + \lambda(\bm{w} - \bm{w}^{(t)}). \\
 	\end{align*}
@@ -54,7 +56,7 @@ I collaborated with Ayush Panda on this homework.
 	\end{equation*}
 
 	This tells us that the gradient descent method is the solution to this $\argmin$ problem. Meaning that
-	assuming that $f$ is convex (or at least locally convex) it will always take us to $\bm{w}^{*}$
+	assuming that $f$ is convex (or at least locally convex) it will always take us towards the $\bm{w}^{*}$
 	that minimises this loss function, should we choose to use it.
 
 	Clearly we can see that $\eta = \frac{1}{\lambda}$.
@@ -64,7 +66,7 @@ I collaborated with Ayush Panda on this homework.
 \begin{proof}
 	We will prove the inequality
 	\begin{equation*}
-		\sum_{t=1}^{T} \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t}
+		\sum_{t=1}^{T} \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t}\rangle
 		\leq \frac{\lVert \bm{w}^{*} \rVert^{2}}{2 \eta}
 		+ \frac{\eta}{2}\sum_{t=1}^{T}\lVert \bm{v}_{t} \rVert^{2}.
 	\end{equation*}
@@ -87,7 +89,7 @@ I collaborated with Ayush Panda on this homework.
 	\begin{equation*}
 		\sum_{t = 1}^{T} \langle \bm{w}^{(t)} - \bm{w}^{*}, \bm{v}_{t} \rangle
 		= \frac{\lVert \bm{w}^{(1)} - \bm{w}^{*} \rVert^{2}}{2 \eta}
-		+ \frac{\eta \lVert \bm{v}_{t} \rVert^{2}}{2}
+        + \sum_{t=1}^{T}\left[\frac{\eta \lVert \bm{v}_{t} \rVert^{2}}{2} \right]
 		-  \frac{\lVert \bm{w}^{(T + 1)} - \bm{w}^{*} \rVert^{2}}{2 \eta}.
 	\end{equation*}
 	We now see that the last term in the equation is negative, and note that $\bm{w}^{1} = 0$.
@@ -105,21 +107,20 @@ I collaborated with Ayush Panda on this homework.
 \begin{proof}
 	We start by noting that since $f$ is convex, we have that
 	\begin{equation*}
-		f(y) - f(x) \leq \grad f(y)\cdot(y - x),
+		f(y) - f(x) \leq \langle \grad f(y), (y - x)\rangle.
 	\end{equation*}
-	where $\cdot$ denotes the inner product.
 
-	Therefore we immediately get that
+	Therefore we immediately get
 	\begin{align*}
-		f(\bar{\bm{w}}) - f(\bm{w}^{*}) & \leq \grad f\left(\frac{1}{T}\sum_{t=1}^{T} \bm{w}^{t}\right)
-		\cdot \left(\frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{T}] - \bm{w}^{*}\right).
+		f(\bar{\bm{w}}) - f(\bm{w}^{*}) & \leq \left\langle \grad f\left(\frac{1}{T}\sum_{t=1}^{T} \bm{w}^{t}\right),
+		\left(\frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{T}] - \bm{w}^{*}\right)\right\rangle.
 		\intertext{Now, note that $\frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{(t)}] - \bm{w}^{*}
 			= \frac{1}{T}\sum_{t=1}^{T} [\bm{w}^{(t)}- \bm{w}^{*}]$ and use the fact that
-		$\grad $ is a linear operator to get that}
-		                                & = \left[\frac{1}{T}\sum_{t=1}^{T} \grad f(\bm{w}^{(t)})\right]
-		\cdot \left[\frac{1}{T}\sum_{t=1}^{T} \bm{w}^{(t)} - \bm{w}^{*}\right],                          \\
-		                                & = \frac{1}{T}\sum_{t=1}^{T}(\bm{w}^{(t)} - \bm{w}^{*})
-		\cdot \grad f(\bm{w}^{(t)}),
+		$\grad $ is a linear operator to get}
+		                                & = \left\langle\left[\frac{1}{T}\sum_{t=1}^{T} \grad f(\bm{w}^{(t)})\right],
+		\left[\frac{1}{T}\sum_{t=1}^{T} \bm{w}^{(t)} - \bm{w}^{*}\right]\right\rangle,                          \\
+		                                & = \frac{1}{T}\sum_{t=1}^{T}\langle\bm{w}^{(t)} - \bm{w}^{*},
+		 \grad f(\bm{w}^{(t)})\rangle,
 	\end{align*}
 	as required.
 \end{proof}
@@ -168,7 +169,7 @@ I collaborated with Ayush Panda on this homework.
 	\begin{claim}
 		We claim that
 		\begin{equation*}
-			\grad \bm{w}^{T}\bm{A}\bm{w} = 2\bm{A}\bm{w}
+			\grad_{\bm{w}} (\bm{w}^{T}\bm{A}\bm{w}) = 2\bm{A}\bm{w}
 		\end{equation*}
 		for any symmetric $\bm{A}$.
 
@@ -199,6 +200,8 @@ I collaborated with Ayush Panda on this homework.
 	\begin{equation*}
 		\bm{w} = \bm{H}^{-1}\grad f(\bm{w}^{(t)}).
 	\end{equation*}
+
+    This implies that the learning rate should attempt to approximate $H^{-1}$.
 \end{proof}
 
 \subexercise{b}
@@ -259,13 +262,148 @@ on the gradient to find the Hessian. This makes the process of finding the hessi
 
 \exercise{4}
 \subexercise{a}
+\begin{tikzpicture}
+	\begin{scope}[every node/.style={circle,draw}]
+		\node (w1) at (0,-2) {$w_{1}$};
+		\node (w2) at (0,-4) {$w_{2}$};
 
+
+		\node (cosw1) at (3, 1) {$\cos w$};
+		\node (cosw2) at (3, -1) {$\cos w$};
+		\node (sigmoid) at (3, -3) {$\sigma(w)$};
+		\node (sq) at (3, -5) {$w^{2}$};
+		\node (plusl1) at (3, -7) {$+$};
+
+		\node (multl21) at (6, 0) {$\times$};
+		\node (multl22) at (6, -6) {$\times$};
+		\node (ln) at (6, -7) {$\ln(w)$};
+
+		\node (addl31) at (9, -2) {$+$};
+		\node (addl32) at (9, -6.5) {$+$};
+
+		\node (f1) at (11, -2) {$f_{1}$};
+		\node (f2) at (11, -6.5) {$f_{2}$};
+	\end{scope}
+
+	\begin{scope}
+		\path[->] (w1) edge (cosw1);
+		\path[->] (w1) edge (sq);
+		\path[->] (w1) edge (plusl1);
+		\path[->] (w2) edge (cosw2);
+		\path[->] (w2) edge (sigmoid);
+		\path[->] (w2) edge[bend right=20] (multl22);
+		\path[->] (w2) edge (plusl1);
+
+		\path[->] (cosw1) edge (multl21);
+		\path[->] (cosw2) edge (multl21);
+		\path[->] (sigmoid) edge (addl31);
+		\path[->] (sq) edge (multl22);
+		\path[->] (plusl1) edge (ln);
+
+		\path[->] (multl21) edge (addl31);
+		\path[->] (multl22) edge (addl32);
+		\path[->] (ln) edge (addl32);
+		\path[->] (ln) edge (addl32);
+
+		\path[->] (addl31) edge (f1);
+		\path[->] (addl32) edge (f2);
+	\end{scope}
+\end{tikzpicture}
+
+We can then calculate the value
+\begin{equation*}
+	[f_{1}(1, 2), f_{2}(1, 2)] \approx [0.65595, 3.0986]
+\end{equation*}
+
+\subexercise{b}
+Let $J_{i,j}$ be the entry on the $i$th row and the $j$th column of the Jacobian $J$.
+We have that $J_{i,j} = \pdv{f_{i}}{w_{i}}$. Now, we find the four entries in this
+matrix using numerical differentiation to be
+\begin{align*}
+	\pdv{f_{1}}{w_{1}} & = \frac{1}{0.01}[f_{1}(1.01, 2) - f_{1}(1, 2)] \approx 0.35129   \\
+	\pdv{f_{2}}{w_{1}} & = \frac{1}{0.01}[f_{2}(1.01, 2) - f_{2}(1, 2)] \approx 4.352779  \\
+	\pdv{f_{1}}{w_{2}} & = \frac{1}{0.01}[f_{1}(1, 2.01) - f_{1}(1, 2)] \approx -0.385569 \\
+	\pdv{f_{2}}{w_{2}} & = \frac{1}{0.01}[f_{2}(1, 2.01) - f_{2}(1, 2)] \approx 1.332779  \\
+\end{align*}
+
+\subexercise{c}
+Now, we will compute these same derivatives using forward mode auto-differentiation.
+To do this, we first define $\dot{w} = \pdv{w}{t}$ where $t$ is just some parameter.
+We also create intermediate variables for our computations. For $f_{1}$ we have
+\begin{align*}
+	u_{1} & = w_{1},         & \dot{u}_{1} & = \dot{w}_{1}                           \\
+	u_{2} & = w_{2},         & \dot{u}_{2} & = \dot{w}_{2}                           \\
+	u_{3} & = \cos u_{1},    & \dot{u_{3}} & = -\sin(u_{1})\dot{u_{1}}               \\
+	u_{4} & = \cos u_{2},    & \dot{u_{4}} & = -\sin(u_{2})\dot{u}_{2}               \\
+	u_{5} & = u_{3}*u_{4},   & \dot{u_{5}} & = \dot{u}_{3}u_{4} + u_{3}\dot{u}_{4}   \\
+	u_{6} & = \sigma(u_{2}), & \dot{u_{6}} & = \sigma(u_{2})(1 - \sigma(u_{2}))u_{2} \\
+	u_{7} & = u_{5} + u_{6}, & \dot{u_{7}} & = \dot{u}_{5} + \dot{u}_{6}             \\
+	f_{1} & = u_{7},         & \dot{f}_{1} & = \dot{u}_{7}
+\end{align*}
+Repeating the same for $f_{2}$ we get
+\begin{align*}
+	u_{1} & = w_{1},         & \dot{u_{1}} & = \dot{w}_{1}                         \\
+	u_{2} & = w_{2},         & \dot{u_{2}} & = \dot{w}_{2}                         \\
+	u_{3} & = u_{1} + u_{2}, & \dot{u_{3}} & = \dot{u}_{1} + \dot{u}_{2}           \\
+	u_{4} & = \ln u_{3},     & \dot{u_{4}} & = \frac{\dot{u}_{3}}{u_{3}}           \\
+	u_{5} & = u_{1}^{2},     & \dot{u_{5}} & = 2u_{1}\dot{u}_{1}                   \\
+	u_{6} & = u_{5}u_{2},    & \dot{u_{6}} & = \dot{u}_{5}u_{2} + u_{5}\dot{u}_{2} \\
+	u_{7} & = u_{4} + u_{6}, & \dot{u_{7}} & = \dot{u}_{5} + \dot{u}_{6}           \\
+	f_{2} & = u_{7},         & \dot{f_{2}} & = \dot{u}_{7}.
+\end{align*}
+
+Now, if we let $t = w_{1}$, then $\dot{w}_{1} = 1, \dot{w}_{2} = 0$, and viceversa if $t = w_{2}$.
+Therefore, using both values of $t$ and propagating we get that (to 6 decimal points).
+\begin{align*}
+	\pdv{f_{1}}{w_{1}} & = 0.350175, \\
+	\pdv{f_{2}}{w_{1}} & = 4.33333,  \\
+	\pdv{f_{1}}{w_{2}} & = -0.38630, \\
+	\pdv{f_{2}}{w_{2}} & = 1.33333.
+\end{align*}
+
+\subexercise{d}
+Similarly to forward mode auto-differentiation, we now define $\bar{w} = \pdv{f}{w}$.
+Where $f$ is some function, we again make use of the intermediate variables. For $f_{1}$
+we let $f = f_{1}$ and get that.
+\begin{align*}
+	f_{1} & = u_{7},         & \bar{f}_{1} & = 1                                     \\
+	u_{7} & = u_{5} + u_{6}, & \bar{u}_{7} & = \bar{f}_{1} =  1                      \\
+	u_{6} & = \sigma(u_{2}), & \bar{u}_{6} & = \sigma(u_{2})(1 - \sigma(u_{2}))u_{2} \\
+	u_{5} & = u_{3}*u_{4},   & \bar{u_{5}} & = \dot{u}_{3}u_{4} + u_{3}\dot{u}_{4}   \\
+	u_{4} & = \cos u_{2},    & \bar{u_{4}} & = -\sin(u_{2})\dot{u}_{2}               \\
+	u_{3} & = \cos u_{1},    & \bar{u_{3}} & = -\sin(u_{1})\dot{u_{1}}               \\
+	u_{2} & = w_{2},         & \bar{u}_{2} & = \dot{w}_{2}                           \\
+	u_{1} & = w_{1},         & \bar{u}_{1} & = \bar{w}_{1}                           \\
+\end{align*}
+
+Similarly, for $f = f_{2}$ we get
+\begin{align*}
+	f_{2} & = u_{7},         & \bar{f_{2}} & = 1,\\
+	u_{7} & = u_{4} + u_{6}, & \bar{u_{7}} & = \bar{f}_{2} = 1,\\
+	u_{6} & = u_{5}u_{2},    & \bar{u_{6}} & = \bar{u}_{7} = 1,\\
+	u_{5} & = u_{1}^{2},     & \bar{u_{5}} & =\bar{u}_{6}u_{2} = u_{2}, \\
+	u_{4} & = \ln u_{3},     & \bar{u_{4}} & =\bar{u}_{7} = 1,\\
+	u_{3} & = u_{1} + u_{2}, & \bar{u_{3}} & = \bar{u}_{4} \frac{1}{u_{3}} = \frac{1}{u}_{3},\\
+	u_{2} & = w_{2},         & \bar{u_{2}} & = \bar{u}_{3} * 1 = \bar{u}_{3}, \\
+	u_{1} & = w_{1},         & \bar{u_{1}} & = \bar{u}_{5}*2u_{1} + \bar{u}_{3},
+\end{align*}
+
+Now, propagating, we get that (to 6 decimal points),
+\begin{align*}
+	\pdv{f_{1}}{w_{1}} & = 0.350175, \\
+	\pdv{f_{2}}{w_{1}} & = 4.33333,  \\
+	\pdv{f_{1}}{w_{2}} & = -0.38630, \\
+	\pdv{f_{2}}{w_{2}} & = 1.33333.
+\end{align*}
+
+\subexercise{e}
+Yes, please never put such a tedious exercise in future worksheets.
 
 \exercise{5}
 \subexercise{a}
 
 \begin{proof}
-	To show that $C_{a}S = SC_{a}$ we can simply multiply them. Simply multiplying the matrices we get
+	To show that $C_{a}S = SC_{a}$ we can simply multiply them. Multiplying the matrices we get
 	\begin{equation*}
 		C_{a}S =
 		\begin{bmatrix}
@@ -293,21 +431,21 @@ on the gradient to find the Hessian. This makes the process of finding the hessi
 
 \subexercise{b}
 \begin{proof}
-	Let $f$ be a linear operator. We want to show that $f(Sx \bm{x}) = Sf(\bm{x}) \iff f(x) = (x * w)_{i} = C_{a}\bm{x}$.
+	Let $f$ be a linear operation. We want to show that $f(S\bm{x}) = Sf(\bm{x}) \iff f(x) = (x * w)_{i} = C_{a}\bm{x}$.
 
-	($\Leftarrow$)\\
+	($\Leftarrow$)
 	We assume that $f(\bm{x}) = C_{a} \bm{x}$, as we proved in (a) we know that $C_{a}S = SC_{a}$.
-	Therefore, we hc ave that
+	Therefore, we have that
 	\begin{equation*}
 		f(S \bm{x}) = C_{a}S \bm{x} = SC_{a}\bm{x} = Sf(\bm{x}).
 	\end{equation*}
 	Thus, $f$ is shift-equivariant.
 
-	($\Rightarrow$)\\
-	We assume that $f$ is some shift-equivariant linear operator.
+	($\Rightarrow$)
+	We assume that $f$ is some shift-equivariant linear operation.
 	This implies that $f(S \bm{x}) = AS \bm{x} = SA \bm{x} = Sf(x)$.
 
-	Let $A$ be any matrix, then we have that
+	Let $A$ be any matrix (linear operation), then we have that
 	\begin{equation*}
 		AS =
 		\begin{bmatrix}
@@ -369,6 +507,46 @@ will be the same as if it were shifted \textit{after} the convolution.
 
 This means, in short, that the convolution kernel is not dependent on spatial location,
 which makes it generalise easily.
+
 \exercise{6}
+No, SGD is not guaranteed to decrease every iteration.
+
+Let $\bm{w}^{t} = 0$. We have that,
+\begin{equation*}
+    f(\bm{w}^{t}) = \frac{1}{2}[(-2)^{2} + 1^{2}] = \frac{5}{2}.
+\end{equation*}
+
+Now, we calculate $\bm{w}^{t + 1}$ and pick the term $\frac{1}{2}(\bm{w} + 1)^{2}$.
+Therefore, we have that
+\begin{equation*}
+    \bm{w}^{t+1} = \bm{w}^{t} - \eta \grad \frac{1}{2}(\bm{w} + 1)^{2} |_{\bm{w} = \bm{w}^{t}}
+    = 0 - \eta(w^{t} + 1) = -\eta.
+\end{equation*}
+
+Plugging this back into the objective function we get 
+\begin{equation*}
+    f(\bm{w}^{t+1}) = \frac{1}{2}[(-\eta - 2)^{2} + (-\eta + 1)^{2}]
+    = \eta^{2} + \eta + \frac{5}{2} \geq \frac{5}{2},
+\end{equation*}
+since $\eta > 0$. We can see that we have increased the overall loss.
+
+
+\exercise{7}
+\subexercise{a}
+The key contribution of this paper is the fact that neural networks are able to fit anything,
+even random noise. The idea is that a neural network with enough layers can represent any function,
+therefore the representational power of deep neural networks is huge. Thus, they are able to attain
+very low test accuracies on datasets with the labels completely randomised. This puts into question
+how one is to understand the generalisation power of neural networks. It begs the question,
+if the network can learn random noise, is it really learning anything? This more of a philosphical
+question than anything else, but it does give rise to even more mystery into how deep neural networks
+work.
+
+\subexercise{b}
+My biggest takeaway from this paper is that, given a neural network with enough parameters (more than 
+datapoints), it is able to completely memorise what the output is. Therefore, it is important to take 
+this into account when thinking about the generalisation of the model. I think it is clear that more work
+needs to be done in how we measure the representational power of models. This is because once we can 
+generalise the representation of a model we can understand what it is able to brute-force memorise.
 
 \end{document}

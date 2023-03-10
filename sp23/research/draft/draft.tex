@@ -57,54 +57,73 @@
 	Let $L$ be a loss function and $D = (\bm{x}_{n}, \bm{y}_{n})_{n=1}^{d}$ be training examples. Then
 	\begin{equation}
 		\min_{N \in \N, \{c_{n}\} \in \R^{N}\, \{\omega_{n} = (a_{n}, b_{n})\} \in (\mathbb{S}^{d})^{N}}
-		L(\mathcal{N}_{\omega, c} ; \bm{y}) + \alpha \sum_{n=1}^{N} \phi(\abs{c_{n}}),
+		I(w, c),
 	\end{equation}
 	where $\mathbb{S}^{d} = \{(a,b) \in \R^{d + 1} : \lVert {(a,b)}^{2} \rVert_{2} = 1\}$ is the unit sphere in $\R^{d + 1}$.
 
-	Is the same as
+	Is equivalent to
 	\begin{equation}
-		\min_{N \in \N, \{(a_{n}, b_{n}, c_{n})\}\in (\R^{d} \times \R \times \R)^{N}} L(\mathcal{N}_{\omega, \hat{c}} ; \bm{y})
-		+ \alpha \sum_{n=1}^{N} \phi\left(\frac{\abs{\hat{c}_{n}}^{2} + \lVert w_{n} \rVert^{2}}{2}\right).
+		\min_{N \in \N, \{(a_{n}, b_{n}, c_{n})\}\in (\R^{d} \times \R \times \R)^{N}}
+		J(w, c),
 	\end{equation}
-	where $\hat{c}_{n} = \lVert \frac{\omega_{n}}{\omega_{n}} \rVert$. By equivalence we mean that
-	if $(a_{n}, b_{n}, b_{n})$ is a solution to (1), then, after scaling,
-	it is also a solution to (2), and viceversa.
+	By equivalence we mean that
+	if $(\hat{w}, \hat{c})$ is a solution to (1), then, there exists
+	$(\bar{w}, \bar{c})$ that is also a solution to (2), and viceversa.
 \end{theorem}
 
 \begin{proof}
-	Let $h: (\R^{d + 1}\times \R) \to (\mathbb{S}^{d} \times \R)$, we note that due to the increasing nature of $\phi$,
+	Let $g: (\mathbb{S}^{d} \times \R) \to (\R^{d + 1}\times \R)$ and
+	$h: (\R^{d + 1}\times \R) \to (\mathbb{S}^{d} \times \R)$.
+
+	We note that due to the increasing nature of $\phi$,
 	and the inequality between arithmetic and geometric sums,
 	\begin{equation}\label{eq:problem-inequality}
-		J(\bar{\bm{w}}, \bar{\bm{c}}) \geq I(h(\bar{\bm{w}}, \bar{\bm{c}}))
-		\quad \forall (\bar{\bm{w}}, \bar{\bm{c}}) \in (\R^{d + 1}\times \R).
+		I(\bm{w}, \bm{c}) \leq J(\bm{w}, \bm{c})
+		\quad \forall (\bm{w}, \bm{c}) \in (\R^{d + 1}\times \R).
 	\end{equation}
 
-	Let $g: (\mathbb{S}^{d} \times \R) \to (\R^{d + 1}\times \R)$ as described in Lemma \ref{lemma:equality-of-problems}.
-	We take a value $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ that minimises $J$.
+    NOTE: problem part
+
+	$(1) \Rightarrow (2)$.
+	Let $(\hat{w}^{*}, \hat{c}^{*})$ minimise $I$. By Eq. (\ref{eq:problem-inequality}) and
+	Lemma \ref{lemma:equality-of-problems} we get
+	\begin{equation*}
+		I(\hat{w}^{*}, \hat{c}^{*}) \leq J(\hat{w}^{*}, \hat{c}^{*})
+		\stackrel{?}{=} I(h(\hat{w}, \hat{c})) \leq I(\hat{w}^{*}, \hat{c}^{*}).
+	\end{equation*}
+	Therefore, $I(\hat{w}^{*}, \hat{c}^{*}) = J(g(\hat{w}^{*}, \hat{c}^{*}))$.
+
+    NOTE: end of problem part
+
+
+	$(2) \Rightarrow (1)$
+	Let $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimise $J$.
 	Now, by Eq. (\ref{eq:problem-inequality}) and Lemma \ref{lemma:equality-of-problems} we have that
 	\begin{equation}\label{eq:J-equals-I}
-		J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}) \geq I(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})) 
-        = J(g(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}))) \geq J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}).
+		J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}) \geq I(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})
+		= J(g(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})) \geq J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}).
 	\end{equation}
-	Therefore, $J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}) = I(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}))$.
+	Therefore, $J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}) = I(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$.
 
 	\begin{claim}
-		$h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $I$.
+		$(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $I$.
 
-		Assume, for the sake of contradiction, that it does not. this implies
-		$\exists \hat{\bm{w}}^{*} \in (\mathbb{S}^{d} \times \R)$ such that
-		\begin{equation*}
-			I(\hat{\bm{w}}^{*}, \hat{\bm{c}}^{*}) < I(h(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})).
-		\end{equation*}
-		However, from (\ref{eq:J-equals-I}) and (\ref{lemma:equality-of-problems})
-		we get that this implies
-		\begin{equation*}
-			J(g(\hat{\bm{w}}^{*}, \hat{\bm{c}}^{*})) < J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}),
-		\end{equation*}
-		which is a contradiction as $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $J$.
+		\begin{proof}
+			Assume, for the sake of contradiction, that it does not. this implies
+			$\exists \hat{\bm{w}} \in (\mathbb{S}^{d} \times \R)$ such that
+			\begin{equation*}
+				I(\hat{\bm{w}}, \hat{\bm{c}}) < I(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}).
+			\end{equation*}
+			However, from Lemma \ref{lemma:equality-of-problems} and Eq. (\ref{eq:J-equals-I})
+			we get that this implies
+			\begin{equation*}
+				J(g(\hat{\bm{w}}^{*}, \hat{\bm{c}}^{*})) < J(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*}),
+			\end{equation*}
+			which is a contradiction as $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $J$.
+		\end{proof}
 	\end{claim}
 	Therefore, we have that if $(\bar{\bm{w}}^{*}, \bar{\bm{c}}^{*})$ minimises $J$, then,
-	after scaling, it is also a solution to $I$.
+    it is also minimises $I$.
 \end{proof}
 
 \end{document}
